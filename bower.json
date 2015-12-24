@@ -23,6 +23,10 @@
   ],
   "dependencies": {
     "AngularDevise": "angular-devise#~1.1.0",
-    "angular": "~1.4.8"
+    "angular": "~1.4.8",
+    "jquery": "~2.1.4",
+    "normalize-css": "normalize.css#~3.0.3",
+    "bootstrap": "~3.3.6",
+    "angular-route": "~1.4.8"
   }
 }

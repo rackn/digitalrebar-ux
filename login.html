@@ -1,0 +1,7 @@
+<h3>Login!</h3>
+
+<form name='loginForm' ng-controller='LoginController as login' ng-submit='login.signIn()'>
+	<label>Username: </label><input type="text" ng-model='credentials.user.username'/><br/>
+	<label>Password: </label><input type="password" ng-model='credentials.user.password'/><br/>
+	<input type="submit" value='Login'>
+</form>
