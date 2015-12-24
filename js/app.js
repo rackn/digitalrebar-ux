@@ -1,14 +1,22 @@
 (function(){
-    var app = angular.module('app', ['ngRoute', 'Devise']);
+    var app = angular.module('app', ['ngRoute', 'dgAuth']);
         console.log('start')
 
-    app.config(function($routeProvider, AuthProvider) {
+    app.config(function($routeProvider, dgAuthServiceProvider) {
         console.log("Config")
         
+        dgAuthServiceProvider.setConfig({
+            login: {
+                method: 'GET',
+                url: 'https://rack1:3000/api/v2/digest'
+            },
+            logout: {
+                method: 'POST',
+                url: 'https://rack1:3000/api/v2/digest'
+            }
+        });
 
-        AuthProvider.loginPath('https://rack1:3000/my/users/sign_in');
-        AuthProvider.loginMethod('GET');
-        AuthProvider.resourceName('Rebar');
+        dgAuthServiceProvider.setHeader('');
         
 
         $routeProvider.
@@ -25,52 +33,40 @@
             })
     });
 
-    app.controller('LoginController', ['$scope', 'Auth', '$http', function($scope, Auth, $http) {
-        console.log('login: ' + Auth._currentUser)
+    app.controller('LoginController', ['$scope', 'dgAuthService', '$http', function($scope, dgAuthService, $http) {
+        console.log('login: ' + dgAuthService)
         this.credentials = {
-            user: {
-                username: 'user',
-                password: 'pass'
-            }
+            username: 'user',
+            password: 'pass'
         }
 
-        this.signIn = function(credentials) {
-            var config = {
-                interceptAuth: true
-            };
-
-            Auth.login(credentials, config).then(function() {
-                alert("Yes!!")
-            }).then(function(response) {
-                alert(response);
-            }, function(error) {
-                alert('error');
-            });
+        this.signIn = function() {
+            dgAuthService.start();
+            dgAuthService.setCredentials(this.credentials.username, this.credentials.password);
+            dgAuthService.signin();
         }
 
     }]);
 
     app.controller('DashboardController', ['$http', function($http) {
-        console.log('dash: ' + Auth._currentUser)
 
 
 
     }]);
 
-    app.run(function($rootScope, $location, Auth){
-        console.log('Authenticated: '+Auth.isAuthenticated())
+    app.run(function($rootScope, $location, dgAuthService){
+        console.log('Authenticated: '+dgAuthService)
 
         $rootScope.$on('$routeChangeStart', function(next, current) { 
            console.log('$routeChangeStart', arguments);
         });
 
-        $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            var loggedIn = Auth._currentUser;
-            if (!Auth.isAuthenticated()) {
+        /*$rootScope.$on('$locationChangeStart', function (event, next, current) {
+            if (!dgAuthService.isAuthorized()) {
                 console.log("Redirecting")
                 $location.path('/login');
             }
-        });
+        });*/
 
     })
 
