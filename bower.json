@@ -1,0 +1,28 @@
+{
+  "name": "Digital Rebar UI",
+  "description": "Digital Rebar Angular Interface",
+  "main": "index.html",
+  "authors": [
+    "meshiest <meek.mesh@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "DigitalRebar",
+    "Rebar",
+    "Rackn"
+  ],
+  "moduleType": [],
+  "homepage": "http://rackn.com, http://meshiest.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "AngularDevise": "angular-devise#~1.1.0",
+    "angular": "~1.4.8"
+  }
+}
