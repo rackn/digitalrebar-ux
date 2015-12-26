@@ -1,1 +1,63 @@
-<h3>Dashboard!</h3>
+<md-content layout-padding>
+	<ui-view layout="column">
+
+		<md-card ng-repeat='deployment in dash.deployments' flex-gt-sm='40' flex='100'>
+
+			<!-- Top bar for each deployment -->
+			<md-toolbar flex layout='column' ng-class="{'md-warn': deployment.roles.error > 0}" ng-click="dash.toggleExpand(deployment)" md-ink-ripple>
+				<section layout='row'>
+				<div class="md-toolbar-tools">
+					<h2 class="md-flex">{{deployment.name}}</h2>
+				</div>
+				<span flex></span>
+
+				<!-- Sparkline for the nodes -->
+				<span spark class='inset' type='pie' ng-model="deployment.nodes" opts='{{dash.opts}}'>
+				</span>
+				
+				<!-- Expand button -->
+				<span class='inset'>
+					<md-button class="md-icon-button">
+						<md-icon ng-hide="deployment.expand">expand_more</md-icon>
+						<md-icon ng-show="deployment.expand">expand_less</md-icon>
+					</md-button>
+				</span>
+				</section>
+				<md-progress-linear md-mode="determinate" ng-class="{'md-warn': deployment.roles.error > 0}" value="{{deployment.roles.ready*100/(deployment.roles.ready+deployment.roles.error+deployment.roles.working+deployment.roles.off)}}"></md-progress-linear>
+		    </md-toolbar>
+
+		    <!-- Tabs that appear after the expand button is pressed -->
+		    <section ng-show='deployment.expand' class='slideDown'>
+		    	<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+
+			    	<!-- Nodes tab -->
+			    	<md-tab label="Nodes">
+			    		<content layout-padding>
+				    		<md-list>
+				    			<md-list-item ng-repeat="node in deployment.data.nodes">
+				    				{{node.name}}
+				    				<md-divider>
+				    				{{node}}
+				    			</md-list-item>
+				    		</md-list>
+				    	</content>
+			    	</md-tab>
+
+			    	<!-- Roles tab -->
+			    	<md-tab label="Roles" layout-padding>
+			    		<content layout-padding>
+				    		<md-list>
+				    			<md-list-item ng-repeat="role in deployment.data.roles">
+				    				{{role.name}}
+				    				<md-divider>
+				    				{{role}}
+				    			</md-list-item>
+				    		</md-list>
+			    		</content>
+			    	</md-tab>
+		    	</md-tabs>
+		    </section>
+		</md-card>
+
+	</ui-view>
+</md-content>
