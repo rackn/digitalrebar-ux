@@ -2,20 +2,93 @@
 <html ng-app='app'>
 
 	<head>
-		<link rel="stylesheet" type="text/css" href="bower_components/normalize-css/normalize.css" />
-		<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+		<!-- Material CSS-->
+		<link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 	</head>
 	
-	<body>
+	<body ng-controller="AppCtrl as app" layout="row">
+
+		<!-- jQuery -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
+		<script src="js/jquery.sparkline.min.js"></script>
+
+		<!-- Core Angular -->
 		<script src="bower_components/angular/angular.js"></script>
 		<script src="bower_components/angular-route/angular-route.js"></script>
+		
+		<!-- Angular modules -->
+		<!-- Material -->
+		<script src="bower_components/angular-material/angular-material.js"></script>
+		<script src="bower_components/angular-animate/angular-animate.js"></script>
+		<script src="bower_components/angular-messages/angular-messages.js"></script>
+		<script src="bower_components/angular-aria/angular-aria.js"></script>
+
+		<!-- Digest Authentication -->
 		<script src="bower_components/angular-md5/angular-md5.js"></script>
 		<script src="bower_components/angular-state-machine/dist/angular-state-machine.js"></script>
 		<script src="bower_components/angular-digest-auth/dist/angular-digest-auth.js"></script>
+		
+		<!-- Scripts -->
+		<script src="js/angular-sparklines.js"></script>
 		<script src="js/app.js"></script>
-		<ng-view>
-		</ng-view>
+
+		<!-- Side Nav -->
+		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+			<md-toolbar class='md-tall md-hue-2'>
+				<span flex></span>
+				<div layout="column" class="md-toolbar-tools-bottom inset">
+					<div>Name</div>
+				</div>
+			</md-toolbar>
+
+			<md-list>
+				<!-- Default menu -->
+				<md-list-item class="md-2-line" ng-repeat="item in menu" md-ink-ripple ng-href="#{{item.path}}">
+					<md-icon>{{item.icon}}</md-icon>
+
+					<div class="md-list-item-text">
+						<span class="md-body-2">{{item.title}}</span>
+					</div>
+				</md-list-item>
+
+				<md-divider></md-divider>
+
+				<!-- User menu -->
+				<md-subheader>Management</md-subheader>
+				<md-list-item class="md-2-line" ng-repeat="item in admin" md-ink-ripple ng-href="#{{item.path}}">
+					<md-icon>{{item.icon}}</md-icon>
+
+					<div class="md-list-item-text">
+						<span class="md-body-2">{{item.title}}</span>
+					</div>
+				</md-list-item>
+			</md-list>
+		</md-sidenav>
+		
+		<div layout="column" layout-fill>
+			<!-- Header -->
+			<md-toolbar layout="row" class='md-whiteframe-z1'>
+				<div class='md-toolbar-tools'>
+					<md-button class="md-icon-button" ng-click="toggleSideNav('left')" hide-gt-md aria-label="Menu" />
+						<md-icon>menu</md-icon>
+					</md-button>
+					<h3>{{title}}</h3>
+					<span flex></span>
+				</div>
+			</md-toolbar>
+
+			<!-- Content -->
+			<content>
+				<ng-view>
+				</ng-view>
+			</content >
+		</div>
+
 	</body>
 
 </html>

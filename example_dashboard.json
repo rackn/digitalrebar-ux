@@ -1,0 +1,20 @@
+{
+	"deployments": [ 
+		{
+			"name": "system",
+			"id": 1,
+			"nodes": {
+				"ready": 100,
+				"error": 33,
+				"working": 46,
+				"off": 25
+			},
+			"roles": {
+				"ready": 100,
+				"error": 60,
+				"working": 10,
+				"proposed": 20
+			}
+		}
+	]
+}

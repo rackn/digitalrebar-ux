@@ -1,10 +1,7 @@
 (function(){
-    var app = angular.module('app', ['ngRoute', 'dgAuth']);
-        console.log('start')
+    var app = angular.module('app', ['ngRoute', 'dgAuth', 'ngMaterial', 'ngAnimate', 'sparkline']);
 
-    app.config(function($routeProvider, dgAuthServiceProvider) {
-        console.log("Config")
-        
+    app.config(function($routeProvider, dgAuthServiceProvider, $mdThemingProvider) {        
         dgAuthServiceProvider.setConfig({
             login: {
                 method: 'GET',
@@ -18,14 +15,36 @@
 
         dgAuthServiceProvider.setHeader('');
         
+        $mdThemingProvider.definePalette('customBlue', 
+            $mdThemingProvider.extendPalette('light-blue', {
+                'contrastDefaultColor': 'light',
+                'contrastDarkColors': ['50'],
+                '50': 'ffffff'
+            })
+        );
+
+        $mdThemingProvider.theme('default')
+            .primaryPalette('customBlue', {
+                'default': '500',
+                'hue-1': '50'
+            })
+            .accentPalette('pink');
+        
+        $mdThemingProvider.theme('input', 'default')
+            .primaryPalette('grey')
 
         $routeProvider.
             when('/', {
-                controller: 'DashboardController',
+                redirectTo: '/dash'
+            }).
+            when('/dash', {
+                controller: 'DashCtrl',
+                controllerAs: 'dash',
                 templateUrl: 'dashboard.html',
             }).
             when('/login', {
-                controller: 'LoginController',
+                controller: 'LoginCtrl',
+                controllerAs: 'login',
                 templateUrl: 'login.html',
             }).
             otherwise({
@@ -33,12 +52,57 @@
             })
     });
 
-    app.controller('LoginController', ['$scope', 'dgAuthService', '$http', function($scope, dgAuthService, $http) {
+    app.controller('AppCtrl', ['$scope', '$rootScope', '$mdSidenav', function($scope, $rootScope, $mdSidenav){
+        $scope.toggleSideNav = function(menuId) {
+            $mdSidenav(menuId).toggle();
+        };
+
+        $scope.menu = [
+            {
+                title: 'Dashboard',
+                icon: 'dashboard',
+                path: '/dash'
+            },
+            {
+                title: 'Workloads',
+                icon: 'work'
+            },
+            {
+                title: 'Deployments',
+                icon: 'view_column'
+            },
+            {
+                title: 'Node',
+                icon: 'dns'
+            },
+            {
+                title: 'Networks',
+                icon: 'swap_horiz'
+            },
+        ];
+
+        $scope.admin = [
+            {
+                title: 'Settings',
+                icon: 'settings'
+            },
+            {
+                title: 'Users',
+                icon: 'supervisor_account'
+            },
+        ];
+
+    }]);
+
+    app.controller('LoginCtrl', ['$rootScope', 'dgAuthService', '$http', function($rootScope, dgAuthService, $http) {
+        $rootScope.title = 'Login';
+
         console.log('login: ' + dgAuthService)
         this.credentials = {
             username: 'user',
             password: 'pass'
         }
+
 
         this.signIn = function() {
             dgAuthService.start();
@@ -48,18 +112,46 @@
 
     }]);
 
-    app.controller('DashboardController', ['$http', function($http) {
+    app.controller('DashCtrl', ['$rootScope', '$http', function($rootScope, $http) {
+        $rootScope.title = 'Dashboard';
 
+        var dash = this;
+        this.deployments = [];
+
+        this.toggleExpand = function(deployment) {
+            deployment.expand = !deployment.expand;
+        }
+
+        this.opts = { // sparkline options
+            sliceColors: [
+                "#8BC34A", 
+                "#F44336",
+                "#03A9F4",
+                "#616161"
+            ],
+            tooltipFormat: '{{value}}',
+            disableTooltips: true,
+            disableHighlight: true,
+            borderWidth: 2,
+            borderColor: '#fff',
+            width: '2em',
+            height: '2em',
+        };
+
+        $http.get('/example_dashboard.json').
+            success(function(data){
+                dash.deployments = data.deployments;
+                console.log(dash.deployments )
+            }).
+            error(function(){
+
+            })
 
 
     }]);
 
     app.run(function($rootScope, $location, dgAuthService){
         console.log('Authenticated: '+dgAuthService)
-
-        $rootScope.$on('$routeChangeStart', function(next, current) { 
-           console.log('$routeChangeStart', arguments);
-        });
 
         /*$rootScope.$on('$locationChangeStart', function (event, next, current) {
             if (!dgAuthService.isAuthorized()) {

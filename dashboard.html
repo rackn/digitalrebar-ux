@@ -1,1 +1,40 @@
-<h3>Dashboard!</h3>
+<md-content layout-padding>
+	<ui-view layout="column">
+		<md-card ng-repeat='deployment in dash.deployments' flex-gt-sm='40' flex='100'>
+			<md-toolbar flex layout='row'>
+				<div class="md-toolbar-tools">
+					<h2 class="md-flex">{{deployment.name}}</h2>
+				</div>
+				<span flex></span>
+				<span spark class='inset' type='pie' ng-model="deployment.nodes" opts='{{dash.opts}}'>
+				</span>
+				
+				<span spark class='inset' type='pie' ng-model="deployment.roles" opts='{{dash.opts}}'>
+				</span>
+				
+				<span class='inset'>
+					<md-button class="md-icon-button" ng-click="dash.toggleExpand(deployment)">
+						<md-icon ng-hide="deployment.expand">expand_more</md-icon>
+						<md-icon ng-show="deployment.expand">expand_less</md-icon>
+					</md-button>
+				</span>
+		    </md-toolbar>
+		    <section ng-show='deployment.expand' class='slideDown'>
+		    	<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+			    	<md-tab label="Nodes">
+			    		<content layout-padding>
+					    	{{deployment}}
+				    		Nodes
+				    	</content>
+			    	</md-tab>
+			    	<md-tab label="Roles" layout-padding>
+			    		<content layout-padding>
+				    		Roles
+			    		</content>
+			    	</md-tab>
+		    	</md-tabs>
+		    </section>
+		</md-card>
+
+	</ui-view>
+</md-content>
