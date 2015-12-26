@@ -1,0 +1,34 @@
+{
+	"deployment": {
+		"name": "system",
+		"id": 1,
+		"nodes": [
+			{
+				"name": "nodeName",
+				"id": "nodeId",
+				"status": "on",
+				"roles": [
+					{
+						"name": "rolename",
+						"id": "roleId",
+						"status": "todo"
+					}
+				]
+			}
+		],
+		"roles": [
+			{
+				"name": "roleName",
+				"id": "roleId",
+				"status": "on",
+				"roles": [
+					{
+						"name": "rolename",
+						"id": "roleId",
+						"status": "todo"
+					}
+				]
+			}
+		]
+	}
+}

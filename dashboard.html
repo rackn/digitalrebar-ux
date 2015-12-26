@@ -23,13 +23,24 @@
 		    	<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
 			    	<md-tab label="Nodes">
 			    		<content layout-padding>
-					    	{{deployment}}
-				    		Nodes
+				    		<md-list>
+				    			<md-list-item ng-repeat="node in deployment.data.nodes">
+				    				{{node.name}}
+				    				<md-divider>
+				    				{{node}}
+				    			</md-list-item>
+				    		</md-list>
 				    	</content>
 			    	</md-tab>
 			    	<md-tab label="Roles" layout-padding>
 			    		<content layout-padding>
-				    		Roles
+				    		<md-list>
+				    			<md-list-item ng-repeat="role in deployment.data.roles">
+				    				{{role.name}}
+				    				<md-divider>
+				    				{{role}}
+				    			</md-list-item>
+				    		</md-list>
 			    		</content>
 			    	</md-tab>
 		    	</md-tabs>

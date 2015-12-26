@@ -120,6 +120,16 @@
 
         this.toggleExpand = function(deployment) {
             deployment.expand = !deployment.expand;
+            if(deployment.expand) {
+                $http.get('/example_deployment.json').
+                    success(function(data){
+                        deployment.data = data.deployment;
+                        console.log("Update")
+                    }).
+                    error(function(){
+                        console.log('No data!')
+                    })
+            }
         }
 
         this.opts = { // sparkline options
@@ -141,7 +151,10 @@
         $http.get('/example_dashboard.json').
             success(function(data){
                 dash.deployments = data.deployments;
-                console.log(dash.deployments )
+                for(var i in dash.deployments) {
+                    console.log(i)
+                    dash.deployments[i].data = {}
+                }
             }).
             error(function(){
 
