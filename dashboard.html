@@ -23,40 +23,58 @@
 					</md-button>
 				</span>
 				</section>
-				<md-progress-linear md-mode="determinate" ng-class="{'md-warn': deployment.roles.error > 0}" value="{{deployment.roles.ready*100/(deployment.roles.ready+deployment.roles.error+deployment.roles.working+deployment.roles.off)}}"></md-progress-linear>
-		    </md-toolbar>
 
-		    <!-- Tabs that appear after the expand button is pressed -->
-		    <section ng-show='deployment.expand' class='slideDown'>
-		    	<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+				<!-- Progress bar for roles, progress is the % of ready nodes-->
+				<md-progress-linear md-mode="determinate" ng-class="{'md-warn': deployment.roles.error > 0}" value="{{deployment.roles.ready*100/(deployment.roles.ready+deployment.roles.error+deployment.roles.working+deployment.roles.off)}}"
+				></md-progress-linear>
 
-			    	<!-- Nodes tab -->
-			    	<md-tab label="Nodes">
-			    		<content layout-padding>
-				    		<md-list>
-				    			<md-list-item ng-repeat="node in deployment.data.nodes">
-				    				{{node.name}}
-				    				<md-divider>
-				    				{{node}}
-				    			</md-list-item>
-				    		</md-list>
-				    	</content>
-			    	</md-tab>
+			</md-toolbar>
 
-			    	<!-- Roles tab -->
-			    	<md-tab label="Roles" layout-padding>
-			    		<content layout-padding>
-				    		<md-list>
-				    			<md-list-item ng-repeat="role in deployment.data.roles">
-				    				{{role.name}}
-				    				<md-divider>
-				    				{{role}}
-				    			</md-list-item>
-				    		</md-list>
-			    		</content>
-			    	</md-tab>
-		    	</md-tabs>
-		    </section>
+			<!-- Tabs that appear after the expand button is pressed -->
+			<section ng-show='deployment.expand'>
+				<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" >
+
+					<!-- Nodes tab -->
+					<md-tab label="Nodes">
+							<!-- Add all the nodes as list items -->
+							<span ng-repeat="node in deployment.data.nodes">
+								<!-- Node button -->
+								<md-button class="md-fab md-primary md-mini" ng-click="dash.showNodeDialog($event, node)">
+									<md-tooltip md-direction="bottom">
+										{{node.name}}
+									</md-tooltip>
+									<md-icon>{{icons[node.status]}}</md-icon>
+								</md-button>
+
+							</span>
+
+					</md-tab>
+
+					<!-- Roles tab -->
+					<md-tab label="Roles">
+						<md-list>
+							<!-- Add all the roles as list items -->
+							<md-list-item ng-repeat="role in deployment.data.roles" layout='row'>
+								<!-- Node button -->
+								<md-button class="md-fab md-primary md-mini">
+									<md-tooltip md-direction="bottom">
+										{{role.name}}
+									</md-tooltip>
+									<md-icon>{{icons[role.status]}}</md-icon>
+								</md-button>
+
+								<!-- Deployment Roles for the role -->
+								<section layout='row'>
+									<md-button class="md-fab md-raised md-mini" ng-repeat='delpoyrole in role.roles'>
+										<md-icon style='color: grey;'>{{icons[delpoyrole.status]}}</md-icon>
+									</md-button>
+								</section>
+
+							</md-list-item>
+						</md-list>
+					</md-tab>
+				</md-tabs>
+			</section>
 		</md-card>
 
 	</ui-view>

@@ -81,6 +81,16 @@
             },
         ];
 
+        $rootScope.icons = {
+            'ready': 'check_circle',
+            'error': 'warning',
+            'process': 'autorenew',
+            'todo': 'play_circle_outline',
+            'off': 'power_settings_new',
+            'queue': 'update',
+            'reserved': 'pause_circle_outline',
+        }
+
         $scope.admin = [
             {
                 title: 'Settings',
@@ -112,11 +122,30 @@
 
     }]);
 
-    app.controller('DashCtrl', ['$rootScope', '$http', function($rootScope, $http) {
+    app.controller('DashCtrl', ['$mdMedia', '$mdDialog', '$rootScope', '$http', function($mdMedia, $mdDialog, $rootScope, $http) {
         $rootScope.title = 'Dashboard';
 
         var dash = this;
         this.deployments = [];
+
+
+        this.showNodeDialog = function(ev, node) {
+            console.log(node);
+            $rootScope.node = node;
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'ctrl',
+                templateUrl: 'nodedialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    node: $rootScope.node
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
+        };
 
         this.toggleExpand = function(deployment) {
             deployment.expand = !deployment.expand;
@@ -173,6 +202,23 @@
             }
         });*/
 
-    })
+    });
+
+    app.controller('DialogController', ['$scope', '$rootScope', '$mdDialog', 'locals', function ($scope, $rootScope, $mdDialog, locals) {
+        $scope.locals = locals;
+        $scope.icons = $rootScope.icons;
+
+        $scope.hide = function() {
+            $mdDialog.hide();
+        };
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        $scope.answer = function(answer) {
+            $mdDialog.hide(answer);
+        };
+    }]);
 
 })();

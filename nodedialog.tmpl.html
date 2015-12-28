@@ -1,0 +1,22 @@
+<md-dialog aria-label="Node {{locals.node.name}}"  ng-cloak>
+	<form>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>Node {{locals.node.name}}</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="cancel()">
+					<md-icon>close</md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<md-button class="md-fab md-raised" ng-repeat='role in locals.node.roles'>
+				<md-icon style='color: grey;'>{{icons[role.status]}}</md-icon>
+			</md-button>
+		</md-dialog-content>
+
+		<!-- <md-dialog-actions layout="row">
+			<span flex></span>
+		</md-dialog-actions> -->
+	</form>
+</md-dialog>

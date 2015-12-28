@@ -6,13 +6,67 @@
 			{
 				"name": "nodeName",
 				"id": "nodeId",
-				"status": "on",
+				"status": "ready",
 				"roles": [
 					{
 						"name": "rolename",
-						"id": "roleId",
+						"id": 2,
 						"status": "todo"
+					},
+					{
+						"name": "rolename",
+						"id": 3,
+						"status": "error"
+					},
+					{
+						"name": "rolename",
+						"id": 4,
+						"status": "process"
+					},
+					{
+						"name": "rolename",
+						"id": 6,
+						"status": "off"
+					},
+					{
+						"name": "rolename",
+						"id": 7,
+						"status": "queue"
 					}
+					
+				]
+			},
+			{
+				"name": "nodeName",
+				"id": "nodeId",
+				"status": "ready",
+				"roles": [
+					{
+						"name": "rolename",
+						"id": 2,
+						"status": "todo"
+					},
+					{
+						"name": "rolename",
+						"id": 3,
+						"status": "error"
+					},
+					{
+						"name": "rolename",
+						"id": 4,
+						"status": "process"
+					},
+					{
+						"name": "rolename",
+						"id": 6,
+						"status": "off"
+					},
+					{
+						"name": "rolename",
+						"id": 7,
+						"status": "queue"
+					}
+					
 				]
 			}
 		],
@@ -20,7 +74,7 @@
 			{
 				"name": "roleName",
 				"id": "roleId",
-				"status": "on",
+				"status": "ready",
 				"roles": [
 					{
 						"name": "rolename",
