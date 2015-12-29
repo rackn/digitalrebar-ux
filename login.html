@@ -1,23 +1,33 @@
+<!--
+login view
+-->
 <md-content layout='wrap' layout-align="center center">
 	<md-card flex-gt-sm='40' flex='100'>
+
 		<md-toolbar>
 			<div class="md-toolbar-tools">
 		      <h2 class="md-flex">Login</h2>
 		    </div>
 	    </md-toolbar>
+
 		<form name='loginForm' ng-submit='login.signIn()' layout="column" layout-align="center" layout-padding>
+			<!-- Username and password fields -->
 			<md-input-container>
 				<label>Username</label>
 				<input type="text" ng-model='login.credentials.username'/>
 			</md-input-container>
+
 			<md-input-container>
 				<label>Password</label>
 				<input type="password" ng-model='login.credentials.password'/>
 			</md-input-container>
+
+			<!-- Right justified login button  -->
 			<section layout='row' layout-fill role="main" >
 				<span flex></span>
 				<md-button class="md-raised md-primary" type="submit">Login</md-button>
 			</section>
+
 		</form>
 	</md-card>
 </md-content>

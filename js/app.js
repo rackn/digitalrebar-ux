@@ -1,4 +1,5 @@
 var host = 'https://192.168.131.235:3000';
+//3hr
 
 (function(){
     var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngAnimate', 'sparkline', 'Devise']);
@@ -100,108 +101,6 @@ var host = 'https://192.168.131.235:3000';
 
     }]);
 
-    app.controller('LoginCtrl', ['$rootScope', '$location', 'Auth', '$http', function($rootScope, $location, Auth, $http) {
-        $rootScope.title = 'Login';
-
-        console.log('login: ' + Auth._currentUser)
-        this.credentials = {
-            username: '',
-            password: ''
-        }
-
-        var login = this;
-
-        this.signIn = function() {
-            Auth.login(login.credentials, {interceptAuth: true}).
-                then(function(response) {
-                    // success!
-                }, function(error) {
-                    alert('Error');
-                })
-            
-        }
-
-        $rootScope.logout = function() {
-            if(!Auth.isAuthenticated())
-                return;
-
-            Auth.logout({interceptAuth: true}).then(function(oldUser) {
-            }, function(error) {
-                console.log("Error logging out")
-            });
-        }
-
-    }]);
-
-    app.controller('DashCtrl', ['$mdMedia', '$mdDialog', '$rootScope', '$http', function($mdMedia, $mdDialog, $rootScope, $http) {
-        $rootScope.title = 'Dashboard';
-
-        var dash = this;
-        this.deployments = [];
-
-
-        this.showNodeDialog = function(ev, node) {
-            console.log(node);
-            $rootScope.node = node;
-            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
-            $mdDialog.show({
-                controller: 'DialogController',
-                controllerAs: 'ctrl',
-                templateUrl: 'nodedialog.tmpl.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {
-                    node: $rootScope.node
-                },
-                clickOutsideToClose: true,
-                fullscreen: useFullScreen
-            })
-        };
-
-        this.toggleExpand = function(deployment) {
-            deployment.expand = !deployment.expand;
-            if(deployment.expand) {
-                $http.get('/example_deployment.json').
-                    success(function(data){
-                        deployment.data = data.deployment;
-                        console.log("Update")
-                    }).
-                    error(function(){
-                        console.log('No data!')
-                    })
-            }
-        }
-
-        this.opts = { // sparkline options
-            sliceColors: [
-                "#8BC34A", 
-                "#F44336",
-                "#03A9F4",
-                "#616161"
-            ],
-            tooltipFormat: '{{value}}',
-            disableTooltips: true,
-            disableHighlight: true,
-            borderWidth: 2,
-            borderColor: '#fff',
-            width: '2em',
-            height: '2em',
-        };
-
-        $http.get('/example_dashboard.json').
-            success(function(data){
-                dash.deployments = data.deployments;
-                for(var i in dash.deployments) {
-                    dash.deployments[i].data = {}
-                }
-            }).
-            error(function(){
-
-            })
-
-
-    }]);
-
     app.run(function($rootScope, $location, $http, Auth){
         console.log('Authenticated: '+Auth.isAuthenticated())
 
@@ -224,7 +123,7 @@ var host = 'https://192.168.131.235:3000';
                 method: "GET",
                 url: host+'/api/v2/nodes',
                 headers: {
-                    'Set-Cookie': '_session_id='+Auth._currentUser.token+';'
+                    'Cookie': '_session_id='+Auth._currentUser.token+';'
                 }
             }).
             success(function(data){

@@ -31,12 +31,18 @@
 		<!-- Devise Authentication -->
 		<script src="bower_components/AngularDevise/lib/devise.js"></script>
 		
-		<!-- Scripts -->
+		<!-- Extra Modules -->
 		<script src="js/angular-sparklines.js"></script>
+
+		<!-- Source -->
 		<script src="js/app.js"></script>
+		<script src="js/login.js"></script>
+		<script src="js/dashboard.js"></script>
 
 		<!-- Side Nav -->
 		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-show='isAuth()'>
+
+			<!-- Tall toolbar on top of the sidebar -->
 			<md-toolbar class='md-tall md-hue-2'>
 				<span flex></span>
 				<div layout="column" class="md-toolbar-tools-bottom inset">
