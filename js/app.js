@@ -4,29 +4,27 @@
     app.config(function($routeProvider, AuthProvider, AuthInterceptProvider, $mdThemingProvider) {        
         
 
-        AuthProvider.loginPath('https://rack1:3000/users/sign_in');
-        AuthProvider.loginMethod('POST');
+        AuthProvider.loginPath('https://rack1:3000/api/session');
 
         AuthProvider.logoutPath('https://rack1:3000/users/sign_out');
-        AuthProvider.logoutMethod('DELETE');
 
-        AuthProvider.resourceName('Rebar')
+        AuthProvider.resourceName('')
         AuthInterceptProvider.interceptAuth(true);
         
         $mdThemingProvider.definePalette('customBlue', 
-            $mdThemingProvider.extendPalette('light-blue', {
+            $mdThemingProvider.extendPalette('blue', {
                 'contrastDefaultColor': 'light',
-                'contrastDarkColors': ['50'],
+                'contrastDarkColors': ['500'],
                 '50': 'ffffff'
             })
         );
 
         $mdThemingProvider.theme('default')
             .primaryPalette('customBlue', {
-                'default': '500',
+                'default': '800',
                 'hue-1': '50'
             })
-            .accentPalette('pink');
+            .accentPalette('red');
         
         $mdThemingProvider.theme('input', 'default')
             .primaryPalette('grey')
@@ -104,11 +102,9 @@
 
     app.controller('LoginCtrl', ['$rootScope', '$location', 'Auth', '$http', function($rootScope, $location, Auth, $http) {
         $rootScope.title = 'Login';
-        $rootScope.isAuth = Auth.isAuthenticated
 
         console.log('login: ' + Auth._currentUser)
         this.credentials = {
-            remember_me: false,
             username: '',
             password: ''
         }
@@ -116,7 +112,6 @@
         var login = this;
 
         this.signIn = function() {
-            login.credentials.remember_me = login.credentials.remember_me ? 1 : 0; 
             Auth.login(login.credentials, {interceptAuth: true}).
                 then(function(response) {
                     console.log(response);
@@ -211,8 +206,10 @@
 
     }]);
 
-    app.run(function($rootScope, $location, Auth){
+    app.run(function($rootScope, $location, $http, Auth){
         console.log('Authenticated: '+Auth.isAuthenticated())
+
+        $rootScope.isAuth = Auth.isAuthenticated
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             if (!Auth.isAuthenticated()) {
@@ -223,6 +220,17 @@
         $rootScope.$on('devise:login', function(event, oldCurrentUser) {
             $location.path('/dash');
         });
+
+        $rootScope.tryFetch = function() {
+                $http.get('https://rack1:3000/api/v2/nodes').
+            success(function(data){
+                console.log("Got data")
+                console.log(data);
+            }).
+            error(function(){
+                console.log('No data!')
+            })
+        }
 
         $rootScope.$on('devise:logout', function(event, oldCurrentUser) {
             $location.path('/login');
