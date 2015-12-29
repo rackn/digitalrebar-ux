@@ -1,4 +1,5 @@
 bower_components
+example.conf
 server.crt
 server.csr
 server.key
