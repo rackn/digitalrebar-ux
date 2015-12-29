@@ -3,12 +3,12 @@ dash controller
 */
 (function(){
     angular.module('app').controller('DashCtrl', ['$mdMedia', '$mdDialog', '$rootScope', '$http', function($mdMedia, $mdDialog, $rootScope, $http) {
-        $rootScope.title = 'Dashboard';
+        $rootScope.title = 'Dashboard'; // shows up on the top toolbar
 
         var dash = this;
         this.deployments = [];
 
-
+        // when a node is clicked, this dialog appears (see nodedialog.tmpl.html)
         this.showNodeDialog = function(ev, node) {
             console.log(node);
             $rootScope.node = node;
@@ -27,6 +27,7 @@ dash controller
             })
         };
 
+        // called when a deployment is clicked to 
         this.toggleExpand = function(deployment) {
             deployment.expand = !deployment.expand;
             if(deployment.expand) {

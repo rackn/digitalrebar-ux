@@ -117,45 +117,31 @@ var host = 'https://192.168.131.235:3000';
             $rootScope.user = currentUser.user;
         });
 
+        // function for calling api functions ( eg. /api/v2/nodes )
+        // to use:
+        // $rootScope.callApi('/path/to/api', {data: {asdf}, method: 'GET'}).success(function(data){}).error(function(data){})
+        $rootScope.callApi = function(path, args) {
+            args = args || {};
+            args.method = args.method || 'GET';
+            args.url = host+path;
+            return $http(args)
+        }
+
         $rootScope.tryFetch = function() {
-            console.log("token: "+Auth._currentUser.token)
-            $http({
-                method: "GET",
-                url: host+'/api/v2/nodes',
-                headers: {
-                    'Cookie': '_session_id='+Auth._currentUser.token+';'
-                }
-            }).
-            success(function(data){
-                console.log("Got data")
-                console.log(data);
-            }).
-            error(function(){
-                console.log('No data!')
-            })
-    }
+            $rootScope.callApi('/api/v2/nodes').
+                success(function(data){
+                    console.log("Got data")
+                    console.log(data);
+                }).
+                error(function(){
+                    console.log('No data!')
+                })
+        }
 
         $rootScope.$on('devise:logout', function(event, oldCurrentUser) {
             $location.path('/login');
         });
 
     });
-
-    app.controller('DialogController', ['$scope', '$rootScope', '$mdDialog', 'locals', function ($scope, $rootScope, $mdDialog, locals) {
-        $scope.locals = locals;
-        $scope.icons = $rootScope.icons;
-
-        $scope.hide = function() {
-            $mdDialog.hide();
-        };
-
-        $scope.cancel = function() {
-            $mdDialog.cancel();
-        };
-
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
-        };
-    }]);
 
 })();

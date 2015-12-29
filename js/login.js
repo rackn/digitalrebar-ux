@@ -22,6 +22,7 @@ login controller
             Auth.login(login.credentials, {interceptAuth: true}).
                 then(function(response) {
                     // success!
+                    console.log(response)
                 }, function(error) {
                     alert('Error');
                 })
