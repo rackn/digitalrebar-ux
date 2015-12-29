@@ -22,4 +22,4 @@
 
 2. `python simple-https.py`
 
-3. Open `localhost:4443` in any browser
+3. Open `localhost:443` in any browser
