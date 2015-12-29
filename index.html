@@ -65,6 +65,14 @@
 						<span class="md-body-2">{{item.title}}</span>
 					</div>
 				</md-list-item>
+
+				<md-list-item class="md-2-line" md-ink-ripple ng-click="logout()">
+					<md-icon>logout</md-icon>
+
+					<div class="md-list-item-text">
+						<span class="md-body-2">Log Out</span>
+					</div>
+				</md-list-item>
 			</md-list>
 		</md-sidenav>
 		
@@ -78,7 +86,7 @@
 
 					<h3>{{title}}</h3>
 					<span flex></span>
-					<md-button class="md-icon-button" />
+					<md-button class="md-icon-button" ng-show='isAuth()'/>
 						<!-- TODO: take to annealer page -->
 						<md-icon>track_changes</md-icon>
 					</md-button>

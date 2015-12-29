@@ -3,7 +3,7 @@
 
     app.config(function($routeProvider, AuthProvider, $mdThemingProvider) {        
         
-        AuthProvider.loginPath('https://rack1:3000/my/users/sign_in');
+        AuthProvider.loginPath('https://weissman:3000/my/users/sign_in');
         AuthProvider.loginMethod('POST');
         AuthProvider.resourceName('Rebar')
         
@@ -96,9 +96,10 @@
 
     }]);
 
-    app.controller('LoginCtrl', ['$rootScope', 'Auth', '$http', function($rootScope, Auth, $http) {
+    app.controller('LoginCtrl', ['$rootScope', '$location', 'Auth', '$http', function($rootScope, $location, Auth, $http) {
         $rootScope.title = 'Login';
         $rootScope.isAuth = Auth.isAuthenticated
+
         console.log('login: ' + Auth._currentUser)
         this.credentials = {
             username: 'user',
@@ -110,7 +111,7 @@
         this.signIn = function() {
             Auth.login(login.credentials, {interceptAuth: true}).
                 then(function() {
-                    alert('Yes')
+                    $location.path("/dash")
                 }).
                 then(function(response) {
                     console.log(response);
@@ -118,6 +119,23 @@
                     alert('Error');
                 })
             
+        }
+
+        $rootScope.logout = function() {
+            var config = {
+                headers: {
+                    'X-HTTP-Method-Override': 'DELETE'
+                }
+            };
+
+            if(!Auth.isAuthenticated())
+                return;
+
+            Auth.logout(config).then(function(oldUser) {
+                $location.path('/login');
+            }, function(error) {
+                console.log("Error logging out")
+            });
         }
 
     }]);
@@ -196,8 +214,10 @@
         console.log('Authenticated: '+Auth.isAuthenticated())
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            console.log("current:  "+next)
+
             if (!Auth.isAuthenticated()) {
-                console.log("Redirecting")
+                console.log("Redirecting "+current)
                 $location.path('/login');
             }
         });
