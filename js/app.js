@@ -1,19 +1,11 @@
 (function(){
-    var app = angular.module('app', ['ngRoute', 'dgAuth', 'ngMaterial', 'ngAnimate', 'sparkline']);
+    var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngAnimate', 'sparkline', 'Devise']);
 
-    app.config(function($routeProvider, dgAuthServiceProvider, $mdThemingProvider) {        
-        dgAuthServiceProvider.setConfig({
-            login: {
-                method: 'GET',
-                url: 'https://rack1:3000/api/v2/digest'
-            },
-            logout: {
-                method: 'POST',
-                url: 'https://rack1:3000/api/v2/digest'
-            }
-        });
-
-        dgAuthServiceProvider.setHeader('');
+    app.config(function($routeProvider, AuthProvider, $mdThemingProvider) {        
+        
+        AuthProvider.loginPath('https://rack1:3000/my/users/sign_in');
+        AuthProvider.loginMethod('POST');
+        AuthProvider.resourceName('Rebar')
         
         $mdThemingProvider.definePalette('customBlue', 
             $mdThemingProvider.extendPalette('light-blue', {
@@ -104,20 +96,28 @@
 
     }]);
 
-    app.controller('LoginCtrl', ['$rootScope', 'dgAuthService', '$http', function($rootScope, dgAuthService, $http) {
+    app.controller('LoginCtrl', ['$rootScope', 'Auth', '$http', function($rootScope, Auth, $http) {
         $rootScope.title = 'Login';
-
-        console.log('login: ' + dgAuthService)
+        $rootScope.isAuth = Auth.isAuthenticated
+        console.log('login: ' + Auth._currentUser)
         this.credentials = {
             username: 'user',
             password: 'pass'
         }
 
+        var login = this;
 
         this.signIn = function() {
-            dgAuthService.start();
-            dgAuthService.setCredentials(this.credentials.username, this.credentials.password);
-            dgAuthService.signin();
+            Auth.login(login.credentials, {interceptAuth: true}).
+                then(function() {
+                    alert('Yes')
+                }).
+                then(function(response) {
+                    console.log(response);
+                }, function(error) {
+                    alert('Error');
+                })
+            
         }
 
     }]);
@@ -192,15 +192,15 @@
 
     }]);
 
-    app.run(function($rootScope, $location, dgAuthService){
-        console.log('Authenticated: '+dgAuthService)
+    app.run(function($rootScope, $location, Auth){
+        console.log('Authenticated: '+Auth.isAuthenticated())
 
-        /*$rootScope.$on('$locationChangeStart', function (event, next, current) {
-            if (!dgAuthService.isAuthorized()) {
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            if (!Auth.isAuthenticated()) {
                 console.log("Redirecting")
                 $location.path('/login');
             }
-        });*/
+        });
 
     });
 

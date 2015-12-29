@@ -28,17 +28,15 @@
 		<script src="bower_components/angular-messages/angular-messages.js"></script>
 		<script src="bower_components/angular-aria/angular-aria.js"></script>
 
-		<!-- Digest Authentication -->
-		<script src="bower_components/angular-md5/angular-md5.js"></script>
-		<script src="bower_components/angular-state-machine/dist/angular-state-machine.js"></script>
-		<script src="bower_components/angular-digest-auth/dist/angular-digest-auth.js"></script>
+		<!-- Devise Authentication -->
+		<script src="bower_components/AngularDevise/lib/devise.js"></script>
 		
 		<!-- Scripts -->
 		<script src="js/angular-sparklines.js"></script>
 		<script src="js/app.js"></script>
 
 		<!-- Side Nav -->
-		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-show='isAuth()'>
 			<md-toolbar class='md-tall md-hue-2'>
 				<span flex></span>
 				<div layout="column" class="md-toolbar-tools-bottom inset">
@@ -74,9 +72,10 @@
 			<!-- Header -->
 			<md-toolbar layout="row" class='md-whiteframe-z1'>
 				<div class='md-toolbar-tools'>
-					<md-button class="md-icon-button" ng-click="toggleSideNav('left')" hide-gt-md aria-label="Menu" />
+					<md-button class="md-icon-button" ng-click="toggleSideNav('left')" hide-gt-md aria-label="Menu" ng-show='isAuth()'/>
 						<md-icon>menu</md-icon>
 					</md-button>
+
 					<h3>{{title}}</h3>
 					<span flex></span>
 					<md-button class="md-icon-button" />
