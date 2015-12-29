@@ -10,15 +10,15 @@
 			<form name='loginForm' ng-submit='login.signIn()' layout="column" layout-align="center" layout-padding>
 				<md-input-container>
 					<label>Username</label>
-					<input type="text" ng-model='credentials.username'/>
+					<input type="text" ng-model='login.credentials.username'/>
 				</md-input-container>
 				<md-input-container>
 					<label>Password</label>
-					<input type="password" ng-model='credentials.password'/>
+					<input type="password" ng-model='login.credentials.password'/>
 				</md-input-container>
 				<section layout='row' layout-fill role="main" >
 					<div flex-xs flex="50" class='inset'>
-						<md-checkbox>
+						<md-checkbox ng-model='login.credentials.remember_me'>
 							Remember Me
 						</md-checkbox>
 					</div>
