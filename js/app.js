@@ -1,11 +1,17 @@
 (function(){
     var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngAnimate', 'sparkline', 'Devise']);
 
-    app.config(function($routeProvider, AuthProvider, $mdThemingProvider) {        
+    app.config(function($routeProvider, AuthProvider, AuthInterceptProvider, $mdThemingProvider) {        
         
-        AuthProvider.loginPath('https://weissman:3000/my/users/sign_in');
+
+        AuthProvider.loginPath('https://rack1:3000/users/sign_in');
         AuthProvider.loginMethod('POST');
+
+        AuthProvider.logoutPath('https://rack1:3000/users/sign_out');
+        AuthProvider.logoutMethod('DELETE');
+
         AuthProvider.resourceName('Rebar')
+        AuthInterceptProvider.interceptAuth(true);
         
         $mdThemingProvider.definePalette('customBlue', 
             $mdThemingProvider.extendPalette('light-blue', {
@@ -102,17 +108,16 @@
 
         console.log('login: ' + Auth._currentUser)
         this.credentials = {
-            username: 'user',
-            password: 'pass'
+            remember_me: false,
+            username: '',
+            password: ''
         }
 
         var login = this;
 
         this.signIn = function() {
+            login.credentials.remember_me = login.credentials.remember_me ? 1 : 0; 
             Auth.login(login.credentials, {interceptAuth: true}).
-                then(function() {
-                    $location.path("/dash")
-                }).
                 then(function(response) {
                     console.log(response);
                 }, function(error) {
@@ -122,17 +127,14 @@
         }
 
         $rootScope.logout = function() {
-            var config = {
-                headers: {
-                    'X-HTTP-Method-Override': 'DELETE'
-                }
-            };
+            //location.reload();
+
+            //return;
 
             if(!Auth.isAuthenticated())
                 return;
 
-            Auth.logout(config).then(function(oldUser) {
-                $location.path('/login');
+            Auth.logout({interceptAuth: true}).then(function(oldUser) {
             }, function(error) {
                 console.log("Error logging out")
             });
@@ -199,7 +201,6 @@
             success(function(data){
                 dash.deployments = data.deployments;
                 for(var i in dash.deployments) {
-                    console.log(i)
                     dash.deployments[i].data = {}
                 }
             }).
@@ -214,12 +215,17 @@
         console.log('Authenticated: '+Auth.isAuthenticated())
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            console.log("current:  "+next)
-
             if (!Auth.isAuthenticated()) {
-                console.log("Redirecting "+current)
                 $location.path('/login');
             }
+        });
+
+        $rootScope.$on('devise:login', function(event, oldCurrentUser) {
+            $location.path('/dash');
+        });
+
+        $rootScope.$on('devise:logout', function(event, oldCurrentUser) {
+            $location.path('/login');
         });
 
     });
