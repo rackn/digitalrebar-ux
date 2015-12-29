@@ -1,12 +1,12 @@
+var host = 'https://192.168.131.235:3000';
+
 (function(){
     var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngAnimate', 'sparkline', 'Devise']);
 
     app.config(function($routeProvider, AuthProvider, AuthInterceptProvider, $mdThemingProvider) {        
         
-
-        AuthProvider.loginPath('https://rack1:3000/api/session');
-
-        AuthProvider.logoutPath('https://rack1:3000/users/sign_out');
+        AuthProvider.loginPath(host+'/api/session');
+        AuthProvider.logoutPath(host+'/users/sign_out');
 
         AuthProvider.resourceName('')
         AuthInterceptProvider.interceptAuth(true);
@@ -114,7 +114,7 @@
         this.signIn = function() {
             Auth.login(login.credentials, {interceptAuth: true}).
                 then(function(response) {
-                    console.log(response);
+                    // success!
                 }, function(error) {
                     alert('Error');
                 })
@@ -122,10 +122,6 @@
         }
 
         $rootScope.logout = function() {
-            //location.reload();
-
-            //return;
-
             if(!Auth.isAuthenticated())
                 return;
 
@@ -217,12 +213,20 @@
             }
         });
 
-        $rootScope.$on('devise:login', function(event, oldCurrentUser) {
+        $rootScope.$on('devise:login', function(event, currentUser) {
             $location.path('/dash');
+            $rootScope.user = currentUser.user;
         });
 
         $rootScope.tryFetch = function() {
-                $http.get('https://rack1:3000/api/v2/nodes').
+            console.log("token: "+Auth._currentUser.token)
+            $http({
+                method: "GET",
+                url: host+'/api/v2/nodes',
+                headers: {
+                    'Set-Cookie': '_session_id='+Auth._currentUser.token+';'
+                }
+            }).
             success(function(data){
                 console.log("Got data")
                 console.log(data);
@@ -230,7 +234,7 @@
             error(function(){
                 console.log('No data!')
             })
-        }
+    }
 
         $rootScope.$on('devise:logout', function(event, oldCurrentUser) {
             $location.path('/login');
