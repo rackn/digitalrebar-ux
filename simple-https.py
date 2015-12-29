@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import BaseHTTPServer, SimpleHTTPServer
-import ssl
-
-httpd = BaseHTTPServer.HTTPServer(('localhost', 8000), SimpleHTTPServer.SimpleHTTPRequestHandler)
-httpd.socket = ssl.wrap_socket (httpd.socket, certfile='./server.pem', server_side=True)
-httpd.serve_forever()
-=======
 # generate server.pem with the following command:
 #    openssl req -new -x509 -keyout server.pem -out server.pem -days 365 -nodes
 # run as follows:
@@ -19,4 +11,3 @@ import ssl
 httpd = BaseHTTPServer.HTTPServer(('localhost', 4443), SimpleHTTPServer.SimpleHTTPRequestHandler)
 httpd.socket = ssl.wrap_socket (httpd.socket, certfile='./server.pem', server_side=True)
 httpd.serve_forever()
->>>>>>> c725e38a34844e8726f7e23193405af0e528819a
