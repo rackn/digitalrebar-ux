@@ -79,15 +79,15 @@
 		
 		<div layout="column" layout-fill>
 			<!-- Header -->
-			<md-toolbar layout="row" class='md-whiteframe-z1'>
+			<md-toolbar layout="row" class='md-whiteframe-z1' ng-show='isAuth()'>
 				<div class='md-toolbar-tools'>
-					<md-button class="md-icon-button" ng-click="toggleSideNav('left')" hide-gt-md aria-label="Menu" ng-show='isAuth()'/>
+					<md-button class="md-icon-button" ng-click="toggleSideNav('left')" hide-gt-md aria-label="Menu"/>
 						<md-icon>menu</md-icon>
 					</md-button>
 
 					<h3>{{title}}</h3>
 					<span flex></span>
-					<md-button class="md-icon-button" ng-show='isAuth()'/>
+					<md-button class="md-icon-button" ng-click='tryFetch()'/>
 						<!-- TODO: take to annealer page -->
 						<md-icon>track_changes</md-icon>
 					</md-button>
@@ -95,9 +95,7 @@
 			</md-toolbar>
 
 			<!-- Content -->
-			<content>
-				<ng-view>
-				</ng-view>
+			<content ng-view>
 			</content>
 		</div>
 
