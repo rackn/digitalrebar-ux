@@ -3,7 +3,7 @@ login controller
 */
 (function(){
     angular.module('app')
-    .controller('LoginCtrl', ['$rootScope', '$location', 'Auth', '$http', function($rootScope, $location, Auth, $http) {
+    .controller('LoginCtrl', ['$rootScope', '$location', 'Auth', '$http', '$cookieStore', function($rootScope, $location, Auth, $http, $cookieStore) {
         $rootScope.title = 'Login'; // shows up on the top toolbar
 
         console.log('login: ' + Auth._currentUser)
@@ -19,14 +19,29 @@ login controller
 
         // function for the login button
         this.signIn = function() {
-            Auth.login(login.credentials, {interceptAuth: true}).
+            /*Auth.login(login.credentials, {interceptAuth: true}).
                 then(function(response) {
                     // success!
                     console.log(response)
+                    //$cookieStore.put()
                 }, function(error) {
                     alert('Error');
                 })
-            
+            */
+            $rootScope.callApi('/api/session', {
+                method: "GET",
+                params: login.credentials,
+                withCredentials: true,
+                useXDomain: true,
+
+            }).success(function(data, status, headers, config) {
+                console.log("Yes")
+                console.log(data)
+                console.log("Cookie: "+headers("Set-Cookie"))
+                console.log(headers())
+            }).error(function(a) {
+                console.log("Error")
+            })
         }
 
         // function for ng-click='logout()'

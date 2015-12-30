@@ -1,8 +1,8 @@
-var host = 'https://192.168.131.235:3000';
+var host = 'https://rack1:3000';
 //3hr
 
 (function(){
-    var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngAnimate', 'sparkline', 'Devise']);
+    var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngAnimate', 'sparkline', 'Devise', 'ngCookies']);
 
     app.config(function($routeProvider, AuthProvider, AuthInterceptProvider, $mdThemingProvider) {        
         
@@ -11,21 +11,13 @@ var host = 'https://192.168.131.235:3000';
 
         AuthProvider.resourceName('')
         AuthInterceptProvider.interceptAuth(true);
-        
-        $mdThemingProvider.definePalette('customBlue', 
-            $mdThemingProvider.extendPalette('blue', {
-                'contrastDefaultColor': 'light',
-                'contrastDarkColors': ['500'],
-                '50': 'ffffff'
-            })
-        );
 
         $mdThemingProvider.theme('default')
-            .primaryPalette('customBlue', {
+            .primaryPalette('blue', {
                 'default': '800',
                 'hue-1': '50'
             })
-            .accentPalette('red');
+            .accentPalette('red')
         
         $mdThemingProvider.theme('input', 'default')
             .primaryPalette('grey')
@@ -114,7 +106,7 @@ var host = 'https://192.168.131.235:3000';
 
         $rootScope.$on('devise:login', function(event, currentUser) {
             $location.path('/dash');
-            $rootScope.user = currentUser.user;
+            $rootScope.user = currentUser;
         });
 
         // function for calling api functions ( eg. /api/v2/nodes )
@@ -123,6 +115,7 @@ var host = 'https://192.168.131.235:3000';
         $rootScope.callApi = function(path, args) {
             args = args || {};
             args.method = args.method || 'GET';
+            args.headers = args.headers || {}
             args.url = host+path;
             return $http(args)
         }
