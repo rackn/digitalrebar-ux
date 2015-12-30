@@ -1,8 +1,10 @@
 <!--
 login view
 -->
+<div hide-xs style='height: 100px'></div>
+
 <md-content layout='wrap' layout-align="center center">
-	<md-card flex-gt-sm='40' flex='100'>
+	<md-card flex-gt-xs='40' flex='100'>
 
 		<md-toolbar>
 			<div class="md-toolbar-tools">
@@ -10,7 +12,7 @@ login view
 		    </div>
 	    </md-toolbar>
 
-		<form name='loginForm' ng-submit='login.signIn()' layout="column" layout-align="center" layout-padding>
+		<form name='loginForm' ng-submit='login.signIn()' layout="column" layout-padding>
 			<!-- Username and password fields -->
 			<md-input-container>
 				<label>Username</label>
@@ -23,9 +25,11 @@ login view
 			</md-input-container>
 
 			<!-- Right justified login button  -->
-			<section layout='row' layout-fill role="main" >
+			<section layout='row' role="main" >
 				<span flex></span>
-				<md-button class="md-raised md-primary" type="submit">Login</md-button>
+				<md-button class="md-raised md-primary" type="submit">
+					Login
+				</md-button>
 			</section>
 
 		</form>
