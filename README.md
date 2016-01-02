@@ -4,9 +4,11 @@
 
 2. `npm install -g bower`
 
-3. `cd /path/to/dir/`
+3. `sudo apt-get install nodejs nodejs-legacy`
 
-4. `bower install`
+4. `cd /path/to/dir/`
+
+5. `bower install`
 
 ### Create a certificate
 
