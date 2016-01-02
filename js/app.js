@@ -2,15 +2,44 @@ var host = 'https://rack1:3000';
 //3hr
 
 (function(){
-    var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngAnimate', 'sparkline', 'Devise', 'ngCookies']);
+    var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngAnimate', 'sparkline', 'dgAuth', 'ngCookies']);
 
-    app.config(function($routeProvider, AuthProvider, AuthInterceptProvider, $mdThemingProvider) {        
+    app.config(function($routeProvider, dgAuthServiceProvider, $mdThemingProvider) {        
         
-        AuthProvider.loginPath(host+'/api/session');
-        AuthProvider.logoutPath(host+'/users/sign_out');
+        dgAuthServiceProvider.setConfig({
+            login: {
+                method: 'GET',
+                url: host+'/api/v2/digest'
+            }
+        });
 
-        AuthProvider.resourceName('')
-        AuthInterceptProvider.interceptAuth(true);
+        dgAuthServiceProvider.setHeader('WWW-Authenticate');
+
+        dgAuthServiceProvider.callbacks.login.push(['serviceInject', function(serviceInject)
+        {
+            return {
+                successful: function(response)
+                {
+                    console.log("Success using digest")
+                    console.log(response)
+                },
+                error: function(response)
+                {
+                    console.log("Error using digest")
+                    console.log(response)
+                },
+                required: function(response)
+                {
+                    console.log("Required")
+                    console.log(response)
+                },
+                limit: function(response)
+                {
+                    console.log("Reached digest limit")
+                    console.log(response)
+                }
+            };
+        }]);
 
         $mdThemingProvider.theme('default')
             .primaryPalette('blue', {
@@ -93,21 +122,22 @@ var host = 'https://rack1:3000';
 
     }]);
 
-    app.run(function($rootScope, $location, $http, Auth){
-        console.log('Authenticated: '+Auth.isAuthenticated())
+    app.run(function($rootScope, $location, $http, dgAuthService){
+        //console.log('Authenticated: '+Auth.isAuthenticated())
+        dgAuthService.start();
 
-        $rootScope.isAuth = Auth.isAuthenticated
+        $rootScope.isAuth = function(){return false;};//Auth.isAuthenticated
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            if (!Auth.isAuthenticated()) {
+            if (!$rootScope.isAuth()) {
                 $location.path('/login');
             }
         });
 
-        $rootScope.$on('devise:login', function(event, currentUser) {
-            $location.path('/dash');
-            $rootScope.user = currentUser;
-        });
+        //$rootScope.$on('devise:login', function(event, currentUser) {
+        //    $location.path('/dash');
+        //    $rootScope.user = currentUser;
+        //});
 
         // function for calling api functions ( eg. /api/v2/nodes )
         // to use:
@@ -131,9 +161,9 @@ var host = 'https://rack1:3000';
                 })
         }
 
-        $rootScope.$on('devise:logout', function(event, oldCurrentUser) {
-            $location.path('/login');
-        });
+        //$rootScope.$on('devise:logout', function(event, oldCurrentUser) {
+        //    $location.path('/login');
+        //});
 
     });
 

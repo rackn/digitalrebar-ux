@@ -3,15 +3,14 @@ login controller
 */
 (function(){
     angular.module('app')
-    .controller('LoginCtrl', ['$rootScope', '$location', 'Auth', '$http', '$cookieStore', function($rootScope, $location, Auth, $http, $cookieStore) {
+    .controller('LoginCtrl', function($rootScope, $location, dgAuthService, $http, $cookieStore) {
         $rootScope.title = 'Login'; // shows up on the top toolbar
-
-        console.log('login: ' + Auth._currentUser)
+        console.log('login: ' + dgAuthService)
 
         // model for the sign in form
         this.credentials = {
-            username: '',
-            password: ''
+            username: 'rebar',
+            password: 'rebar1'
         }
 
         // to be referenced in the signIn function
@@ -28,12 +27,12 @@ login controller
                     alert('Error');
                 })
             */
-            $rootScope.callApi('/api/session', {
-                method: "GET",
+            /*$rootScope.callApi('/api/session', {
+                method: "POST",
                 params: login.credentials,
                 withCredentials: true,
                 useXDomain: true,
-
+                
             }).success(function(data, status, headers, config) {
                 console.log("Yes")
                 console.log(data)
@@ -41,19 +40,26 @@ login controller
                 console.log(headers())
             }).error(function(a) {
                 console.log("Error")
-            })
+            })*/
+            console.log('attempting to sign in')
+            dgAuthService.start();
+            dgAuthService.setCredentials(login.credentials.username, login.credentials.password);
+
+            dgAuthService.signin()
         }
+
+        this.signIn();
 
         // function for ng-click='logout()'
         $rootScope.logout = function() {
-            if(!Auth.isAuthenticated())
+            //if(!Auth.isAuthenticated())
                 return;
 
-            Auth.logout({interceptAuth: true}).then(function(oldUser) {
-            }, function(error) {
-                console.log("Error logging out")
-            });
+           // Auth.logout({interceptAuth: true}).then(function(oldUser) {
+            //}, function(error) {
+            //    console.log("Error logging out")
+            //});
         }
 
-    }]);
+    });
 })();
