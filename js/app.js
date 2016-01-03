@@ -1,4 +1,4 @@
-var host = 'https://192.168.1.233:3000';
+
 var version = '0.0.1';
 //3hr
 
@@ -8,19 +8,6 @@ var version = '0.0.1';
     app.config(function($httpProvider, $routeProvider, $mdThemingProvider) {        
         
         $httpProvider.interceptors.push('digestAuthInterceptor');
-
-        var digestConfig = {
-            login: {
-                method: 'HEAD',
-                auth: true,
-                url: host+'/api/v2/digest?rackn=client'
-            },
-            logout: {
-                method: 'DELETE',
-                auth: true,
-                url: host+'/api/v2/digest'
-            }
-        }
 
         $mdThemingProvider.theme('default')
             .primaryPalette('blue', {
@@ -105,6 +92,10 @@ var version = '0.0.1';
 
     app.run(function($rootScope, $location, $http){
 
+        // use regex to get the current location
+        var currentLocation = /https:\/\/[^:]+/.exec(location.href)[0];
+        $rootScope.host = currentLocation+':3000';
+
         $rootScope.user;
         $rootScope.isAuth = function(){return !!$rootScope.user;};
 
@@ -122,7 +113,7 @@ var version = '0.0.1';
             args.method = args.method || 'GET';
             args.headers = args.headers || {}
             args.api = true;
-            args.url = host+path;
+            args.url = $rootScope.host+path;
             return $http(args)
         }
 

@@ -12,6 +12,8 @@ login controller
             password: ''
         }
 
+        this.host = $rootScope.host;
+
         // to be referenced in the signIn function
         var login = this;
 
@@ -20,6 +22,7 @@ login controller
             console.log('attempting to sign in')
             localStorageService.add('username', login.credentials.username);
             localStorageService.add('password', login.credentials.password);
+            $rootScope.host = login.host
 
             $rootScope.callApi('/api/v2/digest', {
                 method: 'HEAD',
