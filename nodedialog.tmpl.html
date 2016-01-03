@@ -12,6 +12,9 @@
 		<md-dialog-content>
 			<md-button class="md-fab md-raised" ng-repeat='role in locals.node.roles'>
 				<md-icon style='color: grey;'>{{icons[role.status]}}</md-icon>
+				<md-tooltip md-direction="bottom">
+					{{role.name}}
+				</md-tooltip>
 			</md-button>
 		</md-dialog-content>
 

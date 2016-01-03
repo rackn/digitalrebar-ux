@@ -1,6 +1,7 @@
-<md-content layout-padding>
-	<ui-view layout="column">
-
+<!--
+dashboard view
+-->
+<md-content layout='column'>
 		<md-card ng-repeat='deployment in dash.deployments' flex-gt-sm='40' flex='100'>
 
 			<!-- Top bar for each deployment -->
@@ -65,8 +66,11 @@
 
 								<!-- Deployment Roles for the role -->
 								<section layout='row'>
-									<md-button class="md-fab md-raised md-mini" ng-repeat='delpoyrole in role.roles'>
-										<md-icon style='color: grey;'>{{icons[delpoyrole.status]}}</md-icon>
+									<md-button class="md-fab md-raised md-mini" ng-repeat='deployrole in role.roles'>
+										<md-tooltip md-direction="bottom">
+											{{deployrole.name}}
+										</md-tooltip>
+										<md-icon style='color: grey;'>{{icons[deployrole.status]}}</md-icon>
 									</md-button>
 								</section>
 
@@ -76,6 +80,4 @@
 				</md-tabs>
 			</section>
 		</md-card>
-
-	</ui-view>
 </md-content>
