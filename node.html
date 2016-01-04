@@ -1,0 +1,34 @@
+<md-content>
+	
+	<md-toolbar class="md-table-toolbar md-default">
+		<div class="md-toolbar-tools">
+			<span>Nodes</span>
+		</div>
+	</md-toolbar>
+
+	<md-table-container>
+		<table md-table md-row-select ng-model="nodes.selected">
+			<thead md-head md-order="myOrder">
+				<tr md-row>
+					<th md-column md-order-by='name'>Name</th>
+					<th md-column>Address</th>
+					<th md-column>Status</th>
+					<th md-column>Description</th>
+					<th md-column md-order-by='provider_id'>Provider</th>
+					<th md-column md-order-by='deployment_id'>Deployment</th>
+				</tr>
+			</thead>
+			<tbody md-body>
+				<tr md-row md-select="node" md-select-id="{{node.name}}" md-auto-select ng-repeat="node in nodes.nodes | orderBy: myOrder | filter:{system: false}">
+				<td md-cell>{{node.name}}</td>
+				<td md-cell>{{node.address}}</td>
+				<td md-cell>{{node.alive ? "On" : ""}} {{node.available ? "Available" : ""}}</td>
+				<td md-cell>{{node.description}}</td>
+				<td md-cell>{{node.variant}} ({{node.provider_id}})</td>
+				<td md-cell>{{nodes.deployments[node.deployment_id].name}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</md-table-container>
+
+</md-content>

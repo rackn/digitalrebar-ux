@@ -1,9 +1,9 @@
-
 var version = '0.0.1';
-//3hr
 
 (function(){
-    var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline', 'LocalStorageModule', 'DigestAuthInterceptor', 'ngCookies']);
+    var app = angular.module('app', [
+        'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
+        'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table']);
 
     app.config(function($httpProvider, $routeProvider, $mdThemingProvider) {        
         
@@ -26,13 +26,19 @@ var version = '0.0.1';
             when('/dash', {
                 controller: 'DashCtrl',
                 controllerAs: 'dash',
-                templateUrl: 'dashboard.html',
+                templateUrl: 'dashboard.html'
             }).
             when('/login', {
                 controller: 'LoginCtrl',
                 controllerAs: 'login',
-                templateUrl: 'login.html',
+                templateUrl: 'login.html'
             }).
+            when('/node', {
+                controller: 'NodeCtrl',
+                controllerAs: 'nodes',
+                templateUrl: 'node.html'
+            }).
+
             otherwise({
                 redirectTo: '/login'
             })
@@ -59,7 +65,8 @@ var version = '0.0.1';
             },
             {
                 title: 'Node',
-                icon: 'dns'
+                icon: 'dns',
+                path: '/node'
             },
             {
                 title: 'Networks',
