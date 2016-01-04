@@ -22,6 +22,6 @@
 
 1. `cd /path/to/dir/`
 
-2. `python simple-https.py`
+2. `python simple-https.py [port]`
 
 3. Open `localhost:443` in any browser
