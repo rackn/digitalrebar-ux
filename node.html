@@ -19,13 +19,13 @@
 				</tr>
 			</thead>
 			<tbody md-body>
-				<tr md-row md-select="node" md-select-id="{{node.name}}" md-auto-select ng-repeat="node in nodes.nodes | orderBy: myOrder | filter:{system: false}">
+				<tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select ng-repeat="(id, node) in _nodes | orderBy: myOrder | not:'system'">
 				<td md-cell>{{node.name}}</td>
 				<td md-cell>{{node.address}}</td>
 				<td md-cell>{{node.alive ? "On" : ""}} {{node.available ? "Available" : ""}}</td>
 				<td md-cell>{{node.description}}</td>
-				<td md-cell>{{node.variant}} ({{node.provider_id}})</td>
-				<td md-cell>{{nodes.deployments[node.deployment_id].name}}</td>
+				<td md-cell>{{_providers[node.provider_id].name}}</td>
+				<td md-cell>{{_deployments[node.deployment_id].name}}</td>
 				</tr>
 			</tbody>
 		</table>
