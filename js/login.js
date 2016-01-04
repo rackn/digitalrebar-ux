@@ -3,12 +3,12 @@ login controller
 */
 (function(){
     angular.module('app')
-    .controller('LoginCtrl', function($rootScope, $location, localStorageService, $http, $cookieStore) {
+    .controller('LoginCtrl', function($rootScope, $location, localStorageService, $http, $cookies) {
         $rootScope.title = 'Login'; // shows up on the top toolbar
 
         // model for the sign in form
         this.credentials = {
-            username: '',
+            username: $cookies.get('username') || '',
             password: ''
         }
 
@@ -23,6 +23,8 @@ login controller
             localStorageService.add('username', login.credentials.username);
             localStorageService.add('password', login.credentials.password);
             $rootScope.host = login.host
+            $cookies.put('host', login.host)
+            $cookies.put('username', login.credentials.username)
 
             $rootScope.callApi('/api/v2/digest', {
                 method: 'HEAD',
