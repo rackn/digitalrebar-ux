@@ -24,4 +24,4 @@
 
 2. `python simple-https.py [port]`
 
-3. Open `localhost:443` in any browser
+3. Open `https://localhost` in any browser (reminder: add [port] if given)
