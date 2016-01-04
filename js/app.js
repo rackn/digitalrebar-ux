@@ -19,6 +19,43 @@ var version = '0.0.1';
         $mdThemingProvider.theme('input', 'default')
             .primaryPalette('grey')
 
+
+        // themes for different status colors
+        $mdThemingProvider.theme('status_ready').
+            primaryPalette('green', {
+                'default': '800'
+            })
+
+        $mdThemingProvider.theme('status_error').
+            primaryPalette('red', {
+                'default': '700'
+            })
+
+        $mdThemingProvider.theme('status_process').
+            primaryPalette('yellow', {
+                'default': '500'
+            })
+
+        $mdThemingProvider.theme('status_todo').
+            primaryPalette('blue', {
+                'default': '500'
+            })
+
+        $mdThemingProvider.theme('status_off').
+            primaryPalette('grey', {
+                'default': '900'
+            })
+        
+        $mdThemingProvider.theme('status_queue').
+            primaryPalette('yellow', {
+                'default': '200'
+            })
+
+        $mdThemingProvider.theme('status_reserved').
+            primaryPalette('purple', {
+                'default': '500'
+            })
+
         $routeProvider.
             when('/', {
                 redirectTo: '/dash'
@@ -183,12 +220,20 @@ var version = '0.0.1';
                     $rootScope._nodes = {};
                     for(var i in data) {
                         var node = data[i]
-                        $rootScope._nodes[node.id] = node
+
+
+                        var id = node.id*1
+                        // get the node's address from the api
+                        $rootScope.callApi('/api/v2/nodes/'+node.id+'/attribs/node-control-address').
+                            success(function(data){
+                                $rootScope._nodes[data.node_id].address = data.value
+                            })
+                        $rootScope._nodes[id] = node
 
                         var state = 'ready'
                         if(!node.alive)
                             state = 'off'
-                        node.state = state
+                        node.status = state
 
                         var deployment = $rootScope._deployments[node.deployment_id]
                         if(node.deployment_id == deployment.id) {

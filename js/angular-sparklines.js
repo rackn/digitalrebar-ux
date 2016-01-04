@@ -5,7 +5,7 @@
 angular.module('sparkline', []);
  
 angular.module('sparkline')
-    .directive('spark', [function () {
+    .directive('spark', ['$timeout', function ($timeout) {
         'use strict';
         return {
             restrict: 'A',
@@ -17,7 +17,7 @@ angular.module('sparkline')
                 opts.type = attrs.type || 'line';
 
                 scope.$watch(attrs.ngModel, function () {
-                    render();
+                    $timeout(render, 100);
                 });
                 
                 scope.$watch(attrs.opts, function(){
@@ -35,12 +35,17 @@ angular.module('sparkline')
                         data = model;
                     } else if(angular.isObject(model)) {
                         data = []
+                        var sum = 0
                         for(var key in model) {
+                            sum += model[key];
                             data.push(model[key]);
                         }
+                        if(sum == 0)
+                            return
                     } else {
                         data = model.split(',');
                     }
+                    console.log("re-rendering ",model)
                     $(elem).sparkline(data, opts);
                 };
             }

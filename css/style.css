@@ -6,3 +6,10 @@ md-sidenav ng-md-icon {
 	position: relative;
 	top: 5px;
 }
+
+/* style for toolbar when a table has selected items*/
+md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
+  color: #1e88e5;
+  font-size: 16px;
+  background-color: #e3f2fd;
+}

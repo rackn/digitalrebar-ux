@@ -1,8 +1,18 @@
 <md-content>
 	
-	<md-toolbar class="md-table-toolbar md-default">
+	<md-toolbar class="md-table-toolbar md-default" ng-hide='nodes.selected.length'>
 		<div class="md-toolbar-tools">
 			<span>Nodes</span>
+		</div>
+	</md-toolbar>
+
+	<md-toolbar class="md-table-toolbar alternate" ng-show='nodes.selected.length'>
+		<div class="md-toolbar-tools">
+			<span>{{nodes.selected.length}} node{{nodes.selected.length != 1 && 's' || ''}} selected</span>
+			<span flex></span>
+			<md-button class='md-icon-button' ng-click='nodes.deleteSelected()'>
+				<md-icon>delete</md-icon>
+			</md-button>
 		</div>
 	</md-toolbar>
 
@@ -19,7 +29,7 @@
 				</tr>
 			</thead>
 			<tbody md-body>
-				<tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select ng-repeat="(id, node) in _nodes | orderBy: myOrder | not:'system'">
+				<tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select ng-repeat="node in nodes.getNodes() | orderBy: myOrder | not:'system'">
 				<td md-cell>{{node.name}}</td>
 				<td md-cell>{{node.address}}</td>
 				<td md-cell>{{node.alive ? "On" : ""}} {{node.available ? "Available" : ""}}</td>
