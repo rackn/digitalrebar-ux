@@ -3,7 +3,7 @@ var version = '0.0.1';
 //3hr
 
 (function(){
-    var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngAnimate', 'sparkline', 'LocalStorageModule', 'DigestAuthInterceptor', 'ngCookies']);
+    var app = angular.module('app', ['ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline', 'LocalStorageModule', 'DigestAuthInterceptor', 'ngCookies']);
 
     app.config(function($httpProvider, $routeProvider, $mdThemingProvider) {        
         
@@ -90,15 +90,15 @@ var version = '0.0.1';
 
     }]);
 
-    app.run(function($rootScope, $location, $http){
+    app.run(function($rootScope, $location, $http, $cookies){
 
         // use regex to get the current location
         var currentLocation = /https:\/\/[^:]+/.exec(location.href)[0];
-        $rootScope.host = currentLocation+':3000';
+        $rootScope.host = $cookies.get('host') || currentLocation+':3000';
 
         $rootScope.user;
         $rootScope.isAuth = function(){return !!$rootScope.user;};
-
+        
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             if (!$rootScope.isAuth()) {
                 $location.path('/login');
