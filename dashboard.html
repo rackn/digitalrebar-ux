@@ -13,7 +13,7 @@ dashboard view
 			<span flex></span>
 
 			<!-- Sparkline for the nodes -->
-			<span spark class='inset' type='pie' ng-model="deployment.nodes" opts='{{dash.opts}}'>
+			<span spark class='inset' type='pie' ng-model="dash.deployRes[deployment.id]" opts='{{dash.opts}}'>
 			</span>
 			
 			<!-- Expand button -->
@@ -38,7 +38,7 @@ dashboard view
 				<!-- Nodes tab -->
 				<md-tab label="Nodes">
 						<!-- Add all the nodes as list items -->
-						<span ng-repeat="node in deployment.data.nodes | filter:{system: false}">
+						<span ng-repeat="node in deployment.nodes | filter:{system: false}">
 							<!-- Node button -->
 							<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-click="dash.showNodeDialog($event, node)">
 								<md-tooltip md-direction="bottom">
@@ -55,7 +55,7 @@ dashboard view
 				<md-tab label="Roles">
 					<md-list>
 						<!-- Add all the roles as list items -->
-						<md-list-item ng-repeat="role in deployment.data.roles" layout='row'>
+						<md-list-item ng-repeat="role in deployment.roles" layout='row'>
 							<!-- Node button -->
 							<md-button class="md-fab md-primary md-mini">
 								<md-tooltip md-direction="bottom">

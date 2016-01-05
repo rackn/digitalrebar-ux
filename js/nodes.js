@@ -2,7 +2,7 @@
 node controller
 */
 (function(){
-    angular.module('app').controller('NodeCtrl', function($scope, $rootScope, $timeout) {
+    angular.module('app').controller('NodeCtrl', function($scope, $rootScope, debounce) {
         $rootScope.title = 'Nodes'; // shows up on the top toolbar
 
         var nodes = this;
@@ -10,7 +10,7 @@ node controller
         this.order = 'name'
 
         // get the data that is displayed
-        $rootScope.getDeployments()
+        $rootScope.getDeployments().success($rootScope.getNodes)
         $rootScope.getProviders()
 
         // converts the _nodes object that rootScope has into an array
@@ -23,7 +23,6 @@ node controller
         }
 
         this.deleteSelected = function() {
-        	var promise;
         	for(var i in nodes.selected) {
         		var node = nodes.selected[i]
 
@@ -31,7 +30,7 @@ node controller
         			console.log("Can't delete admin node !"+node.id)
         			continue;
         		}
-        		
+
         		console.log("Deleting node "+node.id)
 
         		// the api call uses REST DELETE on /nodes/id to remove a node 
@@ -39,16 +38,7 @@ node controller
         			success(function(){
         				console.log("Node deleted")
         				
-        				// if we're already waiting to get the deployments,
-        				// cancel that call and wait some more
-        				// getDeployments ends up being called once when
-        				// the last node is successfully deleted
-        				if(promise)
-        					$timeout.cancel(promise)
-        				
-        				promise = $timeout(function(){
-        					$rootScope.getDeployments()
-        				}, 500)
+        				debounce($rootScope.getDeployments, 500, false);
         			})
         	}
 

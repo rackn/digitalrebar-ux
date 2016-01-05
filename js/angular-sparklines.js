@@ -2,10 +2,8 @@
 // and jQuerySparklines from http://omnipotent.net/jquery.sparkline
 
 // AngularJS directives for jquery sparkline
-angular.module('sparkline', []);
- 
-angular.module('sparkline')
-    .directive('spark', ['$timeout', function ($timeout) {
+angular.module('sparkline', ['debounce'])
+    .directive('spark', ['$timeout', 'debounce', function ($timeout, debounce) {
         'use strict';
         return {
             restrict: 'A',
@@ -17,20 +15,25 @@ angular.module('sparkline')
                 opts.type = attrs.type || 'line';
 
                 scope.$watch(attrs.ngModel, function () {
-                    $timeout(render, 100);
+                    render();
                 });
                 
-                scope.$watch(attrs.opts, function(){
-                  render();
+                scope.$watch(attrs.opts,function () {
+                    render();
                 });
 
                 var render = function () {
                     var model;
+
                     if(attrs.opts) angular.extend(opts, angular.fromJson(attrs.opts));
                     // Trim trailing comma if we are a string
                     angular.isString(ngModel.$viewValue) ? model = ngModel.$viewValue.replace(/(^,)|(,$)/g, "") : model = ngModel.$viewValue;
                     var data;
                     // Make sure we have an array of numbers
+                    if(!model) {
+                        return
+                    }
+                    
                     if(angular.isArray(model)){
                         data = model;
                     } else if(angular.isObject(model)) {
@@ -40,12 +43,12 @@ angular.module('sparkline')
                             sum += model[key];
                             data.push(model[key]);
                         }
-                        if(sum == 0)
+                        if(sum == 0) {
                             return
+                        }
                     } else {
                         data = model.split(',');
                     }
-                    console.log("re-rendering ",model)
                     $(elem).sparkline(data, opts);
                 };
             }
