@@ -9,7 +9,6 @@ dash controller
 
         // when a node is clicked, this dialog appears (see nodedialog.tmpl.html)
         this.showNodeDialog = function(ev, node) {
-            console.log(node);
             $scope.node = node;
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
             $mdDialog.show({

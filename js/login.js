@@ -3,7 +3,7 @@ login controller
 */
 (function(){
     angular.module('app')
-    .controller('LoginCtrl', function($scope, $location, localStorageService, $http, $cookies, debounce) {
+    .controller('LoginCtrl', function($scope, $location, localStorageService, $http, $cookies, debounce, $mdMedia, $mdDialog) {
         $scope.$emit('title', 'Login'); // shows up on the top toolbar
 
         // model for the sign in form
@@ -36,6 +36,24 @@ login controller
             })
         }
         
+        this.showEulaDialog = function(ev, node) {
+            $scope.node = node;
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'ctrl',
+                templateUrl: 'euladialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    host: $scope.host,
+                    eula: $scope.eula
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
+        };
+
         // make the loading icon appear immediately
         $scope.$watch('login.host', function(){
             login.state = 0 // loading state
