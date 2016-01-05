@@ -1,44 +1,47 @@
 <md-content>
 	
-	<md-toolbar class="md-table-toolbar md-default" ng-hide='nodes.selected.length'>
-		<div class="md-toolbar-tools">
-			<span>Nodes</span>
-		</div>
-	</md-toolbar>
 
-	<md-toolbar class="md-table-toolbar alternate" ng-show='nodes.selected.length'>
-		<div class="md-toolbar-tools">
-			<span>{{nodes.selected.length}} node{{nodes.selected.length != 1 && 's' || ''}} selected</span>
-			<span flex></span>
-			<md-button class='md-icon-button' ng-click='nodes.deleteSelected()'>
-				<md-icon>delete</md-icon>
-			</md-button>
-		</div>
-	</md-toolbar>
+	<md-card>
+		<md-toolbar class="md-table-toolbar md-default" ng-hide='nodes.selected.length'>
+			<div class="md-toolbar-tools">
+				<span>Nodes ({{nodes.getNodes().length}})</span>
+			</div>
+		</md-toolbar>
 
-	<md-table-container>
-		<table md-table md-row-select ng-model="nodes.selected">
-			<thead md-head md-order="myOrder">
-				<tr md-row>
-					<th md-column md-order-by='name'>Name</th>
-					<th md-column>Address</th>
-					<th md-column>Status</th>
-					<th md-column>Description</th>
-					<th md-column md-order-by='provider_id'>Provider</th>
-					<th md-column md-order-by='deployment_id'>Deployment</th>
-				</tr>
-			</thead>
-			<tbody md-body>
-				<tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select ng-repeat="node in nodes.getNodes() | orderBy: myOrder | not:'system'">
-				<td md-cell>{{node.name}}</td>
-				<td md-cell>{{node.address}}</td>
-				<td md-cell>{{node.alive ? "On" : ""}} {{node.available ? "Available" : ""}}</td>
-				<td md-cell>{{node.description}}</td>
-				<td md-cell>{{_providers[node.provider_id].name}}</td>
-				<td md-cell>{{_deployments[node.deployment_id].name}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</md-table-container>
+		<md-toolbar class="md-table-toolbar alternate" ng-show='nodes.selected.length'>
+			<div class="md-toolbar-tools">
+				<span>{{nodes.selected.length}} node{{nodes.selected.length != 1 && 's' || ''}} selected</span>
+				<span flex></span>
+				<md-button class='md-icon-button' ng-click='nodes.deleteSelected()'>
+					<md-icon>delete</md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+
+		<md-table-container>
+			<table md-table md-row-select ng-model="nodes.selected">
+				<thead md-head md-order="myOrder">
+					<tr md-row>
+						<th md-column md-order-by='name'>Name</th>
+						<th md-column>Address</th>
+						<th md-column>Status</th>
+						<th md-column>Description</th>
+						<th md-column md-order-by='provider_id'>Provider</th>
+						<th md-column md-order-by='deployment_id'>Deployment</th>
+					</tr>
+				</thead>
+				<tbody md-body>
+					<tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select ng-repeat="node in nodes.getNodes() | orderBy: myOrder | not:'system'">
+					<td md-cell>{{node.name}}</td>
+					<td md-cell>{{node.address}}</td>
+					<td md-cell>{{node.alive ? "On" : ""}} {{node.available ? "Available" : ""}}</td>
+					<td md-cell>{{node.description}}</td>
+					<td md-cell>{{_providers[node.provider_id].name}}</td>
+					<td md-cell>{{_deployments[node.deployment_id].name}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</md-table-container>
+	</md-card>
 
 </md-content>
