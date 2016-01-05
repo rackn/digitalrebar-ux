@@ -3,7 +3,7 @@ login controller
 */
 (function(){
     angular.module('app')
-    .controller('LoginCtrl', function($scope, $location, localStorageService, $http, $cookies) {
+    .controller('LoginCtrl', function($scope, $location, localStorageService, $http, $cookies, debounce) {
         $scope.$emit('title', 'Login'); // shows up on the top toolbar
 
         // model for the sign in form
@@ -17,13 +17,40 @@ login controller
         // to be referenced in the signIn function
         var login = this;
 
+
+        // attempt to get the eula from the host
+        this.testHost = function(host) {
+            if(!host) {
+                login.state = -1 // error state
+                return;
+            }
+            $scope.$emit('host', host)
+            $scope.callApi('/api/license').success(function(data){
+                login.state = 1 // valid state
+                $scope.eula = data.eula
+                $cookies.put('host', login.host)
+                $scope.$emit('host', host)
+            }).error(function(resp){
+                login.state = -1 // error state
+                $scope.error = resp
+            })
+        }
+        
+        // make the loading icon appear immediately
+        $scope.$watch('login.host', function(){
+            login.state = 0 // loading state
+            $scope.eula = undefined
+        })
+
+        // wait half a second to test if the host is valid
+        $scope.$watch('login.host', debounce(login.testHost, 1000))
+
+
         // function for the login button
         this.signIn = function() {
             console.log('attempting to sign in')
             localStorageService.add('username', login.credentials.username);
             localStorageService.add('password', login.credentials.password);
-            $scope.host = login.host
-            $cookies.put('host', login.host)
             $cookies.put('username', login.credentials.username)
 
             $scope.callApi('/api/v2/digest', {
@@ -43,6 +70,7 @@ login controller
 
         this.getUser = function() { // once we get a 200 success from signIn, we can get the user
             $scope.callApi('/api/v2/digest', {method: 'GET'}).then(function(resp){
+                console.log("Resp", resp)
                 $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
                 $scope.$emit('startUpdating') // start auto-updating the api data
                 $location.path('/dash')

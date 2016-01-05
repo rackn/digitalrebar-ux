@@ -173,6 +173,10 @@ var version = '0.0.1';
             $rootScope.user = data;
         })
 
+        $rootScope.$on('host', function(event, data){ 
+            $rootScope.host = data;
+        })
+
         $rootScope.$on('title', function(event, data){ 
             $rootScope.title = data
         })
