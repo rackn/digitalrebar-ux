@@ -230,7 +230,6 @@ var version = '0.0.1';
                         var deployment = $rootScope._deployments[node.deployment_id]
                         if(node.deployment_id == deployment.id) {
                             deployment.nodes.push(node)
-                            deployment.nodes[state] ++;
                         }
                     }
                 }).
