@@ -2,15 +2,15 @@
 dash controller
 */
 (function(){
-    angular.module('app').controller('DashCtrl', function($mdMedia, $mdDialog, $rootScope, $http, debounce, $timeout) {
-        $rootScope.title = 'Dashboard'; // shows up on the top toolbar
+    angular.module('app').controller('DashCtrl', function($mdMedia, $mdDialog, $scope, $http, debounce, $timeout) {
+        $scope.$emit('title', 'Dashboard'); // shows up on the top toolbar
 
         var dash = this;
 
         // when a node is clicked, this dialog appears (see nodedialog.tmpl.html)
         this.showNodeDialog = function(ev, node) {
             console.log(node);
-            $rootScope.node = node;
+            $scope.node = node;
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
             $mdDialog.show({
                 controller: 'DialogController',
@@ -19,7 +19,7 @@ dash controller
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 locals: {
-                    node: $rootScope.node
+                    node: $scope.node
                 },
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
@@ -32,12 +32,12 @@ dash controller
         }
 
 
-        this.deployRes = {}
+        this.deploymentPie = {}
+        this.deploymentStatus = {}
 
         // makes a map of node status => number of nodes with that status
         this.getNodeCounts = function(deployment, override) {
             var result = {};
-            console.log("Getting node counts")
 
             for(var id in deployment.nodes) {
                 var node = deployment.nodes[id];
@@ -66,16 +66,28 @@ dash controller
             height: '2em',
         };
 
-        $rootScope.getDeployments().success(function(data){
-            console.log("finished deployments")
-            $rootScope.getNodes().success(function(){
-                $rootScope.$evalAsync(function(){
-                    for(var i in data) {
-                        var id = data[i].id
-                        console.log("node counts "+id)
-                        dash.deployRes[id] = dash.getNodeCounts($rootScope._deployments[id]);
+        $scope.$on('nodesDone', function(){
+            $scope.$evalAsync(function(){
+                for(var id in $scope._deployments) {
+                    dash.deploymentPie[id] = dash.getNodeCounts($scope._deployments[id]);
+                }
+            })
+        })
+
+        $scope.$on('node_rolesDone', function() {
+            $scope.$evalAsync(function(){
+                for(var id in $scope._deployments) {
+                    var deployment = $scope._deployments[id];
+
+                    dash.deploymentStatus[id] = {error: 0, total: 0}
+                    for(var roleId in deployment.node_roles) {
+                        var state = deployment.node_roles[roleId].state;
+                        if(state == -1)
+                            dash.deploymentStatus[id].error ++
+
+                        dash.deploymentStatus[id].total ++; 
                     }
-                })
+                }
             })
         })
         

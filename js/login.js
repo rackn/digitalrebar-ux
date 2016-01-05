@@ -3,8 +3,8 @@ login controller
 */
 (function(){
     angular.module('app')
-    .controller('LoginCtrl', function($rootScope, $location, localStorageService, $http, $cookies) {
-        $rootScope.title = 'Login'; // shows up on the top toolbar
+    .controller('LoginCtrl', function($scope, $location, localStorageService, $http, $cookies) {
+        $scope.$emit('title', 'Login'); // shows up on the top toolbar
 
         // model for the sign in form
         this.credentials = {
@@ -12,7 +12,7 @@ login controller
             password: ''
         }
 
-        this.host = $rootScope.host;
+        this.host = $scope.host;
 
         // to be referenced in the signIn function
         var login = this;
@@ -22,11 +22,11 @@ login controller
             console.log('attempting to sign in')
             localStorageService.add('username', login.credentials.username);
             localStorageService.add('password', login.credentials.password);
-            $rootScope.host = login.host
+            $scope.host = login.host
             $cookies.put('host', login.host)
             $cookies.put('username', login.credentials.username)
 
-            $rootScope.callApi('/api/v2/digest', {
+            $scope.callApi('/api/v2/digest', {
                 method: 'HEAD',
                 headers: {
                     'Content-Type': 'application/json'
@@ -42,8 +42,9 @@ login controller
         }
 
         this.getUser = function() { // once we get a 200 success from signIn, we can get the user
-            $rootScope.callApi('/api/v2/digest', {method: 'GET'}).then(function(resp){
-                $rootScope.user = resp.data; //store the user in rootScope so the isAuth function can use it!
+            $scope.callApi('/api/v2/digest', {method: 'GET'}).then(function(resp){
+                $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
+                $scope.$emit('startUpdating') // start auto-updating the api data
                 $location.path('/dash')
             }, function(err){})
         }
