@@ -3,16 +3,17 @@
   "description": "Digital Rebar Angular Interface",
   "main": "index.html",
   "authors": [
-    "meshiest <meek.mesh@gmail.com>"
+    "meshiest <meek.mesh@gmail.com>",
+    "zehicle <rob@rackn.com>"
   ],
-  "license": "MIT",
+  "license": "RackN Limited Use",
   "keywords": [
     "DigitalRebar",
     "Rebar",
     "Rackn"
   ],
   "moduleType": [],
-  "homepage": "http://rackn.com, http://meshiest.com",
+  "homepage": "http://rackn.com, http://meshiest.com, http://rebar.digital",
   "private": true,
   "ignore": [
     "**/.*",

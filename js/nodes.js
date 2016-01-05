@@ -2,7 +2,7 @@
 node controller
 */
 (function(){
-    angular.module('app').controller('NodeCtrl', function($scope, $rootScope) {
+    angular.module('app').controller('NodeCtrl', function($scope, $rootScope, $timeout) {
         $rootScope.title = 'Nodes'; // shows up on the top toolbar
 
         var nodes = this;

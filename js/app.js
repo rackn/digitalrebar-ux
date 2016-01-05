@@ -75,6 +75,11 @@ var version = '0.0.1';
                 controllerAs: 'nodes',
                 templateUrl: 'node.html'
             }).
+            when('/network', {
+                controller: 'NetworkCtrl',
+                controllerAs: 'networks',
+                templateUrl: 'network.html'
+            }).
 
             otherwise({
                 redirectTo: '/login'
@@ -121,7 +126,8 @@ var version = '0.0.1';
             },
             {
                 title: 'Networks',
-                icon: 'swap_horiz'
+                icon: 'swap_horiz',
+                path: '/network'
             },
         ];
 
@@ -188,6 +194,7 @@ var version = '0.0.1';
 
         $rootScope._deployments = {}
         $rootScope._nodes = {}
+        $rootScope._networks = {}
         $rootScope._providers = {}
 
         // api call for getting all the deployments
@@ -205,9 +212,11 @@ var version = '0.0.1';
                             'working': 0,
                             'off': 0
                         }
-                        $rootScope._deployments[id].data = {nodes: [], roles: []}
+                        $rootScope._deployments[id].data = {nodes: [], roles: [], networks: []}
                     }
                     $rootScope.getNodes();
+                    $rootScope.getNetworks();
+
                 }).error(function(resp){
 
                 })
@@ -276,6 +285,26 @@ var version = '0.0.1';
                         var provider = data[i]
                         var id = provider.id
                         $rootScope._providers[id] = provider
+                    }
+                }).error(function(resp){
+
+                })
+        }
+
+        // api call for getting all the providers
+        $rootScope.getNetworks = function() {
+            $rootScope.callApi('/api/v2/networks').
+                success(function(data){
+                    $rootScope._networks = {}
+                    for(var i in data) {
+                        var network = data[i]
+                        var id = network.id
+                        $rootScope._networks[id] = network
+
+                        var deployment = $rootScope._deployments[id]
+                        if(network.deployment_id == deployment.id) {
+                            deployment.data.networks.push(network)
+                        }
                     }
                 }).error(function(resp){
 
