@@ -29,9 +29,32 @@ login view
 				</md-input-container>
 
 				<!-- Right justified login button  -->
-				<section layout='row' role="main" >			
+				<section layout='row' role="main" >
+					<span layout='row'>
+
+						<!-- icons for showing state -->
+						<span ng-show='login.state == -1' layout='row'>
+							<span class='md-subhead inset'>
+								Invalid Host
+							</span>	
+							<md-icon>close</md-icon>
+						</span>
+						<span ng-show='login.state == 1' layout='row'>
+							<span class='md-subhead inset'>
+								Valid Host
+							</span>	
+							<md-icon>check</md-icon>
+						</span>
+						<span ng-show='login.state == 0' layout='row'>
+							<span class='md-subhead inset'>
+								Verifying Host
+							</span>	
+							<md-progress-circular md-mode="indeterminate" style='position: absolute;'></md-progress-circular>
+						</span>
+						
+					</span>
 					<span flex></span>
-					<md-button class="md-raised md-primary" type="submit">
+					<md-button class="md-raised md-primary" type="submit" ng-disabled="!eula">
 						Login
 					</md-button>
 				</section>

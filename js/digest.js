@@ -138,9 +138,9 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 			);
 		})
 		.error(function(httpReject) {
-
 			HA1 = null;
-			deferredResponse.reject(httpReject);
+			if(typeof httpReject !== 'undefined')
+				deferredResponse.reject(httpReject);
 		});		
 		return deferredResponse.promise;
 	}
