@@ -30,29 +30,6 @@ login view
 
 				<!-- Right justified login button  -->
 				<section layout='row' role="main" >
-					<span layout='row'>
-
-						<!-- icons for showing state -->
-						<span ng-show='login.state == -1' layout='row'>
-							<span class='md-subhead inset'>
-								Invalid Host
-							</span>	
-							<md-icon>close</md-icon>
-						</span>
-						<span ng-show='login.state == 1' layout='row'>
-							<span class='md-subhead inset'>
-								Valid Host
-							</span>	
-							<md-icon>check</md-icon>
-						</span>
-						<span ng-show='login.state == 0' layout='row'>
-							<span class='md-subhead inset'>
-								Verifying Host
-							</span>	
-							<md-progress-circular md-mode="indeterminate" style='position: absolute;'></md-progress-circular>
-						</span>
-						
-					</span>
 					<span flex></span>
 					<md-button class="md-raised md-primary" type="submit" ng-disabled="!eula">
 						Login
@@ -60,8 +37,34 @@ login view
 				</section>
 
 			</md-content>
-
-			<md-content layout-padding>
+			<md-divider></md-divider>
+			<md-content layout-padding layout='column'>
+				<span layout='row'>
+					<!-- icons for showing state -->
+					<span ng-show='login.state == -1' layout='row'>
+						<md-icon>close</md-icon>
+						<span class='md-subhead inset'>
+							Invalid Host
+						</span>	
+					</span>
+					<span ng-show='login.state == 1' layout='row'>
+						<md-icon>check</md-icon>
+						<span class='md-subhead inset'>
+							Valid Host
+						</span>	
+					</span>
+					<span ng-show='login.state == 0' layout='row'>
+						<md-icon>hourglass_empty</md-icon>
+						<span class='md-subhead inset'>
+							Verifying Host
+						</span>	
+					</span>
+					<span flex></span>
+					<md-button class="md-raised md-primary" ng-click='login.showEulaDialog()' ng-show="eula">
+						Eula
+					</md-button>
+					
+				</span>
 				<md-input-container class="md-block" flex>
 					<label>API Endpoint</label>
 					<input type="text" ng-model='login.host' flex/>
