@@ -2,22 +2,19 @@
 node controller
 */
 (function(){
-    angular.module('app').controller('NodeCtrl', function($scope, $rootScope, debounce) {
-        $rootScope.title = 'Nodes'; // shows up on the top toolbar
+    angular.module('app').controller('NodeCtrl', function($scope, debounce) {
+        
+        $scope.$emit('title', 'Nodes'); // shows up on the top toolbar
 
         var nodes = this;
         this.selected = []
         this.order = 'name'
 
-        // get the data that is displayed
-        $rootScope.getDeployments().success($rootScope.getNodes)
-        $rootScope.getProviders()
-
         // converts the _nodes object that rootScope has into an array
         this.getNodes = function() {
         	var nodes = []
-        	for(var id in $rootScope._nodes) {
-        		nodes.push($rootScope._nodes[id])
+        	for(var id in $scope._nodes) {
+        		nodes.push($scope._nodes[id])
         	}
         	return nodes
         }
@@ -34,11 +31,11 @@ node controller
         		console.log("Deleting node "+node.id)
 
         		// the api call uses REST DELETE on /nodes/id to remove a node 
-        		$rootScope.callApi('/api/v2/nodes/'+node.id, {method: 'DELETE'}).
+        		$scope.callApi('/api/v2/nodes/'+node.id, {method: 'DELETE'}).
         			success(function(){
         				console.log("Node deleted")
         				
-        				debounce($rootScope.getDeployments, 500, false);
+        				debounce($scope.getDeployments, 500, false);
         			})
         	}
 

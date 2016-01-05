@@ -10,10 +10,10 @@
 			</div>
 		</md-toolbar>
 		<md-dialog-content>
-			<md-button class="md-fab md-raised" ng-repeat='role in locals.node.roles'>
-				<md-icon style='color: grey;'>{{icons[role.status]}}</md-icon>
+			<md-button class="md-fab md-primary" ng-repeat="role in locals.node.roles | orderBy: 'cohort'" md-theme="status_{{role.status}}">
+				<md-icon>{{icons[role.status]}}</md-icon>
 				<md-tooltip md-direction="bottom">
-					{{role.name}}
+					{{_roles[role.role_id].name}}
 				</md-tooltip>
 			</md-button>
 		</md-dialog-content>

@@ -154,7 +154,7 @@ var version = '0.0.1';
 
     }]);
 
-    app.run(function($rootScope, $location, $http, $cookies, debounce){
+    app.run(function($rootScope, $location, $http, $cookies, debounce, $interval){
 
         // use regex to get the current location
         var currentLocation = /https:\/\/[^:]+/.exec(location.href)[0];
@@ -169,6 +169,14 @@ var version = '0.0.1';
             }
         });
 
+        $rootScope.$on('login', function(event, data){ 
+            $rootScope.user = data;
+        })
+
+        $rootScope.$on('title', function(event, data){ 
+            $rootScope.title = data
+        })
+
         // function for calling api functions ( eg. /api/v2/nodes )
         // to use:
         // $rootScope.callApi('/path/to/api', {data: {asdf}, method: 'GET'}).success(function(data){}).error(function(data){})
@@ -181,20 +189,53 @@ var version = '0.0.1';
             return $http(args)
         }
 
-        $rootScope.tryFetch = function() {
-            $rootScope.callApi('/api/v2/providers').
-                success(function(data){
-                    console.log("Got data")
-                    console.log(JSON.stringify(data));
-                }).
-                error(function(){
-                    console.log('No data!')
+        $rootScope.$on('updateApi', function(event) {
+            // make the api calls and add callbacks
+            console.log("Making api calls")
+
+            $rootScope.getDeployments().
+                success(function(){
+                    $rootScope.$broadcast('deploymentsDone')
+
+                    $rootScope.getNodes().
+                        success(function(){
+                            $rootScope.$broadcast('nodesDone')
+
+                            $rootScope.getNodeRoles().
+                                success(function(){
+                                    $rootScope.$broadcast('node_rolesDone')
+                                })
+                        })
+
+                    $rootScope.getNetworks().
+                        success(function(){
+                            $rootScope.$broadcast('networksDone')
+                        })
                 })
+            ;
+            $rootScope.getProviders().
+                success(function(){
+                    $rootScope.$broadcast('providersDone')
+                })
+        })
+
+        $rootScope.$on('startUpdating', function(event){
+            $rootScope.$emit('updateApi')
+
+            $interval(function(){
+                console.log("telling update")
+                $rootScope.$emit('updateApi')
+            }, 3 * 60 * 1000 /* 3 minutes */ )
+        })
+
+        $rootScope.tryFetch = function() {
+            $rootScope.$emit('updateApi')
         }
 
         $rootScope._deployments = {}
         $rootScope._nodes = {}
         $rootScope._networks = {}
+        $rootScope._node_roles = {}
         $rootScope._providers = {}
 
         // api call for getting all the deployments
@@ -206,6 +247,7 @@ var version = '0.0.1';
                         var deployment = data[i]
                         var id = deployment.id
                         deployment.nodes = []
+                        deployment.node_roles = []
                         deployment.roles = []
                         deployment.networks = []
                         $rootScope._deployments[id] = deployment
@@ -225,6 +267,7 @@ var version = '0.0.1';
                         var id = node.id
 
                         node.address = node['node-control-address']
+                        node.roles = []
 
                         $rootScope._nodes[id] = node
 
@@ -282,7 +325,7 @@ var version = '0.0.1';
 
         // api call for getting all the providers
         $rootScope.getNetworks = function() {
-            $rootScope.callApi('/api/v2/networks').
+            return $rootScope.callApi('/api/v2/networks').
                 success(function(data){
                     $rootScope._networks = {}
                     for(var i in data) {
@@ -292,7 +335,7 @@ var version = '0.0.1';
 
                         var deployment = $rootScope._deployments[id]
                         if(network.deployment_id == deployment.id) {
-                            deployment.data.networks.push(network)
+                            deployment.networks.push(network)
                         }
                     }
                 }).error(function(resp){
@@ -300,11 +343,38 @@ var version = '0.0.1';
                 })
         }
 
-        // api call for getting all the node roles for a specified node
-        $rootScope.getNodeRoles = function(id) {
-            return $rootScope.callApi('/api/v2/nodes/'+id+'/node_roles').
-                success(function(data){
+        // api call for getting all the node roles
+        $rootScope.getNodeRoles = function() {
+            var states = {
+                '-1': 'error', //error
+                '0': 'ready', //active
+                '1': 'todo', //todo
+                '2': 'process', //transition
+                '3': 'queue', //blocked
+                '4': 'reserved' //proposed
+            }
 
+            return $rootScope.callApi('/api/v2/node_roles?runlog').
+                success(function(data){
+                    $rootScope._node_roles = {};
+                    for(var i in data) {
+                        var role = data[i]
+                        var id = role.id
+
+                        $rootScope._node_roles[id] = role
+
+                        role.status = states[role.state]
+
+                        var node = $rootScope._nodes[role.node_id]
+                        if(role.node_id == node.id) {
+                            node.roles.push(role)
+                        }
+
+                        var deployment = $rootScope._deployments[role.deployment_id]
+                        if(role.deployment_id == deployment.id) {
+                            deployment.node_roles.push(role)
+                        }
+                    }
                 }).
                 error(function(resp){
 

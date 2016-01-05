@@ -5,7 +5,7 @@ dashboard view
 	<md-card ng-repeat='(id, deployment) in _deployments' flex-gt-sm='40' flex='100'>
 
 		<!-- Top bar for each deployment -->
-		<md-toolbar flex layout='column' ng-class="{'md-warn': deployment.roles.error > 0}" ng-click="dash.toggleExpand(deployment)" md-ink-ripple>
+		<md-toolbar flex layout='column' ng-class="{'md-warn': dash.deploymentStatus[deployment.id].error > 0}" ng-click="dash.toggleExpand(deployment)" md-ink-ripple>
 			<section layout='row'>
 			<div class="md-toolbar-tools">
 				<h2 class="md-flex">{{deployment.name}}</h2>
@@ -13,7 +13,7 @@ dashboard view
 			<span flex></span>
 
 			<!-- Sparkline for the nodes -->
-			<span spark class='inset' type='pie' ng-model="dash.deployRes[deployment.id]" opts='{{dash.opts}}'>
+			<span spark class='inset' type='pie' ng-model="dash.deploymentPie[deployment.id]" opts='{{dash.opts}}'>
 			</span>
 			
 			<!-- Expand button -->
@@ -26,7 +26,7 @@ dashboard view
 			</section>
 
 			<!-- Progress bar for roles, progress is the % of ready nodes-->
-			<md-progress-linear md-mode="determinate" ng-class="{'md-warn': deployment.roles.error > 0}" value="{{deployment.roles.ready*100/(deployment.roles.ready+deployment.roles.error+deployment.roles.working+deployment.roles.off)}}"
+			<md-progress-linear md-mode="determinate" ng-class="{'md-warn': dash.deploymentStatus[deployment.id].error > 0}" value="{{100*(1-dash.deploymentStatus[deployment.id].error/dash.deploymentStatus[deployment.id].total)}}"
 			></md-progress-linear>
 
 		</md-toolbar>
