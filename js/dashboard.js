@@ -25,14 +25,13 @@ dash controller
             })
         };
 
-        // called when a deployment is clicked to 
+        $scope.expand = {}
+
+        // called when a deployment is clicked
         this.toggleExpand = function(deployment) {
-            deployment.expand = !deployment.expand;
+            $scope.expand[deployment.id] = !$scope.expand[deployment.id];
         }
 
-
-        this.deploymentPie = {}
-        this.deploymentStatus = {}
 
         // makes a map of node status => number of nodes with that status
         this.getNodeCounts = function(deployment, override) {
@@ -65,19 +64,25 @@ dash controller
             height: '2em',
         };
 
-        $scope.$on('nodesDone', function(){
+        this.deploymentPie = {}
+
+        // creates the pie chart data for all the deployments
+        this.createPieChartData = function() {
             $scope.$evalAsync(function(){
                 for(var id in $scope._deployments) {
                     dash.deploymentPie[id] = dash.getNodeCounts($scope._deployments[id]);
                 }
             })
-        })
+        }
 
-        $scope.$on('node_rolesDone', function() {
+        this.deploymentStatus = {}
+
+        // creates the node role status data for all the deployments
+        // takes a sum of the all the node roles and all the errors
+        this.createStatusBarData = function() {
             $scope.$evalAsync(function(){
                 for(var id in $scope._deployments) {
                     var deployment = $scope._deployments[id];
-
                     dash.deploymentStatus[id] = {error: 0, total: 0}
                     for(var roleId in deployment.node_roles) {
                         var state = deployment.node_roles[roleId].state;
@@ -88,7 +93,19 @@ dash controller
                     }
                 }
             })
-        })
+        }
+
+        // callbacks for when nodes and noderoles finish
+        // the pie charts require the nodes to exist
+        $scope.$on('nodesDone', dash.createPieChartData)
+        $scope.$on('node_rolesDone', dash.createStatusBarData)
+
+        // if we have nodes, we don't have to wait for the callback
+        if(Object.keys($scope._nodes).length)
+            this.createPieChartData();
+
+        if(Object.keys($scope._node_roles).length)
+            this.createStatusBarData();
         
 
     });
