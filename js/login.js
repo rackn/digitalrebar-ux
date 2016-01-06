@@ -3,7 +3,7 @@ login controller
 */
 (function(){
     angular.module('app')
-    .controller('LoginCtrl', function($scope, $location, localStorageService, $http, $cookies, debounce, $mdMedia, $mdDialog) {
+    .controller('LoginCtrl', function($scope, $location, localStorageService, $http, $cookies, debounce, $mdMedia, $mdDialog, $mdToast) {
         $scope.$emit('title', 'Login'); // shows up on the top toolbar
 
         // model for the sign in form
@@ -30,9 +30,8 @@ login controller
                 $scope.eula = data.eula
                 $cookies.put('host', login.host)
                 $scope.$emit('host', host)
-            }).error(function(resp){
+            }).error(function(){
                 login.state = -1 // error state
-                $scope.error = resp
             })
         }
         
@@ -83,6 +82,12 @@ login controller
                 login.getUser();
             }, function (response) {
                 console.log('error', response);
+                $mdToast.show(
+                  $mdToast.simple()
+                    .textContent(response.status + " - " + response.statusText)
+                    .position('top left')
+                    .hideDelay(3000)
+                );
             });
         }
 

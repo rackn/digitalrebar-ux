@@ -19,8 +19,8 @@ dashboard view
 			<!-- Expand button -->
 			<span class='inset'>
 				<md-button class="md-icon-button">
-					<md-icon ng-hide="deployment.expand">expand_more</md-icon>
-					<md-icon ng-show="deployment.expand">expand_less</md-icon>
+					<md-icon ng-hide="expand[deployment.id]">expand_more</md-icon>
+					<md-icon ng-show="expand[deployment.id]">expand_less</md-icon>
 				</md-button>
 			</span>
 			</section>
@@ -32,7 +32,7 @@ dashboard view
 		</md-toolbar>
 
 		<!-- Tabs that appear after the expand button is pressed -->
-		<section ng-show='deployment.expand'>
+		<section ng-show='expand[deployment.id]'>
 			<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" >
 
 				<!-- Nodes tab -->
