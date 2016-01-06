@@ -80,13 +80,24 @@ var version = '0.0.1';
                 controllerAs: 'networks',
                 templateUrl: 'network.html'
             }).
+            when('/providers', {
+                controller: 'ProviderCtrl',
+                controllerAs: 'providers',
+                templateUrl: 'provider.html'
+            }).
+            when('/providers/:id', {
+                controller: 'ProviderCtrl',
+                controllerAs: 'providers',
+                templateUrl: 'provider.html'
+            }).
+            
 
             otherwise({
                 redirectTo: '/login'
             })
     });
     
-    // filter for determining if an object has an attribute
+    // filter for determining if an object doesn't have an attribute
     // ng-repeat="obj in hash | not:'boolean_attr' "
     // ng-repeat will show anything with that attribute as a false value
     app.filter('not', function() {
@@ -94,6 +105,20 @@ var version = '0.0.1';
             var result = {};
             angular.forEach(items, function(value, key) {
                 if(!value[field])
+                    result[key] = value;
+            });
+            return result;
+        };
+    });
+
+    // filter for determining if an object has an attribute
+    // ng-repeat="obj in hash | has:'boolean_attr' "
+    // ng-repeat will show anything with that attribute as a true value
+    app.filter('has', function() {
+        return function(items, field) {
+            var result = {};
+            angular.forEach(items, function(value, key) {
+                if(value[field])
                     result[key] = value;
             });
             return result;
