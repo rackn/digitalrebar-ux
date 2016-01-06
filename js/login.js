@@ -88,7 +88,6 @@ login controller
 
         this.getUser = function() { // once we get a 200 success from signIn, we can get the user
             $scope.callApi('/api/v2/digest', {method: 'GET'}).then(function(resp){
-                console.log("Resp", resp)
                 $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
                 $scope.$emit('startUpdating') // start auto-updating the api data
                 $location.path('/dash')
