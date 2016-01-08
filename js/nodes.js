@@ -14,7 +14,8 @@ node controller
         this.getNodes = function() {
         	var nodes = []
         	for(var id in $scope._nodes) {
-        		nodes.push($scope._nodes[id])
+                if(!$scope._nodes[id].system)
+            		nodes.push($scope._nodes[id])
         	}
         	return nodes
         }
