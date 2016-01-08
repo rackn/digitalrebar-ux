@@ -194,7 +194,7 @@ var version = '0.0.1';
         $rootScope.isAuth = function(){return !!$rootScope.user;};
         
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            var path = next.split('/#/')[1].toLowerCase();
+            var path = next ? next.split('/#/')[1].toLowerCase() : undefined;
             if(path !== 'login' && !$rootScope.isAuth()) {
                 $location.path('/login');
             }
