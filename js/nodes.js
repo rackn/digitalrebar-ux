@@ -2,7 +2,7 @@
 node controller
 */
 (function(){
-    angular.module('app').controller('NodesCtrl', function($scope, debounce) {
+    angular.module('app').controller('NodesCtrl', function($scope, debounce, $routeParams) {
         
         $scope.$emit('title', 'Nodes'); // shows up on the top toolbar
 
@@ -41,6 +41,17 @@ node controller
 
         	// remove the selected items
         	nodes.selected = []
+        }
+
+        $scope.id = $routeParams.id
+        $scope.node = {}
+
+        if(Object.keys($scope._nodes).length) {
+            $scope.node = $scope._nodes[$scope.id];
+        } else {
+            $scope.$on('nodesDone', function(){
+                $scope.node = $scope._nodes[$scope.id];
+            })
         }
 
     });

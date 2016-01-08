@@ -40,7 +40,7 @@ dashboard view
 						<!-- Add all the nodes as list items -->
 						<span ng-repeat="node in deployment.nodes | filter:{system: false}">
 							<!-- Node button -->
-							<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-click="dash.showNodeDialog($event, node)">
+							<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="/#/nodes/{{node.id}}">
 								<md-tooltip md-direction="bottom">
 									{{node.name}}
 								</md-tooltip>
@@ -54,12 +54,13 @@ dashboard view
 				<!-- Roles tab -->
 				<md-tab label="Roles">
 					<md-list>
+						{{deployment}}
 						<!-- Add all the roles as list items -->
 						<md-list-item ng-repeat="role in deployment.roles" layout='row'>
 							<!-- Node button -->
-							<md-button class="md-fab md-primary md-mini">
+							<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}">
 								<md-tooltip md-direction="bottom">
-									{{role.name}}
+									{{_roles[role.role_id].name}}
 								</md-tooltip>
 								<md-icon>{{icons[role.status]}}</md-icon>
 							</md-button>
