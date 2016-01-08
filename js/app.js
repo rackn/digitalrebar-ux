@@ -182,7 +182,7 @@ var version = '0.0.1';
     app.run(function($rootScope, $location, $http, $cookies, debounce, $interval){
 
         // use regex to get the current location
-        var currentLocation = /https:\/\/[^:]+/.exec(location.href)[0];
+        var currentLocation = /https:\/\/[^:\/]+/.exec(location.href)[0];
         $rootScope.host = $cookies.get('host') || currentLocation+':3000';
 
         $rootScope.user;
