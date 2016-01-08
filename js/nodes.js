@@ -2,13 +2,12 @@
 node controller
 */
 (function(){
-    angular.module('app').controller('NodeCtrl', function($scope, debounce) {
+    angular.module('app').controller('NodesCtrl', function($scope, debounce) {
         
         $scope.$emit('title', 'Nodes'); // shows up on the top toolbar
 
         var nodes = this;
         this.selected = []
-        this.order = 'name'
 
         // converts the _nodes object that rootScope has into an array
         this.getNodes = function() {

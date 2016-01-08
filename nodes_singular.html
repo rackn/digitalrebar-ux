@@ -1,0 +1,20 @@
+<md-content>
+	
+
+	<md-card>
+		<md-toolbar class="md-table-toolbar md-default">
+			<div class="md-toolbar-tools">
+				<span>Nodes ({{node.name}})</span>
+			</div>
+		</md-toolbar>
+
+		<md-button class="md-fab md-primary" ng-repeat="role in node.roles | orderBy: 'cohort'" md-theme="status_{{role.status}}">
+			<md-icon>{{icons[role.status]}}</md-icon>
+			<md-tooltip md-direction="bottom">
+				{{_roles[role.role_id].name}}
+			</md-tooltip>
+		</md-button>
+
+	</md-card>
+
+</md-content>

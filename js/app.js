@@ -70,10 +70,15 @@ var version = '0.0.1';
                 controllerAs: 'login',
                 templateUrl: 'login.html'
             }).
-            when('/node', {
-                controller: 'NodeCtrl',
+            when('/nodes', {
+                controller: 'NodesCtrl',
                 controllerAs: 'nodes',
-                templateUrl: 'node.html'
+                templateUrl: 'nodes.html'
+            }).
+            when('/nodes/:id', {
+                controller: 'NodesCtrl',
+                controllerAs: 'nodes',
+                templateUrl: 'nodes_singular.html'
             }).
             when('/network', {
                 controller: 'NetworkCtrl',
@@ -145,9 +150,9 @@ var version = '0.0.1';
                 icon: 'view_column'
             },
             {
-                title: 'Node',
+                title: 'Nodes',
                 icon: 'dns',
-                path: '/node'
+                path: '/nodes'
             },
             {
                 title: 'Networks',
