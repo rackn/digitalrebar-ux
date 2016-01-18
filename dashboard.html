@@ -38,7 +38,7 @@ dashboard view
 				<!-- Nodes tab -->
 				<md-tab label="Nodes">
 						<!-- Add all the nodes as list items -->
-						<span ng-repeat="node in deployment.nodes | filter:{system: false}">
+						<span ng-repeat="node in deployment.nodes | filter:{system: false} | orderBy: 'name'">
 							<!-- Node button -->
 							<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="/#/nodes/{{node.id}}">
 								<md-tooltip md-direction="bottom">
