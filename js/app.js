@@ -379,16 +379,7 @@ var version = '0.0.1';
                             deployment.deployment_roles.push(role)
                         }
 
-                        var parentRole = $rootScope._roles[role.role_id]
-                        if(parentRole && role.role_id == parentRole.id) {
-                            parentRole.roles.push(role)
-                            if(!deployment.hasRole)
-                                deployment.hasRole = {}
-                            if(Object.keys(deployment.hasRole).indexOf(role.role_id) < 0) {
-                                deployment.hasRole[role.role_id] = true
-                                deployment.roles.push(parentRole)
-                            }
-                        }
+                        role.cohort = $rootScope._roles[role.role_id].cohort
                     }
                 }).
                 error(function(resp){
