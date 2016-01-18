@@ -95,6 +95,11 @@ var version = '0.0.1';
                 controllerAs: 'providers',
                 templateUrl: 'provider.html'
             }).
+            when('/annealer', {
+                controller: 'AnnealerCtrl',
+                controllerAs: 'annealer',
+                templateUrl: 'annealer.html'
+            }).
             
 
             otherwise({
