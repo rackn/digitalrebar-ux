@@ -1,0 +1,55 @@
+<md-content>
+	
+
+	<md-card>
+		<md-toolbar class="md-table-toolbar md-default">
+			<div class="md-toolbar-tools">
+				<span>Nodes ({{node.name}})</span>
+			</div>
+		</md-toolbar>
+
+		<table layout-padding>
+			<tr>
+				<td><b>Deployment</b></td>
+				<td>{{_deployments[node.deployment_id].name}}</td>
+			</tr>
+			<tr>
+				<td><b>Boot Environment</b></td>
+				<td>{{node.bootenv}}</td>
+			</tr>
+			<tr>
+				<td><b>Address</b></td>
+				<td>{{node.address}}</td>
+			</tr>
+			<tr>
+				<td><b>Status</b></td>
+				<td>
+					{{node.reserved ? 'Reserved' : ''}}
+					{{node.alive ? 'On' : 'Off'}}
+					{{states[node.state]}}
+				</td>
+			</tr>
+			<tr>
+				<td><b>Provider</b></td>
+				<td>
+					<a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a>
+				</td>
+			</tr>
+		</table>
+		<!-- Show node roles -->
+		<md-list>
+			<md-list-item ng-repeat="role in node.roles | orderBy: 'cohort'">
+				<md-divider></md-divider>
+
+				<md-button class="md-fab md-primary" md-theme="status_{{role.status}}">
+					<md-icon>{{icons[role.status]}}</md-icon>
+					<md-tooltip md-direction="bottom">
+						{{_roles[role.role_id].name}}
+					</md-tooltip>
+				</md-button>
+			</md-list-item>
+		</md-list>
+
+	</md-card>
+
+</md-content>

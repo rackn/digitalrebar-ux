@@ -16,7 +16,7 @@ provider controller
             return providers
         }
 
-        this.getNodes = function() {
+        $scope.getNodes = function() {
             var nodes = []
             for(var id in $scope._nodes) {
                 if($scope._nodes[id].provider_id == $scope.provider.id) {

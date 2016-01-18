@@ -70,10 +70,15 @@ var version = '0.0.1';
                 controllerAs: 'login',
                 templateUrl: 'login.html'
             }).
-            when('/node', {
-                controller: 'NodeCtrl',
+            when('/nodes', {
+                controller: 'NodesCtrl',
                 controllerAs: 'nodes',
-                templateUrl: 'node.html'
+                templateUrl: 'nodes.html'
+            }).
+            when('/nodes/:id', {
+                controller: 'NodesCtrl',
+                controllerAs: 'nodes',
+                templateUrl: 'nodes_singular.html'
             }).
             when('/network', {
                 controller: 'NetworkCtrl',
@@ -145,9 +150,9 @@ var version = '0.0.1';
                 icon: 'view_column'
             },
             {
-                title: 'Node',
+                title: 'Nodes',
                 icon: 'dns',
-                path: '/node'
+                path: '/nodes'
             },
             {
                 title: 'Networks',
@@ -164,6 +169,15 @@ var version = '0.0.1';
             'off': 'power_settings_new',
             'queue': 'update',
             'reserved': 'pause_circle_outline',
+        }
+
+        $rootScope.states = {
+            '-1': 'error', //error
+            '0': 'ready', //active
+            '1': 'todo', //todo
+            '2': 'process', //transition
+            '3': 'queue', //blocked
+            '4': 'reserved' //proposed
         }
 
         $scope.admin = [
@@ -189,7 +203,7 @@ var version = '0.0.1';
         $rootScope.isAuth = function(){return !!$rootScope.user;};
         
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            var path = next.split('/#/')[1].toLowerCase();
+            var path = next ? next.split('/#/')[1].toLowerCase() : undefined;
             if(path !== 'login' && !$rootScope.isAuth()) {
                 $location.path('/login');
             }
@@ -241,6 +255,17 @@ var version = '0.0.1';
                                 })
                         })
 
+                    $rootScope.getRoles().
+                        success(function(){
+                            $rootScope.$broadcast('rolesDone')
+
+                            $rootScope.getDeploymentRoles().
+                                success(function(){
+                                    $rootScope.$broadcast('deployment_rolesDone')
+                                })
+                        })
+
+
                     $rootScope.getNetworks().
                         success(function(){
                             $rootScope.$broadcast('networksDone')
@@ -267,6 +292,8 @@ var version = '0.0.1';
         }
 
         $rootScope._deployments = {}
+        $rootScope._deployment_roles = {}
+        $rootScope._roles = {}
         $rootScope._nodes = {}
         $rootScope._networks = {}
         $rootScope._node_roles = {}
@@ -283,6 +310,7 @@ var version = '0.0.1';
                         deployment.nodes = []
                         deployment.node_roles = []
                         deployment.roles = []
+                        deployment.deployment_roles = []
                         deployment.networks = []
                         $rootScope._deployments[id] = deployment
                     }
@@ -305,13 +333,13 @@ var version = '0.0.1';
 
                         $rootScope._nodes[id] = node
 
-                        var state = 'ready'
+                        var state = $rootScope.states[node.state]
                         if(!node.alive)
                             state = 'off'
                         node.status = state
 
                         var deployment = $rootScope._deployments[node.deployment_id]
-                        if(node.deployment_id == deployment.id) {
+                        if(deployment && node.deployment_id == deployment.id) {
                             deployment.nodes.push(node)
                         }
                     }
@@ -321,19 +349,37 @@ var version = '0.0.1';
                 })
         }
 
+        // api call for getting all the roles
+        $rootScope.getRoles = function() {
+            return $rootScope.callApi('/api/v2/roles').
+                success(function(data){
+                    $rootScope._roles = {}
+                    for(var i in data) {
+                        var role = data[i]
+                        var id = role.id
+                        role.roles = []
+                        $rootScope._roles[id] = role
+                    }
+                })
+        }
+
         // api call for getting all the deployment roles
         $rootScope.getDeploymentRoles = function() {
             return $rootScope.callApi('/api/v2/deployment_roles').
                 success(function(data){
-                    for(var i in data) {
-                        var role = data[i]
+                    $rootScope._deployment_roles = {}
 
-                        for(var j in $rootScope.deployments) {
-                            var deployment = $rootScope.deployment[j]
-                            if(node.deployment_id == deployment.id) {
-                                deployment.roles.push(node)
-                            }
+                    for(var i in data) {
+                        console.log("Adding deploy role")
+                        var role = data[i]
+                        $rootScope._deployment_roles[role.id] = role
+
+                        var deployment = $rootScope._deployments[role.deployment_id]
+                        if(deployment && role.deployment_id == deployment.id) {
+                            deployment.deployment_roles.push(role)
                         }
+
+                        role.cohort = $rootScope._roles[role.role_id].cohort
                     }
                 }).
                 error(function(resp){
@@ -368,7 +414,7 @@ var version = '0.0.1';
                         $rootScope._networks[id] = network
 
                         var deployment = $rootScope._deployments[id]
-                        if(network.deployment_id == deployment.id) {
+                        if(deployment && network.deployment_id == deployment.id) {
                             deployment.networks.push(network)
                         }
                     }
@@ -379,14 +425,6 @@ var version = '0.0.1';
 
         // api call for getting all the node roles
         $rootScope.getNodeRoles = function() {
-            var states = {
-                '-1': 'error', //error
-                '0': 'ready', //active
-                '1': 'todo', //todo
-                '2': 'process', //transition
-                '3': 'queue', //blocked
-                '4': 'reserved' //proposed
-            }
 
             return $rootScope.callApi('/api/v2/node_roles?runlog').
                 success(function(data){
@@ -397,7 +435,7 @@ var version = '0.0.1';
 
                         $rootScope._node_roles[id] = role
 
-                        role.status = states[role.state]
+                        role.status = $rootScope.states[role.state]
 
                         var node = $rootScope._nodes[role.node_id]
                         if(role.node_id == node.id) {
@@ -405,7 +443,7 @@ var version = '0.0.1';
                         }
 
                         var deployment = $rootScope._deployments[role.deployment_id]
-                        if(role.deployment_id == deployment.id) {
+                        if(deployment && role.deployment_id == deployment.id) {
                             deployment.node_roles.push(role)
                         }
                     }

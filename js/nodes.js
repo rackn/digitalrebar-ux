@@ -2,13 +2,12 @@
 node controller
 */
 (function(){
-    angular.module('app').controller('NodeCtrl', function($scope, debounce) {
+    angular.module('app').controller('NodesCtrl', function($scope, debounce, $routeParams) {
         
         $scope.$emit('title', 'Nodes'); // shows up on the top toolbar
 
         var nodes = this;
         this.selected = []
-        this.order = 'name'
 
         // converts the _nodes object that rootScope has into an array
         this.getNodes = function() {
@@ -42,6 +41,17 @@ node controller
 
         	// remove the selected items
         	nodes.selected = []
+        }
+
+        $scope.id = $routeParams.id
+        $scope.node = {}
+
+        if(Object.keys($scope._nodes).length) {
+            $scope.node = $scope._nodes[$scope.id];
+        } else {
+            $scope.$on('nodesDone', function(){
+                $scope.node = $scope._nodes[$scope.id];
+            })
         }
 
     });
