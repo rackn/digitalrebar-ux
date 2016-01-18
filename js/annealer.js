@@ -6,6 +6,13 @@ annealer controller
     angular.module('app').controller('AnnealerCtrl', function($scope) {
         $scope.$emit('title', 'Annealer'); // shows up on the top toolbar
 
+        $scope.selected = -1;
+
+        $scope.setNode = function(id) {
+            $scope.$emit('title', 'Annealer '+(id != -1 ? '('+$scope._nodes[id].name+')' : ''));
+            $scope.selected = id;
+        }
+
         $scope.getNodeRoles = function() {
         	var roles = []
         	for(var id in $scope._node_roles) {
