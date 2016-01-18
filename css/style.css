@@ -13,3 +13,11 @@ md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
   font-size: 16px;
   background-color: #e3f2fd;
 }
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
