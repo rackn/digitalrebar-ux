@@ -24,37 +24,37 @@ var version = '0.0.1';
         $mdThemingProvider.theme('status_ready').
             primaryPalette('green', {
                 'default': '800'
-            })
+            }).accentPalette('grey', {'default': '900'})
 
         $mdThemingProvider.theme('status_error').
             primaryPalette('red', {
                 'default': '700'
-            })
+            }).accentPalette('grey', {'default': '900'})
 
         $mdThemingProvider.theme('status_process').
             primaryPalette('yellow', {
                 'default': '500'
-            })
+            }).accentPalette('grey', {'default': '900'})
 
         $mdThemingProvider.theme('status_todo').
             primaryPalette('blue', {
                 'default': '500'
-            })
+            }).accentPalette('grey', {'default': '900'})
 
         $mdThemingProvider.theme('status_off').
             primaryPalette('grey', {
                 'default': '900'
-            })
+            }).accentPalette('grey', {'default': '900'})
         
         $mdThemingProvider.theme('status_queue').
             primaryPalette('yellow', {
                 'default': '200'
-            })
+            }).accentPalette('grey', {'default': '900'})
 
         $mdThemingProvider.theme('status_reserved').
             primaryPalette('purple', {
                 'default': '500'
-            })
+            }).accentPalette('grey', {'default': '900'})
 
         $routeProvider.
             when('/', {
@@ -94,6 +94,11 @@ var version = '0.0.1';
                 controller: 'ProviderCtrl',
                 controllerAs: 'providers',
                 templateUrl: 'provider.html'
+            }).
+            when('/annealer', {
+                controller: 'AnnealerCtrl',
+                controllerAs: 'annealer',
+                templateUrl: 'annealer.html'
             }).
             
 

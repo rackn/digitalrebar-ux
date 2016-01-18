@@ -1,0 +1,19 @@
+<md-content layout-padding>
+	<span ng-repeat="role in getNodeRoles() | orderBy: 'state' | has: 'state'">
+		<!-- Node button -->
+		<md-button
+			class="md-fab md-primary"
+			md-theme="status_{{role.status}}"
+			ng-href="/#/nodes/{{role.node_id}}"
+			ng-class="{'md-accent': selected==role.node_id}"
+			ng-mouseenter='setNode(role.node_id)'
+			ng-mouseleave='setNode(-1)'
+			>
+			<md-tooltip md-direction="bottom">
+				{{_roles[role.role_id].name}}
+			</md-tooltip>
+			<md-icon>{{icons[role.status]}}</md-icon>
+		</md-button>
+
+	</span>
+</md-content>
