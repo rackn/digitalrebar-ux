@@ -33,27 +33,24 @@ dash controller
         }
 
 
-        // makes a map of node status => number of nodes with that status
+        // makes a map of node simpleState => number of nodes with that simpleState
         this.getNodeCounts = function(deployment, override) {
-            var result = {};
+            var result = [0, 0, 0, 0];
 
             for(var id in deployment.nodes) {
                 var node = deployment.nodes[id];
 
-                if(!node.status)
-                    continue;
-
-                result[node.status] = (result[node.status] || 0) + 1;
+                result[node.simpleState] ++;
             }
             return result
         }
 
         this.opts = { // sparkline options
             sliceColors: [
-                "#8BC34A", 
-                "#F44336",
-                "#03A9F4",
-                "#616161"
+                "#8BC34A", // ready
+                "#F44336", // error
+                "#03A9F4", // todo
+                "#616161" // off
             ],
             tooltipFormat: '{{value}}',
             disableTooltips: true,

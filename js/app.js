@@ -338,6 +338,17 @@ var version = '0.0.1';
                             state = 'off'
                         node.status = state
 
+                        // assign simple states for the dashboard pie chart
+                        if(!node.alive)
+                            node.simpleState = 3; //off
+                        else {
+                            node.simpleState = 2; // todo
+                            if(node.state == -1)
+                                node.simpleState = 1; // error
+                            if(node.state == 0)
+                                node.simpleState = 0; // ready
+                        }
+
                         var deployment = $rootScope._deployments[node.deployment_id]
                         if(deployment && node.deployment_id == deployment.id) {
                             deployment.nodes.push(node)
