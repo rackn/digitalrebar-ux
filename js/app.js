@@ -171,6 +171,15 @@ var version = '0.0.1';
             'reserved': 'pause_circle_outline',
         }
 
+        $rootScope.states = {
+            '-1': 'error', //error
+            '0': 'ready', //active
+            '1': 'todo', //todo
+            '2': 'process', //transition
+            '3': 'queue', //blocked
+            '4': 'reserved' //proposed
+        }
+
         $scope.admin = [
             {
                 title: 'Settings',
@@ -324,7 +333,7 @@ var version = '0.0.1';
 
                         $rootScope._nodes[id] = node
 
-                        var state = 'ready'
+                        var state = $rootScope.states[node.state]
                         if(!node.alive)
                             state = 'off'
                         node.status = state
@@ -425,14 +434,6 @@ var version = '0.0.1';
 
         // api call for getting all the node roles
         $rootScope.getNodeRoles = function() {
-            var states = {
-                '-1': 'error', //error
-                '0': 'ready', //active
-                '1': 'todo', //todo
-                '2': 'process', //transition
-                '3': 'queue', //blocked
-                '4': 'reserved' //proposed
-            }
 
             return $rootScope.callApi('/api/v2/node_roles?runlog').
                 success(function(data){
@@ -443,7 +444,7 @@ var version = '0.0.1';
 
                         $rootScope._node_roles[id] = role
 
-                        role.status = states[role.state]
+                        role.status = $rootScope.states[role.state]
 
                         var node = $rootScope._nodes[role.node_id]
                         if(role.node_id == node.id) {
@@ -451,7 +452,7 @@ var version = '0.0.1';
                         }
 
                         var deployment = $rootScope._deployments[role.deployment_id]
-                        if(role.deployment_id == deployment.id) {
+                        if(deployment && role.deployment_id == deployment.id) {
                             deployment.node_roles.push(role)
                         }
                     }
