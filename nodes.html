@@ -34,7 +34,11 @@
 					<tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select ng-repeat="node in nodes.getNodes() | orderBy: myOrder | not:'system'">
 					<td md-cell>{{node.name}}</td>
 					<td md-cell>{{node.address}}</td>
-					<td md-cell>{{node.alive ? "On" : ""}} {{node.available ? "Available" : ""}}</td>
+					<td md-cell>
+						{{node.reserved ? 'Reserved' : ''}}
+						{{node.alive ? 'On' : 'Off'}}
+						{{states[node.state]}}
+					</td>
 					<td md-cell>{{node.description}}</td>
 					<td md-cell>{{_providers[node.provider_id].name}}</td>
 					<td md-cell>{{_deployments[node.deployment_id].name}}</td>
