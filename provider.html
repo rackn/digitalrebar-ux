@@ -38,11 +38,16 @@ provider view
 		</md-toolbar>
 
 		<md-content>
-			<md-list>
-				<md-list-item ng-repeat='node in providers.getNodes()'>
-					<p>{{node.name}}</p>
-				</md-list-item>
-			</md-list>
+			<span ng-repeat="node in getNodes() | orderBy: 'name'">
+				<!-- Node button -->
+				<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="/#/nodes/{{node.id}}">
+					<md-tooltip md-direction="bottom">
+						{{node.name}}
+					</md-tooltip>
+					<md-icon>{{icons[node.status]}}</md-icon>
+				</md-button>
+
+			</span>
 		</md-content>
 
 	</md-card>
