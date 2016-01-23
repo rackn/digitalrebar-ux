@@ -2,6 +2,10 @@ md-sidenav {
   fill: #737373;
 }
 
+body, html, md-content.bg {
+  background: #eee;
+}
+
 md-sidenav ng-md-icon {
 	position: relative;
 	top: 5px;
