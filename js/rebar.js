@@ -2,6 +2,20 @@
 
 var app = angular.module('app');
 
+app.filter('from', function() {
+    return function(items, type, obj) {
+        // _node | from:'deployment':deployment
+        // gets all nodes with deployment_id == deployment.id
+        var id = obj.id
+        var result = [];
+        angular.forEach(items, function(value, key) {
+            if(value[type+"_id"] == id)
+                result.push(value);
+        });
+        return result;
+    };
+});
+
 app.run(function($rootScope, $cookies, api, $interval){
     // use regex to get the current location
     var currentLocation = /https:\/\/[^:\/]+/.exec(location.href)[0];
@@ -61,6 +75,7 @@ app.run(function($rootScope, $cookies, api, $interval){
         $rootScope.$emit('updateApi')
     }
 
+    console.log('Starting rebar')
     $rootScope._deployments = {}
     $rootScope._deployment_roles = {}
     $rootScope._roles = {}
