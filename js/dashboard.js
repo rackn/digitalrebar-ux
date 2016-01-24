@@ -39,8 +39,8 @@ dash controller
 
             for(var id in deployment.nodes) {
                 var node = deployment.nodes[id];
-
-                result[node.simpleState] ++;
+                if(!node.system)
+                    result[node.simpleState] ++;
             }
             return result
         }
