@@ -38,7 +38,7 @@ dashboard view
 				<!-- Nodes tab -->
 				<md-tab label="Nodes">
 						<!-- Add all the nodes as list items -->
-						<span ng-repeat="node in deployment.nodes | filter:{system: false} | orderBy: 'name'">
+						<span ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy: 'name'">
 							<!-- Node button -->
 							<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="/#/nodes/{{node.id}}">
 								<md-tooltip md-direction="bottom">
@@ -55,7 +55,7 @@ dashboard view
 				<md-tab label="Roles">
 
 					<!-- Add all the Deployment Roles-->
-					<span ng-repeat="role in deployment.deployment_roles | orderBy: 'cohort'">
+					<span ng-repeat="role in _deployment_roles | from:'deployment':deployment | orderBy: 'cohort'">
 						<md-button class="md-fab md-primary md-mini">
 							<md-tooltip md-direction="bottom">
 								{{_roles[role.role_id].name}}

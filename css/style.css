@@ -2,6 +2,10 @@ md-sidenav {
   fill: #737373;
 }
 
+body, html {
+  overflow: hidden;
+}
+
 body, html, md-content.bg {
   background: #eee;
 }

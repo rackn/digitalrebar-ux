@@ -36,9 +36,17 @@
 			</tr>
 		</table>
 		<!-- Show node roles -->
-		<md-list>
-			<md-list-item ng-repeat="role in node.roles | orderBy: 'cohort'">
-				<md-divider></md-divider>
+
+	</md-card>
+
+	<md-card>
+		<md-toolbar class="md-table-toolbar md-default">
+			<div class="md-toolbar-tools">
+				<span>Node Roles</span>
+			</div>
+		</md-toolbar>
+		<md-card-content>
+			<span ng-repeat="role in _node_roles | from:'node':node | orderBy: role.cohort()">
 
 				<md-button class="md-fab md-primary" md-theme="status_{{role.status}}">
 					<md-icon>{{icons[role.status]}}</md-icon>
@@ -46,9 +54,8 @@
 						{{_roles[role.role_id].name}}
 					</md-tooltip>
 				</md-button>
-			</md-list-item>
-		</md-list>
-
+			</span>
+		<md-card-content>
 	</md-card>
 
 </md-content>

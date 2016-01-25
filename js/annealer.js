@@ -13,13 +13,17 @@ annealer controller
             $scope.selected = id;
         }
 
-        $scope.getNodeRoles = function() {
+        $scope.getNodeRoles = function(status) {
         	var roles = []
         	for(var id in $scope._node_roles) {
-        		roles.push($scope._node_roles[id])
+                var role = $scope._node_roles[id];
+                if(status == role.status)
+            		roles.push(role)
         	}
         	return roles
         }
+
+        $scope.statesList = ['error','process', 'todo', 'queue'];
 
     });
 

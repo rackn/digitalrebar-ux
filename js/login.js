@@ -3,7 +3,7 @@ login controller
 */
 (function(){
     angular.module('app')
-    .controller('LoginCtrl', function($scope, $location, localStorageService, $http, $cookies, debounce, $mdMedia, $mdDialog, $mdToast) {
+    .controller('LoginCtrl', function($scope, api, $location, localStorageService, $http, $cookies, debounce, $mdMedia, $mdDialog, $mdToast) {
         $scope.$emit('title', 'Login'); // shows up on the top toolbar
 
         // model for the sign in form
@@ -25,7 +25,7 @@ login controller
                 return;
             }
             $scope.$emit('host', host)
-            $scope.callApi('/api/license').success(function(data){
+            api('/api/license').success(function(data){
                 login.state = 1 // valid state
                 $scope.eula = data.eula
                 $cookies.put('host', login.host)
@@ -70,7 +70,7 @@ login controller
             localStorageService.add('password', login.credentials.password);
             $cookies.put('username', login.credentials.username)
 
-            $scope.callApi('/api/v2/digest', {
+            api('/api/v2/digest', {
                 method: 'HEAD',
                 headers: {
                     'Content-Type': 'application/json'
@@ -92,7 +92,7 @@ login controller
         }
 
         this.getUser = function() { // once we get a 200 success from signIn, we can get the user
-            $scope.callApi('/api/v2/digest', {method: 'GET'}).then(function(resp){
+            api('/api/v2/digest', {method: 'GET'}).then(function(resp){
                 $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
                 $scope.$emit('startUpdating') // start auto-updating the api data
                 $location.path('/dash')

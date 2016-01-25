@@ -37,9 +37,9 @@ dash controller
         this.getNodeCounts = function(deployment, override) {
             var result = [0, 0, 0, 0];
 
-            for(var id in deployment.nodes) {
-                var node = deployment.nodes[id];
-                if(!node.system)
+            for(var i in $scope._nodes) {
+                var node = $scope._nodes[i];
+                if (node.deployment_id == deployment.id && !node.system) 
                     result[node.simpleState] ++;
             }
             return result
