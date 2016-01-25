@@ -2,7 +2,7 @@
 node controller
 */
 (function(){
-    angular.module('app').controller('NodesCtrl', function($scope, debounce, $routeParams) {
+    angular.module('app').controller('NodesCtrl', function($scope, debounce, $routeParams, $mdMedia, $mdDialog) {
         
         $scope.$emit('title', 'Nodes'); // shows up on the top toolbar
 
@@ -42,6 +42,25 @@ node controller
         	// remove the selected items
         	nodes.selected = []
         }
+
+        this.showAddNodeDialog = function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'ctrl',
+                templateUrl: 'views/dialogs/addnodedialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    base_name: 'digital-rebar-node',
+                    providers: $scope._providers,
+                    add_os: 'default_os',
+                    number: 1
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
+        };
 
         $scope.id = $routeParams.id
         $scope.node = {}

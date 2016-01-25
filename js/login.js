@@ -41,7 +41,7 @@ login controller
             $mdDialog.show({
                 controller: 'DialogController',
                 controllerAs: 'ctrl',
-                templateUrl: 'euladialog.tmpl.html',
+                templateUrl: 'views/dialogs/euladialog.tmpl.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 locals: {

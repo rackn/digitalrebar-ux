@@ -1,0 +1,42 @@
+<md-dialog aria-label="Add Node" ng-cloak flex-gt-sm='50'>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add Node</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+      <md-input-container class='md-block'>
+        <label>Name</label>
+        <input type='text' ng-model='locals.base_name'/>
+      </md-input-container>
+
+      <md-input-container class='md-block'>
+        <label>Provider</label>
+        <md-select ng-model="locals.provider">
+          <md-option ng-repeat="provider in providers" value="{{provider.name}}">
+            {{provider.name}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container class='md-block'>
+        <label>Number</label>
+        <input required type="number" step="any" name="rate" ng-model="locals.number" min="1" />
+      </md-input-container>
+
+    </md-dialog-content>
+    <md-dialog-actions>
+      <a ng-href='/#/providers'>Providers</a><br/>
+      <span flex></span>
+      <md-button ng-click='dialog.sendNode()' class='md-primary md-raised' target="_blank" md-autofocus>
+        Add
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
