@@ -109,6 +109,7 @@ app.factory('api', function($http, $rootScope) {
     api.getDeployments = function() {
         return api('/api/v2/deployments').
             success(function(data){
+                $rootScope._deployments = {}
                 data.map(api.addDeployment)
             })
     }
@@ -141,6 +142,7 @@ app.factory('api', function($http, $rootScope) {
     api.getNodes = function() {
         return api('/api/v2/nodes').
             success(function(data){
+                $rootScope._nodes = {}
                 data.map(api.addNode)
             })
     }
@@ -154,6 +156,7 @@ app.factory('api', function($http, $rootScope) {
     api.getRoles = function() {
         return api('/api/v2/roles').
             success(function(data){
+                $rootScope._roles = {}
                 data.map(api.addRole)
             })
     }
@@ -167,6 +170,7 @@ app.factory('api', function($http, $rootScope) {
     api.getDeploymentRoles = function() {
         return api('/api/v2/deployment_roles').
             success(function(data){
+                $rootScope._deployment_roles = {}
                 data.map(api.addDeploymentRole)
             })
     }
@@ -180,6 +184,7 @@ app.factory('api', function($http, $rootScope) {
     api.getProviders = function() {
         return api('/api/v2/providers').
             success(function(data){
+                $rootScope._providers = {}
                 data.map(api.addProvider)
             })
     }
@@ -193,6 +198,7 @@ app.factory('api', function($http, $rootScope) {
     api.getNetworks = function() {
         return api('/api/v2/networks').
             success(function(data){
+                $rootScope._networks = {}
                 data.map(api.addNetwork)
             })
     }
@@ -209,7 +215,8 @@ app.factory('api', function($http, $rootScope) {
     api.getNodeRoles = function() {
         return api('/api/v2/node_roles?runlog').
             success(function(data){
-                data.map(api.addNetwork)
+                $rootScope._node_roles = {}
+                data.map(api.addNodeRole)
             })
     }
 
