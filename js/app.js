@@ -33,12 +33,12 @@ var version = '0.0.1';
 
         $mdThemingProvider.theme('status_process').
             primaryPalette('yellow', {
-                'default': '500'
+                'default': '600'
             }).accentPalette('grey', {'default': '900'})
 
         $mdThemingProvider.theme('status_todo').
-            primaryPalette('blue', {
-                'default': '500'
+            primaryPalette('yellow', {
+                'default': '300'
             }).accentPalette('grey', {'default': '900'})
 
         $mdThemingProvider.theme('status_off').
@@ -48,11 +48,11 @@ var version = '0.0.1';
         
         $mdThemingProvider.theme('status_queue').
             primaryPalette('yellow', {
-                'default': '200'
+                'default': '100'
             }).accentPalette('grey', {'default': '900'})
 
         $mdThemingProvider.theme('status_reserved').
-            primaryPalette('purple', {
+            primaryPalette('blue', {
                 'default': '500'
             }).accentPalette('grey', {'default': '900'})
 

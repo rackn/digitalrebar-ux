@@ -23,11 +23,7 @@ annealer controller
         	return roles
         }
 
-        $scope.statesList = [];
-        for(var i = -1; i < Object.keys($scope.states).length-1; i++) {
-            if(i != 0)
-                $scope.statesList.push($scope.states[i])
-        }
+        $scope.statesList = ['error','process', 'todo', 'queue'];
 
     });
 

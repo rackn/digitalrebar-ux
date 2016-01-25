@@ -53,6 +53,13 @@ app.run(function($rootScope, $cookies, api, $interval){
         $interval(function(){
             $rootScope.$emit('updateApi')
         }, 3 * 60 * 1000 /* 3 minutes */ )
+
+        api('/api/status/active', {
+            method: 'PUT',
+            data: {
+                "nodes": Object.keys($scope._nodes)
+            }
+        })
     })
 
     $rootScope.tryFetch = function() {
