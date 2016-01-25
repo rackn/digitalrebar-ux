@@ -4,54 +4,55 @@ provider view
 <md-content class='bg'>
 
 	<!-- Specific provider view -->	
-	<md-card ng-if='provider' layout='column'>
-		<md-toolbar class="md-table-toolbar md-default">
-			<div class="md-toolbar-tools">
-				<span>{{provider.name}} Provider</span>
-			</div>
-		</md-toolbar>
-		
-		<!-- Provider data -->
-		<md-content layout-padding layout='column'>
+	<div ng-if='provider'>
+		<md-card>
+			<md-toolbar class="md-table-toolbar md-default">
+				<div class="md-toolbar-tools">
+					<span>{{provider.name}} Provider</span>
+				</div>
+			</md-toolbar>
+			
+			<!-- Provider data -->
+			<md-content layout-padding layout='column'>
 
-			<md-input-container class='md-block'>
-				<label>Provider</label>
-				<input type='text' ng-model='provider.name' />
-			</md-input-container>
+				<md-input-container class='md-block'>
+					<label>Provider</label>
+					<input type='text' ng-model='provider.name' />
+				</md-input-container>
 
-			<md-input-container class='md-block'>
-				<label>Description</label>
-				<input type='text' ng-model='provider.description' />
-			</md-input-container>
+				<md-input-container class='md-block'>
+					<label>Description</label>
+					<input type='text' ng-model='provider.description' />
+				</md-input-container>
 
-			<md-input-container class='md-block'>
-				<label>Type</label>
-				<input type='text' ng-model='provider.type' />
-			</md-input-container>
+				<md-input-container class='md-block'>
+					<label>Type</label>
+					<input type='text' ng-model='provider.type' />
+				</md-input-container>
 
-		</md-content>
+			</md-content>
+		</md-card>
+		<md-card>
+			<md-toolbar class="md-table-toolbar md-default">
+				<div class="md-toolbar-tools">
+					<span>Nodes</span>
+				</div>
+			</md-toolbar>
 
-		<md-toolbar class="md-table-toolbar md-default">
-			<div class="md-toolbar-tools">
-				<span>Nodes</span>
-			</div>
-		</md-toolbar>
+			<md-card-content>
+				<span ng-repeat="node in getNodes() | orderBy: 'name'">
+					<!-- Node button -->
+					<md-button class="md-fab md-primary" md-theme="status_{{node.status}}" ng-href="/#/nodes/{{node.id}}">
+						<md-tooltip md-direction="bottom">
+							{{node.name}}
+						</md-tooltip>
+						<md-icon>{{icons[node.status]}}</md-icon>
+					</md-button>
 
-		<md-content>
-			<span ng-repeat="node in getNodes() | orderBy: 'name'">
-				<!-- Node button -->
-				<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="/#/nodes/{{node.id}}">
-					<md-tooltip md-direction="bottom">
-						{{node.name}}
-					</md-tooltip>
-					<md-icon>{{icons[node.status]}}</md-icon>
-				</md-button>
-
-			</span>
-		</md-content>
-
-	</md-card>
-
+				</span>
+			</md-card-content>
+		</md-card>
+	</div>
 	<!-- Providers list view -->
 	<md-card ng-if='!provider' layout='column'>
 		<md-toolbar class="md-table-toolbar md-default">
