@@ -73,7 +73,7 @@ app.run(function($rootScope, $cookies, api, $interval){
 
 })
 
-app.factory('api', function($http, $rootScope, $timeout) {
+app.factory('api', function($http, $rootScope, $timeout, debounce) {
 
 
     // function for calling api functions ( eg. /api/v2/nodes )
@@ -105,6 +105,12 @@ app.factory('api', function($http, $rootScope, $timeout) {
     }
 
     api.getActive = function() {
+        $rootScope.startedUpdating = true;
+        console.log('starting')
+        debounce(function(){
+            console.log('done')
+            startedUpdating = false;
+        }, 1000)
         api('/api/status/active', {
             method: 'PUT',
             data: {
