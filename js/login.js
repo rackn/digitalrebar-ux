@@ -95,7 +95,7 @@ login controller
             api('/api/v2/digest', {method: 'GET'}).then(function(resp){
                 $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
                 $scope.$emit('startUpdating') // start auto-updating the api data
-                $location.path('/dash')
+                $location.path($scope.lastPath)
             }, function(err){})
         }
 

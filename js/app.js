@@ -204,8 +204,17 @@ var version = '0.0.1';
         $rootScope.isAuth = function(){return !!$rootScope.user;};
         
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            var path = next ? next.split('/#/')[1].toLowerCase() : undefined;
+            var path = next.split('/#/')[1];
+            if(path) // if it's a valid path
+                path = path.toLowerCase();
+            else // default to dashboard
+                path = 'dash'
+
             if(path !== 'login' && !$rootScope.isAuth()) {
+                if(path == 'login')
+                    path == 'dash'
+
+                $rootScope.lastPath = '/'+path;
                 $location.path('/login');
             }
             
