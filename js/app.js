@@ -203,7 +203,8 @@ var version = '0.0.1';
 
         $rootScope.user;
         $rootScope.isAuth = function(){return !!$rootScope.user;};
-        
+        $rootScope.lastPath = '/'
+
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             var path = next.split('/#/')[1];
             if(path) // if it's a valid path
@@ -212,8 +213,6 @@ var version = '0.0.1';
                 path = 'dash'
 
             if(path !== 'login' && !$rootScope.isAuth()) {
-                if(path == 'login')
-                    path == 'dash'
 
                 $rootScope.lastPath = '/'+path;
                 $location.path('/login');
