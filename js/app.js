@@ -63,42 +63,42 @@ var version = '0.0.1';
             when('/dash', {
                 controller: 'DashCtrl',
                 controllerAs: 'dash',
-                templateUrl: 'dashboard.html'
+                templateUrl: 'views/dashboard.html'
             }).
             when('/login', {
                 controller: 'LoginCtrl',
                 controllerAs: 'login',
-                templateUrl: 'login.html'
+                templateUrl: 'views/login.html'
             }).
             when('/nodes', {
                 controller: 'NodesCtrl',
                 controllerAs: 'nodes',
-                templateUrl: 'nodes.html'
+                templateUrl: 'views/nodes.html'
             }).
             when('/nodes/:id', {
                 controller: 'NodesCtrl',
                 controllerAs: 'nodes',
-                templateUrl: 'nodes_singular.html'
+                templateUrl: 'views/nodes_singular.html'
             }).
             when('/network', {
                 controller: 'NetworkCtrl',
                 controllerAs: 'networks',
-                templateUrl: 'network.html'
+                templateUrl: 'views/network.html'
             }).
             when('/providers', {
                 controller: 'ProviderCtrl',
                 controllerAs: 'providers',
-                templateUrl: 'provider.html'
+                templateUrl: 'views/provider.html'
             }).
             when('/providers/:id', {
                 controller: 'ProviderCtrl',
                 controllerAs: 'providers',
-                templateUrl: 'provider.html'
+                templateUrl: 'views/provider.html'
             }).
             when('/annealer', {
                 controller: 'AnnealerCtrl',
                 controllerAs: 'annealer',
-                templateUrl: 'annealer.html'
+                templateUrl: 'views/annealer.html'
             }).
             
 
