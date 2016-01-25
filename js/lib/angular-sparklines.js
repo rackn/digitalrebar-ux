@@ -2,6 +2,9 @@
 // and jQuerySparklines from http://omnipotent.net/jquery.sparkline
 
 // AngularJS directives for jquery sparkline
+/*
+Author: https://gist.github.com/pjsvis
+*/
 angular.module('sparkline', ['debounce'])
     .directive('spark', ['$timeout', 'debounce', function ($timeout, debounce) {
         'use strict';

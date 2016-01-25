@@ -1,3 +1,8 @@
+/*
+http://stackoverflow.com/questions/17893708/angularjs-textarea-bind-to-json-object-shows-object-object
+Author: https://github.com/vorburger
+*/
+
 (function(){
 
 angular.module('jsontext', []).directive('jsonText', function() {
