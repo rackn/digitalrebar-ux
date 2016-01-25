@@ -8,7 +8,7 @@ provider view
 		<md-card>
 			<md-toolbar class="md-table-toolbar md-default">
 				<div class="md-toolbar-tools">
-					<span>{{provider.name}} Provider</span>
+					<span>{{provider.type}} {{provider.name}}</span>
 				</div>
 			</md-toolbar>
 			
@@ -25,10 +25,7 @@ provider view
 					<input type='text' ng-model='provider.description' />
 				</md-input-container>
 
-				<md-input-container class='md-block'>
-					<label>Type</label>
-					<input type='text' ng-model='provider.type' />
-				</md-input-container>
+				<ng-include src="'views/providers/'+provider.type+'.tmpl.html'" />
 
 			</md-content>
 		</md-card>

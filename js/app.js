@@ -3,7 +3,8 @@ var version = '0.0.1';
 (function(){
     var app = angular.module('app', [
         'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
-        'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table', 'debounce']);
+        'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table',
+        'debounce', 'jsontext']);
 
     app.config(function($httpProvider, $routeProvider, $mdThemingProvider, apiProvider) {        
         
