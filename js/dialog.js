@@ -2,7 +2,7 @@
 dialog controller
 */
 (function(){
-    angular.module('app').controller('DialogController', ['$scope', '$rootScope', '$mdDialog', 'locals', function ($scope, $rootScope, $mdDialog, locals) {
+    angular.module('app').controller('DialogController', function ($scope, $rootScope, $mdDialog, locals, api, $mdToast) {
         // keep locals from the config
         var dialog = this;
         $scope.locals = locals;
@@ -28,10 +28,9 @@ dialog controller
             $mdDialog.cancel();
         };
 
-        $scope.$watch('locals', function(locals){
+        this.addNodes = function(){
             var payload =  {
                 description: "created by rebar",
-                name: locals.base_name+"-X."+locals.provider+".neode.org",
                 provider: locals.provider,
                 hints: {
                     'use-proxy': false,
@@ -39,15 +38,14 @@ dialog controller
                     'use-dns': false,
                     'use-logging': false,
                     'provider-create-hint': { 
-                        'hostname': locals.base_name+"-X"
                     }
                 }
             }
             if (locals.add_os != "default_os") {
                 // packet
-                payload.hints['provider-create-hint'].os = add_os;
+                payload.hints['provider-create-hint'].os = locals.add_os;
                 // aws
-                payload.hints['provider-create-hint'].image_id = add_os;
+                payload.hints['provider-create-hint'].image_id = locals.add_os;
                 // google
                 payload.hints['provider-create-hint'].disks = [];
                 payload.hints['provider-create-hint'].disks.push({ 
@@ -55,13 +53,37 @@ dialog controller
                     'boot': true,
                     'type': 'PERSISTENT',
                     'initializeParams': {
-                        'sourceImage': add_os
+                        'sourceImage': locals.add_os
                     }
                 });
             };
-            dialog.payload = payload;
-            console.log(dialog.payload)
-        })
 
-    }]);
+            for(var i = 0; i < locals.number; i++) {
+                payload.name = locals.base_name+"-"+i+"."+locals.provider+".neode.org",
+                payload.hints['provider-create-hint'].hostname = locals.base_name+'-'+i
+
+                api('/api/v2/nodes',{
+                    method: "POST",
+                    data: payload,
+                }).error(function(err){
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent('Error: '+err.message)
+                            .position('bottom left')
+                            .hideDelay(3000)
+                    );
+                })
+            }
+
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('Adding '+locals.number+' node'+(locals.number!=1?'s':''))
+                    .position('bottom left')
+                    .hideDelay(3000)
+            );
+
+            $mdDialog.hide();
+        }
+
+    });
 })();

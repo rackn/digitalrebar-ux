@@ -2,7 +2,7 @@
 node controller
 */
 (function(){
-    angular.module('app').controller('NodesCtrl', function($scope, debounce, $routeParams, $mdMedia, $mdDialog) {
+    angular.module('app').controller('NodesCtrl', function($scope, debounce, $routeParams, $mdMedia, $mdDialog, api) {
         
         $scope.$emit('title', 'Nodes'); // shows up on the top toolbar
 
@@ -31,7 +31,7 @@ node controller
         		console.log("Deleting node "+node.id)
 
         		// the api call uses REST DELETE on /nodes/id to remove a node 
-        		$scope.callApi('/api/v2/nodes/'+node.id, {method: 'DELETE'}).
+        		api('/api/v2/nodes/'+node.id, {method: 'DELETE'}).
         			success(function(){
         				console.log("Node deleted")
         				
@@ -47,7 +47,7 @@ node controller
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
             $mdDialog.show({
                 controller: 'DialogController',
-                controllerAs: 'ctrl',
+                controllerAs: 'dialog',
                 templateUrl: 'views/dialogs/addnodedialog.tmpl.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,

@@ -83,10 +83,10 @@ login controller
             }, function (response) {
                 console.log('error', response);
                 $mdToast.show(
-                  $mdToast.simple()
-                    .textContent(response.status + " - " + response.statusText)
-                    .position('top left')
-                    .hideDelay(3000)
+                    $mdToast.simple()
+                        .textContent(response.status + " - " + response.statusText)
+                        .position('top left')
+                        .hideDelay(3000)
                 );
             });
         }
