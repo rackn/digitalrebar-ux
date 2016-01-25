@@ -1,19 +1,31 @@
-<md-content layout-padding>
-	<span ng-repeat="role in getNodeRoles() | orderBy: 'state' | has: 'state'">
-		<!-- Node button -->
-		<md-button
-			class="md-fab md-primary"
-			md-theme="status_{{role.status}}"
-			ng-href="/#/nodes/{{role.node_id}}"
-			ng-class="{'md-accent': selected==role.node_id}"
-			ng-mouseenter='setNode(role.node_id)'
-			ng-mouseleave='setNode(-1)'
-			>
-			<md-tooltip md-direction="bottom">
-				{{_roles[role.role_id].name}}
-			</md-tooltip>
-			<md-icon>{{icons[role.status]}}</md-icon>
-		</md-button>
-
-	</span>
-</md-content>
+<md-card ng-repeat="status in statesList">
+	<md-toolbar md-theme="status_{{status}}">
+		<div class="md-toolbar-tools">
+			<h2 class="md-flex">
+				<md-icon>{{icons[status]}}</md-icon>
+				{{status}}
+			</h2>
+		</div>
+	</md-toolbar>
+	<md-card-content>
+		<span ng-repeat="role in getNodeRoles(status)">
+			<!-- Role button -->
+			<md-button
+				class="md-fab md-mini md-primary"
+				md-theme="status_{{role.status}}"
+				ng-href="/#/nodes/{{role.node_id}}"
+				ng-class="{'md-accent': selected==role.node_id}"
+				ng-mouseenter='setNode(role.node_id)'
+				ng-mouseleave='setNode(-1)'
+				>
+				<md-tooltip md-direction="bottom">
+					{{_roles[role.role_id].name}}
+				</md-tooltip>
+				<md-icon>{{_roles[role.role_id].icon}}</md-icon>
+			</md-button>
+		</span>
+		<div ng-if='getNodeRoles(status).length == 0'>
+			None
+		<div>
+	</md-card-content>
+</md-card>

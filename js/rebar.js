@@ -23,50 +23,34 @@ app.run(function($rootScope, $cookies, api, $interval){
 
     $rootScope.$on('updateApi', function(event) {
         // make the api calls and add callbacks
-        console.log("Making api calls")
 
-        api.getDeployments().
-            success(function(){
-                $rootScope.$broadcast('deploymentsDone')
+        // capitalize function
+        var capitalize = function (txt){
+            return txt.charAt(0).toUpperCase() +
+                txt.substr(1).toLowerCase();
+        }
 
-                api.getNodes().
-                    success(function(){
-                        $rootScope.$broadcast('nodesDone')
+        // converts under_score to CamelCase
+        var convert = function(name) {
+            return "get"+name.split("_").map(capitalize).join("")
+        }
 
-                        api.getNodeRoles().
-                            success(function(){
-                                $rootScope.$broadcast('node_rolesDone')
-                            })
-                    })
+        var fetch = ['deployments', 'roles', 'nodes', 'node_roles',
+            'deployment_roles', 'networks', 'providers']
 
-                api.getRoles().
-                    success(function(){
-                        $rootScope.$broadcast('rolesDone')
-
-                        api.getDeploymentRoles().
-                            success(function(){
-                                $rootScope.$broadcast('deployment_rolesDone')
-                            })
-                    })
-
-
-                api.getNetworks().
-                    success(function(){
-                        $rootScope.$broadcast('networksDone')
-                    })
+        // loops through 'fetch', calling api.getDeployments 
+        //      and emitting the proper callback (deploymentsDone)
+        fetch.forEach(function(name){
+            api[convert(name)]().success(function(){
+                $rootScope.$broadcast(name+'Done')
             })
-        ;
-        api.getProviders().
-            success(function(){
-                $rootScope.$broadcast('providersDone')
-            })
+        })
     })
 
     $rootScope.$on('startUpdating', function(event){
         $rootScope.$emit('updateApi')
 
         $interval(function(){
-            console.log("telling update")
             $rootScope.$emit('updateApi')
         }, 3 * 60 * 1000 /* 3 minutes */ )
     })
@@ -75,7 +59,6 @@ app.run(function($rootScope, $cookies, api, $interval){
         $rootScope.$emit('updateApi')
     }
 
-    console.log('Starting rebar')
     $rootScope._deployments = {}
     $rootScope._deployment_roles = {}
     $rootScope._roles = {}
@@ -162,7 +145,7 @@ app.factory('api', function($http, $rootScope) {
     }
 
     api.addDeploymentRole = function(role) {
-        role.cohort = $rootScope._roles[role.role_id].cohort
+        role.cohort = function(){$rootScope._roles[role.role_id].cohort}
         $rootScope._deployment_roles[role.id] = role
     }
 

@@ -95,7 +95,7 @@
 			</md-list>
 		</md-sidenav>
 		
-		<div layout="column" layout-fill>
+		<md-content layout="column" layout-fill class='bg'>
 			<!-- Header -->
 			<md-toolbar layout="row" class='md-whiteframe-z1' ng-show='isAuth()'>
 				<div class='md-toolbar-tools'>
@@ -113,9 +113,9 @@
 			</md-toolbar>
 
 			<!-- Content -->
-			<md-content ng-view class='bg' layout-fill>
-			</md-content>
-		</div>
+			<div ng-view style='overflow: auto;'>
+			</div>
+		</md-content>
 
 	</body>
 
