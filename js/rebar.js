@@ -1,5 +1,16 @@
 (function(){
 
+// capitalize function
+function capitalize(txt){
+    return txt.charAt(0).toUpperCase() +
+        txt.substr(1).toLowerCase();
+}
+
+// converts under_score to CamelCase
+function camelCase(name) {
+    return name.split("_").map(capitalize).join("")
+}
+
 var app = angular.module('app');
 
 app.filter('from', function() {
@@ -24,24 +35,13 @@ app.run(function($rootScope, $cookies, api, $interval){
     $rootScope.$on('updateApi', function(event) {
         // make the api calls and add callbacks
 
-        // capitalize function
-        var capitalize = function (txt){
-            return txt.charAt(0).toUpperCase() +
-                txt.substr(1).toLowerCase();
-        }
-
-        // converts under_score to CamelCase
-        var convert = function(name) {
-            return "get"+name.split("_").map(capitalize).join("")
-        }
-
         var fetch = ['deployments', 'roles', 'nodes', 'node_roles',
             'deployment_roles', 'networks', 'providers']
 
         // loops through 'fetch', calling api.getDeployments 
         //      and emitting the proper callback (deploymentsDone)
         fetch.forEach(function(name){
-            api[convert(name)]().success(function(){
+            api["get"+camelCase(name)]().success(function(){
                 $rootScope.$broadcast(name+'Done')
             })
         })
@@ -54,17 +54,14 @@ app.run(function($rootScope, $cookies, api, $interval){
             $rootScope.$emit('updateApi')
         }, 3 * 60 * 1000 /* 3 minutes */ )
 
-        api('/api/status/active', {
-            method: 'PUT',
-            data: {
-                "nodes": Object.keys($scope._nodes)
-            }
-        })
+        api.getActive();
+
     })
 
     $rootScope.tryFetch = function() {
         $rootScope.$emit('updateApi')
     }
+
 
     $rootScope._deployments = {}
     $rootScope._deployment_roles = {}
@@ -76,7 +73,7 @@ app.run(function($rootScope, $cookies, api, $interval){
 
 })
 
-app.factory('api', function($http, $rootScope) {
+app.factory('api', function($http, $rootScope, $timeout) {
 
 
     // function for calling api functions ( eg. /api/v2/nodes )
@@ -89,6 +86,46 @@ app.factory('api', function($http, $rootScope) {
         args.api = true;
         args.url = $rootScope.host+path;
         return $http(args)
+    }
+
+    api.queue = []
+
+    api.addQueue = function(fn) {
+        api.queue.push(fn);
+    }
+
+    api.nextQueue = function() {
+        if(api.queue.length) {
+            $rootScope.$evalAsync(
+                api.queue.splice(0, 1)[0]
+            )
+        } else { // queue is empty
+            $timeout(api.getActive, 15 * 1000 /* 15 seconds */ )
+        }
+    }
+
+    api.getActive = function() {
+        api('/api/status/active', {
+            method: 'PUT',
+            data: {
+                "nodes": Object.keys($rootScope._nodes)
+            }
+        }).success(function(data){
+            for(var type in data.changed) {
+                data.changed[type].forEach(function(id) {
+                    var name = /^.*(?=s)/.exec(type)[0]
+                    // remove the plural from the type (nodes -> node)
+                    api.addQueue(function(){
+                        api("/api/v2/"+name+"s/"+id).
+                            success(function(obj){
+                                api["add"+camelCase(name)](obj);
+                                api.nextQueue()
+                            })
+                    })
+                });
+            }
+            api.nextQueue()
+        })
     }
 
     api.addDeployment = function(deployment) {
