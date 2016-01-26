@@ -30,6 +30,11 @@ login view
 
 				<!-- Right justified login button  -->
 				<section layout='row' role="main" >
+					<span class='inset'>
+						<md-checkbox ng-model="login.credentials.remember">
+            	Remember Me
+	          </md-checkbox>
+          </span>
 					<span flex></span>
 					<md-button class="md-raised md-primary" type="submit" ng-disabled="!eula">
 						Login
