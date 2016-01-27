@@ -75,24 +75,12 @@
 				<md-divider></md-divider>
 
 				<!-- User menu -->
-				<md-subheader>Management</md-subheader>
 				<md-list-item ng-repeat="item in admin" md-ink-ripple ng-href="#{{item.path}}">
 					<div class="md-list-item-text">
 						<md-icon>{{item.icon}}</md-icon>
 						<span class="md-body-2">{{item.title}}</span>
 					</div>
 				</md-list-item>
-
-				<!-- Log out item -->
-				<!-- logging out by refresh, leaving this here just in case it's re-implemented
-				<md-list-item class="md-2-line" md-ink-ripple ng-click="logout()">
-					<md-icon>exit_to_app</md-icon>
-
-					<div class="md-list-item-text">
-						<span class="md-body-2">Log Out</span>
-					</div>
-				</md-list-item>
-				-->
 			</md-list>
 		</md-sidenav>
 		
@@ -107,7 +95,6 @@
 					<h3>{{title}}</h3>
 					<span flex></span>
 					<md-button class="md-icon-button" ng-href='/#/annealer'/>
-						<!-- TODO: take to annealer page -->
 						<md-icon>track_changes</md-icon>
 					</md-button>
 				</div>
