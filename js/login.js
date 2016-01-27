@@ -8,8 +8,9 @@ login controller
 
         // model for the sign in form
         this.credentials = {
-            username: $cookies.get('username') || '',
-            password: ''
+            username: localStorageService.get('username') || '',
+            password: localStorageService.get('password') || '',
+            remember: localStorageService.get('remember') || false
         }
 
         this.host = $scope.host;
@@ -68,7 +69,7 @@ login controller
             console.log('attempting to sign in')
             localStorageService.add('username', login.credentials.username);
             localStorageService.add('password', login.credentials.password);
-            $cookies.put('username', login.credentials.username)
+            localStorageService.add('remember', login.credentials.remember);
 
             api('/api/v2/digest', {
                 method: 'HEAD',
@@ -80,6 +81,11 @@ login controller
                 }
             }).then(function (response) {
                 login.getUser();
+
+                // remove password if not remember
+                if(!login.credentials.remember)
+                    localStorageService.add('password', undefined);
+            
             }, function (response) {
                 console.log('error', response);
                 $mdToast.show(

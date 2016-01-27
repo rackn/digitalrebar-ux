@@ -10,7 +10,7 @@ angular
 function digestAuthInterceptorProvider() {
 	var username = null,
 		password = null,
-		maximumRetries = 5,
+		maximumRetries = 6,
 		authenticationHeader = 'WWW-Authenticate',
 		credentialsInvalidPath = '/login';
 	
@@ -33,7 +33,7 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 		username = initialUsername,
 		password = initialPassword,
 		HA1 = null;
-	
+
 	var digest = {
 		failedQueue: {},
 		request: request,
@@ -45,7 +45,6 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 	function request(config) {
 		if(!config.api) // don't add auth header if I'm not using the api
 			return config;
-
 		var header = createHeader(config.method, config.url);
 		if (header) {
 			config.headers.Authorization = header;
@@ -96,12 +95,12 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 			return $q.reject(rejection);
 		}
 		
-		if (!username || !password) {
+		if (!username || !password || initialPassword != password || initialUsername != username) {
 			username = localStorageService.get('username');
 			password = localStorageService.get('password');
 		}
 		
-		if ((!username || !password) && !HA1) {
+		if ((!username || !password || initialPassword != password || initialUsername != username) && !HA1) {
 			$location.path(credentialsInvalidPath);
 			return $q.reject(rejection);
 		}
@@ -182,7 +181,7 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 		}
 		
 		// http://en.wikipedia.org/wiki/Digest_access_authentication
-		if (!HA1) {
+		if (!HA1 || initialPassword != password || initialUsername != username) {
 			HA1 = md5.createHash([username, realm, password].join(':'));
 			if (algorithm === 'MD5-sess') {
 				HA1 = md5.createHash([HA1, nonce, cnonce].join(':'));
