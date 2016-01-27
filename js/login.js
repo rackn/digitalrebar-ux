@@ -67,8 +67,6 @@ login controller
         // function for the login button
         this.signIn = function() {
             console.log('attempting to sign in')
-            console.log('usr', localStorageService.get('username'))
-            console.log('psw', localStorageService.get('password'))
             localStorageService.add('username', login.credentials.username);
             localStorageService.add('password', login.credentials.password);
             localStorageService.add('remember', login.credentials.remember);
