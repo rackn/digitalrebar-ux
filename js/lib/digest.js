@@ -100,7 +100,7 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 			password = localStorageService.get('password');
 		}
 		
-		if ((!username || !password || initialPassword != password || initialUsername != username) && !HA1) {
+		if ((!username || !password) && !HA1) {
 			$location.path(credentialsInvalidPath);
 			return $q.reject(rejection);
 		}
@@ -181,7 +181,7 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 		}
 		
 		// http://en.wikipedia.org/wiki/Digest_access_authentication
-		if (!HA1 || initialPassword != password || initialUsername != username) {
+		if (!HA1 || (initialPassword != password || initialUsername != username)) {
 			HA1 = md5.createHash([username, realm, password].join(':'));
 			if (algorithm === 'MD5-sess') {
 				HA1 = md5.createHash([HA1, nonce, cnonce].join(':'));
