@@ -5,6 +5,11 @@
 				<md-icon>{{icons[status]}}</md-icon>
 				{{status}}
 			</h2>
+			<span flex></span>
+			<md-button class='md-icon-button' ng-if="status=='error'" ng-click='retryAll()'>
+				<md-icon>redo</md-icon>
+				<md-tooltip>Retry All</md-tooltip>
+			</md-button>
 		</div>
 	</md-toolbar>
 	<md-card-content>
