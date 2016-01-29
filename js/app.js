@@ -66,6 +66,11 @@ var version = '0.0.2';
                 controllerAs: 'dash',
                 templateUrl: 'views/dashboard.html'
             }).
+            when('/dash/:id', {
+                controller: 'DashCtrl',
+                controllerAs: 'dash',
+                templateUrl: 'views/dashboard.html'
+            }).
             when('/login', {
                 controller: 'LoginCtrl',
                 controllerAs: 'login',
@@ -80,6 +85,16 @@ var version = '0.0.2';
                 controller: 'NodesCtrl',
                 controllerAs: 'nodes',
                 templateUrl: 'views/nodes_singular.html'
+            }).
+            when('/node_roles', {
+                controller: 'NodeRolesCtrl',
+                controllerAs: 'node_roles',
+                templateUrl: 'views/node_roles.html'
+            }).
+            when('/node_roles/:id', {
+                controller: 'NodeRolesCtrl',
+                controllerAs: 'node_roles',
+                templateUrl: 'views/node_roles_singular.html'
             }).
             when('/network', {
                 controller: 'NetworkCtrl',
