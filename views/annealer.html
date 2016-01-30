@@ -1,5 +1,5 @@
 <md-card ng-repeat="status in statesList">
-	<md-toolbar md-theme="status_{{status}}">
+	<md-toolbar md-theme="status_{{getNodeRoles(status).length ? status : 'off'}}">
 		<div class="md-toolbar-tools">
 			<h2 class="md-flex">
 				<md-icon>{{icons[status]}}</md-icon>
