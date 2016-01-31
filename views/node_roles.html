@@ -11,14 +11,19 @@
       <table md-table md-row-select>
         <thead md-head md-order="myOrder">
           <tr md-row>
+            <th md-column md-order-by='id'>State</th>
             <th md-column md-order-by='deployment_id'>Deployment</th>
             <th md-column md-order-by='node_id'>Node</th>
             <th md-column md-order-by='role_id'>Role</th>
-            <th md-column md-order-by='id'>State</th>
           </tr>
         </thead>
         <tbody md-body>
           <tr md-row ng-repeat="role in getNodeRoles() | orderBy: myOrder">
+          <td md-cell>
+            <md-icon class='md-primary' md-theme='status_{{role.status}}'>
+              {{icons[role.status]}}
+            </md-icon>
+          </td>
           <td md-cell>
             <a ng-href='#/dash/{{role.deployment_id}}'>
               {{_deployments[role.deployment_id].name}}
@@ -30,11 +35,6 @@
             </a>
           </td>
           <td md-cell>{{_roles[role.role_id].name}}</td>
-          <td md-cell>
-            <md-icon class='md-primary' md-theme='status_{{role.status}}'>
-              {{icons[role.status]}}
-            </md-icon>
-          </td>
           
           </tr>
         </tbody>
