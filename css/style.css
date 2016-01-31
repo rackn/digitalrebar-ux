@@ -31,8 +31,14 @@ md-toolbar.md-tall.md-hue-2 {
 
 a {
 	text-decoration: none;
+  color: #1565C0;
 }
 
 a:hover {
 	text-decoration: underline;
+  color: #1565C0;
+}
+
+a:visited:not(.md-button) {
+  color: #1565C0;
 }
