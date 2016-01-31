@@ -3,7 +3,7 @@ Copyright 2015, RackN
 annealer controller
 */
 (function(){
-    angular.module('app').controller('AnnealerCtrl', function($scope) {
+    angular.module('app').controller('AnnealerCtrl', function($scope, api) {
         $scope.$emit('title', 'Annealer'); // shows up on the top toolbar
 
         $scope.selected = -1;
@@ -21,6 +21,14 @@ annealer controller
             		roles.push(role)
         	}
         	return roles
+        }
+
+        $scope.retryAll = function() {
+            $scope.getNodeRoles('error').forEach(function(role){
+                api('/api/v2/node_roles/'+role.id+'/retry', {
+                    method: 'PUT'
+                }).success(api.addNodeRole);
+            })
         }
 
         $scope.statesList = ['error','process', 'todo', 'queue'];
