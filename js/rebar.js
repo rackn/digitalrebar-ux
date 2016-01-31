@@ -98,17 +98,13 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
         api.queue.push(function(){
             api("/api/v2/"+name+"s/"+id).
                 success(function(obj){
-                    if(!obj.error) {
-                        api["add"+camelCase(name)](obj);
-                    } else {
-                        api.remove(name, id)
-                    }
+                    api["add"+camelCase(name)](obj);
 
                     // go to the next function in the queue
                     api.nextQueue()
                 }).
                 error(function(err){
-                    console.warn('Err? '+err)
+                    api.remove(name, id)
                     api.nextQueue()
                 })
         });
