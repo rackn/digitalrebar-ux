@@ -2,7 +2,7 @@
 dash controller
 */
 (function(){
-    angular.module('app').controller('DashCtrl', function($mdMedia, $mdDialog, $scope, $http, debounce, $timeout) {
+    angular.module('app').controller('DashCtrl', function($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams) {
         $scope.$emit('title', 'Dashboard'); // shows up on the top toolbar
 
         var dash = this;
@@ -26,6 +26,9 @@ dash controller
         };
 
         $scope.expand = {}
+
+        if($routeParams.id)
+            $scope.expand[$routeParams.id] = true;
 
         // called when a deployment is clicked
         this.toggleExpand = function(deployment) {
