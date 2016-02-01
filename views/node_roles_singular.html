@@ -1,0 +1,34 @@
+<md-content class='bg'>
+
+  <md-card>
+    <md-toolbar class="md-table-toolbar md-default">
+      <div class="md-toolbar-tools">
+        <span>
+          <md-button class='md-icon-button' md-theme='status_{{node_role.status}}'>
+            <md-icon>{{icons[node_role.status]}}</md-icon>
+          </md-button>
+          <a ng-href='/#/deployments/{{node_role.deployment_id}}'>
+            {{_deployments[node_role.deployment_id].name}}
+          </a>
+          <a ng-href='/#/nodes/{{node_role.node_id}}'>
+            {{_nodes[node_role.node_id].name}}
+          </a>
+          {{_roles[node_role.role_id].name}}
+        </span>
+      </div>
+    </md-toolbar>
+
+  </md-card>
+
+  <md-card>
+    <md-toolbar class="md-table-toolbar md-default">
+      <div class="md-toolbar-tools">
+        <span>Run Log</span>
+      </div>
+    </md-toolbar>
+    <md-card-content>
+      {{node_role.run_log || "None"}}
+    <md-card-content>
+  </md-card>
+
+</md-content>
