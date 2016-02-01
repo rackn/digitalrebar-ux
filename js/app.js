@@ -1,4 +1,4 @@
-var version = '0.0.2';
+var version = '0.1.0';
 
 (function(){
     var app = angular.module('app', [
@@ -59,17 +59,17 @@ var version = '0.0.2';
 
         $routeProvider.
             when('/', {
-                redirectTo: '/dash'
+                redirectTo: '/deployments'
             }).
-            when('/dash', {
-                controller: 'DashCtrl',
-                controllerAs: 'dash',
-                templateUrl: 'views/dashboard.html'
+            when('/deployments', {
+                controller: 'DeploymentsCtrl',
+                controllerAs: 'deployments',
+                templateUrl: 'views/deployments.html'
             }).
-            when('/dash/:id', {
-                controller: 'DashCtrl',
-                controllerAs: 'dash',
-                templateUrl: 'views/dashboard.html'
+            when('/deployments/:id', {
+                controller: 'DeploymentsCtrl',
+                controllerAs: 'deployments',
+                templateUrl: 'views/deployments.html'
             }).
             when('/login', {
                 controller: 'LoginCtrl',
@@ -158,17 +158,18 @@ var version = '0.0.2';
 
         $scope.menu = [
             {
-                title: 'Dashboard',
+                title: 'Deployments',
                 icon: 'dashboard',
-                path: '/dash'
+                path: '/deployments'
             },
             {
                 title: 'Workloads',
                 icon: 'work'
             },
             {
-                title: 'Deployments',
-                icon: 'view_column'
+                title: 'Providers',
+                icon: 'filter_drama',
+                path: '/providers'
             },
             {
                 title: 'Nodes',
@@ -224,8 +225,8 @@ var version = '0.0.2';
             var path = next.split('/#/')[1];
             if(path) // if it's a valid path
                 path = path.toLowerCase();
-            else // default to dashboard
-                path = 'dash'
+            else // default to Deployments
+                path = 'deployments'
 
             if(path !== 'login' && !$rootScope.isAuth()) {
 
@@ -234,7 +235,7 @@ var version = '0.0.2';
             }
             
             if(path === 'login' && $rootScope.isAuth()) {
-                $location.path('/dash')
+                $location.path('/deployments')
             }
         });
 
