@@ -1,11 +1,11 @@
 /*
-dash controller
+deployments controller
 */
 (function(){
-    angular.module('app').controller('DashCtrl', function($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams) {
-        $scope.$emit('title', 'Dashboard'); // shows up on the top toolbar
+    angular.module('app').controller('DeploymentsCtrl', function($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams) {
+        $scope.$emit('title', 'Deployments'); // shows up on the top toolbar
 
-        var dash = this;
+        var deployments = this;
 
         // when a node is clicked, this dialog appears (see nodedialog.tmpl.html)
         this.showNodeDialog = function(ev, node) {
@@ -70,7 +70,7 @@ dash controller
         this.createPieChartData = function() {
             $scope.$evalAsync(function(){
                 for(var id in $scope._deployments) {
-                    dash.deploymentPie[id] = dash.getNodeCounts($scope._deployments[id]);
+                    deployments.deploymentPie[id] = deployments.getNodeCounts($scope._deployments[id]);
                 }
             })
         }
@@ -83,13 +83,13 @@ dash controller
             $scope.$evalAsync(function(){
                 for(var id in $scope._deployments) {
                     var deployment = $scope._deployments[id];
-                    dash.deploymentStatus[id] = {error: 0, total: 0}
+                    deployments.deploymentStatus[id] = {error: 0, total: 0}
                     for(var roleId in deployment.node_roles) {
                         var state = deployment.node_roles[roleId].state;
                         if(state == -1)
-                            dash.deploymentStatus[id].error ++
+                            deployments.deploymentStatus[id].error ++
 
-                        dash.deploymentStatus[id].total ++; 
+                        deployments.deploymentStatus[id].total ++; 
                     }
                 }
             })
@@ -97,8 +97,8 @@ dash controller
 
         // callbacks for when nodes and noderoles finish
         // the pie charts require the nodes to exist
-        $scope.$on('nodesDone', dash.createPieChartData)
-        $scope.$on('node_rolesDone', dash.createStatusBarData)
+        $scope.$on('nodesDone', deployments.createPieChartData)
+        $scope.$on('node_rolesDone', deployments.createStatusBarData)
 
         // if we have nodes, we don't have to wait for the callback
         if(Object.keys($scope._nodes).length)
