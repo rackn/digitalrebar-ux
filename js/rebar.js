@@ -35,12 +35,9 @@ app.run(function($rootScope, $cookies, api, $interval){
     $rootScope.$on('updateApi', function(event) {
         // make the api calls and add callbacks
 
-        var fetch = ['deployments', 'roles', 'nodes', 'node_roles',
-            'deployment_roles', 'networks', 'providers']
-
         // loops through 'fetch', calling api.getDeployments 
         //      and emitting the proper callback (deploymentsDone)
-        fetch.forEach(function(name){
+        app.types.forEach(function(name){
             api["get"+camelCase(name)]().success(function(){
                 $rootScope.$broadcast(name+'Done')
             })
@@ -52,6 +49,7 @@ app.run(function($rootScope, $cookies, api, $interval){
 
         $interval(function(){
             $rootScope.$emit('updateApi')
+            api.lastUpdate = new Date().getTime();
         }, 3 * 60 * 1000 /* 3 minutes */ )
 
         api.getActive();
@@ -73,7 +71,7 @@ app.run(function($rootScope, $cookies, api, $interval){
 
 })
 
-app.factory('api', function($http, $rootScope, $timeout) {
+app.factory('api', function($http, $rootScope, $timeout, $filter) {
 
 
     // function for calling api functions ( eg. /api/v2/nodes )
@@ -88,44 +86,108 @@ app.factory('api', function($http, $rootScope, $timeout) {
         return $http(args)
     }
 
+    app.types = ['deployments', 'roles', 'nodes', 'node_roles',
+        'deployment_roles', 'networks', 'providers']
+
+
+    api.lastUpdate = new Date().getTime();
     api.queue = []
 
-    api.addQueue = function(fn) {
-        api.queue.push(fn);
+    // add an api call to the queue
+    api.addQueue = function(name, id) {
+        api.queue.push(function(){
+            api("/api/v2/"+name+"s/"+id).
+                success(function(obj){
+                    api["add"+camelCase(name)](obj);
+
+                    // go to the next function in the queue
+                    api.nextQueue()
+                }).
+                error(function(err){
+                    api.remove(name, id)
+                    api.nextQueue()
+                })
+        });
     }
 
     api.nextQueue = function() {
+        // if the queue isn't empty
         if(api.queue.length) {
+            // eval and remove the first one
             $rootScope.$evalAsync(
                 api.queue.splice(0, 1)[0]
             )
-        } else { // queue is empty
+        } else { // queue is empty, wait and populate it
             $timeout(api.getActive, 15 * 1000 /* 15 seconds */ )
         }
     }
 
     api.getActive = function() {
+        // time since last update in seconds
+        var deltaTime = Math.ceil((new Date().getTime() - api.lastUpdate)/1000)
+
         api('/api/status/active', {
             method: 'PUT',
-            data: {
-                "nodes": Object.keys($rootScope._nodes)
+            params: {
+                "age": deltaTime
+            },
+            data: { // sending only the IDs of nodes and deployments
+                "nodes": Object.keys($rootScope._nodes).map(Number),
+                "deployments": Object.keys($rootScope._deployments).map(Number)
             }
         }).success(function(data){
+            api.lastUpdate = new Date().getTime();
             for(var type in data.changed) {
+                // using forEach for asynchronous api calls
                 data.changed[type].forEach(function(id) {
-                    var name = /^.*(?=s)/.exec(type)[0]
                     // remove the plural from the type (nodes -> node)
-                    api.addQueue(function(){
-                        api("/api/v2/"+name+"s/"+id).
-                            success(function(obj){
-                                api["add"+camelCase(name)](obj);
-                                api.nextQueue()
-                            })
-                    })
+                    var name = /^.*(?=s)/.exec(type)[0]
+                    api.addQueue(name, id)
                 });
             }
+
+            for(var type in data.deleted) {
+                for(var i in data.deleted[type]) {
+                    var id = data.deleted[type][i]
+                    var name = /^.*(?=s)/.exec(type)[0]
+                    try {
+                        api.remove(name, id)
+                    } catch (e) {
+                        console.warn(e)
+                    }
+                }
+            }
+
+            // start the queue
+            api.nextQueue()
+        }).error(function(resp) {
+            console.warn(resp)
             api.nextQueue()
         })
+    }
+
+    api.remove = function(type, parentId) {
+        if(typeof parentId === 'undefined')
+            return;
+
+        if(!$rootScope['_'+type+'s'][parentId])
+            return;
+
+        console.log('removing '+type+' '+parentId)
+        delete $rootScope['_'+type+'s'][parentId];
+
+        if(type == 'deployment') {
+            ['nodes', 'node_roles'].forEach(function(item){
+                var removed = []
+                var name = /^.*(?=s)/.exec(item)[0]
+                for(var id in $rootScope['_'+item]){
+                    var child = $rootScope['_'+item][id];
+                    if(child.deployment_id == parentId)
+                        api.addQueue(name, id)
+                }
+            })
+        }
+
     }
 
     api.addDeployment = function(deployment) {
