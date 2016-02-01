@@ -94,10 +94,12 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 		if (!authHeader) {
 			return $q.reject(rejection);
 		}
-		
-		if (!username || !password || initialPassword != password || initialUsername != username) {
-			username = localStorageService.get('username');
-			password = localStorageService.get('password');
+		var currUser = localStorageService.get('username');
+		var currPass = localStorageService.get('password');
+		if ((!username || !password) || (username != currUser || password != currPass)) {
+			HA1 = null;
+			username = currUser;
+			password = currPass;
 		}
 		
 		if ((!username || !password) && !HA1) {
@@ -126,7 +128,6 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 			transformResponse: rejection.config.transformResponse
 		})
 		.success(function(data, status, headers, config) {
-			password = null;
 			deferredResponse.resolve(
 				{
 					data: data,
@@ -140,7 +141,7 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 			HA1 = null;
 			if(typeof httpReject !== 'undefined')
 				deferredResponse.reject(httpReject);
-		});		
+		});
 		return deferredResponse.promise;
 	}
 	
@@ -181,7 +182,7 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 		}
 		
 		// http://en.wikipedia.org/wiki/Digest_access_authentication
-		if (!HA1 || (initialPassword != password || initialUsername != username)) {
+		if (!HA1) {
 			HA1 = md5.createHash([username, realm, password].join(':'));
 			if (algorithm === 'MD5-sess') {
 				HA1 = md5.createHash([HA1, nonce, cnonce].join(':'));
