@@ -4,9 +4,9 @@
     <md-toolbar class="md-table-toolbar md-default">
       <div class="md-toolbar-tools">
         <span>
-          <md-button class='md-icon-button' md-theme='status_{{node_role.status}}'>
-            <md-icon>{{icons[node_role.status]}}</md-icon>
-          </md-button>
+          <md-icon class='md-primary' md-theme='status_{{node_role.status}}'>
+            {{icons[node_role.status]}}
+          </md-icon>
           <a ng-href='/#/deployments/{{node_role.deployment_id}}'>
             {{_deployments[node_role.deployment_id].name}}
           </a>
@@ -15,8 +15,15 @@
           </a>
           {{_roles[node_role.role_id].name}}
         </span>
+        <span flex></span>
+        <md-button class='md-icon-button' ng-click='retry()'>
+          <md-icon>redo</md-icon>
+          <md-tooltip>Retry</md-tooltip>
+        </md-button>
       </div>
     </md-toolbar>
+
+
 
   </md-card>
 

@@ -1,4 +1,4 @@
-var version = '0.1.0';
+var version = '0.1.1';
 
 (function(){
     var app = angular.module('app', [
