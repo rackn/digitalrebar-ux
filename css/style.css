@@ -20,6 +20,10 @@ table td.label {
   font-weight: bold;
 }
 
+json-text {
+  font-family: monospace;
+}
+
 /* style for toolbar when a table has selected items*/
 md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
   color: #1e88e5;

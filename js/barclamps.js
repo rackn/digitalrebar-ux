@@ -34,6 +34,22 @@ barclamps controller
             return out
         }
 
+        this.showUpdateBarclampDialog = function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'dialog',
+                templateUrl: 'views/dialogs/updatebarclampdialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    barclamp: $scope.barclamp
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
+        };
+
         $scope.id = $routeParams.id
         $scope.barclamp = {}
 
