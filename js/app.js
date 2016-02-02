@@ -108,6 +108,16 @@ var version = '0.1.2';
                 controllerAs: 'roles',
                 templateUrl: 'views/roles_singular.html'
             }).
+            when('/barclamps', {
+                controller: 'BarclampsCtrl',
+                controllerAs: 'barclamps',
+                templateUrl: 'views/barclamps.html'
+            }).
+            when('/barclamps/:id', {
+                controller: 'BarclampsCtrl',
+                controllerAs: 'barclamps',
+                templateUrl: 'views/barclamps_singular.html'
+            }).
             when('/network', {
                 controller: 'NetworkCtrl',
                 controllerAs: 'networks',

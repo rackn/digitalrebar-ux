@@ -26,7 +26,11 @@
         </tr>
         <tr>
           <td class='label'>Barclamp</td>
-          <td>{{role.barclamp_id}}</td>
+          <td>
+            <a ng-href='#/barclamps/{{role.barclamp_id}}'>
+              {{_barclamps[role.barclamp_id].name}}
+            </a>
+          </td>
         </tr>
         <tr>
           <td class='label'>Source</td>

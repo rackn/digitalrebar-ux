@@ -2,7 +2,7 @@
 node role controller
 */
 (function(){
-    angular.module('app').controller('NodeRolesCtrl', function($scope, debounce, $routeParams, $mdMedia, $mdDialog, api) {
+    angular.module('app').controller('NodeRolesCtrl', function($scope, $location, debounce, $routeParams, $mdMedia, $mdDialog, api) {
         
         $scope.$emit('title', 'Node Roles'); // shows up on the top toolbar
 
@@ -33,9 +33,13 @@ node role controller
 
         if(Object.keys($scope._node_roles).length) {
             $scope.node_role = $scope._node_roles[$scope.id];
+            if(!$scope.node_role)
+                $location.path('/node_roles')
         } else {
             $scope.$on('node_rolesDone', function(){
                 $scope.node_role = $scope._node_roles[$scope.id];
+                if(!$scope.node_role)
+                    $location.path('/node_roles')
             })
         }
 

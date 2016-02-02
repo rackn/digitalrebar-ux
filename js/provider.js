@@ -26,14 +26,19 @@ provider controller
             return nodes;
         }
 
-        // if an id is passed, we will assume we're looking at a provider
-        if($routeParams.id) {
-            $scope.provider = {}
-            
-            $scope.$watch('_providers['+$routeParams.id+']', function(provider){
-                $scope.provider = provider
+        $scope.id = $routeParams.id
+        $scope.provider = {}
+
+        if(Object.keys($scope._providers).length) {
+            $scope.provider = $scope._providers[$scope.id];
+            if(!$scope.provider)
+                $location.path('/providers')
+        } else {
+            $scope.$on('providersDone', function(){
+                $scope.provider = $scope._providers[$scope.id];
+                if(!$scope.provider)
+                    $location.path('/providers')
             })
-            
         }
     });
 })();

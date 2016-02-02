@@ -12,7 +12,7 @@ role controller
         $scope.flags = ["library", "implicit", "bootstrap", 
             "discovery", "cluster", "destructive", "abstract"];
         
-        // converts the _node_roles object that rootScope has into an array
+        // converts the _roles object that rootScope has into an array
         $scope.getRoles = function() {
           var roles = []
           for(var id in $scope._roles) {

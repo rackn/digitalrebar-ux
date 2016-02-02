@@ -68,6 +68,7 @@ app.run(function($rootScope, $cookies, api, $interval){
     $rootScope._networks = {}
     $rootScope._node_roles = {}
     $rootScope._providers = {}
+    $rootScope._barclamps = {}
 
 })
 
@@ -87,7 +88,7 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
     }
 
     app.types = ['deployments', 'roles', 'nodes', 'node_roles',
-        'deployment_roles', 'networks', 'providers']
+        'deployment_roles', 'networks', 'providers', 'barclamps']
 
 
     api.lastUpdate = new Date().getTime();
@@ -190,6 +191,7 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
 
     }
 
+
     api.addDeployment = function(deployment) {
         var id = deployment.id
         $rootScope._deployments[id] = deployment
@@ -251,7 +253,11 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
     }
 
     api.addDeploymentRole = function(role) {
-        role.cohort = function(){$rootScope._roles[role.role_id].cohort}
+        // allow deployment roles to be sorted by cohort
+        role.cohort = function(){
+            $rootScope._roles[role.role_id].cohort
+        }
+
         $rootScope._deployment_roles[role.id] = role
     }
 
@@ -306,6 +312,20 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
             success(function(data){
                 $rootScope._node_roles = {}
                 data.map(api.addNodeRole)
+            })
+    }
+
+    api.addBarclamp = function(barclamp) {
+        var id = barclamp.id
+        $rootScope._barclamps[id] = barclamp
+    }
+
+     // api call for getting all the barclamps
+    api.getBarclamps = function() {
+        return api('/api/v2/barclamps').
+            success(function(data){
+                $rootScope._barclamps = {}
+                data.map(api.addBarclamp)
             })
     }
 
