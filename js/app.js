@@ -57,6 +57,8 @@ var version = '0.1.1';
                 'default': '500'
             }).accentPalette('grey', {'default': '900'})
 
+        $mdThemingProvider.alwaysWatchTheme(true);
+
         $routeProvider.
             when('/', {
                 redirectTo: '/deployments'

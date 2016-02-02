@@ -21,7 +21,7 @@ node role controller
 
         $scope.retry = function() {
             // if we have a valid node selected
-            if(node_role.id) {
+            if($scope.node_role.id) {
                 api('/api/v2/node_roles/'+node_role.id+'/retry', {
                     method: 'PUT'
                 }).success(api.addNodeRole);
