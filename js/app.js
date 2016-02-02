@@ -1,4 +1,4 @@
-var version = '0.1.1';
+var version = '0.1.2';
 
 (function(){
     var app = angular.module('app', [
@@ -97,6 +97,16 @@ var version = '0.1.1';
                 controller: 'NodeRolesCtrl',
                 controllerAs: 'node_roles',
                 templateUrl: 'views/node_roles_singular.html'
+            }).
+            when('/roles', {
+                controller: 'RolesCtrl',
+                controllerAs: 'roles',
+                templateUrl: 'views/roles.html'
+            }).
+            when('/roles/:id', {
+                controller: 'RolesCtrl',
+                controllerAs: 'roles',
+                templateUrl: 'views/roles_singular.html'
             }).
             when('/network', {
                 controller: 'NetworkCtrl',

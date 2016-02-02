@@ -7,13 +7,15 @@
           <md-icon class='md-primary' md-theme='status_{{node_role.status}}'>
             {{icons[node_role.status]}}
           </md-icon>
-          <a ng-href='/#/deployments/{{node_role.deployment_id}}'>
+          <a ng-href='#/deployments/{{node_role.deployment_id}}'>
             {{_deployments[node_role.deployment_id].name}}
           </a>
-          <a ng-href='/#/nodes/{{node_role.node_id}}'>
+          <a ng-href='#/nodes/{{node_role.node_id}}'>
             {{_nodes[node_role.node_id].name}}
           </a>
-          {{_roles[node_role.role_id].name}}
+          <a ng-href='#/roles/{{node_role.role_id}}'>
+            {{_roles[node_role.role_id].name}}
+          </a>
         </span>
         <span flex></span>
         <md-button class='md-icon-button' ng-click='retry()'>
@@ -23,7 +25,8 @@
       </div>
     </md-toolbar>
 
-
+    <md-card-content>
+    </md-card-content>
 
   </md-card>
 

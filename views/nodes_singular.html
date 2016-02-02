@@ -3,46 +3,54 @@
 	<md-card>
 		<md-toolbar class="md-table-toolbar md-default">
 			<div class="md-toolbar-tools">
-				<span>Nodes ({{node.name}})</span>
+				<span>
+          <md-icon class='md-primary' md-theme='status_{{node.status}}'>
+            {{icons[node.status]}}
+          </md-icon>
+
+					{{node.name}}
+				</span>
 			</div>
 		</md-toolbar>
 
-		<table layout-padding>
-			<tr>
-				<td class='label'>Deployment</td>
-				<td>
-					<a ng-href='#/deployments/{{node.deployment_id}}'>
-						{{_deployments[node.deployment_id].name}}
-					</a>
-				</td>
-			</tr>
-			<tr>
-				<td class='label'>Boot Environment</td>
-				<td>{{node.bootenv}}</td>
-			</tr>
-			<tr>
-				<td class='label'>Address</td>
-				<td>{{node.address}}</td>
-			</tr>
-			<tr>
-				<td class='label'>Status</td>
-				<td>
-					{{node.reserved ? 'Reserved' : ''}}
-					{{node.alive ? 'On' : 'Off'}}
-					{{states[node.state]}}
-				</td>
-			</tr>
-			<tr>
-				<td class='label'>Provider</td>
-				<td>
-					<a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a>
-				</td>
-			</tr>
-		</table>
-		<!-- Show node roles -->
+		<md-card-content>
+			<table layout-padding>
+				<tr>
+					<td class='label'>Deployment</td>
+					<td>
+						<a ng-href='#/deployments/{{node.deployment_id}}'>
+							{{_deployments[node.deployment_id].name}}
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td class='label'>Boot Environment</td>
+					<td>{{node.bootenv}}</td>
+				</tr>
+				<tr>
+					<td class='label'>Address</td>
+					<td>{{node.address}}</td>
+				</tr>
+				<tr>
+					<td class='label'>Status</td>
+					<td>
+						{{node.reserved ? 'Reserved' : ''}}
+						{{node.alive ? 'On' : 'Off'}}
+						{{states[node.state]}}
+					</td>
+				</tr>
+				<tr>
+					<td class='label'>Provider</td>
+					<td>
+						<a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a>
+					</td>
+				</tr>
+			</table>
+		</md-card-content>
 
 	</md-card>
 
+	<!-- Show node roles -->
 	<md-card>
 		<md-toolbar class="md-table-toolbar md-default">
 			<div class="md-toolbar-tools">
