@@ -4,7 +4,7 @@ node role controller
 (function(){
     angular.module('app').controller('NodeRolesCtrl', function($scope, debounce, $routeParams, $mdMedia, $mdDialog, api) {
         
-        $scope.$emit('title', 'NodeRoles'); // shows up on the top toolbar
+        $scope.$emit('title', 'Node Roles'); // shows up on the top toolbar
 
         var node_roles = this;
 
@@ -19,13 +19,22 @@ node role controller
           return roles;
         }
 
+        $scope.retry = function() {
+            // if we have a valid node selected
+            if(node_role.id) {
+                api('/api/v2/node_roles/'+node_role.id+'/retry', {
+                    method: 'PUT'
+                }).success(api.addNodeRole);
+            }
+        }
+
         $scope.id = $routeParams.id
         $scope.node_role = {}
 
         if(Object.keys($scope._node_roles).length) {
             $scope.node_role = $scope._node_roles[$scope.id];
         } else {
-            $scope.$on('nodeRolesDone', function(){
+            $scope.$on('node_rolesDone', function(){
                 $scope.node_role = $scope._node_roles[$scope.id];
             })
         }
