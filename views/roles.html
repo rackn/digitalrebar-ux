@@ -34,7 +34,9 @@
             </md-button>
           </td>
           <td md-cell>
-            {{role.barclamp_id}}
+            <a ng-href='#/barclamps/{{role.barclamp_id}}'>
+              {{_barclamps[role.barclamp_id].name}}
+            </a>
           </td>
           <td md-cell>
             {{role.jig_name}}

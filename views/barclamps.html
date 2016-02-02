@@ -1,0 +1,52 @@
+<md-content class='bg'>
+
+  <md-card>
+    <md-toolbar class="md-table-toolbar md-default">
+      <div class="md-toolbar-tools">
+        <span>Barclamps ({{getBarclamps().length}})</span>
+      </div>
+    </md-toolbar>
+
+    <md-table-container>
+      <table md-table>
+        <thead md-head md-order="myOrder">
+          <tr md-row>
+            <th md-column md-order-by='id'>Barclamp</th>
+            <th md-column md-order-by='barclamp_id'>Parent</th>
+            <th md-column>Description</th>
+            <th md-column>Roles</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat="barclamp in getBarclamps() | orderBy: myOrder">
+            <td md-cell>
+              <a ng-href='#/barclamps/{{barclamp.id}}'>
+                {{barclamp.name}}
+              </a>
+            </td>
+            <td md-cell>
+              <a ng-href='#/barclamps/{{barclamp.barclamp_id}}'>
+                {{_barclamps[barclamp.barclamp_id].name}}
+              </a>
+            </td>
+            <td md-cell>
+              {{barclamp.description}}
+            </td>
+            <td md-cell>
+              <md-button ng-href='#/roles/{{role.id}}' class='md-fab md-primary md-mini' ng-repeat="role in getRoles(barclamp.cfg_data.roles)">
+                <md-icon>
+                  {{role.icon}}
+                </md-icon>
+                <md-tooltip>
+                  {{role.name}}
+                </md-tooltip>
+              </md-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+  </md-card>
+
+</md-content>
+

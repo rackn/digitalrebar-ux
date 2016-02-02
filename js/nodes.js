@@ -2,7 +2,7 @@
 node controller
 */
 (function(){
-    angular.module('app').controller('NodesCtrl', function($scope, debounce, $routeParams, $mdMedia, $mdDialog, api) {
+    angular.module('app').controller('NodesCtrl', function($scope, $location, debounce, $routeParams, $mdMedia, $mdDialog, api) {
         
         $scope.$emit('title', 'Nodes'); // shows up on the top toolbar
 
@@ -67,9 +67,15 @@ node controller
 
         if(Object.keys($scope._nodes).length) {
             $scope.node = $scope._nodes[$scope.id];
+            if(!$scope.node)
+                $location.path('/nodes')
+
         } else {
             $scope.$on('nodesDone', function(){
                 $scope.node = $scope._nodes[$scope.id];
+                if(!$scope.node)
+                    $location.path('/nodes')
+
             })
         }
 
