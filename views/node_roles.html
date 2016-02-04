@@ -1,48 +1,43 @@
-<md-content class='bg'>
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span>Node Roles ({{getNodeRoles().length}})</span>
+    </div>
+  </md-toolbar>
 
-  <md-card>
-    <md-toolbar class="md-table-toolbar md-default">
-      <div class="md-toolbar-tools">
-        <span>Node Roles ({{getNodeRoles().length}})</span>
-      </div>
-    </md-toolbar>
-
-    <md-table-container>
-      <table md-table>
-        <thead md-head md-order="myOrder">
-          <tr md-row>
-            <th md-column md-order-by='id'>State</th>
-            <th md-column md-order-by='deployment_id'>Deployment</th>
-            <th md-column md-order-by='node_id'>Node</th>
-            <th md-column md-order-by='role_id'>Role</th>
-          </tr>
-        </thead>
-        <tbody md-body>
-          <tr md-row ng-repeat="role in getNodeRoles() | orderBy: myOrder">
-          <td md-cell>
-            <md-button ng-href='#/node_roles/{{role.id}}' class='md-primary md-fab md-mini' md-theme='status_{{role.status}}'>
-              <md-icon>
-                {{icons[role.status]}}
-              </md-icon>
-            </md-button>
-          </td>
-          <td md-cell>
-            <a ng-href='#/dash/{{role.deployment_id}}'>
-              {{_deployments[role.deployment_id].name}}
-            </a>
-          </td>
-          <td md-cell>
-            <a ng-href='#/nodes/{{role.node_id}}'>
-              {{_nodes[role.node_id].name}}
-            </a>
-          </td>
-          <td md-cell>{{_roles[role.role_id].name}}</td>
-          
-          </tr>
-        </tbody>
-      </table>
-    </md-table-container>
-  </md-card>
-
-</md-content>
-
+  <md-table-container>
+    <table md-table>
+      <thead md-head md-order="myOrder">
+        <tr md-row>
+          <th md-column md-order-by='id'>State</th>
+          <th md-column md-order-by='deployment_id'>Deployment</th>
+          <th md-column md-order-by='node_id'>Node</th>
+          <th md-column md-order-by='role_id'>Role</th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row ng-repeat="role in getNodeRoles() | orderBy: myOrder">
+        <td md-cell>
+          <md-button ng-href='#/node_roles/{{role.id}}' class='md-primary md-fab md-mini' md-theme='status_{{role.status}}'>
+            <md-icon>
+              {{icons[role.status]}}
+            </md-icon>
+          </md-button>
+        </td>
+        <td md-cell>
+          <a ng-href='#/dash/{{role.deployment_id}}'>
+            {{_deployments[role.deployment_id].name}}
+          </a>
+        </td>
+        <td md-cell>
+          <a ng-href='#/nodes/{{role.node_id}}'>
+            {{_nodes[role.node_id].name}}
+          </a>
+        </td>
+        <td md-cell>{{_roles[role.role_id].name}}</td>
+        
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+</md-card>

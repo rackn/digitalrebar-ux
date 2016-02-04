@@ -1,38 +1,34 @@
-<md-content class='bg'>
-	
-	<md-card>
+<md-card>
 
-		<md-toolbar class="md-table-toolbar md-default" ng-hide='networks.selected.length'>
-			<div class="md-toolbar-tools">
-				<span>Networks</span>
-			</div>
-		</md-toolbar>
+	<md-toolbar class="md-table-toolbar md-default" ng-hide='networks.selected.length'>
+		<div class="md-toolbar-tools">
+			<span>Networks</span>
+		</div>
+	</md-toolbar>
 
-		<md-table-container>
-			<table md-table>
-				<thead md-head md-order="myOrder">
-					<tr md-row>
-						<th md-column md-order-by='name'>Name</th>
-						<th md-column>Description</th>
-						<th md-column md-order-by='category'>Category</th>
-						<th md-column md-order-by='group'>Group</th>
-						<th md-column md-order-by='deployment_id'>Deployment</th>
-						<th md-column>Conduit</th>
-					</tr>
-				</thead>
-				<tbody md-body>
-					<tr md-row ng-repeat="network in networks.getNetworks() | orderBy: myOrder">
-					<td md-cell>{{network.name}}</td>
-					<td md-cell>{{network.description}}</td>
-					<td md-cell>{{network.category}}</td>
-					<td md-cell>{{network.group}}</td>
-					<td md-cell>{{_deployments[network.deployment_id].name}}</td>
-					<td md-cell>{{network.conduit}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</md-table-container>
+	<md-table-container>
+		<table md-table>
+			<thead md-head md-order="myOrder">
+				<tr md-row>
+					<th md-column md-order-by='name'>Name</th>
+					<th md-column>Description</th>
+					<th md-column md-order-by='category'>Category</th>
+					<th md-column md-order-by='group'>Group</th>
+					<th md-column md-order-by='deployment_id'>Deployment</th>
+					<th md-column>Conduit</th>
+				</tr>
+			</thead>
+			<tbody md-body>
+				<tr md-row ng-repeat="network in networks.getNetworks() | orderBy: myOrder">
+				<td md-cell>{{network.name}}</td>
+				<td md-cell>{{network.description}}</td>
+				<td md-cell>{{network.category}}</td>
+				<td md-cell>{{network.group}}</td>
+				<td md-cell>{{_deployments[network.deployment_id].name}}</td>
+				<td md-cell>{{network.conduit}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</md-table-container>
 
-	</md-card>
-
-</md-content>
+</md-card>

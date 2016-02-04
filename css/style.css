@@ -6,8 +6,9 @@ body, html {
   overflow: hidden;
 }
 
-body, html, md-content.bg {
-  background: #eee;
+body, html, .bg {
+  background: linear-gradient(#eee,#ccc);
+  background: -webkit-linear-gradient(#eee,#ccc);
 }
 
 md-sidenav ng-md-icon {
@@ -61,4 +62,13 @@ div.centered h1 {
 div md-progress-circular {
   margin-left: auto;
   margin-right: auto;
+}
+
+.ng-view.ng-cloak,
+.ng-view.ng-binding {
+    opacity: 0;
+    transition: opacity 800ms ease-in-out;
+}
+.ng-view.ng-binding {
+    opacity: 1;
 }
