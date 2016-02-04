@@ -68,22 +68,32 @@
 
 			<md-list>
 				<!-- Default menu -->
-				<md-list-item ng-repeat="item in menu" md-ink-ripple ng-href="#{{item.path}}">
-					<div class="md-list-item-text">
+				<md-list-item ng-repeat="item in menu" md-ink-ripple ng-click="setPath(item.path)">
+					<span class='md-list-item-content'>
 						<md-icon>{{item.icon}}</md-icon>
-						<span class="md-body-2">{{item.title}}</span>
-					</div>
+						<span>{{item.title}}</span>
+					</span>
 				</md-list-item>
 
 				<md-divider></md-divider>
 
 				<!-- User menu -->
-				<md-list-item ng-repeat="item in admin" md-ink-ripple ng-href="#{{item.path}}">
-					<div class="md-list-item-text">
+				<md-list-item ng-repeat="item in admin" md-ink-ripple ng-click="setPath(item.path)">
+					<span class='md-list-item-content'>
 						<md-icon>{{item.icon}}</md-icon>
-						<span class="md-body-2">{{item.title}}</span>
-					</div>
+						<span>{{item.title}}</span>
+					</span>
 				</md-list-item>
+
+				<!-- Logout list item -->
+				<md-list-item ng-if='shouldLogOut' md-ink-ripple ng-click="logout()">
+					<span class='md-list-item-content'>
+						<md-icon>exit_to_app</md-icon>
+						<span>Logout</span>
+					</div>
+				</span>
+
+				
 			</md-list>
 		</md-sidenav>
 		
