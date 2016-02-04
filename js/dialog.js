@@ -28,6 +28,40 @@ dialog controller
             $mdDialog.cancel();
         };
 
+        this.updateBarclamp = function() {
+            var config = $scope.locals.barclamp.cfg_data
+            if(!config) {
+                dialog.toast('Bad JSON')
+                return
+            }
+            if(!config.barclamp.name) {
+                dialog.toast('Name is required')
+                return
+            }
+            var payload = {'value': config}
+            api('/api/v2/barclamps', {
+                method: 'POST',
+                data: payload
+            }).success(function(update){
+                api('/api/v2/barclamps/'+$scope.locals.barclamp.id).
+                    success(api.addBarclamp)
+                dialog.toast('Updated barclamp')
+            }).error(function(err){
+                dialog.toast('Error: '+err.message)
+            })
+
+            $mdDialog.hide();
+        }
+
+        this.toast = function(message) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent(message)
+                    .position('bottom left')
+                    .hideDelay(3000)
+            );
+        }
+
         this.addNodes = function(){
             var payload =  {
                 description: "created by rebar",
@@ -66,21 +100,11 @@ dialog controller
                     method: "POST",
                     data: payload,
                 }).error(function(err){
-                    $mdToast.show(
-                        $mdToast.simple()
-                            .textContent('Error: '+err.message)
-                            .position('bottom left')
-                            .hideDelay(3000)
-                    );
+                    dialog.toast('Error: '+err.message);
                 })
             }
 
-            $mdToast.show(
-                $mdToast.simple()
-                    .textContent('Adding '+locals.number+' node'+(locals.number!=1?'s':''))
-                    .position('bottom left')
-                    .hideDelay(3000)
-            );
+            dialog.toast('Adding '+locals.number+' node'+(locals.number!=1?'s':''));
 
             $mdDialog.hide();
         }

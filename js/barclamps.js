@@ -53,16 +53,18 @@ barclamps controller
         $scope.id = $routeParams.id
         $scope.barclamp = {}
 
-        if(Object.keys($scope._barclamps).length) {
+        var updateBarclamp = function(){
             $scope.barclamp = $scope._barclamps[$scope.id];
             if(!$scope.barclamp)
                 $location.path('/barclamps')
+            else
+                $scope.$on('barclamp'+$scope.barclamp.id+"Done", updateBarclamp)
+        }
+
+        if(Object.keys($scope._barclamps).length) {
+            updateBarclamp()
         } else {
-            $scope.$on('barclampsDone', function(){
-                $scope.barclamp = $scope._barclamps[$scope.id];
-                if(!$scope.barclamp)
-                    $location.path('/barclamps')
-            })
+            $scope.$on('barclampsDone', updateBarclamp)
         }
 
     });

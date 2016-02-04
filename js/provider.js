@@ -28,17 +28,22 @@ provider controller
 
         $scope.id = $routeParams.id
         $scope.provider = {}
+        $scope.editing = false;
 
-        if(Object.keys($scope._providers).length) {
+        var updateProvider = function() { 
+            if($scope.editing) return;
+            
             $scope.provider = $scope._providers[$scope.id];
             if(!$scope.provider)
                 $location.path('/providers')
+            else
+                $scope.$on('providers'+$scope.provider.id+"Done", updateProvider)
+        }
+
+        if(Object.keys($scope._providers).length) {
+            updateProvider()
         } else {
-            $scope.$on('providersDone', function(){
-                $scope.provider = $scope._providers[$scope.id];
-                if(!$scope.provider)
-                    $location.path('/providers')
-            })
+            $scope.$on('providersDone', updateProvider)
         }
     });
 })();

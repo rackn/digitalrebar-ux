@@ -195,6 +195,7 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
     api.addDeployment = function(deployment) {
         var id = deployment.id
         $rootScope._deployments[id] = deployment
+        $rootScope.$broadcast("deployment"+id+"Done")
     }
 
     api.getDeployments = function() {
@@ -226,6 +227,7 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
                 node.simpleState = 0; // ready
         }
 
+        $rootScope.$broadcast("node"+id+"Done")
         $rootScope._nodes[id] = node
     }
 
@@ -241,6 +243,7 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
     api.addRole = function(role) {
         var id = role.id
         $rootScope._roles[id] = role
+        $rootScope.$broadcast("role"+id+"Done")
     }
 
     // api call for getting all the roles
@@ -257,8 +260,9 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
         role.cohort = function(){
             $rootScope._roles[role.role_id].cohort
         }
-
-        $rootScope._deployment_roles[role.id] = role
+        var id = role.id
+        $rootScope._deployment_roles[id] = role
+        $rootScope.$broadcast("deployment_role"+id+"Done")
     }
 
     // api call for getting all the deployment roles
@@ -273,6 +277,7 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
     api.addProvider = function(provider) {
         var id = provider.id
         $rootScope._providers[id] = provider
+        $rootScope.$broadcast("provider"+id+"Done")
     }
 
     // api call for getting all the providers
@@ -287,6 +292,7 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
     api.addNetwork = function(network) {
         var id = network.id
         $rootScope._networks[id] = network
+        $rootScope.$broadcast("network"+id+"Done")
     }
 
     // api call for getting all the providers
@@ -300,10 +306,10 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
 
     api.addNodeRole = function(role) {
         var id = role.id
+        role.status = $rootScope.states[role.state]
 
         $rootScope._node_roles[id] = role
-
-        role.status = $rootScope.states[role.state]
+        $rootScope.$broadcast("node_role"+id+"Done")
     }
 
     // api call for getting all the node roles
@@ -318,6 +324,7 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
     api.addBarclamp = function(barclamp) {
         var id = barclamp.id
         $rootScope._barclamps[id] = barclamp
+        $rootScope.$broadcast("barclamp"+id+"Done")
     }
 
      // api call for getting all the barclamps
