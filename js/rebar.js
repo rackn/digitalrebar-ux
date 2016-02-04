@@ -94,6 +94,21 @@ app.factory('api', function($http, $rootScope, $timeout, $filter) {
     api.lastUpdate = new Date().getTime();
     api.queue = []
 
+    api.errors = []
+
+    api.toast = function(message, error) {
+        $mdToast.show(
+            $mdToast.simple()
+                .textContent(message)
+                .position('bottom left')
+                .hideDelay(3000)
+        );
+        if(error) {
+            api.errors.push({type: error, message: message})
+        }
+    }
+
+
     // add an api call to the queue
     api.addQueue = function(name, id) {
         api.queue.push(function(){
