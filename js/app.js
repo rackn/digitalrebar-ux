@@ -173,7 +173,7 @@ var version = '0.1.3';
         };
     });
 
-    app.controller('AppCtrl', ['$scope', '$rootScope', '$mdSidenav', function($scope, $rootScope, $mdSidenav){
+    app.controller('AppCtrl', function($scope, $location, localStorageService, $mdSidenav){
         $scope.toggleSideNav = function(menuId) {
             $mdSidenav(menuId).toggle();
         };
@@ -205,25 +205,6 @@ var version = '0.1.3';
             },
         ];
 
-        $rootScope.icons = {
-            'ready': 'check_circle',
-            'error': 'warning',
-            'process': 'autorenew',
-            'todo': 'play_circle_outline',
-            'off': 'power_settings_new',
-            'queue': 'update',
-            'reserved': 'pause_circle_outline',
-        }
-
-        $rootScope.states = {
-            '-1': 'error', //error
-            '0': 'ready', //active
-            '1': 'todo', //todo
-            '2': 'process', //transition
-            '3': 'queue', //blocked
-            '4': 'reserved' //proposed
-        }
-
         $scope.admin = [
             {
                 title: 'Settings',
@@ -235,13 +216,25 @@ var version = '0.1.3';
             },
         ];
 
-    }]);
+        $scope.setPath = function(path) {
+            $location.path(path)
+        }
 
-    app.run(function($rootScope, $location, $http, $cookies, debounce, $interval){
+        $scope.logout = function(){
+            localStorageService.add('username', '')
+            localStorageService.add('password', '')
+            localStorageService.add('remember', '')
+            window.location.reload();
+        }
+
+    });
+
+    app.run(function($rootScope, $location, $http, $cookies, debounce, $interval, localStorageService){
 
         $rootScope.user;
         $rootScope.isAuth = function(){return !!$rootScope.user;};
         $rootScope.lastPath = '/'
+        $rootScope.shouldLogOut = false;
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             var path = next.split('/#/')[1];
@@ -263,6 +256,7 @@ var version = '0.1.3';
 
         $rootScope.$on('login', function(event, data){ 
             $rootScope.user = data;
+            $rootScope.shouldLogOut = localStorageService.get('remember');
         })
 
         $rootScope.$on('host', function(event, data){ 
@@ -272,6 +266,25 @@ var version = '0.1.3';
         $rootScope.$on('title', function(event, data){ 
             $rootScope.title = data
         })
+
+        $rootScope.icons = {
+            'ready': 'check_circle',
+            'error': 'warning',
+            'process': 'autorenew',
+            'todo': 'play_circle_outline',
+            'off': 'power_settings_new',
+            'queue': 'update',
+            'reserved': 'pause_circle_outline',
+        }
+
+        $rootScope.states = {
+            '-1': 'error', //error
+            '0': 'ready', //active
+            '1': 'todo', //todo
+            '2': 'process', //transition
+            '3': 'queue', //blocked
+            '4': 'reserved' //proposed
+        }
 
 
     });
