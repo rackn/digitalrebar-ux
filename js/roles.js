@@ -36,7 +36,7 @@ role controller
         }
 
         if(Object.keys($scope._roles).length) {
-            updateNodeRole()
+            updateRole()
         } else {
             $scope.$on('rolesDone',updateRole)
         }
