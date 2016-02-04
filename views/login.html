@@ -3,7 +3,7 @@ login view
 -->
 <div hide-xs style='height: 100px'></div>
 
-<md-content layout='wrap' layout-align="center center" class='bg' ng-if='!initialRemember'>
+<div layout='wrap' layout-align="center center" ng-if='!initialRemember'>
 	<md-card flex-gt-sm='40' flex='100'>
 
 		<md-toolbar>
@@ -79,7 +79,7 @@ login view
 
 		</form>
 	</md-card>
-</md-content>
+</div>
 
 <div ng-if='initialRemember' class='centered' layout='column'>
 	<h1 class='md-header'>Signing You In...</h1>
