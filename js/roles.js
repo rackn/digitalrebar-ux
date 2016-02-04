@@ -23,13 +23,22 @@ role controller
 
         $scope.id = $routeParams.id
         $scope.role = {}
+        $scope.editing = false;
+
+        var updateRole =  function(){
+            if($scope.editing) return;
+
+            $scope.role = $scope._roles[$scope.id];
+            if(!$scope.role)
+                $location.path('/roles')
+            else
+                $scope.$on('role'+$scope.role.id+"Done", updateRole)
+        }
 
         if(Object.keys($scope._roles).length) {
-            $scope.role = $scope._roles[$scope.id];
+            updateRole()
         } else {
-            $scope.$on('rolesDone', function(){
-                $scope.role = $scope._roles[$scope.id];
-            })
+            $scope.$on('rolesDone',updateRole)
         }
 
     });

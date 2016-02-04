@@ -34,19 +34,37 @@ barclamps controller
             return out
         }
 
+        this.showUpdateBarclampDialog = function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'dialog',
+                templateUrl: 'views/dialogs/updatebarclampdialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    barclamp: $scope.barclamp
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
+        };
+
         $scope.id = $routeParams.id
         $scope.barclamp = {}
 
-        if(Object.keys($scope._barclamps).length) {
+        var updateBarclamp = function(){
             $scope.barclamp = $scope._barclamps[$scope.id];
             if(!$scope.barclamp)
                 $location.path('/barclamps')
+            else
+                $scope.$on('barclamp'+$scope.barclamp.id+"Done", updateBarclamp)
+        }
+
+        if(Object.keys($scope._barclamps).length) {
+            updateBarclamp()
         } else {
-            $scope.$on('barclampsDone', function(){
-                $scope.barclamp = $scope._barclamps[$scope.id];
-                if(!$scope.barclamp)
-                    $location.path('/barclamps')
-            })
+            $scope.$on('barclampsDone', updateBarclamp)
         }
 
     });

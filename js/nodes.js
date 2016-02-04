@@ -64,11 +64,20 @@ node controller
 
         $scope.id = $routeParams.id
         $scope.node = {}
+        $scope.editing = false;
 
-        if(Object.keys($scope._nodes).length) {
+        var updateNode = function() {
+            if($scope.editing) return;
+
             $scope.node = $scope._nodes[$scope.id];
             if(!$scope.node)
                 $location.path('/nodes')
+            else
+                $scope.$on('node'+$scope.node.id+"Done", updateNode)
+
+        }
+        if(Object.keys($scope._nodes).length) {
+            
 
         } else {
             $scope.$on('nodesDone', function(){

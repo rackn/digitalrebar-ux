@@ -30,17 +30,22 @@ node role controller
 
         $scope.id = $routeParams.id
         $scope.node_role = {}
+        $scope.editing = false;
 
-        if(Object.keys($scope._node_roles).length) {
+        var updateNodeRole =  function(){
+            if($scope.editing) return;
+
             $scope.node_role = $scope._node_roles[$scope.id];
             if(!$scope.node_role)
                 $location.path('/node_roles')
+            else
+                $scope.$on('node_role'+$scope.node_role.id+"Done", updateNodeRole)
+        }
+
+        if(Object.keys($scope._node_roles).length) {
+            updateNodeRole()
         } else {
-            $scope.$on('node_rolesDone', function(){
-                $scope.node_role = $scope._node_roles[$scope.id];
-                if(!$scope.node_role)
-                    $location.path('/node_roles')
-            })
+            $scope.$on('node_rolesDone',updateNodeRole)
         }
 
     });
