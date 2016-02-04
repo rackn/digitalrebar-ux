@@ -77,14 +77,12 @@ node controller
 
         }
         if(Object.keys($scope._nodes).length) {
-            
-
+            updateNode()
         } else {
             $scope.$on('nodesDone', function(){
                 $scope.node = $scope._nodes[$scope.id];
                 if(!$scope.node)
                     $location.path('/nodes')
-
             })
         }
 

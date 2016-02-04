@@ -28,6 +28,18 @@ node role controller
             }
         }
 
+        $scope.destroy = function() {
+            // if we have a valid node selected
+            if($scope.node_role.id) {
+                api('/api/v2/node_roles/'+node_role.id+'/retry', {
+                    method: 'DELETE'
+                }).success(function(){
+                    api.remove('node_role', node_role.id)
+                    $location.path('/node_roles')
+                });
+            }
+        }
+
         $scope.id = $routeParams.id
         $scope.node_role = {}
         $scope.editing = false;
