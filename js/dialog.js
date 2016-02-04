@@ -31,11 +31,11 @@ dialog controller
         this.updateBarclamp = function() {
             var config = $scope.locals.barclamp.cfg_data
             if(!config) {
-                dialog.toast('Bad JSON')
+                dialog.toast('Bad JSON', 'barclamp')
                 return
             }
             if(!config.barclamp.name) {
-                dialog.toast('Name is required')
+                dialog.toast('Name is required', 'barclamp')
                 return
             }
             var payload = {'value': config}
@@ -47,19 +47,10 @@ dialog controller
                     success(api.addBarclamp)
                 dialog.toast('Updated barclamp')
             }).error(function(err){
-                dialog.toast('Error: '+err.message)
+                dialog.toast('Error: '+err.message, 'barclamp')
             })
 
             $mdDialog.hide();
-        }
-
-        this.toast = function(message) {
-            $mdToast.show(
-                $mdToast.simple()
-                    .textContent(message)
-                    .position('bottom left')
-                    .hideDelay(3000)
-            );
         }
 
         this.addNodes = function(){
@@ -100,11 +91,11 @@ dialog controller
                     method: "POST",
                     data: payload,
                 }).error(function(err){
-                    dialog.toast('Error: '+err.message);
+                    api.toast('Error: '+err.message, 'node');
                 })
             }
 
-            dialog.toast('Adding '+locals.number+' node'+(locals.number!=1?'s':''));
+            api.toast('Adding '+locals.number+' node'+(locals.number!=1?'s':''));
 
             $mdDialog.hide();
         }
