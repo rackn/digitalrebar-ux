@@ -52,8 +52,10 @@ a:visited:not(.md-button) {
   color: #1565C0;
 }
 
-div.centered {
+div.centered h1 {
   text-align: center;
+  font-weight: normal;
+  font-family: 'Roboto', Helvetica, sans-serif;
 }
 
 div md-progress-circular {
