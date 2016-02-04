@@ -7,6 +7,8 @@ login controller
         $scope.$emit('title', 'Login'); // shows up on the top toolbar
 
         // model for the sign in form
+        $scope.initialRemember = localStorageService.get('remember')
+
         this.credentials = {
             username: localStorageService.get('username') || '',
             password: localStorageService.get('password') || '',
@@ -31,7 +33,13 @@ login controller
                 $scope.eula = data.eula
                 $cookies.put('host', login.host)
                 $scope.$emit('host', host)
+
+                if($scope.initialRemember) {
+                    login.signIn();
+                }
+
             }).error(function(){
+                $scope.initialRemember = false
                 login.state = -1 // error state
             })
         }

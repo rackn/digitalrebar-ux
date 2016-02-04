@@ -3,7 +3,7 @@ login view
 -->
 <div hide-xs style='height: 100px'></div>
 
-<md-content layout='wrap' layout-align="center center" class='bg'>
+<md-content layout='wrap' layout-align="center center" class='bg' ng-if='!initialRemember'>
 	<md-card flex-gt-sm='40' flex='100'>
 
 		<md-toolbar>
@@ -81,3 +81,8 @@ login view
 	</md-card>
 </md-content>
 
+<div ng-if='initialRemember' class='centered' layout-fill layout='column'>
+	<h1 class='md-header'>Signing You In...</h1>
+	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+
+</div>

@@ -51,3 +51,12 @@ a:hover {
 a:visited:not(.md-button) {
   color: #1565C0;
 }
+
+div.centered {
+  text-align: center;
+}
+
+div md-progress-circular {
+  margin-left: auto;
+  margin-right: auto;
+}
