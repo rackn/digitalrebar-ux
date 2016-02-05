@@ -72,6 +72,9 @@ login controller
         $scope.$watch('login.host', debounce(login.testHost, 1000))
 
 
+        $scope.cancelInitial = function(){
+            $scope.initialRemember = false
+        }
         // function for the login button
         this.signIn = function() {
             console.log('attempting to sign in')

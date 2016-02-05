@@ -84,5 +84,7 @@ login view
 <div ng-if='initialRemember' class='centered' layout='column'>
 	<h1 class='md-header'>Signing You In...</h1>
 	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
-
+	<span style='margin: auto;'>
+		<md-button class='md-primary' ng-click='cancelInitial()'>Cancel</md-button>
+	</span>
 </div>
