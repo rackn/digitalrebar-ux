@@ -72,7 +72,7 @@ app.run(function($rootScope, $cookies, api, $interval){
 
 })
 
-app.factory('api', function($http, $rootScope, $timeout, $filter) {
+app.factory('api', function($http, $rootScope, $timeout, $mdToast) {
 
 
     // function for calling api functions ( eg. /api/v2/nodes )

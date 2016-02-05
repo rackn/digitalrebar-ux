@@ -31,11 +31,11 @@ dialog controller
         this.updateBarclamp = function() {
             var config = $scope.locals.barclamp.cfg_data
             if(!config) {
-                dialog.toast('Bad JSON', 'barclamp')
+                api.toast('Bad JSON', 'barclamp')
                 return
             }
             if(!config.barclamp.name) {
-                dialog.toast('Name is required', 'barclamp')
+                api.toast('Name is required', 'barclamp')
                 return
             }
             var payload = {'value': config}
@@ -45,9 +45,9 @@ dialog controller
             }).success(function(update){
                 api('/api/v2/barclamps/'+$scope.locals.barclamp.id).
                     success(api.addBarclamp)
-                dialog.toast('Updated barclamp')
+                api.toast('Updated barclamp')
             }).error(function(err){
-                dialog.toast('Error: '+err.message, 'barclamp')
+                api.toast('Error: '+err.message, 'barclamp')
             })
 
             $mdDialog.hide();
