@@ -20,12 +20,11 @@ node controller
         }
 
         this.deleteSelected = function() {
-        	for(var i in nodes.selected) {
-        		var node = nodes.selected[i]
+        	nodes.selected.forEach(function(node) {
 
         		if(node.admin) {
         			console.log("Can't delete admin node !"+node.id)
-        			continue;
+                    return;
         		}
 
         		console.log("Deleting node "+node.id)
@@ -34,10 +33,8 @@ node controller
         		api('/api/v2/nodes/'+node.id, {method: 'DELETE'}).
         			success(function(){
         				console.log("Node deleted")
-        				
-        				debounce($scope.getDeployments, 500, false);
-        			})
-        	}
+           			}).success(api.addNode)
+        	})
 
         	// remove the selected items
         	nodes.selected = []

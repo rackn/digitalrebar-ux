@@ -54,38 +54,41 @@ dialog controller
         }
 
         this.addNodes = function(){
-            var payload =  {
-                description: "created by rebar",
-                provider: locals.provider,
-                hints: {
-                    'use-proxy': false,
-                    'use-ntp': false,
-                    'use-dns': false,
-                    'use-logging': false,
-                    'provider-create-hint': { 
+            // create a list of `locals.number` numbers 
+            var times = Array.apply(null, {length: locals.number}).map(Number.call, Number)
+
+            times.forEach(function(i) {
+                var payload =  {
+                    'name': locals.base_name+"-"+i+"."+locals.provider+".neode.org",
+                    'description': "created by rebar",
+                    'provider': locals.provider,
+                    'hints': {
+                        'use-proxy': false,
+                        'use-ntp': false,
+                        'use-dns': false,
+                        'use-logging': false,
+                        'provider-create-hint': { 
+                            'hostname': locals.base_name+'-'+i
+                        }
                     }
                 }
-            }
-            if (locals.add_os != "default_os") {
-                // packet
-                payload.hints['provider-create-hint'].os = locals.add_os;
-                // aws
-                payload.hints['provider-create-hint'].image_id = locals.add_os;
-                // google
-                payload.hints['provider-create-hint'].disks = [];
-                payload.hints['provider-create-hint'].disks.push({ 
-                    'autoDelete': true,
-                    'boot': true,
-                    'type': 'PERSISTENT',
-                    'initializeParams': {
-                        'sourceImage': locals.add_os
-                    }
-                });
-            };
-
-            for(var i = 0; i < locals.number; i++) {
-                payload.name = locals.base_name+"-"+i+"."+locals.provider+".neode.org",
-                payload.hints['provider-create-hint'].hostname = locals.base_name+'-'+i
+                if (locals.add_os != "default_os") {
+                    // packet
+                    payload.hints['provider-create-hint'].os = locals.add_os;
+                    // aws
+                    payload.hints['provider-create-hint'].image_id = locals.add_os;
+                    // google
+                    payload.hints['provider-create-hint'].disks = [];
+                    payload.hints['provider-create-hint'].disks.push({ 
+                        'autoDelete': true,
+                        'boot': true,
+                        'type': 'PERSISTENT',
+                        'initializeParams': {
+                            'sourceImage': locals.add_os
+                        }
+                    });
+                };
+                
 
                 api('/api/v2/nodes',{
                     method: "POST",
@@ -93,7 +96,7 @@ dialog controller
                 }).error(function(err){
                     api.toast('Error: '+err.message, 'node');
                 })
-            }
+            })
 
             api.toast('Adding '+locals.number+' node'+(locals.number!=1?'s':''));
 
