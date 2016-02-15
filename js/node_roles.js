@@ -22,9 +22,11 @@ node role controller
         $scope.retry = function() {
             // if we have a valid node selected
             if($scope.node_role.id) {
-                api('/api/v2/node_roles/'+node_role.id+'/retry', {
+                api('/api/v2/node_roles/'+$scope.node_role.id+'/retry', {
                     method: 'PUT'
-                }).success(api.addNodeRole);
+                }).success(api.addNodeRole).error(function(err){
+                    api.toast('Error: '+err.message, 'node_role')
+                });
             }
         }
 
