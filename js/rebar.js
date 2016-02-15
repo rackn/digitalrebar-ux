@@ -45,13 +45,7 @@ app.run(function($rootScope, $cookies, api, $interval){
     })
 
     $rootScope.$on('startUpdating', function(event){
-        $rootScope.$emit('updateApi')
-
-        $interval(function(){
-            $rootScope.$emit('updateApi')
-            api.lastUpdate = new Date().getTime();
-        }, 3 * 60 * 1000 /* 3 minutes */ )
-
+        api.reload()
         api.getActive();
 
     })
@@ -72,7 +66,7 @@ app.run(function($rootScope, $cookies, api, $interval){
 
 })
 
-app.factory('api', function($http, $rootScope, $timeout, $mdToast) {
+app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
 
 
     // function for calling api functions ( eg. /api/v2/nodes )
@@ -106,6 +100,13 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast) {
         if(error) {
             api.errors.push({type: error, message: message})
         }
+    }
+
+
+    api.reload = function() {
+        $rootScope.$emit('updateApi')
+        api.lastUpdate = new Date().getTime();
+        debounce(api.reload, 3 * 60 * 1000, false)()
     }
 
 

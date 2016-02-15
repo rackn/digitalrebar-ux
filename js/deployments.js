@@ -68,11 +68,11 @@ deployments controller
 
         // creates the pie chart data for all the deployments
         this.createPieChartData = function() {
-            $scope.$evalAsync(function(){
+            $timeout(function(){
                 for(var id in $scope._deployments) {
                     deployments.deploymentPie[id] = deployments.getNodeCounts($scope._deployments[id]);
                 }
-            })
+            }, 500)
         }
 
         this.deploymentStatus = {}

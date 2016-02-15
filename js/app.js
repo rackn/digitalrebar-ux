@@ -173,10 +173,12 @@ var version = '0.1.3';
         };
     });
 
-    app.controller('AppCtrl', function($scope, $location, localStorageService, $mdSidenav){
+    app.controller('AppCtrl', function($scope, $location, localStorageService, $mdSidenav, api){
         $scope.toggleSideNav = function(menuId) {
             $mdSidenav(menuId).toggle();
         };
+
+        $scope.reload = api.reload;
 
         $scope.menu = [
             {
