@@ -102,6 +102,15 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
         }
     }
 
+    api.fetch = function(name, id) {
+        return api("/api/v2/"+name+"s/"+id).
+            success(function(obj){
+                api["add"+camelCase(name)](obj);
+            }).
+            error(function(err){
+                api.remove(name, id)
+            })
+    }
 
     api.reload = function() {
         $rootScope.$emit('updateApi')
@@ -113,17 +122,9 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
     // add an api call to the queue
     api.addQueue = function(name, id) {
         api.queue.push(function(){
-            api("/api/v2/"+name+"s/"+id).
-                success(function(obj){
-                    api["add"+camelCase(name)](obj);
-
-                    // go to the next function in the queue
-                    api.nextQueue()
-                }).
-                error(function(err){
-                    api.remove(name, id)
-                    api.nextQueue()
-                })
+            api.fetch(name, id).
+                success(api.nextQueue).
+                error(api.nextQueue)
         });
     }
 
