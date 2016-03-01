@@ -17,7 +17,7 @@ app.filter('from', function() {
     return function(items, type, obj) {
         // _node | from:'deployment':deployment
         // gets all nodes with deployment_id == deployment.id
-        var id = obj.id
+        var id = obj && obj.id || 0
         var result = [];
         angular.forEach(items, function(value, key) {
             if(value[type+"_id"] == id)

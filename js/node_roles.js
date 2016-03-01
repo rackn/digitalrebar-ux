@@ -2,7 +2,7 @@
 node role controller
 */
 (function(){
-    angular.module('app').controller('NodeRolesCtrl', function($scope, $location, debounce, $routeParams, $mdMedia, $mdDialog, api) {
+    angular.module('app').controller('NodeRolesCtrl', function($scope, $location, debounce, $routeParams, $mdMedia, $mdDialog, $timeout, api) {
         
         $scope.$emit('title', 'Node Roles'); // shows up on the top toolbar
 
@@ -61,6 +61,22 @@ node role controller
         } else {
             $scope.$on('node_rolesDone',updateNodeRole)
         }
+
+        $scope.getApiUpdate = function() {
+            if($scope.editing || !$scope.node_role) return;
+
+            api.fetch('node_role', $scope.id).success(function() {
+                updateNodeRole();
+            })
+
+            $scope.updateInterval = $timeout($scope.getApiUpdate, 2000);
+        }
+
+        $scope.getApiUpdate();
+        
+        $scope.$on('$routeChangeStart', function() {
+            $timeout.cancel($scope.updateInterval);
+        });
 
     });
 
