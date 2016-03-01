@@ -62,6 +62,7 @@ node controller
         $scope.id = $routeParams.id
         $scope.node = {}
         $scope.editing = false;
+        var hasCallback = false;
 
         var updateNode = function() {
             if($scope.editing) return;
@@ -69,8 +70,10 @@ node controller
             $scope.node = $scope._nodes[$scope.id];
             if(!$scope.node)
                 $location.path('/nodes')
-            else
+            else if(!hasCallback) {
+                hasCallback = true;
                 $scope.$on('node'+$scope.node.id+"Done", updateNode)
+            }
 
         }
         if(Object.keys($scope._nodes).length) {

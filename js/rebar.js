@@ -17,7 +17,7 @@ app.filter('from', function() {
     return function(items, type, obj) {
         // _node | from:'deployment':deployment
         // gets all nodes with deployment_id == deployment.id
-        var id = obj.id
+        var id = obj && obj.id || 0
         var result = [];
         angular.forEach(items, function(value, key) {
             if(value[type+"_id"] == id)
@@ -325,6 +325,7 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
         var id = role.id
         role.status = $rootScope.states[role.state]
 
+        delete $rootScope._node_roles[id];
         $rootScope._node_roles[id] = role
         $rootScope.$broadcast("node_role"+id+"Done")
     }

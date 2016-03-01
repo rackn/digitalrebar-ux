@@ -52,13 +52,16 @@ barclamps controller
 
         $scope.id = $routeParams.id
         $scope.barclamp = {}
+        var hasCallback = false;
 
         var updateBarclamp = function(){
             $scope.barclamp = $scope._barclamps[$scope.id];
             if(!$scope.barclamp)
                 $location.path('/barclamps')
-            else
+            else if(!hasCallback) {
+                hasCallback = true;
                 $scope.$on('barclamp'+$scope.barclamp.id+"Done", updateBarclamp)
+            }
         }
 
         if(Object.keys($scope._barclamps).length) {

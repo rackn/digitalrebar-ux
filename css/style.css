@@ -72,3 +72,7 @@ div md-progress-circular {
 .ng-view.ng-binding {
     opacity: 1;
 }
+
+.runlog {
+  overflow-x: auto;
+}
