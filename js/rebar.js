@@ -325,6 +325,7 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
         var id = role.id
         role.status = $rootScope.states[role.state]
 
+        delete $rootScope._node_roles[id];
         $rootScope._node_roles[id] = role
         $rootScope.$broadcast("node_role"+id+"Done")
     }

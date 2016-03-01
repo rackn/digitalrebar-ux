@@ -45,15 +45,17 @@ node role controller
         $scope.id = $routeParams.id
         $scope.node_role = {}
         $scope.editing = false;
-
+        var hasCallback = false;
         var updateNodeRole =  function(){
             if($scope.editing) return;
 
             $scope.node_role = $scope._node_roles[$scope.id];
             if(!$scope.node_role)
                 $location.path('/node_roles')
-            else
+            else if(!hasCallback) {
+                hasCallback = true;
                 $scope.$on('node_role'+$scope.node_role.id+"Done", updateNodeRole)
+            }
         }
 
         if(Object.keys($scope._node_roles).length) {
@@ -66,10 +68,9 @@ node role controller
             if($scope.editing || !$scope.node_role) return;
 
             api.fetch('node_role', $scope.id).success(function() {
-                updateNodeRole();
+                $scope.updateInterval = $timeout($scope.getApiUpdate, 2000);
             })
 
-            $scope.updateInterval = $timeout($scope.getApiUpdate, 2000);
         }
 
         $scope.getApiUpdate();
