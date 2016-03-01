@@ -24,6 +24,7 @@ role controller
         $scope.id = $routeParams.id
         $scope.role = {}
         $scope.editing = false;
+        var hasCallback = false;
 
         var updateRole =  function(){
             if($scope.editing) return;
@@ -31,8 +32,10 @@ role controller
             $scope.role = $scope._roles[$scope.id];
             if(!$scope.role)
                 $location.path('/roles')
-            else
+            else if(!hasCallback) {
+                hasCallback = true;
                 $scope.$on('role'+$scope.role.id+"Done", updateRole)
+            }
         }
 
         if(Object.keys($scope._roles).length) {

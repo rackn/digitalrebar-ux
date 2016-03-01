@@ -29,6 +29,7 @@ provider controller
         $scope.id = $routeParams.id
         $scope.provider = {}
         $scope.editing = false;
+        var hasCallback = false;
 
         var updateProvider = function() { 
             if($scope.editing) return;
@@ -36,8 +37,10 @@ provider controller
             $scope.provider = $scope._providers[$scope.id];
             if(!$scope.provider)
                 $location.path('/providers')
-            else
+            else if(!hasCallback) {
+                hasCallback = true;
                 $scope.$on('providers'+$scope.provider.id+"Done", updateProvider)
+            }
         }
 
         if(Object.keys($scope._providers).length) {
