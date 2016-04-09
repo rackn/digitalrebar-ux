@@ -73,8 +73,12 @@ login view
 				</span>
 				<md-input-container class="md-block" flex>
 					<label>API Endpoint</label>
-					<input type="text" ng-model='login.host' flex/>
+					<input type="text" ng-model='login.host'/>
 				</md-input-container>
+
+				<md-button class='md-primary md-raised' ng-click='delayTest()'>
+					Retry
+				</md-button>
 			</md-content>
 
 		</form>

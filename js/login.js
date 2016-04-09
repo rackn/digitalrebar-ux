@@ -64,12 +64,14 @@ login controller
 
         // make the loading icon appear immediately
         $scope.$watch('login.host', function(){
-            login.state = 0 // loading state
-            $scope.eula = undefined
+            $scope.delayTest()
         })
 
-        // wait half a second to test if the host is valid
-        $scope.$watch('login.host', debounce(login.testHost, 1000))
+        $scope.delayTest = function() {
+            login.state = 0
+            $scope.eula = undefined
+            debounce(login.testHost, 1000)(login.host)
+        }
 
 
         $scope.cancelInitial = function(){
