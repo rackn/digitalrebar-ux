@@ -28,8 +28,7 @@ app.filter('from', function() {
 });
 
 app.run(function($rootScope, $cookies, api, $interval){
-    // use regex to get the current location
-    var currentLocation = /https:\/\/[^:\/]+/.exec(location.href)[0];
+    var currentLocation = "https://"+location.hostname;
     $rootScope.host = $cookies.get('host') || currentLocation+':3000';
 
     $rootScope.$on('updateApi', function(event) {
