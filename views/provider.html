@@ -24,7 +24,36 @@ provider view
 				<input type='text' ng-model='provider.description' />
 			</md-input-container>
 
-			<ng-include src="'views/providers/'+provider.type+'.tmpl.html'" />
+			<div ng-repeat='(name,options) in providerTemplates[provider.type]' ng-switch='options.type'>
+			{{name}} {{options}}
+				<article ng-switch-when='text'>
+					<md-input-container class='md-block'>
+					  <label>{{options.name}}</label>
+					  <input type='text' ng-model='provider.auth_details[name]' ng-value='options.default' ng-model='provider.auto_details[name]'/>
+					</md-input-container>
+				</article>
+
+				<article ng-switch-when='password'>
+					<md-input-container class='md-block'>
+					  <label>{{options.name}}</label>
+					  <input type='password' ng-model='provider.auth_details[name]' ng-value='options.default' ng-model='provider.auto_details[name]'/>
+					</md-input-container>
+				</article>
+
+				<article ng-switch-when='img'>
+					<a ng-href='{{options.href}}'>
+					  <img src='{{options.src}}' flex-gt-xs='25' flex='100'/>
+					</a>
+				</article>
+
+				<article ng-switch-when="json_key">
+					<md-input-container class='md-block'>
+					  <label>{{options.name}}</label>
+					  <textarea json-text style='font-family: monospace;' ng-model='provider.auth_details[name]'></textarea>
+					</md-input-container>
+				</article>
+			</div>
+			<!--<ng-include src="'views/providers/'+provider.type+'.tmpl.html'" />-->
 
 		</md-content>
 	</md-card>
