@@ -249,7 +249,7 @@ var version = '0.1.3';
 
     });
 
-    app.run(function($rootScope, $location, $http, $cookies, debounce, $interval, localStorageService){
+    app.run(function($rootScope, $location, $http, $cookies, debounce, $interval, localStorageService, api){
 
         $rootScope.user;
         $rootScope.isAuth = function(){return !!$rootScope.user;};
@@ -277,6 +277,12 @@ var version = '0.1.3';
         $rootScope.$on('login', function(event, data){ 
             $rootScope.user = data;
             $rootScope.shouldLogOut = localStorageService.get('remember');
+
+            api('/api/v2/providers/templates').
+                success(function(data){
+                    $rootScope.providerTemplates = data
+                    console.log(data)
+                })
         })
 
         $rootScope.$on('host', function(event, data){ 

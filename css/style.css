@@ -76,3 +76,20 @@ div md-progress-circular {
 .runlog {
   overflow-x: auto;
 }
+
+.table-input {
+  border: none;
+  width: 100%;
+  border-bottom: thin solid lightgrey;
+  padding: 0.25em;
+  transition: border-bottom-color 1s;
+  outline: none;
+}
+
+.table-input:focus:not([readonly='readonly']) {
+  border-bottom-color: blue;
+}
+
+.table-input:active[readonly='readonly'] {
+  border-bottom-color: red;
+}
