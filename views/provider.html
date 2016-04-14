@@ -8,51 +8,115 @@ provider view
 		<md-toolbar class="md-table-toolbar md-default">
 			<div class="md-toolbar-tools">
 				<span>{{provider.type}} {{provider.name}}</span>
+				<span flex></span>
+					<md-button
+						class='md-icon-button'
+						ng-click='editing=!editing'
+						ng-hide='editing'>
+						<md-icon>edit</md-icon>
+						<md-tooltip>
+							Edit
+						</md-tooltip>
+					</md-button>
+					<md-button
+						class='md-icon-button'
+						ng-click=''
+						ng-show='editing'>
+						<md-icon>save</md-icon>
+						<md-tooltip>
+							Save
+						</md-tooltip>
+					</md-button>
+					<md-button
+						class='md-icon-button'
+						ng-click='editing=!editing'
+						ng-show='editing'>
+						<md-icon>close</md-icon>
+						<md-tooltip>
+							Stop Editing
+						</md-tooltip>
+					</md-button>
+				</span>
 			</div>
 		</md-toolbar>
 		
 		<!-- Provider data -->
-		<md-content layout-padding layout='column'>
+		<md-content layout-padding>
+			<table>
+				<tr>
+					<td class='label'>
+						Provider
+					</td>
+					<td>
+						<input type='text'
+				  	ng-readonly="!editing"
+						class='table-input'
+						ng-model='provider.name' />
+					</td>
+				</tr>
+				<tr>
+					<td class='label'>
+						Description
+					</td>
+					<td>
+						<input type='text'
+				  	ng-readonly="!editing"
+						class='table-input'
+						ng-model='provider.description' />
+					</td>
+				</tr>
+				<tbody ng-repeat='(name,options) in providerTemplates[provider.type]' ng-if='options' ng-switch='options.type'>
+					<tr ng-switch-when='text'>
+						<td class='label'>
+							{{options.name}}
+						</td>
+						<td>
+						  <input type='text'
+						  	class='table-input'
+						  	ng-readonly="!editing"
+						  	ng-model='provider.auth_details[name]'
+						  	ng-value='options.default'/>
+						</td>
+					</tr>
 
-			<md-input-container class='md-block'>
-				<label>Provider</label>
-				<input type='text' ng-model='provider.name' />
-			</md-input-container>
+					<tr ng-switch-when='password'>
+					  <td class='label'>
+					  	{{options.name}}
+					  </td>
+					  <td>
+					  	<input type='password'
+						  	class='table-input'
+						  	ng-readonly="!editing"
+					  		ng-model='provider.auth_details[name]'
+					  		ng-value='options.default'/>
+					  </td>
+					</tr>
 
-			<md-input-container class='md-block'>
-				<label>Description</label>
-				<input type='text' ng-model='provider.description' />
-			</md-input-container>
+					<tr ng-switch-when='img'>
+						<td></td>
+						<td>
+							<a ng-href='{{options.href}}'>
+							  <img ng-src='{{options.src}}' style='width:100%;'></a>
+							</a>
+						</td>
+					</tr>
 
-			<div ng-repeat='(name,options) in providerTemplates[provider.type]' ng-switch='options.type'>
-			{{name}} {{options}}
-				<article ng-switch-when='text'>
-					<md-input-container class='md-block'>
-					  <label>{{options.name}}</label>
-					  <input type='text' ng-model='provider.auth_details[name]' ng-value='options.default' ng-model='provider.auto_details[name]'/>
-					</md-input-container>
-				</article>
+					<tr ng-switch-when='json_key'>
+					  <td class='label'>
+					  	{{options.name}}
+					  </td>
+					  <td>
+					  	<textarea json-text
+						  	class='table-input'
+						  	ng-readonly="!editing"
+					  		style='font-family: monospace;'
+					  		ng-model='provider.auth_details[name]'>
+					  	</textarea>
+					  </td>
+					</tr>
+				</tbody>
+			</table>
 
-				<article ng-switch-when='password'>
-					<md-input-container class='md-block'>
-					  <label>{{options.name}}</label>
-					  <input type='password' ng-model='provider.auth_details[name]' ng-value='options.default' ng-model='provider.auto_details[name]'/>
-					</md-input-container>
-				</article>
-
-				<article ng-switch-when='img'>
-					<a ng-href='{{options.href}}'>
-					  <img src='{{options.src}}' flex-gt-xs='25' flex='100'/>
-					</a>
-				</article>
-
-				<article ng-switch-when="json_key">
-					<md-input-container class='md-block'>
-					  <label>{{options.name}}</label>
-					  <textarea json-text style='font-family: monospace;' ng-model='provider.auth_details[name]'></textarea>
-					</md-input-container>
-				</article>
-			</div>
 			<!--<ng-include src="'views/providers/'+provider.type+'.tmpl.html'" />-->
 
 		</md-content>
