@@ -34,6 +34,16 @@ login controller
                 $cookies.put('host', login.host)
                 $scope.$emit('host', host)
 
+                var token = $cookies.get('DrAuthToken')
+		if (typeof token !== 'undefined') {
+                    var username = $cookies.get('DrAuthUser');
+                    localStorageService.add('username', username);
+                    $scope.$emit('login', { username: username }); //store the user in rootScope so the isAuth function can use it!
+                    $scope.$emit('startUpdating') // start auto-updating the api data
+                    $location.path($scope.lastPath)
+		    return
+		}
+
                 if($scope.initialRemember) {
                     login.signIn();
                 }

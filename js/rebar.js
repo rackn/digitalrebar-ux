@@ -28,8 +28,14 @@ app.filter('from', function() {
 });
 
 app.run(function($rootScope, $cookies, api, $interval){
+    // use regex to get the current location
     var currentLocation = "https://"+location.hostname;
-    $rootScope.host = $cookies.get('host') || currentLocation+':3000';
+    var token = $cookies.get('DrAuthToken');
+    var port = ":3000";
+    if (typeof token !== 'undefined') {
+	port = "";
+    }
+    $rootScope.host = $cookies.get('host') || currentLocation+port;
 
     $rootScope.$on('updateApi', function(event) {
         // make the api calls and add callbacks

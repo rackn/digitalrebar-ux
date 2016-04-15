@@ -3,5 +3,6 @@ example.conf
 server.crt
 server.csr
 server.key
+server-key.pem
 server.pem
 web*.log
