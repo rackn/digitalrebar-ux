@@ -36,7 +36,7 @@ md-toolbar.md-tall.md-hue-2 {
     background: linear-gradient(
       rgba(16, 47, 100, 0.8), 
       rgba(16, 47, 100, 0.8)
-    ), url(/css/banner.png) 0 0 repeat;
+    ), url(banner.png) 0 0 repeat;
 }
 
 a {

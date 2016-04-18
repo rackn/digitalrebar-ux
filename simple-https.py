@@ -13,5 +13,5 @@ port = len(sys.argv) == 2 and int(sys.argv[1]) or 443
 print "Starting UX Server on port %d (pass arg to override)" % (port)
 
 httpd = BaseHTTPServer.HTTPServer(('0.0.0.0', port), SimpleHTTPServer.SimpleHTTPRequestHandler)
-httpd.socket = ssl.wrap_socket (httpd.socket, certfile='./server.pem', server_side=True)
+httpd.socket = ssl.wrap_socket (httpd.socket, keyfile='./server-key.pem', certfile='./server.pem', server_side=True)
 httpd.serve_forever()
