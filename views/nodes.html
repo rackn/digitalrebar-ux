@@ -13,6 +13,31 @@
 		<div class="md-toolbar-tools">
 			<span>{{nodes.selected.length}} node{{nodes.selected.length != 1 && 's' || ''}} selected</span>
 			<span flex></span>
+			<md-menu md-position-mode="target-right target" >
+				<md-button class='md-icon-button' ng-click="$mdOpenMenu($event)">
+					<md-icon>swap_horiz</md-icon>
+	        <md-tooltip>Move Nodes</md-tooltip>
+				</md-button>
+        <md-menu-content width="4" >
+          <md-menu-item ng-repeat="deployment in _deployments">
+            <md-button ng-click="assignNodes(nodes.selected, deployment.id)">
+            	<div layout="row" flex>
+                <p flex>{{deployment.name}}</p>
+                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">arrow_forward</md-icon>
+              </div>
+            </md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button ng-click="$mdCloseMenu($event)">
+            	<div layout="row" flex>
+                <p flex>Cancel</p>
+                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">cancel</md-icon>
+              </div>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+
 			<md-button class='md-icon-button' ng-click='nodes.deleteSelected()'>
 				<md-icon>delete</md-icon>
         <md-tooltip>Delete Nodes</md-tooltip>
