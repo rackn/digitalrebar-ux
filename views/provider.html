@@ -11,7 +11,7 @@ provider view
 				<span flex></span>
 					<md-button
 						class='md-icon-button'
-						ng-click='editing=!editing'
+						ng-click='startEditing()'
 						ng-hide='editing'>
 						<md-icon>edit</md-icon>
 						<md-tooltip>
@@ -20,7 +20,7 @@ provider view
 					</md-button>
 					<md-button
 						class='md-icon-button'
-						ng-click=''
+						ng-click='saveProvider()'
 						ng-show='editing'>
 						<md-icon>save</md-icon>
 						<md-tooltip>
@@ -29,7 +29,7 @@ provider view
 					</md-button>
 					<md-button
 						class='md-icon-button'
-						ng-click='editing=!editing'
+						ng-click='stopEditing()'
 						ng-show='editing'>
 						<md-icon>close</md-icon>
 						<md-tooltip>
@@ -116,8 +116,6 @@ provider view
 					</tr>
 				</tbody>
 			</table>
-
-			<!--<ng-include src="'views/providers/'+provider.type+'.tmpl.html'" />-->
 
 		</md-content>
 	</md-card>
