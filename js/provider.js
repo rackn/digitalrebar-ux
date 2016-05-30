@@ -55,16 +55,13 @@ provider controller
         var hasCallback = false;
 
         var updateProvider = function() { 
-            console.log("Updating Provider")
             if($scope.editing) return;
-            console.log("Not editing");
             
             $scope.provider = $scope._providers[$scope.id];
             if(!$scope.provider)
                 $location.path('/providers')
             else if(!hasCallback) {
                 hasCallback = true;
-                console.log("Created callback")
                 $scope.$on('provider'+$scope.provider.id+"Done", updateProvider)
             }
         }

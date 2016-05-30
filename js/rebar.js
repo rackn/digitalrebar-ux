@@ -293,7 +293,6 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
     api.addProvider = function(provider) {
         var id = provider.id
         $rootScope._providers[id] = provider
-        console.log("Added provider",id)
         $rootScope.$broadcast("provider"+id+"Done")
     }
 
