@@ -16,7 +16,19 @@ provider controller
             return providers
         }
 
+        $scope.$on("keyDown", function(action, e){
+            if(e.key == 13) { // enter
+                $scope.startEditing()
+            }
+            if(e.key == 27) { // escape
+                $scope.stopEditing()
+            }
+        })
+
         $scope.saveProvider = function() {
+            if(!$scope.editing)
+                return
+
             var data = angular.copy($scope.provider)
             api("/api/v2/providers/"+$scope.id,{
                 method: "PUT",
@@ -30,11 +42,17 @@ provider controller
         }
 
         $scope.stopEditing = function() {
+            if(!$scope.editing)
+                return
+
             $scope.provider = $scope._providers[$scope.id];
             $scope.editing = false
         }
 
         $scope.startEditing = function() {
+            if($scope.editing)
+                return
+
             $scope.editing = true
             $scope.provider = angular.copy($scope._providers[$scope.id])
         }

@@ -293,6 +293,21 @@ var version = '0.1.3';
             $rootScope.title = data
         })
 
+        window.onkeydown = function(e) {
+            var key = e.keyCode ? e.keyCode : e.which;
+            var ctrl = e.ctrlKey
+            var alt = e.altKey
+            var shift = e.shiftKey
+            $rootScope.$evalAsync(function(){
+                $rootScope.$broadcast("keyDown", {
+                    key: key,
+                    ctrl: ctrl,
+                    alt: alt,
+                    shift: shift
+                })                
+            })
+        }
+
         $rootScope.icons = {
             'ready': 'check_circle',
             'error': 'warning',
