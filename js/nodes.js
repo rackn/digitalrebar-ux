@@ -59,6 +59,20 @@ node controller
             })
         };
 
+        $scope.assignNodes = function(arr, deployment_id) {
+            arr.forEach(function(node) {
+                api("/api/v2/nodes/"+node.id, {
+                    method: "PUT",
+                    data: {
+                        node_deployment: {
+                            deployment_id: deployment_id,
+                            old_deployment: node.deployment_id
+                        }
+                    }
+                }).success(api.addNode)
+            })
+        }
+
         $scope.id = $routeParams.id
         $scope.node = {}
         $scope.editing = false;
@@ -68,8 +82,10 @@ node controller
             if($scope.editing) return;
 
             $scope.node = $scope._nodes[$scope.id];
-            if(!$scope.node)
+            if(typeof $scope.node == 'undefined') {
+                console.log($scope.node, $scope.id, $scope._nodes[$scope.id])
                 $location.path('/nodes')
+            }
             else if(!hasCallback) {
                 hasCallback = true;
                 $scope.$on('node'+$scope.node.id+"Done", updateNode)
@@ -80,9 +96,10 @@ node controller
             updateNode()
         } else {
             $scope.$on('nodesDone', function(){
-                $scope.node = $scope._nodes[$scope.id];
-                if(!$scope.node)
+                if(typeof $scope._nodes[$scope.id] === 'undefined')
                     $location.path('/nodes')
+                else
+                    updateNode()
             })
         }
 
