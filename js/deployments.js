@@ -164,6 +164,33 @@ deployments controller
             })
         }
 
+
+        $scope.createDeploymentPrompt = function(ev) {
+            var confirm = $mdDialog.prompt()
+                .title('Create Deployment')
+                .textContent('Enter the Name of the New Deployment')
+                .placeholder('Deployment Name')
+                .targetEvent(ev)
+                .ok('Create')
+                .cancel('Cancel');
+            $mdDialog.show(confirm).then(function(name) {
+                api('/api/v2/deployments',{
+                    method: "POST",
+                    data: {
+                        name: name
+                    }
+                }).success(api.addDeployment).
+                success(function(){
+                    deployments.createPieChartData()
+                    deployments.createStatusBarData()
+                }).
+                error(function(err){
+                    api.toast("Couldn't Create Deployment - "+err.message);
+                })
+            }, function() {
+            });
+        }
+
         // callbacks for when nodes and noderoles finish
         // the pie charts require the nodes to exist
         $scope.$on('nodesDone', deployments.createPieChartData)
