@@ -95,6 +95,26 @@ provider controller
             })
         }
 
+        $scope.showAddNodeDialog = function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'dialog',
+                templateUrl: 'views/dialogs/addnodedialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    base_name: 'digital-rebar-node',
+                    providers: $scope._providers,
+                    provider: $scope.provider.name,
+                    add_os: 'default_os',
+                    number: 1
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
+        };
+
         $scope.id = $routeParams.id
         $scope.provider = {}
         $scope.editing = false;

@@ -1,13 +1,17 @@
 <md-card>
 	<md-toolbar class="md-table-toolbar md-default">
 		<div class="md-toolbar-tools">
-			<span>
+			<span flex>
 				<md-icon class='md-primary' md-theme='status_{{node.status}}'>
 					{{icons[node.status]}}
 				</md-icon>
 
 				{{node.name}}
 			</span>
+			<md-button class='md-icon-button' ng-click='nodes.deleteNode()'>
+				<md-icon>delete</md-icon>
+        <md-tooltip>Delete Node</md-tooltip>
+			</md-button>
 		</div>
 	</md-toolbar>
 
