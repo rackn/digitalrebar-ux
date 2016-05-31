@@ -40,6 +40,35 @@ network controller
             })
         }
 
+        this.showAddNetworkDialog = function(ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'dialog',
+                templateUrl: 'views/dialogs/addnetworkdialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    network: {
+                        name: "",
+                        description: "",
+                        category: "general",
+                        group: "default",
+                        deployment_id: 1,
+                        vlan: -1,
+                        v6prefix: "auto",
+                        bridge: -1,
+                        team_mode: -1,
+                        conduit: "10g1",
+                        pbr: null
+                    },
+                    _deployments: $scope._deployments
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
+        };
+
     });
 
 })();
