@@ -27,7 +27,7 @@
     "jquery": "~2.1.4",
     "angular-route": "~1.4.8",
     "angular-md5": "~0.1.10",
-    "angular-material": "~1.0.1",
+    "angular-material": "~1.0.1-RC4",
     "angular-aria": "~1.4.8",
     "angular-animate": "~1.4.8",
     "angular-messages": "~1.4.8",

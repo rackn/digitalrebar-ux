@@ -19,25 +19,32 @@ node controller
         	return nodes
         }
 
-        this.deleteSelected = function() {
-        	nodes.selected.forEach(function(node) {
+        this.deleteSelected = function(event) {
+            $scope.confirm(event, {
+                title: "Delete Nodes",
+                message: "Are you sure you want to delete selected nodes?",
+                yesCallback: function(){
+                	nodes.selected.forEach(function(node) {
 
-        		if(node.admin) {
-        			console.log("Can't delete admin node !"+node.id)
-                    return;
-        		}
+                		if(node.admin) {
+                			console.log("Can't delete admin node !"+node.id)
+                            return;
+                		}
 
-        		console.log("Deleting node "+node.id)
+                		console.log("Deleting node "+node.id)
 
-        		// the api call uses REST DELETE on /nodes/id to remove a node 
-        		api('/api/v2/nodes/'+node.id, {method: 'DELETE'}).
-        			success(function(){
-        				console.log("Node deleted")
-           			}).success(api.addNode)
-        	})
+                		// the api call uses REST DELETE on /nodes/id to remove a node 
+                		api('/api/v2/nodes/'+node.id, {method: 'DELETE'}).
+                			success(function(){
+                				console.log("Node deleted")
+                   			}).success(api.addNode)
+                	})
 
-        	// remove the selected items
-        	nodes.selected = []
+                	// remove the selected items
+                	nodes.selected = []
+                }
+            }
+        )
         }
 
         this.showAddNodeDialog = function(ev) {

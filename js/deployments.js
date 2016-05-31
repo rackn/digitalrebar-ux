@@ -2,7 +2,7 @@
 deployments controller
 */
 (function(){
-    angular.module('app').controller('DeploymentsCtrl', function($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams) {
+    angular.module('app').controller('DeploymentsCtrl', function($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams, api) {
         $scope.$emit('title', 'Deployments'); // shows up on the top toolbar
 
         var deployments = this;
@@ -93,6 +93,102 @@ deployments controller
                     }
                 }
             })
+        }
+
+        // creates a confirmation dialog before deleting the deployment
+        $scope.deleteDeployment = function(event, id){
+            $scope.confirm(event, {
+                title: "Delete Deployment",
+                message: "Are you sure you want to delete deployment "+$scope._deployments[id].name+"?",
+                yesCallback: function() {
+                    api("/api/v2/deployments/"+id,{method: "DELETE"}).
+                    success(function(){
+                        api.remove("deployment", id)
+                    }).
+                    error(function(){
+                        api.toast("Error Deleting Deployment", true)
+                    })
+                }
+            })
+        }
+
+        // puts deployment into proposed status
+        $scope.proposeDeployment = function(id) {
+            api("/api/v2/deployments/"+id+"/propose",{method: "PUT"}).
+            success(api.addDeployment).
+            error(function(err){
+                api.toast("Error Proposing Deployment "+$scope._deployments[id].name+" - "+err.message)
+            })
+        }
+
+        // puts deployment into committed status
+        $scope.commitDeployment = function(id) {
+            api("/api/v2/deployments/"+id+"/commit",{method: "PUT"}).
+            success(api.addDeployment).
+            error(function(){
+                api.toast("Error Committing Deployment "+$scope._deployments[id].name+" - "+err.message)
+            })
+        }
+
+        // creates an array of unused roles for a specified deployment
+        $scope.getRoles = function(deployment_id) {
+            var roles = []
+            var active = []
+            for(var id in $scope._deployment_roles){
+                var deployment_role = $scope._deployment_roles[id]
+                if(deployment_role.deployment_id == deployment_id) {
+                    active.push(deployment_role.role_id+"")
+                }
+            }
+            for(var id in $scope._roles) {
+                if(active.indexOf(id) == -1) {
+                    roles.push($scope._roles[id])
+                }
+            }
+            return roles;
+        }
+
+        // adds a role to the deployment
+        $scope.addRole = function(role_id, id) {
+            api("/api/v2/deployment_roles/", {
+                method: "POST",
+                data: {
+                    deployment_id: id,
+                    add_role: {
+                        role_id: role_id
+                    }
+                }
+            }).success(api.addDeploymentRole).
+            error(function(err){
+                api.toast("Error Adding Deployment Role - "+err.message)
+            })
+        }
+
+
+        $scope.createDeploymentPrompt = function(ev) {
+            var confirm = $mdDialog.prompt()
+                .title('Create Deployment')
+                .textContent('Enter the Name of the New Deployment')
+                .placeholder('Deployment Name')
+                .targetEvent(ev)
+                .ok('Create')
+                .cancel('Cancel');
+            $mdDialog.show(confirm).then(function(name) {
+                api('/api/v2/deployments',{
+                    method: "POST",
+                    data: {
+                        name: name
+                    }
+                }).success(api.addDeployment).
+                success(function(){
+                    deployments.createPieChartData()
+                    deployments.createStatusBarData()
+                }).
+                error(function(err){
+                    api.toast("Couldn't Create Deployment - "+err.message);
+                })
+            }, function() {
+            });
         }
 
         // callbacks for when nodes and noderoles finish
