@@ -93,6 +93,10 @@ node controller
                     api('/api/v2/nodes/'+$scope.node.id+"/attribs").
                     success(function(obj) {
                         $scope.attribs = obj;
+                        obj.forEach(function(attrib){
+                            attrib.len = JSON.stringify(attrib.value).length
+                            attrib.value = JSON.stringify(attrib.value, null, '  ').trim()
+                        })
                         $scope.hasAttrib = 1;
                     }).
                     error(function() {
