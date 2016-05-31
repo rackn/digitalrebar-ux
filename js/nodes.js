@@ -75,6 +75,8 @@ node controller
 
         $scope.id = $routeParams.id
         $scope.node = {}
+        $scope.hasAttrib = -1;
+        $scope.attribs = [];
         $scope.editing = false;
         var hasCallback = false;
 
@@ -82,13 +84,26 @@ node controller
             if($scope.editing) return;
 
             $scope.node = $scope._nodes[$scope.id];
-            if(typeof $scope.node == 'undefined') {
-                console.log($scope.node, $scope.id, $scope._nodes[$scope.id])
+
+            if(!$scope.node)
                 $location.path('/nodes')
-            }
-            else if(!hasCallback) {
-                hasCallback = true;
-                $scope.$on('node'+$scope.node.id+"Done", updateNode)
+            else {
+
+                if($scope.hasAttrib == -1) {
+                    api('/api/v2/nodes/'+$scope.node.id+"/attribs").
+                    success(function(obj) {
+                        $scope.attribs = obj;
+                        $scope.hasAttrib = 1;
+                    }).
+                    error(function() {
+                        $scope.hasAttrib = 0;
+                    })
+                }
+
+                if(!hasCallback) {
+                    hasCallback = true;
+                    $scope.$on('node'+$scope.node.id+"Done", updateNode)
+                }
             }
 
         }

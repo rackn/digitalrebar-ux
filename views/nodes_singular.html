@@ -90,3 +90,46 @@
 		</span>
 	<md-card-content>
 </md-card>
+
+<!-- Show node attributes -->
+<md-card>
+	<md-toolbar class="md-table-toolbar md-default">
+		<div class="md-toolbar-tools">
+			<span>Attributes</span>
+		</div>
+	</md-toolbar>
+	<div ng-switch="hasAttrib">
+		<md-card-content ng-switch-when="-1">
+			<div layout="row" layout-sm="column" layout-align="space-around">
+				<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+			</div>
+		</md-card-content>
+		<md-card-content ng-switch-when="0">
+			Error Loading Attributes
+		</md-card-content>
+		<md-card-content ng-switch-when="1">
+			<table layout-padding>
+				<tbody>
+					<tr ng-repeat="attrib in attribs | orderBy:'name'">
+						<td class='label'>
+							<a ng-click='alert(attrib.id)'>
+								{{attrib.name}}
+							</a>
+						</td>
+						<td ng-switch='attrib.schema.type'>
+							<div ng-switch-when="seq">
+								SEQ {{attrib.value}}
+							</div>
+							<div ng-switch-when="map">
+								MAP {{attrib.value}}
+							</div>
+							<div data-ng-switch-default style='width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'>
+								{{attrib.value}}
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</md-card-content>
+	</div>
+</md-card>
