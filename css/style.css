@@ -93,3 +93,10 @@ div md-progress-circular {
 .table-input:active[readonly='readonly'] {
   border-bottom-color: red;
 }
+
+.add-fab {
+  position: fixed;
+  z-index: 5;
+  bottom: 2em;
+  right: 2em;
+}

@@ -95,6 +95,7 @@ deployments controller
             })
         }
 
+        // creates a confirmation dialog before deleting the deployment
         $scope.deleteDeployment = function(event, id){
             $scope.confirm(event, {
                 title: "Delete Deployment",
@@ -108,6 +109,22 @@ deployments controller
                         api.toast("Error Deleting Deployment", true)
                     })
                 }
+            })
+        }
+
+        $scope.proposeDeployment = function(id) {
+            api("/api/v2/deployments/"+id+"/propose",{method: "PUT"}).
+            success(api.addDeployment).
+            error(function(err){
+                api.toast("Error Proposing Deployment "+$scope._deployments[id].name+" - "+err.message)
+            })
+        }
+
+        $scope.commitDeployment = function(id) {
+            api("/api/v2/deployments/"+id+"/commit",{method: "PUT"}).
+            success(api.addDeployment).
+            error(function(){
+                api.toast("Error Committing Deployment "+$scope._deployments[id].name+" - "+err.message)
             })
         }
 
