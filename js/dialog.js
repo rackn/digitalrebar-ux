@@ -94,12 +94,23 @@ dialog controller
                     method: "POST",
                     data: payload,
                 }).error(function(err){
-                    api.toast('Error: '+err.message, 'node');
+                    api.toast('Error: '+err.message, 'node', true);
                 })
             })
 
             api.toast('Adding '+locals.number+' node'+(locals.number!=1?'s':''));
 
+            $mdDialog.hide();
+        }
+
+        this.addProvider = function(){
+            api("/api/v2/providers",{
+                method: "POST",
+                data: locals.provider
+            }).success(api.addProvider).
+            error(function(err){
+                api.toast("Error Adding Provider - "+err.message, true);
+            });
             $mdDialog.hide();
         }
 

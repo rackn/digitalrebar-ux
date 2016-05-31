@@ -3,7 +3,7 @@ provider controller
 */
 (function(){
     angular.module('app')
-    .controller('ProviderCtrl', function($scope, $location, $routeParams, api) {
+    .controller('ProviderCtrl', function($scope, $location, $routeParams, api, $mdMedia, $mdDialog) {
         $scope.$emit('title', 'Provider'); // shows up on the top toolbar
 
         var provider = this;
@@ -65,6 +65,34 @@ provider controller
                 }
             }
             return nodes;
+        }
+
+        $scope.showAddProviderDialog = function(ev, type) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+            var data = {
+                name: type.toLowerCase(),
+                description: "Not Set",
+                type: type,
+                auth_details: {}
+            }
+            for(var key in $scope.providerTemplates[type]) {
+                var val = $scope.providerTemplates[type][key]
+                data.auth_details[key] = val.default
+            }
+
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'dialog',
+                templateUrl: 'views/dialogs/addproviderdialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    providerTemplates: $scope.providerTemplates,
+                    provider: data,
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
         }
 
         $scope.id = $routeParams.id
