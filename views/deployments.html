@@ -33,6 +33,7 @@ deployments view
 
 		<!-- Tabs that appear after the expand button is pressed -->
 		<section ng-show='expand[deployment.id]'>
+			
 			<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" >
 
 				<!-- Nodes tab -->
@@ -65,6 +66,24 @@ deployments view
 					</span>
 				</md-tab>
 			</md-tabs>
+
+			<md-divider/>
+
+			<!-- Toolbar with icons -->
+			<md-card-actions layout="row" layout-align="start center">
+				<md-button class='md-icon-button'>
+					<md-icon>send</md-icon>
+					<md-tooltip>Commit</md-tooltip>
+				</md-button>
+
+				<!-- Right side of toolbar -->
+				<md-card-icon-actions>
+					<md-button class='md-icon-button'>
+						<md-icon>delete</md-icon>
+						<md-tooltip>Destroy</md-tooltip>
+					</md-button>
+				</md-card-icon-actions>
+			</md-card-actions>
+
 		</section>
-	</md-card>
 </div>
