@@ -44,17 +44,37 @@ node role controller
 
         $scope.id = $routeParams.id
         $scope.node_role = {}
+        $scope.hasAttrib = -1;
+        $scope.attribs = [];
         $scope.editing = false;
         var hasCallback = false;
+
         var updateNodeRole =  function(){
             if($scope.editing) return;
 
             $scope.node_role = $scope._node_roles[$scope.id];
             if(!$scope.node_role)
                 $location.path('/node_roles')
-            else if(!hasCallback) {
-                hasCallback = true;
-                $scope.$on('node_role'+$scope.node_role.id+"Done", updateNodeRole)
+            else {
+                if($scope.hasAttrib == -1) {
+                    api('/api/v2/node_roles/'+$scope.node_role.id+"/attribs").
+                    success(function(obj) {
+                        $scope.attribs = obj;
+                        obj.forEach(function(attrib){
+                            attrib.len = JSON.stringify(attrib.value).length
+                            attrib.value = JSON.stringify(attrib.value, null, '  ').trim()
+                        })
+                        $scope.hasAttrib = 1;
+                    }).
+                    error(function() {
+                        $scope.hasAttrib = 0;
+                    })
+                }
+
+                if(!hasCallback) {
+                    hasCallback = true;
+                    $scope.$on('node_role'+$scope.node_role.id+"Done", updateNodeRole)
+                }
             }
         }
 
