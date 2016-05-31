@@ -78,10 +78,8 @@ node controller
         $scope.editing = false;
         var hasCallback = false;
 
-        var i = 0
         var updateNode = function() {
             if($scope.editing) return;
-            console.log("Update",i++)
 
             $scope.node = $scope._nodes[$scope.id];
             if(typeof $scope.node == 'undefined') {
