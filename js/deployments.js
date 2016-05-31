@@ -130,13 +130,22 @@ deployments controller
             })
         }
 
-        // converts the _roles object that rootScope has into an array
-        $scope.getRoles = function() {
-          var roles = []
-          for(var id in $scope._roles) {
-                roles.push($scope._roles[id])
-          }
-          return roles;
+        // creates an array of unused roles for a specified deployment
+        $scope.getRoles = function(deployment_id) {
+            var roles = []
+            var active = []
+            for(var id in $scope._deployment_roles){
+                var deployment_role = $scope._deployment_roles[id]
+                if(deployment_role.deployment_id == deployment_id) {
+                    active.push(deployment_role.role_id+"")
+                }
+            }
+            for(var id in $scope._roles) {
+                if(active.indexOf(id) == -1) {
+                    roles.push($scope._roles[id])
+                }
+            }
+            return roles;
         }
 
         // adds a role to the deployment
