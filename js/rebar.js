@@ -243,8 +243,8 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
                 node.simpleState = 0; // ready
         }
 
-        $rootScope.$broadcast("node"+id+"Done")
         $rootScope._nodes[id] = node
+        $rootScope.$broadcast("node"+id+"Done")
     }
 
     // api call for getting all the nodes
