@@ -43,6 +43,32 @@ node controller
                 	// remove the selected items
                 	nodes.selected = []
                 }
+            })
+        }
+
+        this.deleteNode = function(event) {
+            $scope.confirm(event, {
+                title: "Delete Node",
+                message: "Are you sure you want to delete "+$scope.node.name,
+                yesCallback: function(){
+                    
+                    if($scope.node.admin) {
+                        console.log("Can't delete admin node!")
+                        api.toast("Cannot delete admin node")
+                        return;
+                    }
+
+                    console.log("Deleting node "+$scope.node.id)
+
+                    // the api call uses REST DELETE on /nodes/id to remove a node 
+                    api('/api/v2/nodes/'+$scope.node.id, {method: 'DELETE'}).
+                        success(function(){
+                            console.log("Node deleted")
+                        }).success(api.addNode).success(function(){
+                            $location.path("/nodes")
+                        })
+
+                }
             }
         )
         }

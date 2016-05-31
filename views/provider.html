@@ -123,6 +123,16 @@ provider view
 		<md-toolbar class="md-table-toolbar md-default">
 			<div class="md-toolbar-tools">
 				<span>Nodes</span>
+				<span flex></span>
+				<md-button
+					class='md-icon-button'
+					ng-click='showAddNodeDialog()'
+					ng-hide='provider.name == "metal"'>
+					<md-icon>add</md-icon>
+					<md-tooltip>
+						Add Node
+					</md-tooltip>
+				</md-button>
 			</div>
 		</md-toolbar>
 
