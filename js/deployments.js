@@ -112,6 +112,7 @@ deployments controller
             })
         }
 
+        // puts deployment into proposed status
         $scope.proposeDeployment = function(id) {
             api("/api/v2/deployments/"+id+"/propose",{method: "PUT"}).
             success(api.addDeployment).
@@ -120,11 +121,37 @@ deployments controller
             })
         }
 
+        // puts deployment into committed status
         $scope.commitDeployment = function(id) {
             api("/api/v2/deployments/"+id+"/commit",{method: "PUT"}).
             success(api.addDeployment).
             error(function(){
                 api.toast("Error Committing Deployment "+$scope._deployments[id].name+" - "+err.message)
+            })
+        }
+
+        // converts the _roles object that rootScope has into an array
+        $scope.getRoles = function() {
+          var roles = []
+          for(var id in $scope._roles) {
+                roles.push($scope._roles[id])
+          }
+          return roles;
+        }
+
+        // adds a role to the deployment
+        $scope.addRole = function(role_id, id) {
+            api("/api/v2/deployment_roles/", {
+                method: "POST",
+                data: {
+                    deployment_id: id,
+                    add_role: {
+                        role_id: role_id
+                    }
+                }
+            }).success(api.addDeploymentRole).
+            error(function(err){
+                api.toast("Error Adding Deployment Role - "+err.message)
             })
         }
 

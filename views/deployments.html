@@ -81,6 +81,25 @@ deployments view
 					<md-tooltip>Commit</md-tooltip>
 				</md-button>
 
+				
+
+				<md-menu md-position-mode="target-right target" ng-if='deployment.state == 0' style='padding: 0;'>
+					<md-button class='md-icon-button' ng-click='$mdOpenMenu($event)'>
+						<md-icon>add</md-icon>
+						<md-tooltip>Add Role</md-tooltip>
+					</md-button>
+					<md-menu-content width="4" >
+						<md-menu-item ng-repeat="role in getRoles() | filter:{milestone: true} | orderBy:'name'">
+							<md-button ng-click="addRole(role.id, id)">
+								<div layout="row" flex>
+									<p flex>{{role.name}}</p>
+									<md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{role.icon}}</md-icon>
+								</div>
+							</md-button>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+
 				<md-button class='md-icon-button' ng-if='deployment.state == 2' ng-click='proposeDeployment(id)'>
 					<md-icon>mode_edit</md-icon>
 					<md-tooltip>Propose</md-tooltip>
