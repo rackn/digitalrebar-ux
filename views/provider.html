@@ -145,6 +145,34 @@ provider view
 	<md-toolbar class="md-table-toolbar md-default">
 		<div class="md-toolbar-tools">
 			<span>Providers</span>
+			<span flex></span>
+			<md-menu md-position-mode="target-right target" style='padding: 0;'>
+				<md-button class="md-icon-button" ng-click='$mdOpenMenu($event)'>
+				  <md-icon>add</md-icon>
+				  <md-tooltip>
+				  	Add Provider
+				  </md-tooltip>
+				</md-button>
+        <md-menu-content width="4" >
+          <md-menu-item ng-repeat="(name, data) in providerTemplates">
+            <md-button ng-click="showAddProviderDialog($event, name)">
+            	<div layout="row" flex>
+                <p flex>{{name}}</p>
+                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">add</md-icon>
+              </div>
+            </md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button ng-click="$mdCloseMenu($event)">
+            	<div layout="row" flex>
+                <p flex>Cancel</p>
+                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">cancel</md-icon>
+              </div>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+			
 		</div>
 	</md-toolbar>
 

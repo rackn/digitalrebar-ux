@@ -281,7 +281,6 @@ var version = '0.1.3';
             api('/api/v2/providers/templates').
                 success(function(data){
                     $rootScope.providerTemplates = data
-                    console.log(data)
                 })
         })
 
