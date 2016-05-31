@@ -114,5 +114,17 @@ dialog controller
             $mdDialog.hide();
         }
 
+        this.addNetwork = function(){
+            locals.network.name = locals.network.category+"-"+locals.network.group
+            api("/api/v2/networks",{
+                method: "POST",
+                data: locals.network
+            }).success(api.addNetwork).
+            error(function(err){
+                api.toast("Error Adding Network - "+err.message, true);
+            });
+            $mdDialog.hide();
+        }
+
     });
 })();
