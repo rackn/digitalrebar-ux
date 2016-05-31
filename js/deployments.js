@@ -2,7 +2,7 @@
 deployments controller
 */
 (function(){
-    angular.module('app').controller('DeploymentsCtrl', function($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams) {
+    angular.module('app').controller('DeploymentsCtrl', function($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams, api) {
         $scope.$emit('title', 'Deployments'); // shows up on the top toolbar
 
         var deployments = this;
@@ -91,6 +91,22 @@ deployments controller
 
                         deployments.deploymentStatus[id].total ++; 
                     }
+                }
+            })
+        }
+
+        $scope.deleteDeployment = function(event, id){
+            $scope.confirm(event, {
+                title: "Delete Deployment",
+                message: "Are you sure you want to delete deployment "+$scope._deployments[id].name+"?",
+                yesCallback: function() {
+                    api("/api/v2/deployments/"+id,{method: "DELETE"}).
+                    success(function(){
+                        api.remove("deployment", id)
+                    }).
+                    error(function(){
+                        api.toast("Error Deleting Deployment", true)
+                    })
                 }
             })
         }

@@ -249,7 +249,7 @@ var version = '0.1.3';
 
     });
 
-    app.run(function($rootScope, $location, $http, $cookies, debounce, $interval, localStorageService, api){
+    app.run(function($rootScope, $location, $http, $cookies, debounce, $interval, localStorageService, api, $mdDialog){
 
         $rootScope.user;
         $rootScope.isAuth = function(){return !!$rootScope.user;};
@@ -281,7 +281,6 @@ var version = '0.1.3';
             api('/api/v2/providers/templates').
                 success(function(data){
                     $rootScope.providerTemplates = data
-                    console.log(data)
                 })
         })
 
@@ -292,6 +291,23 @@ var version = '0.1.3';
         $rootScope.$on('title', function(event, data){ 
             $rootScope.title = data
         })
+
+        // a confirm dialog
+        $rootScope.confirm = function(ev, data) {
+            var confirm = $mdDialog.confirm()
+                .title(data.title || "Confirm")
+                .textContent(data.message)
+                .targetEvent(ev)
+                .ok(data.yes || "Yes")
+                .cancel(data.no || "No");
+            $mdDialog.show(confirm).then(function() {
+                if(typeof data.yesCallback !== 'undefined')
+                    data.yesCallback()
+            }, function() {
+                if(typeof data.noCallback !== 'undefined')
+                    data.noCallback()
+            });
+        }
 
         window.onkeydown = function(e) {
             var key = e.keyCode ? e.keyCode : e.which;
