@@ -31,15 +31,20 @@ node role controller
         }
 
         $scope.destroy = function() {
-            // if we have a valid node selected
-            if($scope.node_role.id) {
-                api('/api/v2/node_roles/'+node_role.id+'/retry', {
-                    method: 'DELETE'
-                }).success(function(){
-                    api.remove('node_role', node_role.id)
-                    $location.path('/node_roles')
-                });
-            }
+            $scope.confirm(event, {
+                title: "Destroy Node Role",
+                message: "Are you sure you want to destroy this node role?",
+                yesCallback: function() {
+                    if($scope.node_role.id) {
+                        api('/api/v2/node_roles/'+$scope.node_role.id, {
+                            method: 'DELETE'
+                        }).success(function(){
+                            api.remove('node_role', $scope.node_role.id)
+                            $location.path('/node_roles')
+                        });                    
+                    }
+                }
+            })
         }
 
         $scope.id = $routeParams.id

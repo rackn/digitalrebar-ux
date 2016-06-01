@@ -1,0 +1,41 @@
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span>Deployment Roles ({{getDeploymentRoles().length}})</span>
+    </div>
+  </md-toolbar>
+
+  <md-table-container>
+    <table md-table>
+      <thead md-head md-order="myOrder">
+        <tr md-row>
+          <th md-column md-order-by='deployment_id'>Deployment</th>
+          <th md-column md-order-by='role_id'>Role</th>
+          <th md-column md-order-by='id'>Deployment Role</th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row ng-repeat="role in getDeploymentRoles() | orderBy: myOrder">
+        <td md-cell>
+          <a ng-href='#/dash/{{role.deployment_id}}'>
+            {{_deployments[role.deployment_id].name}}
+          </a>
+        </td>
+        <td md-cell>
+          <a ng-href='#/roles/{{role.role_id}}'>
+            {{_roles[role.role_id].name}}
+          </a>
+        </td>
+        <td md-cell>
+          <md-button ng-href='#/deployment_roles/{{role.id}}' class='md-primary md-fab md-mini'>
+            <md-icon aria-label='{{_roles[role.role_id].icon}}'>
+              {{_roles[role.role_id].icon}}
+            </md-icon>
+          </md-button>
+        </td>
+        
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+</md-card>

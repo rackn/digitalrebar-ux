@@ -37,7 +37,9 @@ node controller
                 		api('/api/v2/nodes/'+node.id, {method: 'DELETE'}).
                 			success(function(){
                 				console.log("Node deleted")
-                   			}).success(api.addNode)
+                   			}).success(function(){
+                                api.remove('node', node.id)
+                            })
                 	})
 
                 	// remove the selected items
@@ -64,7 +66,8 @@ node controller
                     api('/api/v2/nodes/'+$scope.node.id, {method: 'DELETE'}).
                         success(function(){
                             console.log("Node deleted")
-                        }).success(api.addNode).success(function(){
+                        }).success(function(){
+                            api.remove('node', $scope.node.id)
                             $location.path("/nodes")
                         })
 

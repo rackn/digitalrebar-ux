@@ -93,7 +93,8 @@ dialog controller
                 api('/api/v2/nodes',{
                     method: "POST",
                     data: payload,
-                }).error(function(err){
+                }).success(api.addNode).
+                error(function(err){
                     api.toast('Error: '+err.message, 'node', true);
                 })
             })

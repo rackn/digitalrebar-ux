@@ -1,0 +1,71 @@
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span>
+        <md-icon class='md-primary'>
+          {{_roles[deployment_role.role_id].icon}}
+        </md-icon>
+        <a ng-href='#/deployments/{{deployment_role.deployment_id}}'>
+          {{_deployments[deployment_role.deployment_id].name}}
+        </a>
+        <a ng-href='#/roles/{{deployment_role.role_id}}'>
+          {{_roles[deployment_role.role_id].name}}
+        </a>
+      </span>
+      <span flex></span>
+
+      <md-button class='md-icon-button' ng-click='propose()' >
+        <md-icon>mode_edit</md-icon>
+        <md-tooltip>Propose</md-tooltip>
+      </md-button>
+
+      <md-button class='md-icon-button' ng-click='commit()'>
+        <md-icon>send</md-icon>
+        <md-tooltip>Commit</md-tooltip>
+      </md-button>
+      <md-button class='md-icon-button' ng-click='destroy()'>
+        <md-icon>delete</md-icon>
+        <md-tooltip>Destroy</md-tooltip>
+      </md-button>
+    </div>
+
+    <div class="md-toolbar-tools">
+      <span>Attributes</span>
+    </div>
+  </md-toolbar>
+
+  <div ng-switch="hasAttrib">
+    <md-card-content ng-switch-when="-1">
+      <div layout="row" layout-sm="column" layout-align="space-around">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
+    </md-card-content>
+    <md-card-content ng-switch-when="0">
+      Error Loading Attributes
+    </md-card-content>
+    <md-card-content ng-switch-when="1">
+      <table layout-padding>
+        <tbody>
+          <tr ng-repeat="attrib in attribs | orderBy:'name'">
+            <td class='label' valign="top">
+              <a ng-click='alert(attrib.id)'>
+                {{attrib.name}}
+              </a>
+            </td>
+            <td ng-switch='attrib.schema.type'>
+              <div data-ng-switch-default>
+                <div ng-if='attrib.len > 70' ng-click="visible=!visible">
+                  <div ng-hide='visible'>
+                    Click to Expand
+                  </div>
+                  <pre ng-show='visible' style='overflow-x: auto;'>{{attrib.value}}</pre>
+                </div>
+                <pre ng-if='attrib.len <= 70'>{{attrib.value}}</pre>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-card-content>
+  </div>
+</md-card>
