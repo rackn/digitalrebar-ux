@@ -1,12 +1,23 @@
 <md-card>
-  <md-toolbar class="md-table-toolbar md-default">
+  <md-toolbar class="md-table-toolbar md-default" ng-hide='deployment_roles.selected.length'>
     <div class="md-toolbar-tools">
       <span>Deployment Roles ({{getDeploymentRoles().length}})</span>
     </div>
   </md-toolbar>
 
+  <md-toolbar class="md-table-toolbar alternate" ng-show='deployment_roles.selected.length'>
+    <div class="md-toolbar-tools">
+      <span>{{deployment_roles.selected.length}} deployment role{{deployment_roles.selected.length != 1 && 's' || ''}} selected</span>
+      <span flex></span>
+      <md-button class='md-icon-button' ng-click='destroySelected()'>
+        <md-icon>delete</md-icon>
+        <md-tooltip>Destroy Deployment Roles</md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+
   <md-table-container>
-    <table md-table>
+    <table md-table md-row-select ng-model='deployment_roles.selected'>
       <thead md-head md-order="myOrder">
         <tr md-row>
           <th md-column md-order-by='deployment_id'>Deployment</th>
@@ -15,7 +26,7 @@
         </tr>
       </thead>
       <tbody md-body>
-        <tr md-row ng-repeat="role in getDeploymentRoles() | orderBy: myOrder">
+        <tr md-row md-select='role' md-select-id='{{role.id}}' md-auto-select ng-repeat="role in getDeploymentRoles() | orderBy: myOrder">
         <td md-cell>
           <a ng-href='#/dash/{{role.deployment_id}}'>
             {{_deployments[role.deployment_id].name}}

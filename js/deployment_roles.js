@@ -6,9 +6,10 @@ deployment role controller
         
         $scope.$emit('title', 'Deployment Roles'); // shows up on the top toolbar
 
-        var node_roles = this;
+        var deployment_roles = this;
 
         $scope.myOrder = 'id'
+        this.selected = []
         
         // converts the _node_roles object that rootScope has into an array
         $scope.getDeploymentRoles = function() {
@@ -41,13 +42,33 @@ deployment role controller
             }
         }
 
+        $scope.destroySelected = function() {
+            $scope.confirm(event, {
+                title: "Destroy Deployment Roles",
+                message: "Are you sure you want to destroy the selected deployment roles?",
+                yesCallback: function() {
+                    deployment_roles.selected.forEach(function(deployment_role) {
+                        if(deployment_role.id) {
+                            api('/api/v2/deployment_roles/'+deployment_role.id, {
+                                method: 'DELETE'
+                            }).success(function(){
+                                api.remove('deployment_role', deployment_role.id)
+                            });                    
+                        }
+
+                        deployment_roles.selected = []
+                    })
+                }
+            })
+        }
+
         $scope.destroy = function() {
             $scope.confirm(event, {
                 title: "Destroy Deployment Role",
                 message: "Are you sure you want to destroy this deployment role?",
                 yesCallback: function() {
-                    // if we have a valid node role selected
-                    if($scope.node_role.id) {
+                    // if we have a valid deployment role selected
+                    if($scope.deployment_role.id) {
                         api('/api/v2/deployment_roles/'+$scope.deployment_role.id, {
                             method: 'DELETE'
                         }).success(function(){

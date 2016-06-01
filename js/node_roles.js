@@ -9,6 +9,7 @@ node role controller
         var node_roles = this;
 
         $scope.myOrder = 'id'
+        this.selected = []
         
         // converts the _node_roles object that rootScope has into an array
         $scope.getNodeRoles = function() {
@@ -28,6 +29,27 @@ node role controller
                     api.toast('Error: '+err.message, 'node_role')
                 });
             }
+        }
+
+        $scope.destroySelected = function() {
+            $scope.confirm(event, {
+                title: "Destroy Node Roles",
+                message: "Are you sure you want to destroy the selected node roles?",
+                yesCallback: function() {
+                    node_roles.selected.forEach(function(node_role) {
+                        if(node_role.id) {
+                            api('/api/v2/node_roles/'+node_role.id, {
+                                method: 'DELETE'
+                            }).success(function(){
+                                api.remove('node_role', node_role.id)
+                            });                    
+                        }
+                        
+                        node_roles.selected = []
+                    })
+
+                }
+            })
         }
 
         $scope.destroy = function() {
