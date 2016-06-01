@@ -45,7 +45,7 @@ deployments view
 								<md-tooltip md-direction="bottom">
 									{{node.name}}
 								</md-tooltip>
-								<md-icon>{{icons[node.status]}}</md-icon>
+								<md-icon aria-label='{{node.status}}'>{{icons[node.status]}}</md-icon>
 							</md-button>
 
 						</span>
@@ -61,7 +61,7 @@ deployments view
 							<md-tooltip md-direction="bottom">
 								{{_roles[role.role_id].name}}
 							</md-tooltip>
-							<md-icon>{{_roles[role.role_id].icon}}</md-icon>
+							<md-icon aria-label='{{_roles[role.role_id].icon}}'>{{_roles[role.role_id].icon}}</md-icon>
 						</md-button>
 					</span>
 				</md-tab>
