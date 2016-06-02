@@ -26,6 +26,15 @@
           </md-select>
         </md-input-container><br/>
 
+        <md-input-container>
+          <label>Deployment</label>
+          <md-select ng-model="locals.deployment_id">
+            <md-option ng-repeat="(id, deployment) in locals._deployments" value="{{id}}">
+              {{deployment.name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        
         <md-input-container class='md-block'>
           <label>OS</label>
           <input type='text' ng-model='locals.add_os'/>
@@ -35,7 +44,10 @@
           <label>Number</label>
           <input required type="number" step="any" name="rate" ng-model="locals.number" min="1" />
         </md-input-container>
+
       </md-content>
+
+      </td>
     </md-dialog-content>
     <md-dialog-actions>
       <a ng-href='/#/providers'>Providers</a><br/>

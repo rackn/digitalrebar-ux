@@ -88,7 +88,8 @@ node controller
                     base_name: 'digital-rebar-node',
                     providers: $scope._providers,
                     add_os: 'default_os',
-                    number: 1
+                    number: 1,
+                    _deployments: $scope._deployments
                 },
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen

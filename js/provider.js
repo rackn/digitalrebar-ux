@@ -108,7 +108,8 @@ provider controller
                     providers: $scope._providers,
                     provider: $scope.provider.name,
                     add_os: 'default_os',
-                    number: 1
+                    number: 1,
+                    _deployments: $scope._deployments
                 },
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
