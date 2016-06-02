@@ -25,6 +25,27 @@ deployments controller
             })
         };
 
+        $scope.showAddNodeDialog = function(ev, id) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'dialog',
+                templateUrl: 'views/dialogs/addnodedialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    base_name: 'digital-rebar-node',
+                    providers: $scope._providers,
+                    add_os: 'default_os',
+                    number: 1,
+                    _deployments: $scope._deployments,
+                    deployment_id: id
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
+        };
+
         $scope.expand = {}
 
         if($routeParams.id)
