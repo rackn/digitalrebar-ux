@@ -103,6 +103,8 @@ deployments controller
         this.createStatusBarData = function() {
             $scope.$evalAsync(function(){
                 for(var id in $scope._deployments) {
+                    if(!$scope.binding[id])
+                        $scope.binding = false
                     var deployment = $scope._deployments[id];
                     deployments.deploymentStatus[id] = {error: 0, total: 0}
                     for(var roleId in deployment.node_roles) {
@@ -264,6 +266,7 @@ deployments controller
         }
 
         $scope.bindRoles = {}
+        $scope.binding = {}
 
         // callbacks for when nodes and noderoles finish
         // the pie charts require the nodes to exist

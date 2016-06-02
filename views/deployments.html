@@ -68,10 +68,10 @@ deployments view
 
 			</md-tabs>
 
-			<md-divider/>
+			<md-divider></md-divider>
 
 			<!-- Bind Section -->
-			<md-card ng-show='binding' layout='column'>
+			<md-card ng-show='binding[id]' layout='column'>
 				<md-toolbar flex>
 					<section layout='row'>
 						<div class="md-toolbar-tools">
@@ -83,7 +83,7 @@ deployments view
 								{{_roles[bindRoles[id].role_id].name}}
 							</h2>
 							<span flex></span>
-							<md-button class='md-icon-button' ng-click='binding=false'>
+							<md-button class='md-icon-button' ng-click='binding[id]=false'>
 								<md-icon>close</md-icon>
 								<md-tooltip>
 									Stop Binding Node Roles
@@ -106,15 +106,15 @@ deployments view
 										{{_roles[role.role_id].icon}}
 									</md-icon>									
 								</span>
-							<md-divider/>
+							<md-divider></md-divider>
 						</md-list-item>
 					</md-list>
-					<md-divider/>
+					<md-divider></md-divider>
 					<md-list style='overflow-y: auto;' flex='66'>
 						<md-list-item
 							ng-if='bindRoles[id]'
 							ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy: 'name'">
-							<md-divider/>
+							<md-divider></md-divider>
 
 							<!-- Node button -->
 							<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="#/nodes/{{node.id}}">
@@ -155,7 +155,7 @@ deployments view
 					</md-list>
 				</section>
 			</md-card>
-			<md-divider ng-show='binding'/>
+			<md-divider ng-show='binding[id]'></md-divider>
 
 			<!-- Toolbar with icons -->
 			<md-card-actions layout="row" layout-align="start center">
@@ -197,7 +197,7 @@ deployments view
 					<md-tooltip>Add Node</md-tooltip>
 				</md-button>
 
-				<md-button class='md-icon-button' ng-click='binding=!binding'>
+				<md-button class='md-icon-button' ng-click='binding[id]=!binding[id]'>
 					<md-icon>link</md-icon>
 					<md-tooltip>Bind Node Roles</md-tooltip>
 				</md-button>
