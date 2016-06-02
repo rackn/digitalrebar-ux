@@ -112,19 +112,10 @@ node controller
         // creates an array of unused roles for a specified deployment
         $scope.getRoles = function() {
             var roles = []
-            var active = []
             var deployment_id = $scope.node.deployment_id
-            for(var id in $scope._node_roles) {
-                var node_role = $scope._node_roles[id]
-                if(node_role.deployment_id == deployment_id) {
-                    active.push(node_role.role_id)
-                }
-    
-            }
             for(var id in $scope._deployment_roles){
                 var deployment_role = $scope._deployment_roles[id]
-                if(deployment_role.deployment_id == deployment_id &&
-                        active.indexOf(deployment_role.role_id) == -1) {
+                if(deployment_role.deployment_id == deployment_id) {
                     roles.push(deployment_role)
                 }
             }
