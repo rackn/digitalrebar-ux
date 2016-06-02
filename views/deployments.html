@@ -41,7 +41,7 @@ deployments view
 						<!-- Add all the nodes as list items -->
 						<span ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy: 'name'">
 							<!-- Node button -->
-							<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="/#/nodes/{{node.id}}">
+							<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="#/nodes/{{node.id}}">
 								<md-tooltip md-direction="bottom">
 									{{node.name}}
 								</md-tooltip>
