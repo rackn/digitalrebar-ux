@@ -16,22 +16,6 @@
 		<div class="md-toolbar-tools">
 			<span>{{nodes.selected.length}} node{{nodes.selected.length != 1 && 's' || ''}} selected</span>
 			<span flex></span>
-      <md-menu md-position-mode="target-right target" style='padding: 0;'>
-        <md-button class='md-icon-button' ng-click='$mdOpenMenu($event)'>
-          <md-icon>link</md-icon>
-          <md-tooltip>Bind Node Role</md-tooltip>
-        </md-button>
-        <md-menu-content width="4" >
-          <md-menu-item ng-repeat="role in getRoles() | filter:{milestone: true} | orderBy:'name'">
-            <md-button ng-click="bindNodeRole(role.role_id)">
-              <div layout="row" flex>
-                <p flex>{{_roles[role.role_id].name}}</p>
-                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{_roles[role.role_id].icon}}</md-icon>
-              </div>
-            </md-button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
 			<md-menu md-position-mode="target-right target" >
 				<md-button class='md-icon-button' ng-click="$mdOpenMenu($event)">
 					<md-icon>swap_horiz</md-icon>

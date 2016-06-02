@@ -123,7 +123,8 @@ node controller
             }
             for(var id in $scope._deployment_roles){
                 var deployment_role = $scope._deployment_roles[id]
-                if(active.indexOf(deployment_role.role_id) == -1) {
+                if(deployment_role.deployment_id == deployment_id &&
+                        active.indexOf(deployment_role.role_id) == -1) {
                     roles.push(deployment_role)
                 }
             }
