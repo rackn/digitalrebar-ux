@@ -212,6 +212,59 @@ deployments controller
             });
         }
 
+        // create an object that links node roles to nodes with the deployment and parent role
+        $scope.setBindRole = function(deployment_id, role_id) {
+            $scope.bindRoles[deployment_id] = {
+                role_id: role_id,
+                roles: {}
+            }
+
+            // find all node roles with the same role and deployment and link them to their nodes
+            for(var id in $scope._node_roles) {
+                var node_role = $scope._node_roles[id]
+                if(node_role.role_id == role_id && node_role.deployment_id == deployment_id)
+                    $scope.bindRoles[deployment_id].roles[node_role.node_id] = node_role
+            }
+        }
+
+        // binds a node role to the deployment, role, and node
+        $scope.bindNodeRole = function(deployment_id, role_id, node_id) {
+            api("/api/v2/node_roles/", {
+                method: "POST",
+                data: {
+                    node_id: node_id,
+                    deployment_id: deployment_id,
+                    role_id: role_id
+                }
+            }).success(api.addNodeRole).
+            error(function(err){
+                api.toast("Error Adding Node Role - "+err.message, 'node_role')
+            }).success(function(){
+                $scope.setBindRole(deployment_id, role_id)
+            })
+        }
+
+        // destroy a node role
+        $scope.destroyNodeRole = function(node_role_id) {
+            var node_role = $scope._node_roles[node_role_id]
+            var deployment_id = node_role.deployment_id
+            var role_id = node_role.role_id
+            $scope.confirm(event, {
+                title: "Destroy Node Role",
+                message: "Are you sure you want to destroy this node role?",
+                yesCallback: function() {
+                    api('/api/v2/node_roles/'+node_role_id, {
+                        method: 'DELETE'
+                    }).success(function(){
+                        api.remove('node_role', node_role_id)
+                        $scope.setBindRole(deployment_id, role_id)
+                    })
+                }
+            })
+        }
+
+        $scope.bindRoles = {}
+
         // callbacks for when nodes and noderoles finish
         // the pie charts require the nodes to exist
         $scope.$on('nodesDone', deployments.createPieChartData)
