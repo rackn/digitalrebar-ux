@@ -11,6 +11,10 @@
 
 				{{node.name}}
 			</span>
+			<md-button class='md-icon-button' ng-click='nodes.redeploy()'>
+				<md-icon>replay</md-icon>
+        <md-tooltip>Redeploy Node</md-tooltip>
+			</md-button>
 			<md-menu md-position-mode="target-right target" style='padding: 0;'>
         <md-button class='md-icon-button' ng-click='$mdOpenMenu($event)'>
           <md-icon>link</md-icon>

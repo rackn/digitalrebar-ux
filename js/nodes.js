@@ -139,6 +139,31 @@ node controller
             })
         }
 
+        $scope.redeploy = function() {
+            // if we have a valid node selected
+            if($scope.node.id) {
+                api('/api/v2/nodes/'+$scope.node.id+'/redeploy', {
+                    method: 'PUT'
+                }).success(api.addNode).error(function(err){
+                    api.toast('Error Redeploying Node - '+err.message, 'node')
+                });
+            }
+        }
+
+        $scope.redeploySelected = function() {
+            nodes.selected.forEach(function(node) {
+                if(node.id) {
+                    api('/api/v2/nodes/'+node.id+'/redeploy', {
+                        method: 'PUT'
+                    }).success(addNode).error(function(err){
+                        api.toast('Error Redeploying Node - '+err.message, 'node')
+                    }).success(function(){
+                        api.toast('Redeployed '+nodes.selected.length+' node'+(nodes.selected.length==1?'':'s'))
+                    })
+                }
+            })  
+        }
+
         $scope.id = $routeParams.id
         $scope.node = {}
         $scope.hasAttrib = -1;
