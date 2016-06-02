@@ -72,8 +72,7 @@ node controller
                         })
 
                 }
-            }
-        )
+            })
         }
 
         this.showAddNodeDialog = function(ev) {
@@ -107,6 +106,45 @@ node controller
                         }
                     }
                 }).success(api.addNode)
+            })
+        }
+
+        // creates an array of unused roles for a specified deployment
+        $scope.getRoles = function() {
+            var roles = []
+            var active = []
+            var deployment_id = $scope.node.deployment_id
+            for(var id in $scope._node_roles) {
+                var node_role = $scope._node_roles[id]
+                if(node_role.deployment_id == deployment_id) {
+                    active.push(node_role.role_id)
+                }
+    
+            }
+            for(var id in $scope._deployment_roles){
+                var deployment_role = $scope._deployment_roles[id]
+                if(deployment_role.deployment_id == deployment_id &&
+                        active.indexOf(deployment_role.role_id) == -1) {
+                    roles.push(deployment_role)
+                }
+            }
+            return roles;
+        }
+
+        // binds a node role to the deployment, role, and node
+        $scope.bindNodeRole = function(role_id) {
+            var node_id = $scope.node.id
+            var deployment_id = $scope.deployment_id
+            api("/api/v2/node_roles/", {
+                method: "POST",
+                data: {
+                    node_id: node_id,
+                    deployment_id: deployment_id,
+                    role_id: role_id
+                }
+            }).success(api.addNodeRole).
+            error(function(err){
+                api.toast("Error Adding Node Role - "+err.message)
             })
         }
 
