@@ -148,7 +148,11 @@ var version = '0.1.3';
                 controllerAs: 'annealer',
                 templateUrl: 'views/annealer.html'
             }).
-            
+            when('/users', {
+                controller: 'UsersCtrl',
+                controllerAs: 'users',
+                templateUrl: 'views/users.html'
+            }).
 
             otherwise({
                 redirectTo: '/login'
@@ -242,7 +246,8 @@ var version = '0.1.3';
             },
             {
                 title: 'Users',
-                icon: 'supervisor_account'
+                icon: 'supervisor_account',
+                path: '/users'
             },
         ];
 
