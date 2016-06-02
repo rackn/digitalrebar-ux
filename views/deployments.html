@@ -65,9 +65,40 @@ deployments view
 						</md-button>
 					</span>
 				</md-tab>
+
 			</md-tabs>
 
 			<md-divider/>
+
+			<!-- Bind Section -->
+			<section ng-hide='binding' layout='row'>
+				<md-list flex='33'>
+					<md-list-item
+						ng-repeat="role in _deployment_roles | from:'deployment':deployment | orderBy: 'cohort'"
+						ng-click=''>
+						<span class='md-list-item-content'>
+							<span flex>{{_roles[role.role_id].name}}</span>
+							<md-icon>
+								{{_roles[role.role_id].icon}}
+							</md-icon>
+						</span>
+					</md-list-item>
+				</md-list>
+				<md-divider/>
+				<div style='overflow-y: auto;' flex='66'>
+					<span ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy: 'name'">
+						<!-- Node button -->
+						<md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}">
+							<md-tooltip md-direction="bottom">
+								{{node.name}}
+							</md-tooltip>
+							<md-icon aria-label='{{node.status}}'>{{icons[node.status]}}</md-icon>
+						</md-button>
+
+					</span>
+				</div>
+			</section>
+			<md-divider ng-hide='binding'/>
 
 			<!-- Toolbar with icons -->
 			<md-card-actions layout="row" layout-align="start center">
