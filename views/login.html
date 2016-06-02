@@ -15,7 +15,7 @@ login view
 		<form name='loginForm' ng-submit='login.signIn()' layout="column">
 			
 
-			<md-content layout-padding>
+			<md-content layout-padding layout='column'>
 
 				<!-- Username and password fields -->
 				<md-input-container class="md-block" flex>
@@ -36,11 +36,9 @@ login view
 	          </md-checkbox>
           </span>
 				</section>
-				<section layout='row' layout-align="center">
-					<md-button class="md-primary" type="submit" ng-disabled="!eula">
-						Login
-					</md-button>
-				</section>
+				<md-button class="md-primary" type="submit" ng-disabled="!eula">
+					Login
+				</md-button>
 
 			</md-content>
 			<md-divider></md-divider>
@@ -67,7 +65,7 @@ login view
 						</span>	
 					</span>
 					<span flex></span>
-					<md-button class="md-raised md-primary" ng-click='login.showEulaDialog()' ng-show="eula">
+					<md-button class="md-primary" ng-click='login.showEulaDialog()' ng-show="eula">
 						Eula
 					</md-button>
 					
@@ -77,7 +75,7 @@ login view
 					<input type="text" ng-model='login.host'/>
 				</md-input-container>
 
-				<md-button class='md-primary md-raised' ng-click='delayTest()'>
+				<md-button class='md-primary' ng-click='delayTest()'>
 					Retry
 				</md-button>
 			</md-content>
