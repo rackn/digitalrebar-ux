@@ -4,6 +4,12 @@
       <span>
         <md-icon class='md-primary'>
           {{icons[node_role.status]}}
+          <md-tooltip>
+            {{node_role.status}}
+          </md-tooltip>
+        </md-icon>
+        <md-icon class='md-primary'>
+          {{_roles[node_role.role_id].icon}}
         </md-icon>
         <a ng-href='#/deployments/{{node_role.deployment_id}}'>
           {{_deployments[node_role.deployment_id].name}}
