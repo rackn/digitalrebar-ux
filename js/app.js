@@ -108,6 +108,16 @@ var version = '0.1.3';
                 controllerAs: 'roles',
                 templateUrl: 'views/roles_singular.html'
             }).
+            when('/deployment_roles', {
+                controller: 'DeploymentRolesCtrl',
+                controllerAs: 'deployment_roles',
+                templateUrl: 'views/deployment_roles.html'
+            }).
+            when('/deployment_roles/:id', {
+                controller: 'DeploymentRolesCtrl',
+                controllerAs: 'deployment_roles',
+                templateUrl: 'views/deployment_roles_singular.html'
+            }).
             when('/barclamps', {
                 controller: 'BarclampsCtrl',
                 controllerAs: 'barclamps',

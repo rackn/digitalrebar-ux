@@ -57,7 +57,7 @@ deployments view
 
 					<!-- Add all the Deployment Roles-->
 					<span ng-repeat="role in _deployment_roles | from:'deployment':deployment | orderBy: 'cohort'">
-						<md-button class="md-fab md-primary md-mini" ng-href='#/roles/{{role.role_id}}'>
+						<md-button class="md-fab md-primary md-mini" ng-href='#/deployment_roles/{{role.id}}'>
 							<md-tooltip md-direction="bottom">
 								{{_roles[role.role_id].name}}
 							</md-tooltip>
@@ -116,8 +116,9 @@ deployments view
 		</section>
 </div>
 
-<div class='add-fab'>
-	<md-button class='md-fab md-accent' ng-click='createDeploymentPrompt($event)'>
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+	<md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createDeploymentPrompt($event)'>
 		<md-icon>add</md-icon>
 		<md-tooltip>Create Deployment</md-tooltip>
 	</md-button>

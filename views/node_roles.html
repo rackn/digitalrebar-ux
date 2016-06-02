@@ -1,12 +1,23 @@
 <md-card>
-  <md-toolbar class="md-table-toolbar md-default">
+  <md-toolbar class="md-table-toolbar md-default" ng-hide='node_roles.selected.length'>
     <div class="md-toolbar-tools">
       <span>Node Roles ({{getNodeRoles().length}})</span>
     </div>
   </md-toolbar>
 
+  <md-toolbar class="md-table-toolbar alternate" ng-show='deployment_roles.selected.length'>
+    <div class="md-toolbar-tools">
+      <span>{{node_roles.selected.length}} node role{{node_roles.selected.length != 1 && 's' || ''}} selected</span>
+      <span flex></span>
+      <md-button class='md-icon-button' ng-click='destroySelected()'>
+        <md-icon>delete</md-icon>
+        <md-tooltip>Destroy Node Roles</md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+
   <md-table-container>
-    <table md-table>
+    <table md-table md-row-select ng-model='node_roles.selected'>
       <thead md-head md-order="myOrder">
         <tr md-row>
           <th md-column md-order-by='id'>State</th>
@@ -16,7 +27,7 @@
         </tr>
       </thead>
       <tbody md-body>
-        <tr md-row ng-repeat="role in getNodeRoles() | orderBy: myOrder">
+        <tr md-row md-select='role' md-select-id='{{role.id}}' md-auto-select ng-repeat="role in getNodeRoles() | orderBy: myOrder">
         <td md-cell>
           <md-button ng-href='#/node_roles/{{role.id}}' class='md-primary md-fab md-mini' md-theme='status_{{role.status}}'>
             <md-icon>

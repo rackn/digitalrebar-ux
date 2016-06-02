@@ -9,6 +9,7 @@ node role controller
         var node_roles = this;
 
         $scope.myOrder = 'id'
+        this.selected = []
         
         // converts the _node_roles object that rootScope has into an array
         $scope.getNodeRoles = function() {
@@ -30,16 +31,42 @@ node role controller
             }
         }
 
+        $scope.destroySelected = function() {
+            $scope.confirm(event, {
+                title: "Destroy Node Roles",
+                message: "Are you sure you want to destroy the selected node roles?",
+                yesCallback: function() {
+                    node_roles.selected.forEach(function(node_role) {
+                        if(node_role.id) {
+                            api('/api/v2/node_roles/'+node_role.id, {
+                                method: 'DELETE'
+                            }).success(function(){
+                                api.remove('node_role', node_role.id)
+                            });                    
+                        }
+                        
+                        node_roles.selected = []
+                    })
+
+                }
+            })
+        }
+
         $scope.destroy = function() {
-            // if we have a valid node selected
-            if($scope.node_role.id) {
-                api('/api/v2/node_roles/'+node_role.id+'/retry', {
-                    method: 'DELETE'
-                }).success(function(){
-                    api.remove('node_role', node_role.id)
-                    $location.path('/node_roles')
-                });
-            }
+            $scope.confirm(event, {
+                title: "Destroy Node Role",
+                message: "Are you sure you want to destroy this node role?",
+                yesCallback: function() {
+                    if($scope.node_role.id) {
+                        api('/api/v2/node_roles/'+$scope.node_role.id, {
+                            method: 'DELETE'
+                        }).success(function(){
+                            api.remove('node_role', $scope.node_role.id)
+                            $location.path('/node_roles')
+                        });                    
+                    }
+                }
+            })
         }
 
         $scope.id = $routeParams.id
