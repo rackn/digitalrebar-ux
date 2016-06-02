@@ -94,9 +94,15 @@ div md-progress-circular {
   border-bottom-color: red;
 }
 
-.add-fab {
-  position: fixed;
-  z-index: 5;
-  bottom: 2em;
-  right: 2em;
+::-webkit-scrollbar {
+    width: 6px;
+}
+ 
+::-webkit-scrollbar-track {
+  opacity: 0; 
+}
+ 
+::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: rgba(0, 0, 0,0.2); 
 }
