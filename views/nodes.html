@@ -16,6 +16,10 @@
 		<div class="md-toolbar-tools">
 			<span>{{nodes.selected.length}} node{{nodes.selected.length != 1 && 's' || ''}} selected</span>
 			<span flex></span>
+      <md-button class='md-icon-button' ng-click='nodes.redeploySelected()'>
+        <md-icon>replay</md-icon>
+        <md-tooltip>Redeploy Nodes</md-tooltip>
+      </md-button>
 			<md-menu md-position-mode="target-right target" >
 				<md-button class='md-icon-button' ng-click="$mdOpenMenu($event)">
 					<md-icon>swap_horiz</md-icon>
