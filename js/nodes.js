@@ -153,7 +153,7 @@ node controller
                         });
                     }
                 }
-            }
+            })
         }
 
         $scope.redeploySelected = function() {
@@ -173,7 +173,7 @@ node controller
                         }
                     })
                 }
-            }
+            })
         }
 
         $scope.id = $routeParams.id
