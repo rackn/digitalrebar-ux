@@ -8,15 +8,15 @@
             {{node_role.status}}
           </md-tooltip>
         </md-icon>
-        <md-icon class='md-primary'>
-          {{_roles[node_role.role_id].icon}}
-        </md-icon>
         <a ng-href='#/deployments/{{node_role.deployment_id}}'>
           {{_deployments[node_role.deployment_id].name}}
         </a>
         <a ng-href='#/nodes/{{node_role.node_id}}'>
           {{_nodes[node_role.node_id].name}}
         </a>
+        <md-icon class='md-primary'>
+          {{_roles[node_role.role_id].icon}}
+        </md-icon>
         <a ng-href='#/roles/{{node_role.role_id}}'>
           {{_roles[node_role.role_id].name}}
         </a>
