@@ -34,38 +34,6 @@
     </div>
   </md-toolbar>
 
-  <div ng-switch="hasAttrib">
-    <md-card-content ng-switch-when="-1">
-      <div layout="row" layout-sm="column" layout-align="space-around">
-        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-      </div>
-    </md-card-content>
-    <md-card-content ng-switch-when="0">
-      Error Loading Attributes
-    </md-card-content>
-    <md-card-content ng-switch-when="1">
-      <table layout-padding>
-        <tbody>
-          <tr ng-repeat="attrib in attribs | orderBy:'name'">
-            <td class='label' valign="top">
-              <a ng-click='alert(attrib.id)'>
-                {{attrib.name}}
-              </a>
-            </td>
-            <td ng-switch='attrib.schema.type'>
-              <div data-ng-switch-default>
-                <div ng-if='attrib.len > 70' ng-click="visible=!visible">
-                  <div ng-hide='visible'>
-                    Click to Expand
-                  </div>
-                  <pre ng-show='visible' style='overflow-x: auto;'>{{attrib.value}}</pre>
-                </div>
-                <pre ng-if='attrib.len <= 70'>{{attrib.value}}</pre>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </md-card-content>
+  <div data-ng-include="'views/attrib_render.tmpl.html'">
   </div>
 </md-card>
