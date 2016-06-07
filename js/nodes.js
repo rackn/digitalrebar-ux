@@ -237,6 +237,8 @@ node controller
                         obj.forEach(function(attrib){
                             attrib.len = JSON.stringify(attrib.value).length
                             attrib.preview = JSON.stringify(attrib.value, null, '  ').trim().replace(/[\s\n]/g,'')
+                            if(attrib.value == null)
+                                attrib.value = 'Not Set'
                             if(attrib.preview.length > 73)
                                 attrib.preview = attrib.preview.substr(0, 67)+"..."
                         })
