@@ -106,3 +106,38 @@ div md-progress-circular {
   border-radius: 3px;
   background: rgba(0, 0, 0,0.2); 
 }
+
+.pulse {
+  animation: pulse 2s infinite linear;
+}
+
+@keyframes pulse{
+  0% {
+    transform: rotateZ(0deg);
+  }
+  30% {
+    transform: rotateZ(180deg);
+  }
+  60% {
+    transform: rotateZ(360deg);
+  }
+  80% {
+    transform: rotateZ(540deg);
+  }
+  100% {
+    transform: rotateZ(720deg);
+  }
+}
+
+.rotate {
+  animation: rotate 0.5s infinite ease;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(180deg);
+  }
+}

@@ -26,7 +26,7 @@
 				<md-tooltip md-direction="bottom">
 					{{_roles[role.role_id].name}}
 				</md-tooltip>
-				<md-icon>{{_roles[role.role_id].icon}}</md-icon>
+				<md-icon ng-class="{pulse: status == 'process'}">{{_roles[role.role_id].icon}}</md-icon>
 			</md-button>
 		</span>
 		<div ng-if='getNodeRoles(status).length == 0'>
