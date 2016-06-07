@@ -80,6 +80,22 @@ network controller
             })
         }
 
+        $scope.delete = function(event) {
+            $scope.confirm(event, {
+                title: "Remove Network",
+                message: "Are you sure you want to remove this network?",
+                yesCallback: function(){
+                    api('/api/v2/networks/'+$scope.id, {method: 'DELETE'}).
+                        success(function(){
+                            console.log("network deleted")
+                        }).success(function(){
+                            api.remove("network", $scope.id)
+                            $location.path("/networks")
+                        })
+                }
+            })
+        }
+
         $scope.saveNetworkRanges = function() {
             if(!$scope.editingRanges)
                 return
