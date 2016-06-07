@@ -126,7 +126,7 @@ provider view
 				<md-button
 					class='md-icon-button'
 					ng-click='showAddNodeDialog()'
-					ng-hide='provider.name == "metal"'>
+					ng-hide='provider.name == "metal" || provider.name == "phantom"'>
 					<md-icon>add</md-icon>
 					<md-tooltip>
 						Add Node
