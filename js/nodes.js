@@ -176,6 +176,44 @@ node controller
             })
         }
 
+        $scope.saveAttrib = function() {
+            if(!$scope.editing)
+                return
+
+            var data = angular.copy($scope.attribs)
+            data.forEach(function(attrib){
+                if(!attrib.writable)
+                    return
+                api("/api/v2/providers/"+$scope.id,{
+                    method: "POST",
+                    data: data
+                })
+                error(function(e){
+                    api.toast("Couldn't Save Attrib", 'attrib')
+                })
+                
+            })
+            $scope.stopEditing()
+        }
+
+        $scope.stopEditing = function() {
+            if(!$scope.editing)
+                return
+
+            var data = angular.copy($scope.attribs)
+            $scope.attribs = $scope._attribs
+            $scope.provider = $scope._providers[$scope.id];
+            $scope.editing = false
+        }
+
+        $scope.startEditing = function() {
+            if($scope.editing && $scope.hasAttrib == 1)
+                return
+
+            $scope.editing = true
+            $scope._attribs = angular.copy($scope.attribs)
+        }
+
         $scope.id = $routeParams.id
         $scope.node = {}
         $scope.hasAttrib = -1;
@@ -198,7 +236,11 @@ node controller
                         $scope.attribs = obj;
                         obj.forEach(function(attrib){
                             attrib.len = JSON.stringify(attrib.value).length
-                            attrib.value = JSON.stringify(attrib.value, null, '  ').trim()
+                            attrib.preview = JSON.stringify(attrib.value, null, '  ').trim().replace(/[\s\n]/g,'')
+                            if(attrib.value == null)
+                                attrib.value = 'Not Set'
+                            if(attrib.preview.length > 73)
+                                attrib.preview = attrib.preview.substr(0, 67)+"..."
                         })
                         $scope.hasAttrib = 1;
                     }).

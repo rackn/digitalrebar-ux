@@ -1,0 +1,62 @@
+<div ng-switch="hasAttrib">
+    <md-card-content ng-switch-when="-1">
+      <div layout="row" layout-sm="column" layout-align="space-around">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
+    </md-card-content>
+    <md-card-content ng-switch-when="0">
+      Error Loading Attributes
+    </md-card-content>
+    <md-card-content ng-switch-when="1">
+      <table layout-padding>
+        <tbody>
+          <tr ng-repeat="attrib in attribs | orderBy:'name'">
+            <td class='label' valign="top">
+              <a ng-click='alert(attrib.id)' title='{{attrib.description}}'>
+                {{attrib.name}}
+              </a>
+            </td>
+            <td ng-switch='attrib.schema.type'>
+              <div data-ng-switch-when="map">
+                <div ng-click="visible=!visible">
+                  <div>
+                    <span style='font-family: monospace;'>{{visible ? "Collapse &uarr;" : attrib.preview + " &darr;"}}</span>
+                  </div>
+                </div>
+                <div ng-show='visible || editing'>
+                  <textarea json-text
+                    class='table-input'
+                    ng-readonly="!attrib.writable || attrib.writable && !editing"
+                    style='height: 300px; font-size: inherit; font-family: monospace;'
+                    ng-model='attrib.value'>
+                  </textarea>
+                </div>
+              </div>
+              <div data-ng-switch-when="seq">
+                <div ng-click="visible=!visible">
+                  <div>
+                    <span style='font-family: monospace;'>{{visible ? "Collapse &uarr;" : attrib.preview + " &darr;"}}</span>
+                  </div>
+                </div>
+                <div ng-show='visible || editing'>
+                  <textarea json-text
+                    class='table-input'
+                    ng-readonly="!attrib.writable || attrib.writable && !editing"
+                    style='height: 300px; font-size: inherit; font-family: monospace;'
+                    ng-model='attrib.value'>
+                  </textarea>
+                </div>
+              </div>
+              <div data-ng-switch-default>
+                <input type='text'
+                  class='table-input'
+                  ng-readonly="!attrib.writable || attrib.writable && !editing"
+                  style='font-family: monospace;'
+                  ng-model='attrib.value'/>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-card-content>
+  </div>

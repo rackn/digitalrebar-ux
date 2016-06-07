@@ -100,7 +100,9 @@ deployment role controller
                         $scope.attribs = obj;
                         obj.forEach(function(attrib){
                             attrib.len = JSON.stringify(attrib.value).length
-                            attrib.value = JSON.stringify(attrib.value, null, '  ').trim()
+                            attrib.preview = JSON.stringify(attrib.value, null, '  ').trim().replace(/[\s\n]/g,'')
+                            if(attrib.preview.length > 73)
+                                attrib.preview = attrib.preview.substr(0, 67)+"..."
                         })
                         $scope.hasAttrib = 1;
                     }).
