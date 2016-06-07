@@ -90,7 +90,7 @@ div md-progress-circular {
   border-bottom-color: blue;
 }
 
-.table-input:active[readonly='readonly'] {
+.table-input:hover[readonly='readonly'] {
   border-bottom-color: red;
 }
 

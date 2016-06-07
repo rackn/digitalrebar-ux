@@ -134,10 +134,15 @@ var version = '0.1.3';
                 controllerAs: 'barclamps',
                 templateUrl: 'views/barclamps_singular.html'
             }).
-            when('/network', {
-                controller: 'NetworkCtrl',
+            when('/networks', {
+                controller: 'NetworksCtrl',
                 controllerAs: 'networks',
-                templateUrl: 'views/network.html'
+                templateUrl: 'views/networks.html'
+            }).
+            when('/networks/:id', {
+                controller: 'NetworksCtrl',
+                controllerAs: 'networks',
+                templateUrl: 'views/networks_singular.html'
             }).
             when('/providers', {
                 controller: 'ProviderCtrl',
@@ -241,7 +246,7 @@ var version = '0.1.3';
             {
                 title: 'Networks',
                 icon: 'swap_horiz',
-                path: '/network'
+                path: '/networks'
             },
         ];
 
