@@ -96,6 +96,39 @@ network controller
             })
         }
 
+        $scope.saveNetwork = function() {
+            if(!$scope.editing)
+                return
+
+            var data = angular.copy($scope.network)
+            api("/api/v2/networks/"+$scope.id,{
+                method: "PUT",
+                data: data
+            }).
+            success(api.addNetwork).
+            error(function(e){
+                api.toast("Couldn't Save Network - "+e.message, 'networks')
+            })
+            
+            $scope.stopEditingRanges()
+        }
+
+        $scope.stopEditing = function() {
+            if(!$scope.editing)
+                return
+
+            $scope.network = $scope._networks[$scope.id];
+            $scope.editing = false
+        }
+
+        $scope.startEditing = function() {
+            if($scope.editing)
+                return
+
+            $scope.editing = true
+            $scope.network = angular.copy($scope._networks[$scope.id])
+        }
+
         $scope.saveNetworkRanges = function() {
             if(!$scope.editingRanges)
                 return
