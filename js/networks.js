@@ -3,7 +3,7 @@ Copyright 2015, RackN
 network controller
 */
 (function(){
-    angular.module('app').controller('NetworksCtrl', function($scope, api, $mdDialog, $mdMedia, $routeParams, $location) {
+    angular.module('app').controller('NetworksCtrl', function($scope, api, $mdDialog, $mdMedia, $routeParams, $location, $timeout) {
         $scope.$emit('title', 'Networks'); // shows up on the top toolbar
 
         var networks = this;
@@ -110,7 +110,7 @@ network controller
                 api.toast("Couldn't Save Network - "+e.message, 'networks')
             })
             
-            $scope.stopEditingRanges()
+            $scope.stopEditing()
         }
 
         $scope.stopEditing = function() {
@@ -207,14 +207,65 @@ network controller
             $scope.ranges = angular.copy($scope._ranges)
         }
 
+        $scope.saveNetworkRouter = function() {
+            if(!$scope.editingRouter)
+                return
+
+            var data = angular.copy($scope.router)
+            var path = "/api/v2/network_routers/"+$scope.id
+            var method = "PUT"
+            // if the router is new, POST it. the add_router attribute is 
+            // added to a default router entry when the api
+            // doesn't have a network_router for this network
+            if(data.add_router) {
+                path = '/api/v2/networks/'+$scope.id+'/network_routers'
+                method = "POST"
+            }
+            api(path, {
+                method: method,
+                data: data
+            }).
+            success(function(obj){
+                $scope._router = obj
+                $scope.router = angular.copy(obj)
+            }).
+            error(function(e){
+                api.toast("Couldn't Save Network Router - "+e.message, 'network_routers')
+            })
+            
+            $scope.stopEditingRouter()
+        }
+
+        $scope.stopEditingRouter = function() {
+            if(!$scope.editingRouter)
+                return
+
+            $scope.router = $scope._router;
+            $scope.editingRouter = false
+        }
+
+        $scope.startEditingRouter = function() {
+            if($scope.editingRouter)
+                return
+
+            $scope.editingRouter = true
+            $scope.router = angular.copy($scope._router)
+        }
 
         $scope.id = $routeParams.id
         $scope.network = {}
+        $scope.editing = false;
+
         $scope.hasRanges = -1;
         $scope.ranges = {};
         $scope._ranges = {};
-        $scope.editing = false;
         $scope.editingRanges = false;
+
+        $scope.hasRouter = -1
+        $scope.router = {}
+        $scope._router = {}
+        $scope.editingRouter = false
+
         var hasCallback = false;
 
         var updateNetwork = function() {
@@ -237,6 +288,29 @@ network controller
                     }).
                     error(function() {
                         $scope.hasRanges = 0;
+                    })
+                }
+
+                if($scope.hasRouter == -1) {
+                    api('/api/v2/network_routers/'+$scope.network.id).
+                    success(function(obj) {
+                        $scope._router = obj
+                        $scope.router = angular.copy($scope._router)
+                        $scope.hasRouter = 1;
+                    }).
+                    error(function() { // network has no existing router
+                        $scope._router = {
+                            address: "0.0.0.0/32",
+                            pref: "65536",
+                            add_router: true // to tell save to POST instead of PUT
+                        }
+
+                        $scope.router = {
+                            address: "Not Set",
+                            pref: "Not Set"
+                        }
+
+                        $scope.hasRouter = 1;
                     })
                 }
 
