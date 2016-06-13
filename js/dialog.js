@@ -131,6 +131,7 @@ dialog controller
         this.addDNSRecord = function(){
             var zone = locals.zone
             api("/dns/zones/"+zone.name,{
+                method: 'PATCH',
                 data: locals.record
             }).success(function(data){
                 api.getHealth()

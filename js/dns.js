@@ -12,6 +12,7 @@ dns controller
             var index = zone.indexOf(record)
             record.changetype = 'REMOVE'
             api('/dns/zones/'+zone.name, {
+                method: 'PATCH',
                 data: record
             }).success(function(data){
                 zone.splice(index, 1)
