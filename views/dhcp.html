@@ -1,0 +1,76 @@
+<md-card ng-repeat='subnet in _DHCP.subnets'>
+  <md-toolbar class="md-default">
+    <div class="md-toolbar-tools">
+      <span flex>
+        {{subnet.name}}
+      </span>
+    </div>
+  </md-toolbar>
+
+  <md-card-content>
+    <table layout-padding style='min-width: 50%;'>
+      <tr>
+        <td class='label'>Name</td>
+        <td>
+          {{subnet.name}}
+        </td>
+      </tr>
+      <tr>
+        <td class='label'>Subnet</td>
+        <td>
+          {{subnet.subnet}}
+        </td>
+      </tr>
+      <tr>
+        <td class='label'>Next Server</td>
+        <td>
+          {{subnet.next_server}}
+        </td>
+      </tr>
+      <tr>
+        <td class='label'>Active Start</td>
+        <td>
+          {{subnet.active_start}}
+        </td>
+      </tr>
+      <tr>
+        <td class='label'>Active End</td>
+        <td>
+          {{subnet.active_end}}
+        </td>
+      </tr>
+      <tr>
+        <td class='label'>Active Lease Time</td>
+        <td>
+          {{subnet.active_lease_time}}
+        </td>
+      </tr>
+      <tr>
+        <td class='label'>Reserved Lease Time</td>
+        <td>
+          {{subnet.reserved_lease_time}}
+        </td>
+      </tr>
+      <tr>
+        <td class='label' valign="top">Options</td>
+        <td flex>
+          <md-list>
+            <div ng-repeat='option in subnet.options'>
+              <md-list-item
+                class='md-2-line'>
+                <div class="md-list-item-text" layout="column">
+                  <h3>
+                    {{ option.id }}
+                  </h3>
+                  <h4>{{ option.value }}</h4>
+                </div>
+              </md-list-item>
+              <md-divider></md-divider>
+            </div>
+          </md-list>
+        </td>
+      </tr>
+    </table>
+  </md-card-content>
+
+</md-card>
