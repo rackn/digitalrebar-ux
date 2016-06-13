@@ -9,15 +9,21 @@ dns controller
         var dns = this;
 
         $scope.remove = function(zone, record) {
-            var index = zone.records.indexOf(record)
-            record.changetype = 'REMOVE'
-            api('/dns/zones/'+zone.name, {
-                method: 'PATCH',
-                data: record
-            }).success(function(data){
-                api.getHealth()     
-            }).error(function(){
-                api.getHealth()
+            $scope.confirm(event, {
+                title: "Remove Record",
+                message: "Are you sure you want to remove this record?",
+                yesCallback: function(){
+                    var index = zone.records.indexOf(record)
+                    record.changetype = 'REMOVE'
+                    api('/dns/zones/'+zone.name, {
+                        method: 'PATCH',
+                        data: record
+                    }).success(function(data){
+                        api.getHealth()     
+                    }).error(function(){
+                        api.getHealth()
+                    })
+                }
             })
         }
 
