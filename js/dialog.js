@@ -137,7 +137,7 @@ dialog controller
                 api.getHealth()
             }).
             error(function(err){
-                api.toast("Error Adding DNS Record - "+err.message, 'dns');
+                api.getHealth()
             });
             $mdDialog.hide();
         }
