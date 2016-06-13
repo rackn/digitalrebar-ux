@@ -60,6 +60,7 @@
 		<script src="js/provider.js"></script>
 		<script src="js/annealer.js"></script>
 		<script src="js/users.js"></script>
+		<script src="js/dns.js"></script>
 
 		<!-- Side Nav -->
 		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-show='isAuth()'>
@@ -82,6 +83,20 @@
 					</span>
 				</md-list-item>
 
+				<md-list-item ng-if='showDNS' md-ink-ripple ng-click="setPath('/dns')">
+					<span class='md-list-item-content'>
+						<md-icon>domain</md-icon>
+						<span>DNS Zones</span>
+					</span>
+				</md-list-item>
+
+				<md-list-item ng-if='showDHCP' md-ink-ripple ng-click="setPath('/dhcp')">
+					<span class='md-list-item-content'>
+						<md-icon>cloud</md-icon>
+						<span>DHCP Subnets</span>
+					</span>
+				</md-list-item>
+
 				<md-divider></md-divider>
 
 				<!-- User menu -->
@@ -97,8 +112,8 @@
 					<span class='md-list-item-content'>
 						<md-icon>exit_to_app</md-icon>
 						<span>Logout</span>
-					</div>
-				</span>
+					</span>
+				</md-list-item>
 
 				
 			</md-list>

@@ -164,6 +164,16 @@ var version = '0.1.3';
                 controllerAs: 'users',
                 templateUrl: 'views/users.html'
             }).
+            when('/dns', {
+                controller: 'DNSCtrl',
+                controllerAs: 'dns',
+                templateUrl: 'views/dns.html'
+            }).
+            when('/dhcp', {
+                controller: 'DHCPCtrl',
+                controllerAs: 'dhcp',
+                templateUrl: 'views/dhcp.html'
+            }).
 
             otherwise({
                 redirectTo: '/login'
@@ -281,6 +291,7 @@ var version = '0.1.3';
         $rootScope.isAuth = function(){return !!$rootScope.user;};
         $rootScope.lastPath = '/'
         $rootScope.shouldLogOut = false;
+
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             var path = next.split('/#/')[1];

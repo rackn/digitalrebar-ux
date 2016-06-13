@@ -1,0 +1,50 @@
+<md-dialog aria-label="Add Record" ng-cloak flex-gt-sm='50'>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add Record</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+      <md-content>
+        <md-input-container class='md-block'>
+          <label>Name</label>
+          <input type='text'
+            class='table-input'
+            ng-model='locals.record.name' />
+        </md-input-container>
+        <md-input-container class='md-block'>
+          <label>
+            Address
+          </label>
+          <input type='text'
+            class='table-input'
+            ng-model='locals.record.content' />
+          </label>
+        </md-input-container>
+        <md-input-container>
+          <label>Type</label>
+          <md-select ng-model="locals.type">
+            <md-option value="A">
+              A
+            </md-option>
+            <md-option value="AAAA">
+              AAAA
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </md-content>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <span flex></span>
+      <md-button ng-click='dialog.addDNSRecord()' class='md-primary md-raised' target="_blank" md-autofocus>
+        Add
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

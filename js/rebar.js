@@ -33,7 +33,7 @@ app.run(function($rootScope, $cookies, api, $interval){
     var token = $cookies.get('DrAuthToken');
     var port = ":3000";
     if (typeof token !== 'undefined') {
-	port = "";
+        port = "";
     }
     $rootScope.host = $cookies.get('host') || currentLocation+port;
 
@@ -50,9 +50,9 @@ app.run(function($rootScope, $cookies, api, $interval){
     })
 
     $rootScope.$on('startUpdating', function(event){
-        api.reload()
+        api.reload();
         api.getActive();
-
+        api.getHealth();
     })
 
     $rootScope.tryFetch = function() {
@@ -68,6 +68,11 @@ app.run(function($rootScope, $cookies, api, $interval){
     $rootScope._node_roles = {}
     $rootScope._providers = {}
     $rootScope._barclamps = {}
+
+    $rootScope.showDNS = false
+    $rootScope.showDHCP = false
+    $rootScope._DNS = {zones: []}
+    $rootScope._DHCP = {subnets: []}
 
 })
 
@@ -186,6 +191,31 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
         }).error(function(resp) {
             console.warn(resp)
             api.nextQueue()
+        })
+    }
+
+    api.getHealth = function() {
+        api('/health').success(function(data){
+            var map = data.Map
+            $rootScope.showDNS = typeof map['dns-mgmt-service'] !== 'undefined'
+            $rootScope.showDHCP = typeof map['dhcp-mgmt-service'] !== 'undefined'
+
+            if($rootScope.showDNS) {
+                api('/dns/zones').success(function(data){
+                    $rootScope._DNS.zones = data
+                })
+            }
+
+            if($rootScope.showDHCP) {
+                api('/dhcp/subnets').success(function(data){
+                    $rootScope._DHCP.subnets = data
+                })
+            }
+
+
+        }).error(function(){
+            $rootScope.showDNS = false
+            $rootScope.showDHCP = false
         })
     }
 

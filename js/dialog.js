@@ -96,7 +96,7 @@ dialog controller
                     data: payload,
                 }).success(api.addNode).
                 error(function(err){
-                    api.toast('Error: '+err.message, 'node', true);
+                    api.toast('Error: '+err.message, 'node', 'node');
                 })
             })
 
@@ -111,7 +111,7 @@ dialog controller
                 data: locals.provider
             }).success(api.addProvider).
             error(function(err){
-                api.toast("Error Adding Provider - "+err.message, true);
+                api.toast("Error Adding Provider - "+err.message, 'provider');
             });
             $mdDialog.hide();
         }
@@ -123,7 +123,20 @@ dialog controller
                 data: locals.network
             }).success(api.addNetwork).
             error(function(err){
-                api.toast("Error Adding Network - "+err.message, true);
+                api.toast("Error Adding Network - "+err.message, 'network');
+            });
+            $mdDialog.hide();
+        }
+
+        this.addDNSRecord = function(){
+            var zone = locals.zone
+            api("/dns/zones/"+zone.name,{
+                data: locals.record
+            }).success(function(data){
+                api.getHealth()
+            }).
+            error(function(err){
+                api.toast("Error Adding DNS Record - "+err.message, 'dns');
             });
             $mdDialog.hide();
         }
