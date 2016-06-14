@@ -21,31 +21,27 @@
           {{zone.name}}
         </td>
       </tr>
-      <tr>
-        <td class='label' valign="top">Records</td>
-        <td flex>
-          <md-list>
-            <div ng-repeat='record in zone.records'>
-              <md-list-item
-                class='md-3-line'>
-                <div class="md-list-item-text" layout="column">
-                  <h3>
-                    {{ record.name }}
-                  </h3>
-                  <h4>{{ record.content }}</h4>
-                  <p>{{ record.type }}</p>
-                </div>
-                <md-button class='md-icon-button' ng-click='remove(zone, record)'>
-                  <md-icon>delete</md-icon>
-                  <md-tooltip>Remove</md-tooltip>
-                </md-button>
-              </md-list-item>
-              <md-divider></md-divider>
-            </div>
-          </md-list>
-        </td>
-      </tr>
     </table>
+    <h3>Records</h3>
+    <md-table-container>
+      <table md-table>
+        <thead md-head md-order="myOrder">
+          <tr md-row>
+            <th md-column md-order-by='name'>Name</th>
+            <th md-column md-order-by='content'>Content</th>
+            <th md-column md-order-by='type'>Type</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat='record in zone.records | orderBy:myOrder'>
+            <td md-cell>{{record.name}}</td>
+            <td md-cell>{{record.content}}</td>
+            <td md-cell>{{record.type}}</td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
   </md-card-content>
 
 </md-card>
