@@ -4,12 +4,6 @@
       <span flex>
         {{zone.name}}
       </span>
-      <span>
-        <md-button class='md-icon-button' ng-click='add($event, zone)'>
-          <md-icon>add</md-icon>
-          <md-tooltip>Add Record</md-tooltip>
-        </md-button>
-      </span>
     </div>
   </md-toolbar>
 
@@ -21,31 +15,50 @@
           {{zone.name}}
         </td>
       </tr>
-      <tr>
-        <td class='label' valign="top">Records</td>
-        <td flex>
-          <md-list>
-            <div ng-repeat='record in zone.records'>
-              <md-list-item
-                class='md-3-line'>
-                <div class="md-list-item-text" layout="column">
-                  <h3>
-                    {{ record.name }}
-                  </h3>
-                  <h4>{{ record.content }}</h4>
-                  <p>{{ record.type }}</p>
-                </div>
-                <md-button class='md-icon-button' ng-click='remove(zone, record)'>
-                  <md-icon>delete</md-icon>
-                  <md-tooltip>Remove</md-tooltip>
-                </md-button>
-              </md-list-item>
-              <md-divider></md-divider>
-            </div>
-          </md-list>
-        </td>
-      </tr>
     </table>
+
+    <md-toolbar class="md-table-toolbar md-default" ng-hide='dns.selected.length'>
+      <div class="md-toolbar-tools">
+        <span>Records</span>
+        <span flex></span>
+        <md-button class='md-icon-button' ng-click='add($event, zone)'>
+          <md-icon>add</md-icon>
+          <md-tooltip>Add Record</md-tooltip>
+        </md-button>
+
+      </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-table-toolbar alternate" ng-show='dns.selected.length'>
+      <div class="md-toolbar-tools">
+        <span>{{dns.selected.length}} record{{dns.selected.length != 1 && 's' || ''}} selected</span>
+        <span flex></span>
+        <md-button class='md-icon-button' ng-click='deleteRecords(zone)'>
+          <md-icon>delete</md-icon>
+          <md-tooltip>Delete Records</md-tooltip>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-table-container>
+      <table md-table md-row-select ng-model="dns.selected">
+        <thead md-head md-order="myOrder">
+          <tr md-row>
+            <th md-column md-order-by='name'>Name</th>
+            <th md-column md-order-by='content'>Content</th>
+            <th md-column md-order-by='type'>Type</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row md-select="record" md-select-id="{{record}}" md-auto-select ng-repeat='record in zone.records | orderBy:myOrder'>
+            <td md-cell>{{record.name}}</td>
+            <td md-cell>{{record.content}}</td>
+            <td md-cell>{{record.type}}</td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
   </md-card-content>
 
 </md-card>

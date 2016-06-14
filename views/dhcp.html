@@ -51,73 +51,74 @@
           {{subnet.reserved_lease_time}}
         </td>
       </tr>
-      <tr>
-        <td class='label' valign="top">Leases</td>
-        <td flex>
-          <md-list>
-            <div ng-repeat='lease in subnet.leases'>
-              <md-list-item
-                class='md-3-line'>
-                <div class="md-list-item-text" layout="column">
-                  <h3>
-                    <md-icon>
-                      {{lease.valid ? 'done' : 'close'}}
-                      <md-tooltip>
-                        {{lease.valid ? 'Valid' : 'Invalid'}}
-                      </md-tooltip>
-                    </md-icon>
-                    {{ lease.ip }}
-                  </h3>
-                  <h4>{{ lease.mac }}</h4>
-                  <p>
-                    {{lease.expire_time}}
-                  </p>
-                </div>
-              </md-list-item>
-              <md-divider></md-divider>
-            </div>
-          </md-list>
-        </td>
-      </tr>
-      <tr>
-        <td class='label' valign="top">Bindings</td>
-        <td flex>
-          <md-list>
-            <div ng-repeat='binding in subnet.bindings'>
-              <md-list-item
-                class='md-2-line'>
-                <div class="md-list-item-text" layout="column">
-                  <h3>
-                    {{ binding.ip }}
-                  </h3>
-                  <h4>{{ binding.mac }}</h4>
-                </div>
-              </md-list-item>
-              <md-divider></md-divider>
-            </div>
-          </md-list>
-        </td>
-      </tr>
-      <tr>
-        <td class='label' valign="top">Options</td>
-        <td flex>
-          <md-list>
-            <div ng-repeat='option in subnet.options'>
-              <md-list-item
-                class='md-2-line'>
-                <div class="md-list-item-text" layout="column">
-                  <h3>
-                    {{ option.id }}
-                  </h3>
-                  <h4>{{ option.value }}</h4>
-                </div>
-              </md-list-item>
-              <md-divider></md-divider>
-            </div>
-          </md-list>
-        </td>
-      </tr>
     </table>
+    <h3>Leases</h3>
+    <md-table-container>
+      <table md-table>
+        <thead md-head md-order="leaseOrder">
+          <tr md-row>
+            <th md-column md-order-by='valid'>Valid</th>
+            <th md-column md-order-by='ip'>IP</th>
+            <th md-column md-order-by='mac'>MAC</th>
+            <th md-column md-order-by='expire_time'>Expire Time</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat='lease in subnet.leases | orderBy: leaseOrder'>
+            <td md-cell>
+              <md-icon>
+                {{lease.valid ? 'done' : 'close'}}
+                <md-tooltip>
+                  {{lease.valid ? 'Valid' : 'Invalid'}}
+                </md-tooltip>
+              </md-icon>
+            </td>
+            <td md-cell>{{lease.ip}}</td>
+            <td md-cell>{{lease.mac}}</td>
+            <td md-cell>{{lease.expire_time}}</td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+
+    <h3>Bindings</h3>
+    <md-table-container>
+      <table md-table>
+        <thead md-head md-order="bindingOrder">
+          <tr md-row>
+            <th md-column md-order-by='ip'>IP</th>
+            <th md-column md-order-by='mac'>MAC</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat='binding in subnet.bindings | orderBy: bindingOrder'>
+            <td md-cell>{{binding.ip}}</td>
+            <td md-cell>{{binding.mac}}</td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+    
+    <h3>Options</h3>
+    <md-table-container>
+      <table md-table>
+        <thead md-head md-order="optionOrder">
+          <tr md-row>
+            <th md-column md-order-by='id'>ID</th>
+            <th md-column md-order-by='value'>Value</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat='option in subnet.options | orderBy: optionOrder'>
+            <td md-cell>{{option.id}}</td>
+            <td md-cell>{{option.value}}</td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
   </md-card-content>
 
 </md-card>
