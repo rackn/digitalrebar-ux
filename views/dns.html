@@ -4,12 +4,6 @@
       <span flex>
         {{zone.name}}
       </span>
-      <span>
-        <md-button class='md-icon-button' ng-click='add($event, zone)'>
-          <md-icon>add</md-icon>
-          <md-tooltip>Add Record</md-tooltip>
-        </md-button>
-      </span>
     </div>
   </md-toolbar>
 
@@ -22,9 +16,32 @@
         </td>
       </tr>
     </table>
-    <h3>Records</h3>
+
+    <md-toolbar class="md-table-toolbar md-default" ng-hide='dns.selected.length'>
+      <div class="md-toolbar-tools">
+        <span>Records</span>
+        <span flex></span>
+        <md-button class='md-icon-button' ng-click='add($event, zone)'>
+          <md-icon>add</md-icon>
+          <md-tooltip>Add Record</md-tooltip>
+        </md-button>
+
+      </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-table-toolbar alternate" ng-show='dns.selected.length'>
+      <div class="md-toolbar-tools">
+        <span>{{dns.selected.length}} record{{dns.selected.length != 1 && 's' || ''}} selected</span>
+        <span flex></span>
+        <md-button class='md-icon-button' ng-click='deleteRecords(zone)'>
+          <md-icon>delete</md-icon>
+          <md-tooltip>Delete Records</md-tooltip>
+        </md-button>
+      </div>
+    </md-toolbar>
+
     <md-table-container>
-      <table md-table>
+      <table md-table md-row-select ng-model="dns.selected">
         <thead md-head md-order="myOrder">
           <tr md-row>
             <th md-column md-order-by='name'>Name</th>
@@ -33,7 +50,7 @@
           </tr>
         </thead>
         <tbody md-body>
-          <tr md-row ng-repeat='record in zone.records | orderBy:myOrder'>
+          <tr md-row md-select="record" md-select-id="{{record}}" md-auto-select ng-repeat='record in zone.records | orderBy:myOrder'>
             <td md-cell>{{record.name}}</td>
             <td md-cell>{{record.content}}</td>
             <td md-cell>{{record.type}}</td>

@@ -7,22 +7,26 @@ dns controller
         $scope.$emit('title', 'DNS Zones'); // shows up on the top toolbar
 
         var dns = this;
+        this.selected = []
 
-        $scope.remove = function(zone, record) {
+        $scope.deleteRecords = function(zone) {
             $scope.confirm(event, {
-                title: "Remove Record",
-                message: "Are you sure you want to remove this record?",
+                title: "Remove Records",
+                message: "Are you sure you want to remove selected records?",
                 yesCallback: function(){
-                    var index = zone.records.indexOf(record)
-                    record.changetype = 'REMOVE'
-                    api('/dns/zones/'+zone.name, {
-                        method: 'PATCH',
-                        data: record
-                    }).success(function(data){
-                        api.getHealth()     
-                    }).error(function(){
-                        api.getHealth()
+                    dns.selected.forEach(function(record){                    
+                        record.changetype = 'REMOVE'
+                        api('/dns/zones/'+zone.name, {
+                            method: 'PATCH',
+                            data: record
+                        }).success(function(data){
+                            api.getHealth()     
+                        }).error(function(){
+                            api.getHealth()
+                        })
                     })
+                    
+                    dns.selected = []
                 }
             })
         }
