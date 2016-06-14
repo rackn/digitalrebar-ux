@@ -75,48 +75,59 @@
 				</div>
 			</md-toolbar>
 
-			<md-list>
+			<md-list style='overflow-y: auto;'>
+
+
 				<!-- Default menu -->
-				<md-list-item ng-repeat="item in menu" md-ink-ripple ng-click="setPath(item.path)">
-					<span class='md-list-item-content'>
-						<md-icon>{{item.icon}}</md-icon>
-						<span>{{item.title}}</span>
-					</span>
+				<md-list-item ng-repeat="item in menu" ng-click="setPath(item.path)">
+					<md-icon>{{item.icon}}</md-icon>
+					<p>{{item.title}}</p>
 				</md-list-item>
 
 				<md-list-item ng-if='showDNS' md-ink-ripple ng-click="setPath('/dns')">
-					<span class='md-list-item-content'>
-						<md-icon>domain</md-icon>
-						<span>DNS Zones</span>
-					</span>
+					<md-icon>public</md-icon>
+					<p>DNS Zones</p>
 				</md-list-item>
 
 				<md-list-item ng-if='showDHCP' md-ink-ripple ng-click="setPath('/dhcp')">
-					<span class='md-list-item-content'>
-						<md-icon>cloud</md-icon>
-						<span>DHCP Subnets</span>
-					</span>
+					<md-icon>device_hub</md-icon>
+					<p>DHCP Subnets</p>
 				</md-list-item>
+
+				<md-list-item ng-click='expand=!expand' ng-if='showProvisioner'>
+					<md-icon>build</md-icon>
+					<p>Provisioner</p>
+					<md-icon>{{expand?"expand_less":"expand_more"}}</md-icon>
+				</md-list-item>
+				<div ng-hide='!expand' class='expand-list' ng-if='showProvisioner'>
+					<md-list-item ng-click='setPath()'>
+						<md-icon>list</md-icon>
+						<p>Boot Environments</p>
+					</md-list-item>
+					<md-list-item ng-click='setPath()'>
+						<md-icon>computer</md-icon>
+						<p>Machines</p>
+					</md-list-item>
+					<md-list-item ng-click='setPath()'>
+						<md-icon>insert_drive_file</md-icon>
+						<p>Templates</p>
+					</md-list-item>
+				</div>
 
 				<md-divider></md-divider>
 
 				<!-- User menu -->
 				<md-list-item ng-repeat="item in admin" md-ink-ripple ng-click="setPath(item.path)">
-					<span class='md-list-item-content'>
-						<md-icon>{{item.icon}}</md-icon>
-						<span>{{item.title}}</span>
-					</span>
+					<md-icon>{{item.icon}}</md-icon>
+					<p>{{item.title}}</p>
 				</md-list-item>
 
 				<!-- Logout list item -->
 				<md-list-item ng-if='shouldLogOut' md-ink-ripple ng-click="logout()">
-					<span class='md-list-item-content'>
-						<md-icon>exit_to_app</md-icon>
-						<span>Logout</span>
-					</span>
+					<md-icon>exit_to_app</md-icon>
+					<p>Logout</p>
 				</md-list-item>
 
-				
 			</md-list>
 		</md-sidenav>
 		
