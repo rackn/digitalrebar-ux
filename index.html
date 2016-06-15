@@ -44,6 +44,7 @@
 		<!-- Extra Modules -->
 		<script src="js/lib/angular-sparklines.js"></script>
 		<script src="js/lib/jsontext.js"></script>
+		<script src="js/lib/ng-slide-down.min.js"></script>
 
 		<!-- Source -->
 		<script src="js/app.js"></script>
@@ -62,6 +63,7 @@
 		<script src="js/users.js"></script>
 		<script src="js/dns.js"></script>
 		<script src="js/dhcp.js"></script>
+		<script src="js/provisioner.js"></script>
 
 		<!-- Side Nav -->
 		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-show='isAuth()'>
@@ -94,21 +96,22 @@
 					<p>DHCP Subnets</p>
 				</md-list-item>
 
-				<md-list-item ng-click='expand=!expand' ng-if='showProvisioner'>
+				<md-list-item ng-click='toggleExpandProvisioner()' ng-if='showProvisioner'>
 					<md-icon>build</md-icon>
 					<p>Provisioner</p>
-					<md-icon>{{expand?"expand_less":"expand_more"}}</md-icon>
+					<md-icon>{{expandProvisioner?"expand_less":"expand_more"}}</md-icon>
 				</md-list-item>
-				<div ng-hide='!expand' class='expand-list' ng-if='showProvisioner'>
-					<md-list-item ng-click='setPath()'>
+
+				<div ng-slide-down='expandProvisioner' duration='0.5' lazy-render ng-if='showProvisioner'>
+					<md-list-item ng-click='setPath("/provisioner/bootenvs")'>
 						<md-icon>list</md-icon>
 						<p>Boot Environments</p>
 					</md-list-item>
-					<md-list-item ng-click='setPath()'>
+					<md-list-item ng-click='setPath("/provisioner/machines")'>
 						<md-icon>computer</md-icon>
 						<p>Machines</p>
 					</md-list-item>
-					<md-list-item ng-click='setPath()'>
+					<md-list-item ng-click='setPath("/provisioner/templates")'>
 						<md-icon>insert_drive_file</md-icon>
 						<p>Templates</p>
 					</md-list-item>

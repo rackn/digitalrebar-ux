@@ -141,19 +141,3 @@ div md-progress-circular {
     transform: rotateZ(180deg);
   }
 }
-
-
-
-.expand-list {
-  height: 156px;
-}
-
-.expand-list.ng-hide {
-  height: 0px;
-  overflow-y: hidden;
-}
-
-.expand-list.ng-hide-add, .expand-list.ng-hide-remove {
-  overflow-y: hidden;
-  transition: all linear 0.25s;
-}

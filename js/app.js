@@ -4,7 +4,7 @@ var version = '0.1.3';
     var app = angular.module('app', [
         'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
         'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table',
-        'debounce', 'jsontext']);
+        'debounce', 'jsontext', 'ng-slide-down']);
 
     app.config(function($httpProvider, $routeProvider, $mdThemingProvider, apiProvider) {        
         
@@ -175,6 +175,12 @@ var version = '0.1.3';
                 templateUrl: 'views/dhcp.html'
             }).
 
+            when('/provisioner/templates', {
+                controller: 'ProvisionerCtrl',
+                controllerAs: 'provisioner',
+                templateUrl: 'views/provisioner_templates.html'
+            }).
+
             otherwise({
                 redirectTo: '/login'
             })
@@ -292,6 +298,11 @@ var version = '0.1.3';
         $rootScope.lastPath = '/'
         $rootScope.shouldLogOut = false;
 
+
+        $rootScope.expandProvisioner = false
+        $rootScope.toggleExpandProvisioner = function(){
+            $rootScope.expandProvisioner = !$rootScope.expandProvisioner
+        }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             var path = next.split('/#/')[1];

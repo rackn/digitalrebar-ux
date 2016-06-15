@@ -32,7 +32,7 @@ deployments view
 		</md-toolbar>
 
 		<!-- Tabs that appear after the expand button is pressed -->
-		<section ng-show='expand[deployment.id]'>
+		<section ng-slide-down='expand[deployment.id]' lazy-render duration='0.5'>
 			
 			<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" >
 
@@ -71,7 +71,7 @@ deployments view
 			<md-divider></md-divider>
 
 			<!-- Bind Section -->
-			<md-card ng-show='binding[id]' layout='column'>
+			<md-card ng-slide-down='binding[id]' lazy-render layout='column'>
 				<md-toolbar flex>
 					<section layout='row'>
 						<div class="md-toolbar-tools">
