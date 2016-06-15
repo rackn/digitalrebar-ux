@@ -1,8 +1,8 @@
 <!--
 provisioner templates view
 -->
-<div layout='column'>
-  <md-card ng-repeat='template in _provisioner.templates' flex-gt-sm='40' flex='100'>
+<div>
+  <md-card ng-repeat='template in _provisioner.templates' flex='100'>
 
     <md-toolbar ng-click="expand[template.UUID]=!expand[template.UUID]" md-ink-ripple>
       <div class="md-toolbar-tools">

@@ -180,6 +180,11 @@ var version = '0.1.3';
                 controllerAs: 'provisioner',
                 templateUrl: 'views/provisioner_templates.html'
             }).
+            when('/provisioner/bootenvs', {
+                controller: 'ProvisionerCtrl',
+                controllerAs: 'provisioner',
+                templateUrl: 'views/provisioner_bootenvs.html'
+            }).
 
             otherwise({
                 redirectTo: '/login'

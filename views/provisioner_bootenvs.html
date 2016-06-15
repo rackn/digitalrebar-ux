@@ -1,0 +1,85 @@
+<md-card ng-repeat='env in _provisioner.bootenvs'>
+  <md-toolbar class="md-default" ng-click="expand[env.Name]=!expand[env.Name]">
+    <div class="md-toolbar-tools">
+      <span flex>
+        {{env.Name}}
+      </span>
+      <span>
+        <md-button class="md-icon-button">
+          <md-icon ng-hide="expand[env.Name]">expand_more</md-icon>
+          <md-icon ng-show="expand[env.Name]">expand_less</md-icon>
+        </md-button>
+      </span>
+    </div>
+  </md-toolbar>
+
+  <div ng-slide-down='expand[env.Name]' lazy-render duration='0.5'>
+    <md-card-content>
+      <table layout-padding>
+        <tr>
+          <td class='label'>OS Name</td>
+          <td>
+            {{env.OS.Name}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>OS Family</td>
+          <td>
+            {{env.OS.Family}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>OS Codename</td>
+          <td>
+            {{env.OS.Codename}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>OS Version</td>
+          <td>
+            {{env.OS.Version}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>OS ISO File</td>
+          <td>
+            {{env.OS.IsoFile}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>OS ISO SHA256</td>
+          <td>
+            {{env.OS.IsoSha256}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>OS ISO Url</td>
+          <td>
+            {{env.OS.IsoUrl}}
+          </td>
+        </tr>
+      </table>
+      <h3>Templates</h3>
+      <md-table-container>
+        <table md-table>
+          <thead md-head md-order="templateOrder">
+            <tr md-row>
+              <th md-column md-order-by='Name'>Name</th>
+              <th md-column md-order-by='Path'>Path</th>
+              <th md-column md-order-by='UUID'>UUID</th>
+            </tr>
+          </thead>
+          <tbody md-body>
+            <tr md-row ng-repeat='template in env.Templates | orderBy: templateOrder'>
+              <td md-cell>{{template.Name}}</td>
+              <td md-cell>{{template.Path}}</td>
+              <td md-cell>{{template.UUID}}</td>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+    </md-card-content>
+  </div>
+
+</md-card>
