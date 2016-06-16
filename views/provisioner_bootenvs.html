@@ -17,7 +17,7 @@
     <md-card-content>
       <table layout-padding>
         <tr>
-          <td class='label'>OS Name</td>
+          <td class='label' style='min-width: 150px;'>OS Name</td>
           <td>
             {{env.OS.Name}}
           </td>
@@ -73,13 +73,13 @@
         <tr>
           <td class='label'>Boot Params</td>
           <td>
-            {{env.BootParams}}
+            <code>{{env.BootParams}}</code>
           </td>
         </tr>
         <tr>
           <td class='label'>Required Params</td>
           <td>
-            {{env.RequiredParams.join(" ")}}
+            <code>{{env.RequiredParams.join(" ")}}</code>
           </td>
         </tr>
 
@@ -108,3 +108,11 @@
   </div>
 
 </md-card>
+
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createBootEnvPrompt($event)'>
+    <md-icon>add</md-icon>
+    <md-tooltip>Create Boot Environment</md-tooltip>
+  </md-button>
+</div>

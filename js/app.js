@@ -185,6 +185,11 @@ var version = '0.1.3';
                 controllerAs: 'provisioner',
                 templateUrl: 'views/provisioner_bootenvs.html'
             }).
+            when('/provisioner/machines', {
+                controller: 'ProvisionerCtrl',
+                controllerAs: 'provisioner',
+                templateUrl: 'views/provisioner_machines.html'
+            }).
 
             otherwise({
                 redirectTo: '/login'
@@ -218,6 +223,12 @@ var version = '0.1.3';
             return result;
         };
     });
+
+    app.filter('json', function() {
+        return function(text){
+            return JSON.stringify(text, null, '  ').trim()
+        }
+    })
 
     app.directive('elastic', [
         '$timeout',
