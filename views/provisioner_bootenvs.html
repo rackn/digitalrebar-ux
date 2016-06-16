@@ -55,7 +55,7 @@
         <tr>
           <td class='label'>OS ISO Url</td>
           <td>
-            {{env.OS.IsoUrl}}
+            <a ng-href="{{env.OS.IsoUrl}}">{{env.OS.IsoUrl}}</a>
           </td>
         </tr>
         <tr>
@@ -96,7 +96,11 @@
           </thead>
           <tbody md-body>
             <tr md-row ng-repeat='template in env.Templates | orderBy: templateOrder'>
-              <td md-cell>{{template.Name}}</td>
+              <td md-cell>
+                <a ng-href="#/provisioner/templates/{{template.UUID}}">
+                  {{template.Name}}
+                </a>
+              </td>
               <td md-cell>{{template.Path}}</td>
               <td md-cell>{{template.UUID}}</td>
               </td>

@@ -3,7 +3,7 @@ provisioner controller
 */
 (function(){
     angular.module('app')
-    .controller('ProvisionerCtrl', function($scope, api, $location, $mdDialog, $mdMedia) {
+    .controller('ProvisionerCtrl', function($scope, api, $location, $mdDialog, $mdMedia, $routeParams) {
         
         // use the same controller for 3 pages, so handle the title for each location
         var route = $location.path().split("/")[2]
@@ -24,7 +24,23 @@ provisioner controller
         var provisioner = this;
         
         $scope.expand = {}
-    
+        
+        var mapNodes = function() {
+            $scope.nodeMap = {}
+
+            for(var id in $scope._nodes) {
+                var node = $scope._nodes[id]
+                $scope.nodeMap[node.name] = node
+            }
+
+        }
+        mapNodes()
+
+        $scope.$on('nodesDone', mapNodes)
+
+        if($routeParams.id)
+            $scope.expand[$routeParams.id] = true;
+
         /*$scope.remove = function(zone, record) {
             $scope.confirm(event, {
                 title: "Remove Record",

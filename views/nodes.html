@@ -53,7 +53,7 @@
 	</md-toolbar>
 
 	<md-table-container>
-		<table md-table md-row-select ng-model="nodes.selected">
+    <table md-table md-row-select ng-model="nodes.selected">
 			<thead md-head md-order="myOrder">
 				<tr md-row>
           <th md-column md-order-by='state'>State</th>
@@ -64,10 +64,16 @@
 					<th md-column md-order-by='deployment_id'>Deployment</th>
 				</tr>
 			</thead>
-			<tbody md-body>
-				<tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select ng-repeat="node in nodes.getNodes() | orderBy: myOrder | not:'system'">
-        <td md-cell>
-          <md-button class='md-primary md-fab md-mini' md-theme='status_{{node.status}}'>
+			<tbody md-body
+        swap-md-paint-bg="status_{{node.status}} primary"
+        swap-md-paint-fg="status_{{node.status}} foreground"
+        ng-repeat="node in nodes.getNodes() | orderBy: myOrder | not:'system'">
+        <tr
+          md-row
+          md-select="node"
+          md-select-id="{{node.id}}"
+          md-auto-select>
+          <td md-cell>
             <md-icon>
               {{icons[node.status]}}
             </md-icon>
@@ -76,18 +82,17 @@
     					{{node.alive ? 'On' : 'Off'}}
     					{{states[node.state]}}
             </md-tooltip>
-          </md-button>
-        </td>
+          </td>
 
-        <td md-cell><a ng-href='#/nodes/{{node.id}}'>{{node.name}}</a></td>
-        <td md-cell>{{node.address}}</td>
-				<td md-cell>{{node.description}}</td>
-				<td md-cell><a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a></td>
-				<td md-cell>
-					<a ng-href='#/dash/{{node.deployment_id}}'>
-						{{_deployments[node.deployment_id].name}}
-					</a>
-				</td>
+          <td md-cell><a ng-href='#/nodes/{{node.id}}'>{{node.name}}</a></td>
+          <td md-cell>{{node.address}}</td>
+  				<td md-cell>{{node.description}}</td>
+  				<td md-cell><a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a></td>
+  				<td md-cell>
+  					<a ng-href='#/dash/{{node.deployment_id}}'>
+  						{{_deployments[node.deployment_id].name}}
+  					</a>
+  				</td>
 				</tr>
 			</tbody>
 		</table>
