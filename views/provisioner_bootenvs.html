@@ -58,6 +58,31 @@
             {{env.OS.IsoUrl}}
           </td>
         </tr>
+        <tr>
+          <td class='label'>Kernel</td>
+          <td>
+            {{env.Kernel}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>Initrds</td>
+          <td>
+            {{env.Initrds.join(", ")}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>Boot Params</td>
+          <td>
+            {{env.BootParams}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>Required Params</td>
+          <td>
+            {{env.RequiredParams.join(" ")}}
+          </td>
+        </tr>
+
       </table>
       <h3>Templates</h3>
       <md-table-container>
