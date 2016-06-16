@@ -56,9 +56,9 @@
 		<table md-table md-row-select ng-model="nodes.selected">
 			<thead md-head md-order="myOrder">
 				<tr md-row>
+          <th md-column md-order-by='state'>State</th>
 					<th md-column md-order-by='name'>Name</th>
 					<th md-column>Address</th>
-					<th md-column>Status</th>
 					<th md-column>Description</th>
 					<th md-column md-order-by='provider_id'>Provider</th>
 					<th md-column md-order-by='deployment_id'>Deployment</th>
@@ -66,13 +66,21 @@
 			</thead>
 			<tbody md-body>
 				<tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select ng-repeat="node in nodes.getNodes() | orderBy: myOrder | not:'system'">
-				<td md-cell><a ng-href='#/nodes/{{node.id}}'>{{node.name}}</a></td>
-				<td md-cell>{{node.address}}</td>
-				<td md-cell>
-					{{node.reserved ? 'Reserved' : ''}}
-					{{node.alive ? 'On' : 'Off'}}
-					{{states[node.state]}}
-				</td>
+        <td md-cell>
+          <md-button class='md-primary md-fab md-mini' md-theme='status_{{node.status}}'>
+            <md-icon>
+              {{icons[node.status]}}
+            </md-icon>
+            <md-tooltip>
+    					{{node.reserved ? 'Reserved' : ''}}
+    					{{node.alive ? 'On' : 'Off'}}
+    					{{states[node.state]}}
+            </md-tooltip>
+          </md-button>
+        </td>
+
+        <td md-cell><a ng-href='#/nodes/{{node.id}}'>{{node.name}}</a></td>
+        <td md-cell>{{node.address}}</td>
 				<td md-cell>{{node.description}}</td>
 				<td md-cell><a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a></td>
 				<td md-cell>

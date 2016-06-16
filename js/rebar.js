@@ -282,8 +282,10 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
         node.address = node['node-control-address']
 
         var state = $rootScope.states[node.state]
-        if(!node.alive)
-            state = 'off'
+        if(!node.alive) {
+            if(node.reserved)
+                state = 'off'
+        }
         node.status = state
 
         // assign simple states for the dashboard pie chart

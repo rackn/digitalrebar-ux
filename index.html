@@ -97,18 +97,18 @@
 				</md-list-item>
 
 				<md-list-item ng-click='toggleExpandProvisioner()' ng-if='showProvisioner'>
-					<md-icon>build</md-icon>
+					<md-icon>local_shipping</md-icon>
 					<p>Provisioner</p>
 					<md-icon>{{expandProvisioner?"expand_less":"expand_more"}}</md-icon>
 				</md-list-item>
 
 				<div ng-slide-down='expandProvisioner' duration='0.5' lazy-render ng-if='showProvisioner'>
 					<md-list-item ng-click='setPath("/provisioner/bootenvs")'>
-						<md-icon style='padding-left: 1em;'>list</md-icon>
+						<md-icon style='padding-left: 1em;'>album</md-icon>
 						<p>Boot Environments</p>
 					</md-list-item>
 					<md-list-item ng-click='setPath("/provisioner/machines")'>
-						<md-icon style='padding-left: 1em;'>computer</md-icon>
+						<md-icon style='padding-left: 1em;'>dns</md-icon>
 						<p>Machines</p>
 					</md-list-item>
 					<md-list-item ng-click='setPath("/provisioner/templates")'>
