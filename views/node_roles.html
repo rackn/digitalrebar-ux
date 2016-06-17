@@ -5,7 +5,7 @@
     </div>
   </md-toolbar>
 
-  <md-toolbar class="md-table-toolbar alternate" ng-show='deployment_roles.selected.length'>
+  <md-toolbar class="md-table-toolbar alternate" ng-show='node_roles.selected.length'>
     <div class="md-toolbar-tools">
       <span>{{node_roles.selected.length}} node role{{node_roles.selected.length != 1 && 's' || ''}} selected</span>
       <span flex></span>
@@ -24,29 +24,48 @@
           <th md-column md-order-by='deployment_id'>Deployment</th>
           <th md-column md-order-by='node_id'>Node</th>
           <th md-column md-order-by='role_id'>Role</th>
+          <th md-column>Node Role</th>
         </tr>
       </thead>
-      <tbody md-body>
-        <tr md-row md-select='role' md-select-id='{{role.id}}' md-auto-select ng-repeat="role in getNodeRoles() | orderBy: myOrder">
-        <td md-cell>
-          <md-button ng-href='#/node_roles/{{role.id}}' class='md-primary md-fab md-mini' md-theme='status_{{role.status}}'>
-            <md-icon>
+      <tbody md-body
+        swap-md-paint-bg="status_{{role.status}} primary"
+        swap-md-paint-fg="status_{{role.status}} foreground"
+        ng-repeat="role in getNodeRoles() | orderBy: myOrder">
+        <tr md-row md-select='role' md-select-id='{{role.id}}' md-auto-select>
+          <td md-cell>
+            <md-icon ng-href='#/node_roles/{{role.id}}'>
               {{icons[role.status]}}
+              <md-tooltip>
+                {{role.status}}
+              </md-tooltip>
             </md-icon>
-          </md-button>
-        </td>
-        <td md-cell>
-          <a ng-href='#/dash/{{role.deployment_id}}'>
-            {{_deployments[role.deployment_id].name}}
-          </a>
-        </td>
-        <td md-cell>
-          <a ng-href='#/nodes/{{role.node_id}}'>
-            {{_nodes[role.node_id].name}}
-          </a>
-        </td>
-        <td md-cell>{{_roles[role.role_id].name}}</td>
-        
+          </td>
+          <td md-cell>
+            <a ng-href='#/dash/{{role.deployment_id}}'>
+              {{_deployments[role.deployment_id].name}}
+            </a>
+          </td>
+          <td md-cell>
+            <a ng-href='#/nodes/{{role.node_id}}'>
+              {{_nodes[role.node_id].name}}
+            </a>
+          </td>
+          <td md-cell>
+            <a ng-href='#/roles/{{role.role_id}}'>
+              {{_roles[role.role_id].name}}
+            </a>
+          </td>
+          <td md-cell>
+            <a ng-href='#/node_roles/{{role.id}}'>
+              <md-icon>
+                arrow_forward
+              </md-icon>
+              <md-tooltip>
+                Node Role
+              </md-tooltip>
+            </a>
+          </td>
+
         </tr>
       </tbody>
     </table>

@@ -38,6 +38,8 @@ app.run(function($rootScope, $cookies, api, $interval){
     $rootScope.host = $cookies.get('host') || currentLocation+port;
 
     $rootScope.$on('updateApi', function(event) {
+        api.getHealth();
+        
         // make the api calls and add callbacks
 
         // loops through 'fetch', calling api.getDeployments 
@@ -51,9 +53,8 @@ app.run(function($rootScope, $cookies, api, $interval){
 
     $rootScope.$on('startUpdating', function(event){
         api.reload();
-        api.getActive();
-        api.getHealth();
-    })
+        api.getActive(); 
+   })
 
     $rootScope.tryFetch = function() {
         $rootScope.$emit('updateApi')
@@ -70,9 +71,13 @@ app.run(function($rootScope, $cookies, api, $interval){
     $rootScope._barclamps = {}
 
     $rootScope.showDNS = false
-    $rootScope.showDHCP = false
     $rootScope._DNS = {zones: []}
+
+    $rootScope.showDHCP = false
     $rootScope._DHCP = {subnets: []}
+
+    $rootScope.showProvisioner = false
+    $rootScope._provisioner = {bootenvs: [], templates: [], machines: []}
 
 })
 
@@ -199,6 +204,7 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
             var map = data.Map
             $rootScope.showDNS = typeof map['dns-mgmt-service'] !== 'undefined'
             $rootScope.showDHCP = typeof map['dhcp-mgmt-service'] !== 'undefined'
+            $rootScope.showProvisioner = typeof map['provisioner-mgmt-service'] !== 'undefined'
 
             if($rootScope.showDNS) {
                 api('/dns/zones').success(function(data){
@@ -209,6 +215,18 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
             if($rootScope.showDHCP) {
                 api('/dhcp/subnets').success(function(data){
                     $rootScope._DHCP.subnets = data
+                })
+            }
+
+            if($rootScope.showProvisioner) {
+                api('/provisioner/machines').success(function(data){
+                    $rootScope._provisioner.machines = data
+                })
+                api('/provisioner/templates').success(function(data){
+                    $rootScope._provisioner.templates = data
+                })
+                api('/provisioner/bootenvs').success(function(data){
+                    $rootScope._provisioner.bootenvs = data
                 })
             }
 
@@ -264,8 +282,10 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
         node.address = node['node-control-address']
 
         var state = $rootScope.states[node.state]
-        if(!node.alive)
-            state = 'off'
+        if(!node.alive) {
+            if(node.reserved)
+                state = 'off'
+        }
         node.status = state
 
         // assign simple states for the dashboard pie chart

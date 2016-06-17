@@ -4,7 +4,7 @@ var version = '0.1.3';
     var app = angular.module('app', [
         'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
         'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table',
-        'debounce', 'jsontext']);
+        'debounce', 'jsontext', 'ng-slide-down', 'swapMdPaint']);
 
     app.config(function($httpProvider, $routeProvider, $mdThemingProvider, apiProvider) {        
         
@@ -19,7 +19,6 @@ var version = '0.1.3';
         
         $mdThemingProvider.theme('input', 'default')
             .primaryPalette('grey')
-
 
         // theme to stop warnings/bugs
         $mdThemingProvider.theme('status_').
@@ -174,6 +173,36 @@ var version = '0.1.3';
                 controllerAs: 'dhcp',
                 templateUrl: 'views/dhcp.html'
             }).
+            when('/provisioner/templates', {
+                controller: 'ProvisionerCtrl',
+                controllerAs: 'provisioner',
+                templateUrl: 'views/provisioner_templates.html'
+            }).
+            when('/provisioner/templates/:id', {
+                controller: 'ProvisionerCtrl',
+                controllerAs: 'provisioner',
+                templateUrl: 'views/provisioner_templates.html'
+            }).
+            when('/provisioner/bootenvs', {
+                controller: 'ProvisionerCtrl',
+                controllerAs: 'provisioner',
+                templateUrl: 'views/provisioner_bootenvs.html'
+            }).
+            when('/provisioner/bootenvs/:id', {
+                controller: 'ProvisionerCtrl',
+                controllerAs: 'provisioner',
+                templateUrl: 'views/provisioner_bootenvs.html'
+            }).
+            when('/provisioner/machines', {
+                controller: 'ProvisionerCtrl',
+                controllerAs: 'provisioner',
+                templateUrl: 'views/provisioner_machines.html'
+            }).
+            when('/provisioner/machines/:id', {
+                controller: 'ProvisionerCtrl',
+                controllerAs: 'provisioner',
+                templateUrl: 'views/provisioner_machines.html'
+            }).
 
             otherwise({
                 redirectTo: '/login'
@@ -207,6 +236,12 @@ var version = '0.1.3';
             return result;
         };
     });
+
+    app.filter('json', function() {
+        return function(text){
+            return JSON.stringify(text, null, '  ').trim()
+        }
+    })
 
     app.directive('elastic', [
         '$timeout',
@@ -292,6 +327,11 @@ var version = '0.1.3';
         $rootScope.lastPath = '/'
         $rootScope.shouldLogOut = false;
 
+
+        $rootScope.expandProvisioner = false
+        $rootScope.toggleExpandProvisioner = function(){
+            $rootScope.expandProvisioner = !$rootScope.expandProvisioner
+        }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             var path = next.split('/#/')[1];

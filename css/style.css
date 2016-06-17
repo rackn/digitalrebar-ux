@@ -141,3 +141,26 @@ div md-progress-circular {
     transform: rotateZ(180deg);
   }
 }
+
+table.md-table.md-row-select tbody.md-body > tr.md-row:not([disabled]):hover {
+  background-color: rgba(50,50,50, 0.1) !important;
+
+}
+table.md-table.md-row-select tbody.md-body > tr.md-row.md-selected {
+  background-color: rgba(50,50,50, 0.2) !important;
+}
+
+table.md-table td.md-cell {
+  font-size: 13px;
+  border-top: 1px rgba(0, 0, 0, 0.12) solid;
+  color: inherit;
+}
+
+table.md-table td.md-cell a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+table.md-table td.md-cell md-icon {
+  color: inherit;
+}

@@ -1,8 +1,8 @@
 <!--
 deployments view
 -->
-<div layout='column'>
-	<md-card ng-repeat='(id, deployment) in _deployments' flex-gt-sm='40' flex='100'>
+<div>
+	<md-card ng-repeat='(id, deployment) in _deployments' flex='100'>
 
 		<!-- Top bar for each deployment -->
 		<md-toolbar flex layout='column' ng-class="{'md-warn': deployments.deploymentStatus[deployment.id].error > 0}" ng-click="deployments.toggleExpand(deployment)" md-ink-ripple>
@@ -32,7 +32,7 @@ deployments view
 		</md-toolbar>
 
 		<!-- Tabs that appear after the expand button is pressed -->
-		<section ng-show='expand[deployment.id]'>
+		<section ng-slide-down='expand[deployment.id]' duration='0.5'>
 			
 			<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" >
 
@@ -71,7 +71,7 @@ deployments view
 			<md-divider></md-divider>
 
 			<!-- Bind Section -->
-			<md-card ng-show='binding[id]' layout='column'>
+			<md-card ng-slide-down='binding[id]' lazy-render layout='column'>
 				<md-toolbar flex>
 					<section layout='row'>
 						<div class="md-toolbar-tools">

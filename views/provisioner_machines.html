@@ -1,0 +1,71 @@
+<!--
+provisioner machines view
+-->
+<div>
+  <md-card ng-repeat='machine in _provisioner.machines' flex='100'>
+
+    <md-toolbar
+      md-theme='status_{{states[nodeMap[machine.Name].state]}}'
+      ng-click="expand[machine.Name]=!expand[machine.Name]"
+      md-ink-ripple>
+      <div class="md-toolbar-tools" display='row'>
+        <h2 flex>
+          <span>
+            <md-icon ng-show='nodeMap[machine.Name]'>
+              {{icons[states[nodeMap[machine.Name].state]]}}
+            </md-icon>
+          <span>
+          {{machine.Name}}
+        </h2>
+        <span>
+          <md-button class="md-icon-button">
+            <md-icon ng-hide="expand[machine.Name]">expand_more</md-icon>
+            <md-icon ng-show="expand[machine.Name]">expand_less</md-icon>
+          </md-button>
+        </span>
+      </div>
+    </md-toolbar>
+    <div ng-slide-down="expand[machine.Name]" lazy-render duration="0.25">
+      <md-card-content>
+        <table layout-padding>
+          <tr ng-if='nodeMap[machine.Name]'>
+            <td class='label'>Node</td>
+            <td>
+              <a href='#/deployments/{{nodeMap[machine.Name].deployment_id}}'>
+                {{_deployments[nodeMap[machine.Name].deployment_id].name}}
+              </a>
+              <a href='#/nodes/{{nodeMap[machine.Name].id}}'>
+                {{nodeMap[machine.Name].name}}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td class='label'>Address</td>
+            <td>
+              {{machine.Address}}
+            </td>
+          </tr>
+          <tr>
+            <td class='label'>Boot Environment</td>
+            <td>
+              <a ng-href="#/provisioner/bootenvs/{{machine.BootEnv}}">
+                {{machine.BootEnv}}
+              </a>
+            </td>
+          </tr>
+        </table>
+        <h3>Params</h3>
+        <section layout-padding style='overflow-x: auto;'>
+          <pre>{{machine.Params | json}}</pre>
+        </section>
+      </md-card-content>
+    </div>
+</div>
+
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createMachinePrompt($event)'>
+    <md-icon>add</md-icon>
+    <md-tooltip>Create Machine</md-tooltip>
+  </md-button>
+</div>

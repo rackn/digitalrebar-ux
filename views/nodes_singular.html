@@ -82,7 +82,14 @@
 			</tr>
 			<tr>
 				<td class='label'>Boot Environment</td>
-				<td>{{node.bootenv}}</td>
+				<td>
+          <div ng-if="showProvisioner">
+            <a ng-href="#/provisioner/bootenvs/{{node.bootenv}}">{{node.bootenv}}</a>
+          </div>
+          <span ng-if="!showProvisioner">
+            {{node.bootenv}}
+          </span>
+        </td>
 			</tr>
 			<tr>
 				<td class='label'>Address</td>
