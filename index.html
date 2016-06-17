@@ -105,13 +105,13 @@
 				</md-list-item>
 
 				<div ng-slide-down='expandProvisioner' duration='0.5' lazy-render ng-if='showProvisioner'>
-					<md-list-item ng-click='setPath("/provisioner/bootenvs")'>
-						<md-icon style='padding-left: 1em;'>album</md-icon>
-						<p>Boot Environments</p>
-					</md-list-item>
 					<md-list-item ng-click='setPath("/provisioner/machines")'>
 						<md-icon style='padding-left: 1em;'>dns</md-icon>
 						<p>Machines</p>
+					</md-list-item>
+					<md-list-item ng-click='setPath("/provisioner/bootenvs")'>
+						<md-icon style='padding-left: 1em;'>album</md-icon>
+						<p>Boot Environments</p>
 					</md-list-item>
 					<md-list-item ng-click='setPath("/provisioner/templates")'>
 						<md-icon style='padding-left: 1em;'>insert_drive_file</md-icon>

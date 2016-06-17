@@ -142,5 +142,19 @@ dialog controller
             $mdDialog.hide();
         }
 
+        this.createTemplate = function() {
+            var template = $scope.locals.template
+            api('/provisioner/templates' + (locals.editing ? '/'+template.UUID : ""), {
+                method: locals.editing ? 'PATCH' : 'POST',
+                data: template
+            }).success(function(update){
+                api.getHealth()
+            }).error(function(err){
+                api.getHealth()
+            })
+
+            $mdDialog.hide();
+        }
+
     });
 })();
