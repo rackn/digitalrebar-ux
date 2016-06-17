@@ -41,16 +41,13 @@ provisioner controller
         if($routeParams.id)
             $scope.expand[$routeParams.id] = true;
 
-        /*$scope.remove = function(zone, record) {
+        $scope.deleteTemplate = function(uuid) {
             $scope.confirm(event, {
-                title: "Remove Record",
-                message: "Are you sure you want to remove this record?",
+                title: "Remove Template",
+                message: "Are you sure you want to remove this template?",
                 yesCallback: function(){
-                    var index = zone.records.indexOf(record)
-                    record.changetype = 'REMOVE'
-                    api('/dns/zones/'+zone.name, {
-                        method: 'PATCH',
-                        data: record
+                    api('/provisioner/templates/'+uuid, {
+                        method: 'DELETE'
                     }).success(function(data){
                         api.getHealth()     
                     }).error(function(){
@@ -60,28 +57,23 @@ provisioner controller
             })
         }
 
-        $scope.add = function(ev, zone) {
+        $scope.createTemplatePrompt = function(ev, temp) {
+            var template = angular.copy(temp)
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
             $mdDialog.show({
                 controller: 'DialogController',
                 controllerAs: 'dialog',
-                templateUrl: 'views/dialogs/adddnsrecorddialog.tmpl.html',
+                templateUrl: 'views/dialogs/addtemplatedialog.tmpl.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 locals: {
-                    zone: zone,
-                    record: {
-                        changetype: "ADD",
-                        name: "",
-                        content: "",
-                        type: ""
-                    }
-
+                    editing: (typeof template !== 'undefined'),
+                    template: template || {UUID: "", Content: ""}
                 },
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
             })
-        }*/
+        }
 
     });
 })();
