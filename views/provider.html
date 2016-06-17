@@ -123,15 +123,6 @@ provider view
 			<div class="md-toolbar-tools">
 				<span>Nodes</span>
 				<span flex></span>
-				<md-button
-					class='md-icon-button'
-					ng-click='showAddNodeDialog()'
-					ng-hide='provider.name == "metal" || provider.name == "phantom"'>
-					<md-icon>add</md-icon>
-					<md-tooltip>
-						Add Node
-					</md-tooltip>
-				</md-button>
 			</div>
 		</md-toolbar>
 
@@ -155,32 +146,6 @@ provider view
 		<div class="md-toolbar-tools">
 			<span>Providers</span>
 			<span flex></span>
-			<md-menu md-position-mode="target-right target" style='padding: 0;'>
-				<md-button class="md-icon-button" ng-click='$mdOpenMenu($event)'>
-				  <md-icon>add</md-icon>
-				  <md-tooltip>
-				  	Add Provider
-				  </md-tooltip>
-				</md-button>
-        <md-menu-content width="4" >
-          <md-menu-item ng-repeat="(name, data) in providerTemplates">
-            <md-button ng-click="showAddProviderDialog($event, name)">
-            	<div layout="row" flex>
-                <p flex>{{name}}</p>
-                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">add</md-icon>
-              </div>
-            </md-button>
-          </md-menu-item>
-          <md-menu-item>
-            <md-button ng-click="$mdCloseMenu($event)">
-            	<div layout="row" flex>
-                <p flex>Cancel</p>
-                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">cancel</md-icon>
-              </div>
-            </md-button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
 			
 		</div>
 	</md-toolbar>
@@ -206,3 +171,46 @@ provider view
 	</md-table-container>
 
 </md-card>
+
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+	<!-- Add Provider FAB -->
+	<md-menu md-position-mode="target-right target" style='padding: 0;' ng-if='!provider'>
+		<md-button class="md-fab md-accent md-fab-bottom-right" ng-click='$mdOpenMenu($event)'>
+		  <md-icon>add</md-icon>
+		  <md-tooltip>
+		  	Add Provider
+		  </md-tooltip>
+		</md-button>
+	  <md-menu-content width="4" >
+	    <md-menu-item ng-repeat="(name, data) in providerTemplates">
+	      <md-button ng-click="showAddProviderDialog($event, name)">
+	      	<div layout="row" flex>
+	          <p flex>{{name}}</p>
+	          <md-icon md-menu-align-target style="margin: auto 3px auto 0;">add</md-icon>
+	        </div>
+	      </md-button>
+	    </md-menu-item>
+	    <md-menu-item>
+	      <md-button ng-click="$mdCloseMenu($event)">
+	      	<div layout="row" flex>
+	          <p flex>Cancel</p>
+	          <md-icon md-menu-align-target style="margin: auto 3px auto 0;">cancel</md-icon>
+	        </div>
+	      </md-button>
+	    </md-menu-item>
+	  </md-menu-content>
+	</md-menu>
+
+	<!-- Add Node FAB -->
+	<md-button
+		class='md-fab md-accent md-fab-bottom-right'
+		ng-click='showAddNodeDialog()'
+		ng-if='provider && !(provider.name == "metal" || provider.name == "phantom")'>
+		<md-icon>add</md-icon>
+		<md-tooltip>
+			Add Node
+		</md-tooltip>
+	</md-button>
+</div>
+

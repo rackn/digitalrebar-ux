@@ -4,12 +4,6 @@
 		<div class="md-toolbar-tools">
 			<span>Networks ({{networks.getNetworks().length}})</span>
 			<span flex></span>
-			<md-button class="md-icon-button" ng-click='networks.showAddNetworkDialog()'>
-			  <md-icon>add</md-icon>
-        <md-tooltip>
-          Add Network
-        </md-tooltip>
-			</md-button>
 		</div>
 	</md-toolbar>
 
@@ -74,3 +68,11 @@
 	</md-table-container>
 
 </md-card>
+
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='networks.showAddNetworkDialog()'>
+    <md-icon>add</md-icon>
+    <md-tooltip>Add Network</md-tooltip>
+  </md-button>
+</div>
