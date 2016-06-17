@@ -3,12 +3,6 @@
 		<div class="md-toolbar-tools">
 			<span>Nodes ({{nodes.getNodes().length}})</span>
 			<span flex></span>
-			<md-button class="md-icon-button" ng-click='nodes.showAddNodeDialog()'>
-			  <md-icon>add</md-icon>
-        <md-tooltip>
-          Add Nodes
-        </md-tooltip>
-			</md-button>
 		</div>
 	</md-toolbar>
 
@@ -85,3 +79,12 @@
 		</table>
 	</md-table-container>
 </md-card>
+
+
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='nodes.showAddNodeDialog()'>
+    <md-icon>add</md-icon>
+    <md-tooltip>Add Nodes</md-tooltip>
+  </md-button>
+</div>
