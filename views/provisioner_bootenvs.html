@@ -109,6 +109,22 @@
         </table>
       </md-table-container>
     </md-card-content>
+
+    <md-card-actions layout="row" layout-align="start center">
+      <md-button class='md-icon-button' ng-click='createBootEnvPrompt($event, bootenv)'>
+        <md-icon>mode_edit</md-icon>
+        <md-tooltip>Edit</md-tooltip>
+      </md-button>
+
+
+      <!-- Right side of toolbar -->
+      <md-card-icon-actions layout-align='end center'>
+        <md-button class='md-icon-button' ng-click='deleteBootEnv(env.Name)'>
+          <md-icon>delete</md-icon>
+          <md-tooltip>Destroy</md-tooltip>
+        </md-button>
+      </md-card-icon-actions>
+    </md-card-actions>
   </div>
 
 </md-card>

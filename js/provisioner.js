@@ -75,5 +75,56 @@ provisioner controller
             })
         }
 
+        $scope.deleteBootEnv = function(name) {
+            $scope.confirm(event, {
+                title: "Remove Boot Environment",
+                message: "Are you sure you want to remove this boot environment?",
+                yesCallback: function(){
+                    api('/provisioner/bootenvs/'+name, {
+                        method: 'DELETE'
+                    }).success(function(data){
+                        api.getHealth()     
+                    }).error(function(){
+                        api.getHealth()
+                    })
+                }
+            })
+        }
+
+        $scope.createBootEnvPrompt = function(ev, env) {
+            var bootenv = angular.copy(env)
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'dialog',
+                templateUrl: 'views/dialogs/addbootenvdialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    editing: (typeof bootenv !== 'undefined'),
+                    bootenv: bootenv || {
+                        Name: "",
+                        OS : {
+                            Name: "",
+                            Family: "",
+                            Codename: "",
+                            Version: "",
+                            IsoFile: "",
+                            IsoSha256: "",
+                            IsoUrl: ""
+                        },
+                        Kernel: "",
+                        Initrds: [],
+                        BootParams: "",
+                        RequiredParams: [],
+                        Templates: []
+                    },
+                    original: angular.copy(bootenv)
+                },
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            })
+        }
+
     });
 })();
