@@ -11,6 +11,9 @@ provisioner controller
         switch(route){
         case 'bootenvs':
             title += 'Boot Environments'
+            api("/api/v2/attribs").success(function(attribs){
+                $scope.attribs = attribs.map(function(a){return a.name})
+            })
             break
         case 'templates':
             title += 'Templates'
@@ -22,15 +25,16 @@ provisioner controller
         $scope.$emit('title', title);
 
         var provisioner = this;
-        
+
         $scope.expand = {}
+        $scope.attribs = []
         
         var mapNodes = function() {
             $scope.nodeMap = {}
 
             for(var id in $scope._nodes) {
                 var node = $scope._nodes[id]
-                $scope.nodeMap[node.name] = node
+                $scope.nodeMap[node.uuid] = node
             }
 
         }
@@ -93,7 +97,6 @@ provisioner controller
 
         $scope.createBootEnvPrompt = function(ev, env) {
             var bootenv = angular.copy(env)
-            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
             $mdDialog.show({
                 controller: 'DialogController',
                 controllerAs: 'dialog',
@@ -102,7 +105,9 @@ provisioner controller
                 targetEvent: ev,
                 locals: {
                     editing: (typeof bootenv !== 'undefined'),
-                    bootenv: bootenv || {
+                    attribs: $scope.attribs,
+                    _provisioner: $scope._provisioner,
+                    env: bootenv || {
                         Name: "",
                         OS : {
                             Name: "",
@@ -122,7 +127,7 @@ provisioner controller
                     original: angular.copy(bootenv)
                 },
                 clickOutsideToClose: true,
-                fullscreen: useFullScreen
+                fullscreen: true
             })
         }
 

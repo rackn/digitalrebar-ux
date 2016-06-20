@@ -67,7 +67,11 @@
         <tr>
           <td class='label'>Initrds</td>
           <td>
-            {{env.Initrds.join(", ")}}
+            <md-chips ng-model='env.Initrds' readonly='true'>
+              <md-chip-template style='font-family: monospace;'>
+                {{$chip}}
+              </md-chip-template>
+            </md-chips>
           </td>
         </tr>
         <tr>
@@ -79,7 +83,11 @@
         <tr>
           <td class='label'>Required Params</td>
           <td>
-            <code>{{env.RequiredParams.join(" ")}}</code>
+            <md-chips ng-model='env.RequiredParams' readonly='true'>
+              <md-chip-template style='font-family: monospace;'>
+                {{$chip}}
+              </md-chip-template>
+            </md-chips>
           </td>
         </tr>
 
@@ -97,12 +105,14 @@
           <tbody md-body>
             <tr md-row ng-repeat='template in env.Templates | orderBy: templateOrder'>
               <td md-cell>
-                <a ng-href="#/provisioner/templates/{{template.UUID}}">
-                  {{template.Name}}
-                </a>
+                {{template.Name}}
               </td>
               <td md-cell>{{template.Path}}</td>
-              <td md-cell>{{template.UUID}}</td>
+              <td md-cell>
+                <a ng-href="#/provisioner/templates/{{template.UUID}}">
+                  {{template.UUID}}
+                </a>
+              </td>
               </td>
             </tr>
           </tbody>
@@ -111,7 +121,7 @@
     </md-card-content>
 
     <md-card-actions layout="row" layout-align="start center">
-      <md-button class='md-icon-button' ng-click='createBootEnvPrompt($event, bootenv)'>
+      <md-button class='md-icon-button' ng-click='createBootEnvPrompt($event, env)'>
         <md-icon>mode_edit</md-icon>
         <md-tooltip>Edit</md-tooltip>
       </md-button>

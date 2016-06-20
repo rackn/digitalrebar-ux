@@ -5,37 +5,37 @@ provisioner machines view
   <md-card ng-repeat='machine in _provisioner.machines' flex='100'>
 
     <md-toolbar
-      md-theme='status_{{states[nodeMap[machine.Name].state]}}'
-      ng-click="expand[machine.Name]=!expand[machine.Name]"
+      md-theme='status_{{states[nodeMap[machine.Uuid].state]}}'
+      ng-click="expand[machine.Uuid]=!expand[machine.Uuid]"
       md-ink-ripple>
       <div class="md-toolbar-tools" display='row'>
         <h2 flex>
           <span>
-            <md-icon ng-show='nodeMap[machine.Name]'>
-              {{icons[states[nodeMap[machine.Name].state]]}}
+            <md-icon ng-show='nodeMap[machine.Uuid]'>
+              {{icons[states[nodeMap[machine.Uuid].state]]}}
             </md-icon>
           <span>
           {{machine.Name}}
         </h2>
         <span>
           <md-button class="md-icon-button">
-            <md-icon ng-hide="expand[machine.Name]">expand_more</md-icon>
-            <md-icon ng-show="expand[machine.Name]">expand_less</md-icon>
+            <md-icon ng-hide="expand[machine.Uuid]">expand_more</md-icon>
+            <md-icon ng-show="expand[machine.Uuid]">expand_less</md-icon>
           </md-button>
         </span>
       </div>
     </md-toolbar>
-    <div ng-slide-down="expand[machine.Name]" lazy-render duration="0.25">
+    <div ng-slide-down="expand[machine.Uuid]" lazy-render duration="0.25">
       <md-card-content>
         <table layout-padding>
-          <tr ng-if='nodeMap[machine.Name]'>
+          <tr ng-if='nodeMap[machine.Uuid]'>
             <td class='label'>Node</td>
             <td>
-              <a href='#/deployments/{{nodeMap[machine.Name].deployment_id}}'>
-                {{_deployments[nodeMap[machine.Name].deployment_id].name}}
+              <a href='#/deployments/{{nodeMap[machine.Uuid].deployment_id}}'>
+                {{_deployments[nodeMap[machine.Uuid].deployment_id].name}}
               </a>
-              <a href='#/nodes/{{nodeMap[machine.Name].id}}'>
-                {{nodeMap[machine.Name].name}}
+              <a href='#/nodes/{{nodeMap[machine.Uuid].id}}'>
+                {{nodeMap[machine.Uuid].name}}
               </a>
             </td>
           </tr>
