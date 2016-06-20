@@ -89,7 +89,6 @@ login controller
         $scope.delayTest = function() {
             login.state = 0
             $scope.eula = undefined
-            console.log(login.host, login.credentials)
             login.testHost(login.host)
         }
 
