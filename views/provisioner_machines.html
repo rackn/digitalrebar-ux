@@ -9,16 +9,22 @@ provisioner machines view
       ng-click="expand[machine.Uuid]=!expand[machine.Uuid]"
       md-ink-ripple>
       <div class="md-toolbar-tools" display='row'>
+        <span>
+          <md-icon ng-show='nodeMap[machine.Uuid]'>
+            {{icons[states[nodeMap[machine.Uuid].state]]}}
+            <md-tooltip>
+              {{states[nodeMap[machine.Uuid].state]}}
+            </md-tooltip>
+          </md-icon>
+        </span>
         <h2 flex>
+          &nbsp;
           <span>
-            <md-icon ng-show='nodeMap[machine.Uuid]'>
-              {{icons[states[nodeMap[machine.Uuid].state]]}}
-              <md-tooltip>
-                {{states[nodeMap[machine.Uuid].state]}}
-              </md-tooltip>
-            </md-icon>
-          <span>
-          {{machine.Name}}
+            {{machine.Name}}
+            <md-tooltip>
+              {{machine.Uuid}}
+            </md-tooltip>
+          </span>
         </h2>
         <span>
           <span>
