@@ -13,14 +13,26 @@ provisioner machines view
           <span>
             <md-icon ng-show='nodeMap[machine.Uuid]'>
               {{icons[states[nodeMap[machine.Uuid].state]]}}
+              <md-tooltip>
+                {{states[nodeMap[machine.Uuid].state]}}
+              </md-tooltip>
             </md-icon>
           <span>
           {{machine.Name}}
         </h2>
         <span>
+          <span>
+            {{machine.BootEnv}}
+            <md-tooltip>
+              Boot Environment
+            </md-tooltip>
+          </span>
           <md-button class="md-icon-button">
             <md-icon ng-hide="expand[machine.Uuid]">expand_more</md-icon>
             <md-icon ng-show="expand[machine.Uuid]">expand_less</md-icon>
+            <md-tooltip>
+              {{expand[machine.Uuid] ? 'Show Less' : 'Show More'}}
+            </md-tooltip>
           </md-button>
         </span>
       </div>
