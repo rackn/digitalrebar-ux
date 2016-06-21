@@ -100,7 +100,19 @@
       </tr>
 
     </table>
-    <h3>Templates</h3>
+
+    <md-toolbar class="md-table-toolbar md-default">
+      <div class="md-toolbar-tools">
+        <span flex>Templates</span>
+        <md-button class='md-icon-button' ng-click='locals.env.Templates.push({Name:"",Path:"",UUID:""})'>
+          <md-icon>add</md-icon>
+          <md-tooltip>
+            Add Template
+          </md-tooltip>
+        </md-button>
+      </div>
+    </md-toolbar>
+
     <md-table-container>
       <table md-table>
         <thead md-head md-order="templateOrder">
@@ -108,6 +120,7 @@
             <th md-column md-order-by='Name'>Name</th>
             <th md-column md-order-by='Path'>Path</th>
             <th md-column md-order-by='UUID'>UUID</th>
+            <th md-column>Delete</th>
           </tr>
         </thead>
         <tbody md-body>
@@ -120,21 +133,23 @@
             </td>
             <td md-cell>
               <md-input-container>
-                <label>Name</label>
-                <md-select ng-model="template.UUID" class='selectHeader'>
-                  <md-select-header class='select-header'>
-                    <input ng-model="tempSearchTerm"
-                      type="search"
-                      class="header-searchbox _md-text"
-                      placeholder="Search for a template">
-                  </md-select-header>
+                <label>UUID</label>
+                <md-select ng-model="template.UUID">
                   <md-optgroup label='templates'>
-                    <md-option ng-value="temp.UUID" ng-repeat="temp in locals._provisioner.templates | filter:tempSearchTerm">
+                    <md-option ng-value="temp.UUID" ng-repeat="temp in locals._provisioner.templates">
                       {{temp.UUID}}
                     </md-option>
                   </md-optgroup>
                 </md-select>
               </md-input-container>
+            </td>
+            <td>
+              <md-button class='md-icon-button' ng-click='locals.env.Templates.splice($index, 1)'>
+                <md-icon>remove</md-icon>
+                <md-tooltip>
+                  Remove Template
+                </md-tooltip>
+              </md-button>
             </td>
           </tr>
         </tbody>
@@ -144,7 +159,7 @@
 
   <md-dialog-actions style='margin: 0;'>
     <span flex></span>
-    <md-button ng-click='dialog.createTemplate()' class='md-primary md-raised' target="_blank" md-autofocus>
+    <md-button ng-click='dialog.createBootEnv()' class='md-primary md-raised' target="_blank" md-autofocus>
       {{locals.editing ? 'Update' : 'Create'}}
     </md-button>
   </md-dialog-actions>
