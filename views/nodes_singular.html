@@ -91,6 +91,12 @@
           </span>
         </td>
 			</tr>
+      <tr ng-if='showProvisioner'>
+        <td class='label'>Machine</td>
+        <td>
+          <a ng-href="#/provisioner/machines/{{node.uuid}}">{{node.uuid}}</a>
+        </td>
+      </tr>
 			<tr>
 				<td class='label'>Address</td>
 				<td>{{node.address}}</td>
