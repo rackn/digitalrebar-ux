@@ -52,7 +52,7 @@
 				<tr md-row>
           <th md-column md-order-by='state'>State</th>
 					<th md-column md-order-by='name'>Name</th>
-					<th md-column>Address</th>
+					<th md-column md-order-by='address'>Address</th>
 					<th md-column>Description</th>
 					<th md-column md-order-by='provider_id'>Provider</th>
 					<th md-column md-order-by='deployment_id'>Deployment</th>
@@ -61,7 +61,7 @@
 			<tbody md-body
         swap-md-paint-bg="status_{{node.status}} primary"
         swap-md-paint-fg="status_{{node.status}} foreground"
-        ng-repeat="node in nodes.getNodes() | orderBy: myOrder | not:'system'">
+        ng-repeat="node in nodes.getNodes() | orderBy: myOrder">
         <tr
           md-row
           md-select="node"
