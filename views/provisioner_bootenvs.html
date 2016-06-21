@@ -67,7 +67,11 @@
         <tr>
           <td class='label'>Initrds</td>
           <td>
-            {{env.Initrds.join(", ")}}
+            <md-chips ng-model='env.Initrds' readonly='true'>
+              <md-chip-template style='font-family: monospace;'>
+                {{$chip}}
+              </md-chip-template>
+            </md-chips>
           </td>
         </tr>
         <tr>
@@ -79,12 +83,20 @@
         <tr>
           <td class='label'>Required Params</td>
           <td>
-            <code>{{env.RequiredParams.join(" ")}}</code>
+            <md-chips ng-model='env.RequiredParams' readonly='true'>
+              <md-chip-template style='font-family: monospace;'>
+                {{$chip}}
+              </md-chip-template>
+            </md-chips>
           </td>
         </tr>
 
       </table>
-      <h3>Templates</h3>
+      <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+          <span>Templates</span>
+        </div>
+      </md-toolbar>
       <md-table-container>
         <table md-table>
           <thead md-head md-order="templateOrder">
@@ -97,18 +109,36 @@
           <tbody md-body>
             <tr md-row ng-repeat='template in env.Templates | orderBy: templateOrder'>
               <td md-cell>
-                <a ng-href="#/provisioner/templates/{{template.UUID}}">
-                  {{template.Name}}
-                </a>
+                {{template.Name}}
               </td>
               <td md-cell>{{template.Path}}</td>
-              <td md-cell>{{template.UUID}}</td>
+              <td md-cell>
+                <a ng-href="#/provisioner/templates/{{template.UUID}}">
+                  {{template.UUID}}
+                </a>
+              </td>
               </td>
             </tr>
           </tbody>
         </table>
       </md-table-container>
     </md-card-content>
+
+    <md-card-actions layout="row" layout-align="start center">
+      <md-button class='md-icon-button' ng-click='createBootEnvPrompt($event, env)'>
+        <md-icon>mode_edit</md-icon>
+        <md-tooltip>Edit</md-tooltip>
+      </md-button>
+
+
+      <!-- Right side of toolbar -->
+      <md-card-icon-actions layout-align='end center'>
+        <md-button class='md-icon-button' ng-click='deleteBootEnv(env.Name)'>
+          <md-icon>delete</md-icon>
+          <md-tooltip>Destroy</md-tooltip>
+        </md-button>
+      </md-card-icon-actions>
+    </md-card-actions>
   </div>
 
 </md-card>

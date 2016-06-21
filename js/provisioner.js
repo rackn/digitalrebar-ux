@@ -11,6 +11,9 @@ provisioner controller
         switch(route){
         case 'bootenvs':
             title += 'Boot Environments'
+            api("/api/v2/attribs").success(function(attribs){
+                $scope.attribs = attribs.map(function(a){return a.name})
+            })
             break
         case 'templates':
             title += 'Templates'
@@ -22,15 +25,16 @@ provisioner controller
         $scope.$emit('title', title);
 
         var provisioner = this;
-        
+
         $scope.expand = {}
+        $scope.attribs = []
         
         var mapNodes = function() {
             $scope.nodeMap = {}
 
             for(var id in $scope._nodes) {
                 var node = $scope._nodes[id]
-                $scope.nodeMap[node.name] = node
+                $scope.nodeMap[node.uuid] = node
             }
 
         }
@@ -72,6 +76,58 @@ provisioner controller
                 },
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
+            })
+        }
+
+        $scope.deleteBootEnv = function(name) {
+            $scope.confirm(event, {
+                title: "Remove Boot Environment",
+                message: "Are you sure you want to remove this boot environment?",
+                yesCallback: function(){
+                    api('/provisioner/bootenvs/'+name, {
+                        method: 'DELETE'
+                    }).success(function(data){
+                        api.getHealth()     
+                    }).error(function(){
+                        api.getHealth()
+                    })
+                }
+            })
+        }
+
+        $scope.createBootEnvPrompt = function(ev, env) {
+            var bootenv = angular.copy(env)
+            $mdDialog.show({
+                controller: 'DialogController',
+                controllerAs: 'dialog',
+                templateUrl: 'views/dialogs/addbootenvdialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    editing: (typeof bootenv !== 'undefined'),
+                    attribs: $scope.attribs,
+                    _provisioner: $scope._provisioner,
+                    env: bootenv || {
+                        Name: "",
+                        OS : {
+                            Name: "",
+                            Family: "",
+                            Codename: "",
+                            Version: "",
+                            IsoFile: "",
+                            IsoSha256: "",
+                            IsoUrl: ""
+                        },
+                        Kernel: "",
+                        Initrds: [],
+                        BootParams: "",
+                        RequiredParams: [],
+                        Templates: []
+                    },
+                    original: angular.copy(bootenv)
+                },
+                clickOutsideToClose: true,
+                fullscreen: true
             })
         }
 

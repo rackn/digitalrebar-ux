@@ -144,9 +144,57 @@ dialog controller
 
         this.createTemplate = function() {
             var template = $scope.locals.template
-            api('/provisioner/templates' + (locals.editing ? '/'+template.UUID : ""), {
-                method: locals.editing ? 'PATCH' : 'POST',
-                data: template
+            var path, method, data
+
+            if(locals.editing) {
+                path = '/provisioner/templates/'+template.UUID
+                method = 'PATCH'
+                data = [{ "op": "replace", "path": "/Contents", "value": template.Contents }]
+            } else {
+                path = '/provisioner/templates'
+                method = 'POST'
+                data = template
+            }
+
+            api(path, {
+                method: method,
+                data: data
+            }).success(function(update){
+                api.getHealth()
+            }).error(function(err){
+                api.getHealth()
+            })
+
+            $mdDialog.hide();
+        }
+
+        this.createBootEnv = function() {
+            var env = $scope.locals.env
+            var path, method, data
+
+            if(locals.editing) {
+                path = '/provisioner/bootenvs/'+env.Name
+                method = 'PATCH'
+                data = []
+                var original = locals.original
+                for(var key in env) {
+                    if(JSON.stringify(env[key]) !== JSON.stringify(original[key]))
+                        data.push({
+                            op: "replace",
+                            path: "/"+key,
+                            value: env[key]
+                        })
+                }
+                console.log(data)
+            } else {
+                path = '/provisioner/bootenvs'
+                method = 'POST'
+                data = env
+            }
+
+            api(path, {
+                method: method,
+                data: data
             }).success(function(update){
                 api.getHealth()
             }).error(function(err){

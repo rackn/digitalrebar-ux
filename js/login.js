@@ -35,14 +35,23 @@ login controller
                 $scope.$emit('host', host)
 
                 var token = $cookies.get('DrAuthToken')
-		if (typeof token !== 'undefined') {
-                    var username = $cookies.get('DrAuthUser');
-                    localStorageService.add('username', username);
-                    $scope.$emit('login', { username: username }); //store the user in rootScope so the isAuth function can use it!
-                    $scope.$emit('startUpdating') // start auto-updating the api data
-                    $location.path($scope.lastPath)
-		    return
-		}
+                if (typeof token !== 'undefined') {
+                    var success = false
+                    api('/api/v2/users/').success(function(){
+                        var username = $cookies.get('DrAuthUser');
+                        localStorageService.add('username', username);
+                        $scope.$emit('login', { username: username }); //store the user in rootScope so the isAuth function can use it!
+                        $scope.$emit('startUpdating') // start auto-updating the api data
+                        $location.path($scope.lastPath)
+                        success = true
+                    }).error(function(){
+                        $cookies.remove('DrAuthUser')
+                        $cookies.remove('DrAuthToken')
+                        $cookies.remove('_rebar_session')
+                    })
+                    if(success)
+                        return
+                }
 
                 if($scope.initialRemember) {
                     login.signIn();
@@ -59,7 +68,7 @@ login controller
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
             $mdDialog.show({
                 controller: 'DialogController',
-                controllerAs: 'ctrl',
+                controllerAs: 'dialog',
                 templateUrl: 'views/dialogs/euladialog.tmpl.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
@@ -80,7 +89,7 @@ login controller
         $scope.delayTest = function() {
             login.state = 0
             $scope.eula = undefined
-            debounce(login.testHost, 1000)(login.host)
+            login.testHost(login.host)
         }
 
 
