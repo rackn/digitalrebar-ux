@@ -283,8 +283,9 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
 
         var state = $rootScope.states[node.state]
         if(!node.alive) {
+            state = 'off'
             if(node.reserved)
-                state = 'off'
+                state = 'reserved'
         }
         node.status = state
 
