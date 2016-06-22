@@ -1,152 +1,151 @@
 /*
 login controller
 */
-(function(){
-    angular.module('app')
-    .controller('LoginCtrl', function($scope, api, $location, localStorageService, $http, $cookies, debounce, $mdMedia, $mdDialog, $mdToast) {
-        $scope.$emit('title', 'Login'); // shows up on the top toolbar
+(function () {
+  angular.module('app')
+    .controller('LoginCtrl', function ($scope, api, $location, localStorageService, $http, $cookies, debounce, $mdMedia, $mdDialog, $mdToast) {
+      $scope.$emit('title', 'Login'); // shows up on the top toolbar
 
-        // model for the sign in form
-        $scope.initialRemember = localStorageService.get('remember')
+      // model for the sign in form
+      $scope.initialRemember = localStorageService.get('remember');
 
-        this.credentials = {
-            username: localStorageService.get('username') || '',
-            password: localStorageService.get('password') || '',
-            remember: localStorageService.get('remember') || false
+      this.credentials = {
+        username: localStorageService.get('username') || '',
+        password: localStorageService.get('password') || '',
+        remember: localStorageService.get('remember') || false
+      };
+
+      this.hosts = localStorageService.get('hosts') || [];
+
+      this.host = $scope.host;
+      var params = $location.search();
+
+      if (params.host)
+        this.host = params.host;
+
+      // to be referenced in the signIn function
+      var login = this;
+
+
+      // attempt to get the eula from the host
+      this.testHost = function (host) {
+        if (!host) {
+          login.state = -1; // error state
+          return;
         }
+        $scope.$emit('host', host);
+        api('/api/license').success(function (data) {
+          login.state = 1; // valid state
+          $scope.eula = data.eula;
+          $cookies.put('host', login.host);
+          $scope.$emit('host', host);
+          var hosts = localStorageService.get('hosts') || [];
+          if (hosts.indexOf(host) < 0) {
+            login.hosts = hosts.concat(host);
+            localStorageService.add('hosts', login.hosts);
+          }
 
-        this.hosts = localStorageService.get('hosts') || [];
-
-        this.host = $scope.host;
-        var params =  $location.search()
-
-        if(params.host)
-            this.host = params.host;
-
-        // to be referenced in the signIn function
-        var login = this;
-
-
-        // attempt to get the eula from the host
-        this.testHost = function(host) {
-            if(!host) {
-                login.state = -1 // error state
-                return;
-            }
-            $scope.$emit('host', host)
-            api('/api/license').success(function(data){
-                login.state = 1 // valid state
-                $scope.eula = data.eula
-                $cookies.put('host', login.host)
-                $scope.$emit('host', host)
-                var hosts = localStorageService.get('hosts') || []
-                if(hosts.indexOf(host) < 0) {
-                    login.hosts = hosts.concat(host)
-                    localStorageService.add('hosts', login.hosts)
-                }
-
-                var token = $cookies.get('DrAuthToken')
-                if (typeof token !== 'undefined') {
-                    var success = false
-                    api('/api/v2/users/').success(function(){
-                        var username = $cookies.get('DrAuthUser');
-                        localStorageService.add('username', username);
-                        $scope.$emit('login', { username: username }); //store the user in rootScope so the isAuth function can use it!
-                        $scope.$emit('startUpdating') // start auto-updating the api data
-                        $location.path($scope.lastPath)
-                        success = true
-                    }).error(function(){
-                        $cookies.remove('DrAuthUser')
-                        $cookies.remove('DrAuthToken')
-                        $cookies.remove('_rebar_session')
-                    })
-                    if(success)
-                        return
-                }
-
-                if($scope.initialRemember) {
-                    login.signIn();
-                }
-
-            }).error(function(){
-                $scope.initialRemember = false
-                login.state = -1 // error state
-            })
-        }
-        
-        this.showEulaDialog = function(ev, node) {
-            $scope.node = node;
-            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-            $mdDialog.show({
-                controller: 'DialogController',
-                controllerAs: 'dialog',
-                templateUrl: 'views/dialogs/euladialog.tmpl.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {
-                    host: $scope.host,
-                    eula: $scope.eula
-                },
-                clickOutsideToClose: true,
-                fullscreen: useFullScreen
-            })
-        };
-
-        // make the loading icon appear immediately
-        $scope.$watch('login.host', function(){
-            $scope.delayTest()
-        })
-
-        $scope.delayTest = function() {
-            login.state = 0
-            $scope.eula = undefined
-            login.testHost(login.host)
-        }
-
-
-        $scope.cancelInitial = function(){
-            $scope.initialRemember = false
-        }
-        // function for the login button
-        this.signIn = function() {
-            console.log('attempting to sign in')
-            localStorageService.add('username', login.credentials.username);
-            localStorageService.add('password', login.credentials.password);
-            localStorageService.add('remember', login.credentials.remember);
-
-            api('/api/v2/digest', {
-                method: 'HEAD',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                params: {
-                    'rackn': 'ux v'+version // let the logs know it's the ux
-                }
-            }).then(function (response) {
-                login.getUser();
-
-                // remove password if not remember
-                if(!login.credentials.remember)
-                    localStorageService.add('password', undefined);
-            
-            }, function (response) {
-                console.log('error', response);
-                $mdToast.show(
-                    $mdToast.simple()
-                        .textContent(response.status + " - " + response.statusText)
-                        .position('top left')
-                        .hideDelay(3000)
-                );
+          var token = $cookies.get('DrAuthToken');
+          if (typeof token !== 'undefined') {
+            var success = false;
+            api('/api/v2/users/').success(function () {
+              var username = $cookies.get('DrAuthUser');
+              localStorageService.add('username', username);
+              $scope.$emit('login', { username: username }); //store the user in rootScope so the isAuth function can use it!
+              $scope.$emit('startUpdating'); // start auto-updating the api data
+              $location.path($scope.lastPath);
+              success = true;
+            }).error(function () {
+              $cookies.remove('DrAuthUser');
+              $cookies.remove('DrAuthToken');
+              $cookies.remove('_rebar_session');
             });
-        }
+            if (success)
+              return;
+          }
 
-        this.getUser = function() { // once we get a 200 success from signIn, we can get the user
-            api('/api/v2/digest', {method: 'GET'}).then(function(resp){
-                $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
-                $scope.$emit('startUpdating') // start auto-updating the api data
-                $location.path($scope.lastPath)
-            }, function(err){})
-        }
+          if ($scope.initialRemember) {
+            login.signIn();
+          }
+
+        }).error(function () {
+          $scope.initialRemember = false;
+          login.state = -1; // error state
+        });
+      };
+
+      this.showEulaDialog = function (ev, node) {
+        $scope.node = node;
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        $mdDialog.show({
+          controller: 'DialogController',
+          controllerAs: 'dialog',
+          templateUrl: 'views/dialogs/euladialog.tmpl.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          locals: {
+            host: $scope.host,
+            eula: $scope.eula
+          },
+          clickOutsideToClose: true,
+          fullscreen: useFullScreen
+        });
+      };
+
+      // make the loading icon appear immediately
+      $scope.$watch('login.host', function () {
+        $scope.delayTest();
+      });
+
+      $scope.delayTest = function () {
+        login.state = 0;
+        $scope.eula = undefined;
+        login.testHost(login.host);
+      };
+
+      $scope.cancelInitial = function () {
+        $scope.initialRemember = false;
+      };
+      // function for the login button
+      this.signIn = function () {
+        console.log('attempting to sign in')
+        localStorageService.add('username', login.credentials.username);
+        localStorageService.add('password', login.credentials.password);
+        localStorageService.add('remember', login.credentials.remember);
+
+        api('/api/v2/digest', {
+          method: 'HEAD',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          params: {
+            'rackn': 'ux v' + version // let the logs know it's the ux
+          }
+        }).then(function (response) {
+          login.getUser();
+
+          // remove password if not remember
+          if (!login.credentials.remember)
+            localStorageService.add('password', undefined);
+
+        }, function (response) {
+          console.log('error', response);
+          $mdToast.show(
+            $mdToast.simple()
+            .textContent(response.status + " - " + response.statusText)
+            .position('top left')
+            .hideDelay(3000)
+          );
+        });
+      };
+
+      this.getUser = function () { // once we get a 200 success from signIn, we can get the user
+        api('/api/v2/digest', { method: 'GET' }).then(function (resp) {
+          $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
+          $scope.$emit('startUpdating'); // start auto-updating the api data
+          $location.path($scope.lastPath);
+        }, function (err) {});
+      };
 
     });
 })();
