@@ -1,25 +1,25 @@
 <md-card>
 
-	<md-toolbar class="md-table-toolbar md-default" ng-hide='networks.selected.length'>
-		<div class="md-toolbar-tools">
-			<span>Networks ({{networks.getNetworks().length}})</span>
-			<span flex></span>
-		</div>
-	</md-toolbar>
+  <md-toolbar class="md-table-toolbar md-default" ng-hide='networks.selected.length'>
+    <div class="md-toolbar-tools">
+      <span>Networks ({{networks.getNetworks().length}})</span>
+      <span flex></span>
+    </div>
+  </md-toolbar>
 
-	<md-toolbar class="md-table-toolbar alternate" ng-show='networks.selected.length'>
-		<div class="md-toolbar-tools">
-			<span>{{networks.selected.length}} network{{networks.selected.length != 1 && 's' || ''}} selected</span>
-			<span flex></span>
-			<md-menu md-position-mode="target-right target" >
-				<md-button class='md-icon-button' ng-click="$mdOpenMenu($event)">
-					<md-icon>swap_horiz</md-icon>
-	        <md-tooltip>Move Networks</md-tooltip>
-				</md-button>
-        <md-menu-content width="4" >
+  <md-toolbar class="md-table-toolbar alternate" ng-show='networks.selected.length'>
+    <div class="md-toolbar-tools">
+      <span>{{networks.selected.length}} network{{networks.selected.length != 1 && 's' || ''}} selected</span>
+      <span flex></span>
+      <md-menu md-position-mode="target-right target">
+        <md-button class='md-icon-button' ng-click="$mdOpenMenu($event)">
+          <md-icon>swap_horiz</md-icon>
+          <md-tooltip>Move Networks</md-tooltip>
+        </md-button>
+        <md-menu-content width="4">
           <md-menu-item ng-repeat="deployment in _deployments">
             <md-button ng-click="assignNetworks(networks.selected, deployment.id)">
-            	<div layout="row" flex>
+              <div layout="row" flex>
                 <p flex>{{deployment.name}}</p>
                 <md-icon md-menu-align-target style="margin: auto 3px auto 0;">arrow_forward</md-icon>
               </div>
@@ -27,7 +27,7 @@
           </md-menu-item>
           <md-menu-item>
             <md-button ng-click="$mdCloseMenu($event)">
-            	<div layout="row" flex>
+              <div layout="row" flex>
                 <p flex>Cancel</p>
                 <md-icon md-menu-align-target style="margin: auto 3px auto 0;">cancel</md-icon>
               </div>
@@ -35,37 +35,37 @@
           </md-menu-item>
         </md-menu-content>
       </md-menu>
-			<md-button class='md-icon-button' ng-click='networks.deleteSelected()'>
-				<md-icon>delete</md-icon>
+      <md-button class='md-icon-button' ng-click='networks.deleteSelected()'>
+        <md-icon>delete</md-icon>
         <md-tooltip>Remove Networks</md-tooltip>
-			</md-button>
-		</div>
-	</md-toolbar>
+      </md-button>
+    </div>
+  </md-toolbar>
 
-	<md-table-container>
-		<table md-table md-row-select ng-model='networks.selected'>
-			<thead md-head md-order="myOrder">
-				<tr md-row>
-					<th md-column md-order-by='name'>Name</th>
-					<th md-column>Description</th>
-					<th md-column md-order-by='category'>Category</th>
-					<th md-column md-order-by='group'>Group</th>
-					<th md-column md-order-by='deployment_id'>Deployment</th>
-					<th md-column>Conduit</th>
-				</tr>
-			</thead>
-			<tbody md-body>
-				<tr md-row md-select="network" md-select-id="{{network.id}}" md-auto-select ng-repeat="network in networks.getNetworks() | orderBy: myOrder">
-				<td md-cell><a ng-href='#/networks/{{network.id}}'>{{network.name}}</a></td>
-				<td md-cell>{{network.description}}</td>
-				<td md-cell>{{network.category}}</td>
-				<td md-cell>{{network.group}}</td>
-				<td md-cell><a ng-href='#/deployments/{{network.deployment_id}}'>{{_deployments[network.deployment_id].name}}</a></td>
-				<td md-cell>{{network.conduit}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</md-table-container>
+  <md-table-container>
+    <table md-table md-row-select ng-model='networks.selected'>
+      <thead md-head md-order="myOrder">
+        <tr md-row>
+          <th md-column md-order-by='name'>Name</th>
+          <th md-column>Description</th>
+          <th md-column md-order-by='category'>Category</th>
+          <th md-column md-order-by='group'>Group</th>
+          <th md-column md-order-by='deployment_id'>Deployment</th>
+          <th md-column>Conduit</th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row md-select="network" md-select-id="{{network.id}}" md-auto-select ng-repeat="network in networks.getNetworks() | orderBy: myOrder">
+          <td md-cell><a ng-href='#/networks/{{network.id}}'>{{network.name}}</a></td>
+          <td md-cell>{{network.description}}</td>
+          <td md-cell>{{network.category}}</td>
+          <td md-cell>{{network.group}}</td>
+          <td md-cell><a ng-href='#/deployments/{{network.deployment_id}}'>{{_deployments[network.deployment_id].name}}</a></td>
+          <td md-cell>{{network.conduit}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
 
 </md-card>
 

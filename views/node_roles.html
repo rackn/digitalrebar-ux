@@ -27,10 +27,7 @@
           <th md-column>Node Role</th>
         </tr>
       </thead>
-      <tbody md-body
-        swap-md-paint-bg="status_{{role.status}} primary"
-        swap-md-paint-fg="status_{{role.status}} foreground"
-        ng-repeat="role in getNodeRoles() | orderBy: myOrder">
+      <tbody md-body swap-md-paint-bg="status_{{role.status}} primary" swap-md-paint-fg="status_{{role.status}} foreground" ng-repeat="role in getNodeRoles() | orderBy: myOrder">
         <tr md-row md-select='role' md-select-id='{{role.id}}' md-auto-select>
           <td md-cell>
             <md-icon ng-href='#/node_roles/{{role.id}}'>

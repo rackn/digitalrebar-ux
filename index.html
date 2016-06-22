@@ -1,172 +1,170 @@
 <!doctype html>
 <html ng-app='app'>
+  <head>
 
-	<head>
+    <!-- Material CSS-->
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="bower_components/angular-material-data-table/dist/md-data-table.min.css" rel="stylesheet" type="text/css" />
 
-		<!-- Material CSS-->
-		<link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css" />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic" />
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link href="bower_components/angular-material-data-table/dist/md-data-table.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
+    <title>
+      Digital Rebar [{{host}}]
+    </title>
 
-		<title>
-			Digital Rebar [{{host}}]
-		</title>
+  </head>
 
-	</head>
-	
-	<body ng-controller="AppCtrl as app" layout="row" ng-cloak>
+  <body ng-controller="AppCtrl as app" layout="row" ng-cloak>
 
-		<!-- jQuery -->
-		<script src="bower_components/jquery/dist/jquery.min.js"></script>
-		<script src="js/lib/jquery.sparkline.min.js"></script>
+    <!-- jQuery -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="js/lib/jquery.sparkline.min.js"></script>
 
-		<!-- Core Angular -->
-		<script src="bower_components/angular/angular.js"></script>
-		<script src="bower_components/angular-route/angular-route.min.js"></script>
-		<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
-		<script src="bower_components/ng-debounce/angular-debounce.js"></script>
+    <!-- Core Angular -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="bower_components/ng-debounce/angular-debounce.js"></script>
 
-		<!-- Angular modules -->
-		<!-- Material -->
-		<script src="bower_components/angular-material/angular-material.min.js"></script>
-		<script src="bower_components/angular-animate/angular-animate.min.js"></script>
-		<script src="bower_components/angular-messages/angular-messages.min.js"></script>
-		<script src="bower_components/angular-aria/angular-aria.min.js"></script>
-		<script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+    <!-- Angular modules -->
+    <!-- Material -->
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
 
-		<!-- Digest Authentication -->
-		<script src="bower_components/angular-md5/angular-md5.min.js"></script>
-		<script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
-		<script src="js/lib/digest.js"></script>
+    <!-- Digest Authentication -->
+    <script src="bower_components/angular-md5/angular-md5.min.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+    <script src="js/lib/digest.js"></script>
 
-		<!-- Extra Modules -->
-		<script src="js/lib/angular-sparklines.js"></script>
-		<script src="js/lib/jsontext.js"></script>
-		<script src="js/lib/ng-slide-down.min.js"></script>
-		<script src="bower_components/swap-md-paint/swap-md-paint.js"></script>
+    <!-- Extra Modules -->
+    <script src="js/lib/angular-sparklines.js"></script>
+    <script src="js/lib/jsontext.js"></script>
+    <script src="js/lib/ng-slide-down.min.js"></script>
+    <script src="bower_components/swap-md-paint/swap-md-paint.js"></script>
 
-		<!-- Source -->
-		<script src="js/app.js"></script>
-		<script src="js/rebar.js"></script>
-		<script src="js/login.js"></script>
-		<script src="js/deployments.js"></script>
-		<script src="js/dialog.js"></script>
-		<script src="js/nodes.js"></script>
-		<script src="js/node_roles.js"></script>
-		<script src="js/roles.js"></script>
-		<script src="js/deployment_roles.js"></script>
-		<script src="js/barclamps.js"></script>
-		<script src="js/networks.js"></script>
-		<script src="js/provider.js"></script>
-		<script src="js/annealer.js"></script>
-		<script src="js/users.js"></script>
-		<script src="js/dns.js"></script>
-		<script src="js/dhcp.js"></script>
-		<script src="js/provisioner.js"></script>
+    <!-- Source -->
+    <script src="js/app.js"></script>
+    <script src="js/rebar.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/deployments.js"></script>
+    <script src="js/dialog.js"></script>
+    <script src="js/nodes.js"></script>
+    <script src="js/node_roles.js"></script>
+    <script src="js/roles.js"></script>
+    <script src="js/deployment_roles.js"></script>
+    <script src="js/barclamps.js"></script>
+    <script src="js/networks.js"></script>
+    <script src="js/provider.js"></script>
+    <script src="js/annealer.js"></script>
+    <script src="js/users.js"></script>
+    <script src="js/dns.js"></script>
+    <script src="js/dhcp.js"></script>
+    <script src="js/provisioner.js"></script>
 
-		<!-- Side Nav -->
-		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-show='isAuth()'>
+    <!-- Side Nav -->
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-show='isAuth()'>
 
-			<!-- Tall toolbar on top of the sidebar -->
-			<md-toolbar class='md-tall md-hue-2'>
-				<span flex></span>
-				<div layout="column" class="md-toolbar-tools-bottom inset">
-					<div>{{user.username}}</div>
-					<div><a ng-href='{{host}}' style='color: #fff;'>{{host}}</a></div>
-				</div>
-			</md-toolbar>
+      <!-- Tall toolbar on top of the sidebar -->
+      <md-toolbar class='md-tall md-hue-2'>
+        <span flex></span>
+        <div layout="column" class="md-toolbar-tools-bottom inset">
+          <div>{{user.username}}</div>
+          <div><a ng-href='{{host}}' style='color: #fff;'>{{host}}</a></div>
+        </div>
+      </md-toolbar>
 
-			<md-list style='overflow-y: auto;'>
+      <md-list style='overflow-y: auto;'>
 
+        <!-- Default menu -->
+        <md-list-item ng-repeat="item in menu" ng-click="setPath(item.path)">
+          <md-icon>{{item.icon}}</md-icon>
+          <p>{{item.title}}</p>
+        </md-list-item>
 
-				<!-- Default menu -->
-				<md-list-item ng-repeat="item in menu" ng-click="setPath(item.path)">
-					<md-icon>{{item.icon}}</md-icon>
-					<p>{{item.title}}</p>
-				</md-list-item>
+        <md-list-item ng-if='showDNS' md-ink-ripple ng-click="setPath('/dns')">
+          <md-icon>public</md-icon>
+          <p>DNS Zones</p>
+        </md-list-item>
 
-				<md-list-item ng-if='showDNS' md-ink-ripple ng-click="setPath('/dns')">
-					<md-icon>public</md-icon>
-					<p>DNS Zones</p>
-				</md-list-item>
+        <md-list-item ng-if='showDHCP' md-ink-ripple ng-click="setPath('/dhcp')">
+          <md-icon>device_hub</md-icon>
+          <p>DHCP Subnets</p>
+        </md-list-item>
 
-				<md-list-item ng-if='showDHCP' md-ink-ripple ng-click="setPath('/dhcp')">
-					<md-icon>device_hub</md-icon>
-					<p>DHCP Subnets</p>
-				</md-list-item>
+        <md-list-item ng-click='toggleExpandProvisioner()' ng-if='showProvisioner'>
+          <md-icon>local_shipping</md-icon>
+          <p>Provisioner</p>
+          <md-icon>{{expandProvisioner?"expand_less":"expand_more"}}</md-icon>
+        </md-list-item>
 
-				<md-list-item ng-click='toggleExpandProvisioner()' ng-if='showProvisioner'>
-					<md-icon>local_shipping</md-icon>
-					<p>Provisioner</p>
-					<md-icon>{{expandProvisioner?"expand_less":"expand_more"}}</md-icon>
-				</md-list-item>
+        <div ng-slide-down='expandProvisioner' duration='0.5' lazy-render ng-if='showProvisioner'>
+          <md-list-item ng-click='setPath("/provisioner/machines")'>
+            <md-icon style='padding-left: 1em;'>dns</md-icon>
+            <p>Machines</p>
+          </md-list-item>
+          <md-list-item ng-click='setPath("/provisioner/bootenvs")'>
+            <md-icon style='padding-left: 1em;'>album</md-icon>
+            <p>Boot Environments</p>
+          </md-list-item>
+          <md-list-item ng-click='setPath("/provisioner/templates")'>
+            <md-icon style='padding-left: 1em;'>insert_drive_file</md-icon>
+            <p>Templates</p>
+          </md-list-item>
+        </div>
 
-				<div ng-slide-down='expandProvisioner' duration='0.5' lazy-render ng-if='showProvisioner'>
-					<md-list-item ng-click='setPath("/provisioner/machines")'>
-						<md-icon style='padding-left: 1em;'>dns</md-icon>
-						<p>Machines</p>
-					</md-list-item>
-					<md-list-item ng-click='setPath("/provisioner/bootenvs")'>
-						<md-icon style='padding-left: 1em;'>album</md-icon>
-						<p>Boot Environments</p>
-					</md-list-item>
-					<md-list-item ng-click='setPath("/provisioner/templates")'>
-						<md-icon style='padding-left: 1em;'>insert_drive_file</md-icon>
-						<p>Templates</p>
-					</md-list-item>
-				</div>
+        <md-divider></md-divider>
 
-				<md-divider></md-divider>
+        <!-- User menu -->
+        <md-list-item ng-repeat="item in admin" md-ink-ripple ng-click="setPath(item.path)">
+          <md-icon>{{item.icon}}</md-icon>
+          <p>{{item.title}}</p>
+        </md-list-item>
 
-				<!-- User menu -->
-				<md-list-item ng-repeat="item in admin" md-ink-ripple ng-click="setPath(item.path)">
-					<md-icon>{{item.icon}}</md-icon>
-					<p>{{item.title}}</p>
-				</md-list-item>
+        <!-- Logout list item -->
+        <md-list-item ng-if='shouldLogOut' md-ink-ripple ng-click="logout()">
+          <md-icon>exit_to_app</md-icon>
+          <p>Logout</p>
+        </md-list-item>
 
-				<!-- Logout list item -->
-				<md-list-item ng-if='shouldLogOut' md-ink-ripple ng-click="logout()">
-					<md-icon>exit_to_app</md-icon>
-					<p>Logout</p>
-				</md-list-item>
+      </md-list>
+    </md-sidenav>
 
-			</md-list>
-		</md-sidenav>
-		
-		<md-content layout="column" layout-fill class='bg'>
-			<!-- Header -->
-			<md-toolbar layout="column" class='md-whiteframe-z1' ng-show='isAuth()'>
-				<div class='md-toolbar-tools'>
-					<md-button class="md-icon-button" ng-click="toggleSideNav('left')" hide-gt-md aria-label="Menu"/>
-						<md-icon>menu</md-icon>
-					</md-button>
+    <md-content layout="column" layout-fill class='bg'>
+      <!-- Header -->
+      <md-toolbar layout="column" class='md-whiteframe-z1' ng-show='isAuth()'>
+        <div class='md-toolbar-tools'>
+          <md-button class="md-icon-button" ng-click="toggleSideNav('left')" hide-gt-md aria-label="Menu" />
+          <md-icon>menu</md-icon>
+          </md-button>
 
-					<h3>{{title}}</h3>
-					<span flex></span>
-					<md-button class="md-icon-button" ng-click='reload()'/>
-						<md-tooltip>
-							Refresh Data
-						</md-tooltip>
-						<md-icon>refresh</md-icon>
-					</md-button>
-					<md-button class="md-icon-button" ng-href='#/annealer'/>
-						<md-tooltip>
-							Annealer
-						</md-tooltip>
-						<md-icon>track_changes</md-icon>
-					</md-button>
-				</div>
-				<md-progress-linear md-mode="determinate" value="{{api.queueLen == 0 ? 100 : api.queue.length/api.queueLen*100}}"> </md-progress-linear>
-			</md-toolbar>
+          <h3>{{title}}</h3>
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click='reload()' />
+          <md-tooltip>
+            Refresh Data
+          </md-tooltip>
+          <md-icon>refresh</md-icon>
+          </md-button>
+          <md-button class="md-icon-button" ng-href='#/annealer' />
+          <md-tooltip>
+            Annealer
+          </md-tooltip>
+          <md-icon>track_changes</md-icon>
+          </md-button>
+        </div>
+        <md-progress-linear md-mode="determinate" value="{{api.queueLen == 0 ? 100 : api.queue.length/api.queueLen*100}}"> </md-progress-linear>
+      </md-toolbar>
 
-			<!-- Content -->
-			<div ng-view ng-cloak style='overflow: auto;'>
-			</div>
-		</md-content>
+      <!-- Content -->
+      <div ng-view ng-cloak style='overflow: auto;'>
+      </div>
+    </md-content>
 
-	</body>
+  </body>
 
 </html>
