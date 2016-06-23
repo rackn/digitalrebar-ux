@@ -5,7 +5,7 @@ deployments view
 	<md-card ng-repeat='(id, deployment) in _deployments' flex='100'>
 
 		<!-- Top bar for each deployment -->
-		<md-toolbar flex layout='column' ng-class="{'md-warn': deployments.deploymentStatus[deployment.id].error > 0}" ng-click="deployments.toggleExpand(deployment)" md-ink-ripple>
+		<md-toolbar flex layout='column' ng-class="{'md-warn': deployments.deploymentStatus[id].error > 0}" ng-click="deployments.toggleExpand(deployment)" md-ink-ripple>
 			<section layout='row'>
 			<div class="md-toolbar-tools">
 				<h2 class="md-flex">{{deployment.name}}</h2>
@@ -19,20 +19,20 @@ deployments view
 			<!-- Expand button -->
 			<span class='inset'>
 				<md-button class="md-icon-button">
-					<md-icon ng-hide="expand[deployment.id]">expand_more</md-icon>
-					<md-icon ng-show="expand[deployment.id]">expand_less</md-icon>
+					<md-icon ng-hide="expand[id]">expand_more</md-icon>
+					<md-icon ng-show="expand[id]">expand_less</md-icon>
 				</md-button>
 			</span>
 			</section>
 
 			<!-- Progress bar for roles, progress is the % of ready nodes-->
-			<md-progress-linear md-mode="determinate" ng-class="{'md-warn': deployments.deploymentStatus[deployment.id].error > 0}" value="{{100*(1-deployments.deploymentStatus[deployment.id].error/deployments.deploymentStatus[deployment.id].total)}}"
+			<md-progress-linear md-mode="determinate" ng-class="{'md-warn': deployments.deploymentStatus[id].error > 0}" value="{{100*(1-deployments.deploymentStatus[id].error/deployments.deploymentStatus[id].total)}}"
 			></md-progress-linear>
 
 		</md-toolbar>
 
 		<!-- Tabs that appear after the expand button is pressed -->
-		<section ng-slide-down='expand[deployment.id]' duration='0.5'>
+		<section ng-slide-down='expand[id]' duration='0.5'>
 			
 			<md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" >
 

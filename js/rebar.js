@@ -102,6 +102,7 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
 
     api.lastUpdate = new Date().getTime();
     api.queue = []
+    api.queueLen = 0
 
     api.errors = []
 
@@ -151,6 +152,7 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
                 api.queue.splice(0, 1)[0]
             )
         } else { // queue is empty, wait and populate it
+            api.queueLen = 0
             $timeout(api.getActive, 15 * 1000 /* 15 seconds */ )
         }
     }
@@ -190,7 +192,7 @@ app.factory('api', function($http, $rootScope, $timeout, $mdToast, debounce) {
                     }
                 }
             }
-
+            api.queueLen = api.queue.length
             // start the queue
             api.nextQueue()
         }).error(function(resp) {

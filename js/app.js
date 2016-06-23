@@ -267,6 +267,7 @@ var version = '0.1.3';
         };
 
         $scope.reload = api.reload;
+        $scope.api = api
 
         $scope.menu = [
             {

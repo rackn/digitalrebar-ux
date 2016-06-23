@@ -107,8 +107,11 @@ deployments controller
                         $scope.binding = false
                     var deployment = $scope._deployments[id];
                     deployments.deploymentStatus[id] = {error: 0, total: 0}
-                    for(var roleId in deployment.node_roles) {
-                        var state = deployment.node_roles[roleId].state;
+                    for(var roleId in $scope._node_roles) {
+                        var node_role = $scope._node_roles[roleId]
+                        if(node_role.deployment_id != id)
+                            continue
+                        var state = node_role.state;
                         if(state == -1)
                             deployments.deploymentStatus[id].error ++
 
