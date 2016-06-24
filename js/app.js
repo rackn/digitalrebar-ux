@@ -268,6 +268,7 @@ var version = '0.1.3';
       $mdSidenav(menuId).toggle();
     };
 
+    $scope.api = api;
     $scope.reload = api.reload;
 
     $scope.menu = [{
