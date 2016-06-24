@@ -59,8 +59,8 @@
 				</tr>
 			</thead>
 			<tbody md-body
-        swap-md-paint-bg="status_{{node.status}} primary"
-        swap-md-paint-fg="status_{{node.status}} foreground"
+        swap-md-paint-bg="status_{{!node.alive ? 'off' : node.status}} primary"
+        swap-md-paint-fg="status_{{!node.alive ? 'off' : node.status}} foreground"
         ng-repeat="node in nodes.getNodes() | orderBy: myOrder">
         <tr
           md-row
