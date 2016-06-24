@@ -33,10 +33,17 @@ md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
 }
 
 md-toolbar.md-tall.md-hue-2 {
-    background: linear-gradient(
+    /*background: linear-gradient(
       rgba(16, 47, 100, 0.8), 
       rgba(16, 47, 100, 0.8)
-    ), url(banner.png) 0 0 repeat;
+    ), url('logo.jpg') cover;*/
+    background-image: linear-gradient(
+      rgba(16, 47, 100, 0.8), 
+      rgba(8, 24, 50, 1) 90%), url('logo.jpg');
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-color: #fff;
 }
 
 a {
