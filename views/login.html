@@ -70,12 +70,19 @@ login view
 					</md-button>
 					
 				</span>
-				<md-input-container class="md-block" flex>
-					<label>API Endpoint</label>
-					<input type="text"
-						ng-model='login.host'
-						ng-model-options="{ debounce: 500 }"/>
-				</md-input-container>
+        <md-autocomplete flex class="md-block" ng-init='search=login.host'
+            md-selected-item="selected"
+            md-search-text="search"
+            md-search-text-change="login.host=search;delayTest()"
+            md-items="item in login.hosts | filter:search"
+            md-selected-item-change="login.host=selected||search;delayTest()"
+            md-item-text="item"
+            ng-model-options="{ debounce: 500 }"
+            md-floating-label="API Endpoint">
+          <md-item-template>
+            <span md-highlight-text="search">{{item}}</span>
+          </md-item-template>
+        </md-autocomplete>
 
 				<md-button class='md-primary' ng-click='delayTest()'>
 					Retry

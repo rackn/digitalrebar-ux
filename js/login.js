@@ -15,7 +15,13 @@ login controller
             remember: localStorageService.get('remember') || false
         }
 
+        this.hosts = localStorageService.get('hosts') || [];
+
         this.host = $scope.host;
+        var params =  $location.search()
+
+        if(params.host)
+            this.host = params.host;
 
         // to be referenced in the signIn function
         var login = this;
@@ -33,6 +39,11 @@ login controller
                 $scope.eula = data.eula
                 $cookies.put('host', login.host)
                 $scope.$emit('host', host)
+                var hosts = localStorageService.get('hosts') || []
+                if(hosts.indexOf(host) < 0) {
+                    login.hosts = hosts.concat(host)
+                    localStorageService.add('hosts', login.hosts)
+                }
 
                 var token = $cookies.get('DrAuthToken')
                 if (typeof token !== 'undefined') {
