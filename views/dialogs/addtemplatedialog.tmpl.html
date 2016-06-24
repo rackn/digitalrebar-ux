@@ -8,25 +8,27 @@
       </md-button>
     </div>
   </md-toolbar>
-  <table style='width: 90%; overflow-x: hidden;'>
-    <tr>
-      <td class='label'>UUID</td>
-      <td>
-        <input type='text' class='table-input' ng-model='locals.template.UUID' data-ng-readonly="locals.editing"/>
-      </td>
-    </tr>
-    <tr>
-      <td class='label' valign="top">Contents</td>
-      <td>
-        <textarea style='font-family: monospace; min-height: 100px; height: auto; overflow-y: auto;' class='table-input' ng-model='locals.template.Contents'></textarea>
-      </td>
-    </tr>
-  </table>
+  <md-content style='overflow-y: auto;'>
+    <table style='width: 90%; overflow-x: hidden;'>
+      <tr>
+        <td class='label'>UUID</td>
+        <td>
+          <input type='text' class='table-input' ng-model='locals.template.UUID' data-ng-readonly="locals.editing" />
+        </td>
+      </tr>
+      <tr>
+        <td class='label' valign="top">Contents</td>
+        <td>
+          <textarea style='font-family: monospace; min-height: 100px;' elastic class='table-input' ng-model='locals.template.Contents'></textarea>
+        </td>
+      </tr>
+    </table>
+  </md-content>
 
   <md-dialog-actions style='margin: 0;'>
-      <span flex></span>
-      <md-button ng-click='dialog.createTemplate()' class='md-primary md-raised' target="_blank" md-autofocus>
-        {{locals.editing ? 'Update' : 'Create'}}
-      </md-button>
-    </md-dialog-actions>
+    <span flex></span>
+    <md-button ng-click='dialog.createTemplate()' class='md-primary md-raised' target="_blank" md-autofocus>
+      {{locals.editing ? 'Update' : 'Create'}}
+    </md-button>
+  </md-dialog-actions>
 </md-dialog>

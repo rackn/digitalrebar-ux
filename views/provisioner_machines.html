@@ -4,10 +4,7 @@ provisioner machines view
 <div>
   <md-card ng-repeat='machine in _provisioner.machines' flex='100'>
 
-    <md-toolbar
-      md-theme='status_{{states[nodeMap[machine.Uuid].state]}}'
-      ng-click="expand[machine.Uuid]=!expand[machine.Uuid]"
-      md-ink-ripple>
+    <md-toolbar md-theme='status_{{states[nodeMap[machine.Uuid].state]}}' ng-click="expand[machine.Uuid]=!expand[machine.Uuid]" md-ink-ripple>
       <div class="md-toolbar-tools" display='row'>
         <span>
           <md-icon ng-show='nodeMap[machine.Uuid]'>
@@ -33,13 +30,13 @@ provisioner machines view
               Boot Environment
             </md-tooltip>
           </span>
-          <md-button class="md-icon-button">
-            <md-icon ng-hide="expand[machine.Uuid]">expand_more</md-icon>
-            <md-icon ng-show="expand[machine.Uuid]">expand_less</md-icon>
-            <md-tooltip>
-              {{expand[machine.Uuid] ? 'Show Less' : 'Show More'}}
-            </md-tooltip>
-          </md-button>
+        <md-button class="md-icon-button">
+          <md-icon ng-hide="expand[machine.Uuid]">expand_more</md-icon>
+          <md-icon ng-show="expand[machine.Uuid]">expand_less</md-icon>
+          <md-tooltip>
+            {{expand[machine.Uuid] ? 'Show Less' : 'Show More'}}
+          </md-tooltip>
+        </md-button>
         </span>
       </div>
     </md-toolbar>

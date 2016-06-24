@@ -4,99 +4,90 @@ login view
 <div hide-xs style='height: 100px'></div>
 
 <div layout='wrap' layout-align="center center" ng-if='!initialRemember'>
-	<md-card flex-gt-sm='40' flex='100'>
+  <md-card flex-gt-sm='40' flex='100'>
 
-		<md-toolbar>
-			<div class="md-toolbar-tools" layout='row'>
-				<h2 class="md-flex">Login</h2>
-			</div>
-		</md-toolbar>
+    <md-toolbar>
+      <div class="md-toolbar-tools" layout='row'>
+        <h2 class="md-flex">Login</h2>
+      </div>
+    </md-toolbar>
 
-		<form name='loginForm' ng-submit='login.signIn()' layout="column">
-			
+    <form name='loginForm' ng-submit='login.signIn()' layout="column">
 
-			<md-content layout-padding layout='column'>
+      <md-content layout-padding layout='column'>
 
-				<!-- Username and password fields -->
-				<md-input-container class="md-block" flex>
-					<label>Username</label>
-					<input type="text" ng-model='login.credentials.username'/>
-				</md-input-container>
+        <!-- Username and password fields -->
+        <md-input-container class="md-block" flex>
+          <label>Username</label>
+          <input type="text" ng-model='login.credentials.username' />
+        </md-input-container>
 
-				<md-input-container class="md-block" flex>
-					<label>Password</label>
-					<input type="password" ng-model='login.credentials.password'/>
-				</md-input-container>
+        <md-input-container class="md-block" flex>
+          <label>Password</label>
+          <input type="password" ng-model='login.credentials.password' />
+        </md-input-container>
 
-				<!-- Right justified login button  -->
-				<section layout='row' role="main" >
-					<span class='inset'>
-						<md-checkbox ng-model="login.credentials.remember">
-            	Remember Me
-	          </md-checkbox>
+        <!-- Right justified login button  -->
+        <section layout='row' role="main">
+          <span class='inset'>
+            <md-checkbox ng-model="login.credentials.remember">
+              Remember Me
+            </md-checkbox>
           </span>
-				</section>
-				<md-button class="md-primary" type="submit" ng-disabled="!eula">
-					Login
-				</md-button>
+        </section>
+        <md-button class="md-primary" type="submit" ng-disabled="!eula">
+          Login
+        </md-button>
 
-			</md-content>
-			<md-divider></md-divider>
-			<md-content layout-padding layout='column'>
-				<span layout='row'>
-					<!-- icons for showing state -->
-					<span ng-show='login.state == -1' layout='row'>
-						<md-icon>close</md-icon>
-						<span class='md-subhead inset'>
-							Invalid Host
-						</span>
-						
-					</span>
-					<span ng-show='login.state == 1' layout='row'>
-						<md-icon>check</md-icon>
-						<span class='md-subhead inset'>
-							Valid Host
-						</span>	
-					</span>
-					<span ng-show='login.state == 0' layout='row'>
-						<md-icon class='rotate'>hourglass_empty</md-icon>
-						<span class='md-subhead inset'>
-							Verifying Host
-						</span>	
-					</span>
-					<span flex></span>
-					<md-button class="md-primary" ng-click='login.showEulaDialog()' ng-show="eula">
-						Eula
-					</md-button>
-					
-				</span>
-        <md-autocomplete flex class="md-block" ng-init='search=login.host'
-            md-selected-item="selected"
-            md-search-text="search"
-            md-search-text-change="login.host=search;delayTest()"
-            md-items="item in login.hosts | filter:search"
-            md-selected-item-change="login.host=selected||search;delayTest()"
-            md-item-text="item"
-            ng-model-options="{ debounce: 500 }"
-            md-floating-label="API Endpoint">
+      </md-content>
+      <md-divider></md-divider>
+      <md-content layout-padding layout='column'>
+        <span layout='row'>
+          <!-- icons for showing state -->
+          <span ng-show='login.state == -1' layout='row'>
+            <md-icon>close</md-icon>
+            <span class='md-subhead inset'>
+              Invalid Host
+            </span>
+
+        </span>
+        <span ng-show='login.state == 1' layout='row'>
+            <md-icon>check</md-icon>
+            <span class='md-subhead inset'>
+              Valid Host
+            </span>
+        </span>
+        <span ng-show='login.state == 0' layout='row'>
+          <md-icon class='rotate'>hourglass_empty</md-icon>
+          <span class='md-subhead inset'>
+            Verifying Host
+          </span>
+        </span>
+        <span flex></span>
+        <md-button class="md-primary" ng-click='login.showEulaDialog()' ng-show="eula">
+          Eula
+        </md-button>
+
+        </span>
+        <md-autocomplete flex class="md-block" ng-init='search=login.host' md-selected-item="selected" md-search-text="search" md-search-text-change="login.host=search;delayTest()" md-items="item in login.hosts | filter:search" md-selected-item-change="login.host=selected||search;delayTest()" md-item-text="item" ng-model-options="{ debounce: 500 }" md-floating-label="API Endpoint">
           <md-item-template>
             <span md-highlight-text="search">{{item}}</span>
           </md-item-template>
         </md-autocomplete>
 
-				<md-button class='md-primary' ng-click='delayTest()'>
-					Retry
-				</md-button>
-			</md-content>
+        <md-button class='md-primary' ng-click='delayTest()'>
+          Retry
+        </md-button>
+      </md-content>
 
-		</form>
-	</md-card>
+    </form>
+  </md-card>
 </div>
 
 <div ng-if='initialRemember' class='centered' layout='column'>
-	<h1 class='md-header'>Signing You In...</h1>
-	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
-	<span style='margin: auto;'>
-		<md-button class='md-primary' ng-click='cancelInitial()'>Cancel</md-button>
-	</span>
+  <h1 class='md-header'>Signing You In...</h1>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+  <span style='margin: auto;'>
+    <md-button class='md-primary' ng-click='cancelInitial()'>Cancel</md-button>
+  </span>
 </div>

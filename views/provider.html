@@ -2,132 +2,105 @@
 provider view
 -->
 
-<!-- Specific provider view -->	
+<!-- Specific provider view -->
 <div ng-if='provider'>
-	<md-card>
-		<md-toolbar class="md-table-toolbar md-default">
-			<div class="md-toolbar-tools">
-				<span>{{provider.type}} {{provider.name}}</span>
-				<span flex></span>
-				<md-button
-					class='md-icon-button'
-					ng-click='startEditing()'
-					ng-hide='editing'>
-					<md-icon>edit</md-icon>
-					<md-tooltip>
-						Edit
-					</md-tooltip>
-				</md-button>
-				<md-button
-					class='md-icon-button'
-					ng-click='saveProvider()'
-					ng-show='editing'>
-					<md-icon>save</md-icon>
-					<md-tooltip>
-						Save
-					</md-tooltip>
-				</md-button>
-				<md-button
-					class='md-icon-button'
-					ng-click='stopEditing()'
-					ng-show='editing'>
-					<md-icon>close</md-icon>
-					<md-tooltip>
-						Stop Editing
-					</md-tooltip>
-				</md-button>
-			</div>
-		</md-toolbar>
-		
-		<!-- Provider data -->
-		<md-content layout-padding>
-			<table>
-				<tr>
-					<td class='label'>
-						Provider
-					</td>
-					<td>
-						<input type='text'
-				  	ng-readonly="!editing"
-						class='table-input'
-						ng-model='provider.name' />
-					</td>
-				</tr>
-				<tr>
-					<td class='label'>
-						Description
-					</td>
-					<td>
-						<input type='text'
-				  	ng-readonly="!editing"
-						class='table-input'
-						ng-model='provider.description' />
-					</td>
-				</tr>
-				<tbody ng-repeat='(name,options) in providerTemplates[provider.type]' ng-if='options' ng-switch='options.type'>
-					<tr ng-switch-when='text'>
-						<td class='label'>
-							{{options.name}}
-						</td>
-						<td>
-						  <input type='text'
-						  	class='table-input'
-						  	ng-readonly="!editing"
-						  	ng-model='provider.auth_details[name]'
-						  	ng-value='options.default'/>
-						</td>
-					</tr>
+  <md-card>
+    <md-toolbar class="md-table-toolbar md-default">
+      <div class="md-toolbar-tools">
+        <span>{{provider.type}} {{provider.name}}</span>
+        <span flex></span>
+        <md-button class='md-icon-button' ng-click='startEditing()' ng-hide='editing'>
+          <md-icon>edit</md-icon>
+          <md-tooltip>
+            Edit
+          </md-tooltip>
+        </md-button>
+        <md-button class='md-icon-button' ng-click='saveProvider()' ng-show='editing'>
+          <md-icon>save</md-icon>
+          <md-tooltip>
+            Save
+          </md-tooltip>
+        </md-button>
+        <md-button class='md-icon-button' ng-click='stopEditing()' ng-show='editing'>
+          <md-icon>close</md-icon>
+          <md-tooltip>
+            Stop Editing
+          </md-tooltip>
+        </md-button>
+      </div>
+    </md-toolbar>
 
-					<tr ng-switch-when='password'>
-					  <td class='label'>
-					  	{{options.name}}
-					  </td>
-					  <td>
-					  	<input type='password'
-						  	class='table-input'
-						  	ng-readonly="!editing"
-					  		ng-model='provider.auth_details[name]'
-					  		ng-value='options.default'/>
-					  </td>
-					</tr>
+    <!-- Provider data -->
+    <md-content layout-padding>
+      <table>
+        <tr>
+          <td class='label'>
+            Provider
+          </td>
+          <td>
+            <input type='text' ng-readonly="!editing" class='table-input' ng-model='provider.name' />
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>
+            Description
+          </td>
+          <td>
+            <input type='text' ng-readonly="!editing" class='table-input' ng-model='provider.description' />
+          </td>
+        </tr>
+        <tbody ng-repeat='(name,options) in providerTemplates[provider.type]' ng-if='options' ng-switch='options.type'>
+          <tr ng-switch-when='text'>
+            <td class='label'>
+              {{options.name}}
+            </td>
+            <td>
+              <input type='text' class='table-input' ng-readonly="!editing" ng-model='provider.auth_details[name]' ng-value='options.default' />
+            </td>
+          </tr>
 
-					<tr ng-switch-when='img'>
-						<td></td>
-						<td>
-							<a ng-href='{{options.href}}'>
-							  <img ng-src='{{options.src}}' style='width:100%;'></a>
-							</a>
-						</td>
-					</tr>
+          <tr ng-switch-when='password'>
+            <td class='label'>
+              {{options.name}}
+            </td>
+            <td>
+              <input type='password' class='table-input' ng-readonly="!editing" ng-model='provider.auth_details[name]' ng-value='options.default' />
+            </td>
+          </tr>
 
-					<tr ng-switch-when='json_key'>
-					  <td class='label'>
-					  	{{options.name}}
-					  </td>
-					  <td>
-					  	<textarea json-text
-						  	class='table-input'
-						  	ng-readonly="!editing"
-					  		style='font-family: monospace;'
-					  		ng-model='provider.auth_details[name]'>
-					  	</textarea>
-					  </td>
-					</tr>
-				</tbody>
-			</table>
+          <tr ng-switch-when='img'>
+            <td></td>
+            <td>
+              <a ng-href='{{options.href}}'>
+                <img ng-src='{{options.src}}' style='width:100%;'></a>
+              </a>
+            </td>
+          </tr>
 
-		</md-content>
-	</md-card>
-	<md-card>
-		<md-toolbar class="md-table-toolbar md-default">
-			<div class="md-toolbar-tools">
-				<span>Nodes</span>
-				<span flex></span>
-			</div>
-		</md-toolbar>
+          <tr ng-switch-when='json_key'>
+            <td class='label'>
+              {{options.name}}
+            </td>
+            <td>
+              <textarea json-text class='table-input' ng-readonly="!editing" style='font-family: monospace;' ng-model='provider.auth_details[name]'>
+              </textarea>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-		<md-card-content>
-			<span ng-repeat="node in getNodes() | orderBy: 'name'">
+    </md-content>
+  </md-card>
+  <md-card>
+    <md-toolbar class="md-table-toolbar md-default">
+      <div class="md-toolbar-tools">
+        <span>Nodes</span>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+
+    <md-card-content>
+      <span ng-repeat="node in getNodes() | orderBy: 'name'">
 				<!-- Node button -->
 				<md-button class="md-fab md-primary" md-theme="status_{{node.status}}" ng-href="#/nodes/{{node.id}}">
 					<md-tooltip md-direction="bottom">
@@ -137,80 +110,76 @@ provider view
 				</md-button>
 
 			</span>
-		</md-card-content>
-	</md-card>
+    </md-card-content>
+  </md-card>
 </div>
 <!-- Providers list view -->
 <md-card ng-if='!provider' layout='column'>
-	<md-toolbar class="md-table-toolbar md-default">
-		<div class="md-toolbar-tools">
-			<span>Providers</span>
-			<span flex></span>
-			
-		</div>
-	</md-toolbar>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span>Providers</span>
+      <span flex></span>
 
-	<!-- Providers list -->
-	<md-table-container>
-		<table md-table>
-			<thead md-head md-order="myOrder">
-				<tr md-row>
-					<th md-column md-order-by='name'>Name</th>
-					<th md-column md-order-by='type'>Type</th>
-					<th md-column>Description</th>
-				</tr>
-			</thead>
-			<tbody md-body>
-				<tr md-row ng-repeat="provider in providers.getProviders() | orderBy: myOrder | has:'type'">
-					<td md-cell><a ng-href='#/providers/{{provider.id}}'>{{provider.name}}</a></td>
-					<td md-cell>{{provider.type}}</td>
-					<td md-cell>{{provider.description}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</md-table-container>
+    </div>
+  </md-toolbar>
+
+  <!-- Providers list -->
+  <md-table-container>
+    <table md-table>
+      <thead md-head md-order="myOrder">
+        <tr md-row>
+          <th md-column md-order-by='name'>Name</th>
+          <th md-column md-order-by='type'>Type</th>
+          <th md-column>Description</th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row ng-repeat="provider in providers.getProviders() | orderBy: myOrder | has:'type'">
+          <td md-cell><a ng-href='#/providers/{{provider.id}}'>{{provider.name}}</a></td>
+          <td md-cell>{{provider.type}}</td>
+          <td md-cell>{{provider.description}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
 
 </md-card>
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
-	<!-- Add Provider FAB -->
-	<md-menu md-position-mode="target-right target" style='padding: 0;' ng-if='!provider'>
-		<md-button class="md-fab md-accent md-fab-bottom-right" ng-click='$mdOpenMenu($event)'>
-		  <md-icon>add</md-icon>
-		  <md-tooltip>
-		  	Add Provider
-		  </md-tooltip>
-		</md-button>
-	  <md-menu-content width="4" >
-	    <md-menu-item ng-repeat="(name, data) in providerTemplates">
-	      <md-button ng-click="showAddProviderDialog($event, name)">
-	      	<div layout="row" flex>
-	          <p flex>{{name}}</p>
-	          <md-icon md-menu-align-target style="margin: auto 3px auto 0;">add</md-icon>
-	        </div>
-	      </md-button>
-	    </md-menu-item>
-	    <md-menu-item>
-	      <md-button ng-click="$mdCloseMenu($event)">
-	      	<div layout="row" flex>
-	          <p flex>Cancel</p>
-	          <md-icon md-menu-align-target style="margin: auto 3px auto 0;">cancel</md-icon>
-	        </div>
-	      </md-button>
-	    </md-menu-item>
-	  </md-menu-content>
-	</md-menu>
+  <!-- Add Provider FAB -->
+  <md-menu md-position-mode="target-right target" style='padding: 0;' ng-if='!provider'>
+    <md-button class="md-fab md-accent md-fab-bottom-right" ng-click='$mdOpenMenu($event)'>
+      <md-icon>add</md-icon>
+      <md-tooltip>
+        Add Provider
+      </md-tooltip>
+    </md-button>
+    <md-menu-content width="4">
+      <md-menu-item ng-repeat="(name, data) in providerTemplates">
+        <md-button ng-click="showAddProviderDialog($event, name)">
+          <div layout="row" flex>
+            <p flex>{{name}}</p>
+            <md-icon md-menu-align-target style="margin: auto 3px auto 0;">add</md-icon>
+          </div>
+        </md-button>
+      </md-menu-item>
+      <md-menu-item>
+        <md-button ng-click="$mdCloseMenu($event)">
+          <div layout="row" flex>
+            <p flex>Cancel</p>
+            <md-icon md-menu-align-target style="margin: auto 3px auto 0;">cancel</md-icon>
+          </div>
+        </md-button>
+      </md-menu-item>
+    </md-menu-content>
+  </md-menu>
 
-	<!-- Add Node FAB -->
-	<md-button
-		class='md-fab md-accent md-fab-bottom-right'
-		ng-click='showAddNodeDialog()'
-		ng-if='provider && !(provider.name == "metal" || provider.name == "phantom")'>
-		<md-icon>add</md-icon>
-		<md-tooltip>
-			Add Node
-		</md-tooltip>
-	</md-button>
+  <!-- Add Node FAB -->
+  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='showAddNodeDialog()' ng-if='provider && !(provider.name == "metal" || provider.name == "phantom")'>
+    <md-icon>add</md-icon>
+    <md-tooltip>
+      Add Node
+    </md-tooltip>
+  </md-button>
 </div>
-

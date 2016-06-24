@@ -27,24 +27,24 @@
       </thead>
       <tbody md-body>
         <tr md-row md-select='role' md-select-id='{{role.id}}' md-auto-select ng-repeat="role in getDeploymentRoles() | orderBy: myOrder">
-        <td md-cell>
-          <a ng-href='#/dash/{{role.deployment_id}}'>
+          <td md-cell>
+            <a ng-href='#/dash/{{role.deployment_id}}'>
             {{_deployments[role.deployment_id].name}}
           </a>
-        </td>
-        <td md-cell>
-          <a ng-href='#/roles/{{role.role_id}}'>
+          </td>
+          <td md-cell>
+            <a ng-href='#/roles/{{role.role_id}}'>
             {{_roles[role.role_id].name}}
           </a>
-        </td>
-        <td md-cell>
-          <md-button ng-href='#/deployment_roles/{{role.id}}' class='md-primary md-fab md-mini'>
-            <md-icon aria-label='{{_roles[role.role_id].icon}}'>
-              {{_roles[role.role_id].icon}}
-            </md-icon>
-          </md-button>
-        </td>
-        
+          </td>
+          <td md-cell>
+            <md-button ng-href='#/deployment_roles/{{role.id}}' class='md-primary md-fab md-mini'>
+              <md-icon aria-label='{{_roles[role.role_id].icon}}'>
+                {{_roles[role.role_id].icon}}
+              </md-icon>
+            </md-button>
+          </td>
+
         </tr>
       </tbody>
     </table>

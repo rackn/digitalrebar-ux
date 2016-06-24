@@ -1,19 +1,19 @@
 <md-card ng-repeat="status in statesList">
-	<md-toolbar md-theme="status_{{getNodeRoles(status).length ? status : 'off'}}">
-		<div class="md-toolbar-tools">
-			<h2 class="md-flex">
+  <md-toolbar md-theme="status_{{getNodeRoles(status).length ? status : 'off'}}">
+    <div class="md-toolbar-tools">
+      <h2 class="md-flex">
 				<md-icon>{{icons[status]}}</md-icon>
 				{{status}}
 			</h2>
-			<span flex></span>
-			<md-button class='md-icon-button' ng-if="status=='error'" ng-click='retryAll()'>
-				<md-icon>redo</md-icon>
-				<md-tooltip>Retry All</md-tooltip>
-			</md-button>
-		</div>
-	</md-toolbar>
-	<md-card-content>
-		<span ng-repeat="role in getNodeRoles(status)">
+      <span flex></span>
+      <md-button class='md-icon-button' ng-if="status=='error'" ng-click='retryAll()'>
+        <md-icon>redo</md-icon>
+        <md-tooltip>Retry All</md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <span ng-repeat="role in getNodeRoles(status)">
 			<!-- Role button -->
 			<md-button
 				class="md-fab md-mini md-primary"
@@ -29,8 +29,8 @@
 				<md-icon ng-class="{pulse: status == 'process'}">{{_roles[role.role_id].icon}}</md-icon>
 			</md-button>
 		</span>
-		<div ng-if='getNodeRoles(status).length == 0'>
-			None
-		<div>
-	</md-card-content>
+    <div ng-if='getNodeRoles(status).length == 0'>
+      None
+      <div>
+  </md-card-content>
 </md-card>

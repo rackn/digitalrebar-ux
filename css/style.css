@@ -12,8 +12,8 @@ body, html, .bg {
 }
 
 md-sidenav ng-md-icon {
-	position: relative;
-	top: 5px;
+  position: relative;
+  top: 5px;
 }
 
 table td.label {
@@ -40,12 +40,12 @@ md-toolbar.md-tall.md-hue-2 {
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
   color: #1565C0;
 }
 
 a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
   color: #1565C0;
 }
 
@@ -110,7 +110,7 @@ div md-progress-circular {
   animation: pulse 2s infinite linear;
 }
 
-@keyframes pulse{
+@keyframes pulse {
   0% {
     transform: rotateZ(0deg);
   }
