@@ -1,9 +1,8 @@
 <!--
 login view
 -->
-<div hide-xs style='height: 100px'></div>
 
-<div layout='wrap' layout-align="center center" ng-if='!initialRemember'>
+<div layout='wrap' layout-align="center center" ng-if='!initialRemember' style='min-height: 100vh;'>
   <md-card flex-gt-sm='40' flex='100'>
 
     <md-toolbar>
@@ -84,10 +83,10 @@ login view
   </md-card>
 </div>
 
-<div ng-if='initialRemember' class='centered' layout='column'>
-  <h1 class='md-header'>Signing You In...</h1>
-  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-  <span style='margin: auto;'>
+<div ng-if='initialRemember' layout-fill layout-align='center center' style='position: relative; padding-top: 25%;'>
+  <div class='centered' style='width: 100%; text-align: center; transform: translateY(-50%);' >
+    <h1 class='md-header'>Signing You In...</h1>
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     <md-button class='md-primary' ng-click='cancelInitial()'>Cancel</md-button>
-  </span>
+  </div>
 </div>
