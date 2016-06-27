@@ -407,6 +407,10 @@
       $rootScope.$broadcast("barclamp" + id + "Done");
 
       if (typeof barclamp.cfg_data.wizard !== 'undefined') {
+        
+        if(barclamp.cfg_data.wizard.version != 2)
+          return;
+
         var exists = false;
         for (var i in $rootScope.wizardBarclamps) {
           var b = $rootScope.wizardBarclamps[i];
@@ -418,7 +422,7 @@
         if (!exists) {
           $rootScope.wizardBarclamps.push({
             id: id,
-            title: barclamp.cfg_data.barclamp.display,
+            title: barclamp.cfg_data.wizard.name,
             icon: barclamp.cfg_data.wizard.icon || 'create_new_folder',
             path: '/workloads/' + id
           });

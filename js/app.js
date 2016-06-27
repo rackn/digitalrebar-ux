@@ -205,6 +205,12 @@ var version = '0.1.3';
       templateUrl: 'views/provisioner_machines.html'
     }).
 
+    when('/workloads/:id', {
+      controller: 'WorkloadsCtrl',
+      controllerAs: 'workloads',
+      templateUrl: 'views/workloads.html'
+    }).
+
     otherwise({
       redirectTo: '/login'
     });
