@@ -277,7 +277,12 @@ var version = '0.1.3';
       path: '/deployments'
     }, {
       title: 'Workloads',
-      icon: 'work'
+      icon: 'work',
+      expand: true,
+      expanded: function () {
+        return $scope.expandWorkloads; },
+      toggleExpand: $scope.toggleExpandWorkloads,
+      items: $scope.wizardBarclamps,
     }, {
       title: 'Providers',
       icon: 'filter_drama',
@@ -290,7 +295,41 @@ var version = '0.1.3';
       title: 'Networks',
       icon: 'swap_horiz',
       path: '/networks'
-    }, ];
+    }, {
+      title: 'DNS Zones',
+      icon: 'public',
+      path: '/dns',
+      hide: function () {
+        return !$scope.showDNS; }
+    }, {
+      title: 'DHCP Subnets',
+      icon: 'device_hub',
+      path: '/dhcp',
+      hide: function () {
+        return !$scope.showDHCP; }
+    }, {
+      title: 'Provisioner',
+      icon: 'local_shipping',
+      hide: function () {
+        return !$scope.showProvisioner; },
+      expand: true,
+      expanded: function () {
+        return $scope.expandProvisioner; },
+      toggleExpand: $scope.toggleExpandProvisioner,
+      items: [{
+        title: 'Machines',
+        icon: 'dns',
+        path: '/provisioner/machines'
+      }, {
+        title: 'Boot Environments',
+        icon: 'album',
+        path: '/provisioner/bootenvs'
+      }, {
+        title: 'Templates',
+        icon: 'insert_drive_file',
+        path: '/provisioner/templates'
+      }]
+    }];
 
     $scope.admin = [{
       title: 'Settings',
@@ -318,7 +357,8 @@ var version = '0.1.3';
 
     $rootScope.user;
     $rootScope.isAuth = function () {
-      return !!$rootScope.user; };
+      return !!$rootScope.user;
+    };
     $rootScope.lastPath = '/';
     $rootScope.shouldLogOut = false;
 
@@ -326,6 +366,11 @@ var version = '0.1.3';
     $rootScope.expandProvisioner = false;
     $rootScope.toggleExpandProvisioner = function () {
       $rootScope.expandProvisioner = !$rootScope.expandProvisioner;
+    }
+
+    $rootScope.expandWorkloads = false;
+    $rootScope.toggleExpandWorkloads = function () {
+      $rootScope.expandWorkloads = !$rootScope.expandWorkloads;
     }
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
