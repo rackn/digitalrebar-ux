@@ -282,7 +282,7 @@ var version = '0.1.3';
       expanded: function () {
         return $scope.expandWorkloads; },
       toggleExpand: $scope.toggleExpandWorkloads,
-      items: $scope.wizardBarclamps,
+      items: $scope.wizardBarclamps
     }, {
       title: 'Providers',
       icon: 'filter_drama',
