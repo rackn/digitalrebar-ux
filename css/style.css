@@ -193,3 +193,9 @@ table.md-table td.md-cell md-icon {
 .selectHeader md-content._md {
   max-height: 240px;
 }
+
+.md-button.md-icon-button.toggled {
+  background: #5a5 !important;
+  color: #f5f5f5 !important;
+  fill: #f5f5f5 !important;
+}

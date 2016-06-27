@@ -407,8 +407,8 @@
       $rootScope.$broadcast("barclamp" + id + "Done");
 
       if (typeof barclamp.cfg_data.wizard !== 'undefined') {
-        
-        if(barclamp.cfg_data.wizard.version != 2)
+
+        if (barclamp.cfg_data.wizard.version != 2)
           return;
 
         var exists = false;
