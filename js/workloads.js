@@ -12,7 +12,10 @@ workloads controller
       this.os = '';
 
       $scope.terms = {
-        all: "All Nodes Need This",
+        all: "Every Node",
+        odd: "One or Three Nodes",
+        optional: "Optional",
+        exclusive: "Nodes with this service only have this service"
       }
 
       for (var i in $scope._providers) {
@@ -76,10 +79,13 @@ workloads controller
           id: id,
           name: "Virtual Node " + (-id)
         };
+
         serviceMap[node.id] = {};
         for (var i in serviceList) {
-          serviceMap[node.id][serviceList[i]] = false;
+          var service = serviceList[i]
+          serviceMap[node.id][service] = false;
         }
+
         workloads.selected.push(node);
         $scope.createdNodes.push(node)
       };
@@ -96,6 +102,34 @@ workloads controller
         if (!workloads.selected.includes(node)) {
           workloads.selected.push(node);
         }
+      };
+
+      $scope.getStatus = function (service) {
+        var req = wizard.services[service];
+        var count = 0;
+        for (var node in workloads.selected) {
+          if (serviceMap[node.id][service])
+            count++;
+        }
+
+        switch (req) {
+        case 'all':
+          return count == workloads.selected.length;
+        case 'odd':
+          return count % 2 == 1;
+        case 'optional':
+          return true;
+        case 'exclusive':
+          for (var node in workloads.selected) {
+            if (serviceMap[node.id][service])
+              for (var name in serviceMap[node.id]) {
+                if (name !== service && serviceMap[node.id][name])
+                  return false;
+              }
+          }
+          return true;
+        }
+        return false;
       };
 
       $scope.getNodes = function () {
@@ -122,7 +156,8 @@ workloads controller
             if (!serviceMap[node.id]) {
               serviceMap[node.id] = {};
               for (var i in serviceList) {
-                serviceMap[node.id][serviceList[i]] = false;
+                var service = serviceList[i]
+                serviceMap[node.id][service] = false;
               }
             }
             nodes.push(node);

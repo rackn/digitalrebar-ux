@@ -79,9 +79,19 @@
           Requirements
         </div>
       </md-toolbar>
-      <p>
-
-      </p>
+      <md-content layout-padding>
+        <table>
+          <tr ng-repeat='(service, req) in wizard.services'>
+            <td class='label'>{{service}}</td>
+            <td>{{terms[req]}}</td>
+            <td>
+              <md-icon>
+                {{getStatus(service) ? 'done' : 'close'}}
+              </md-icon>
+            </td>
+          </tr>
+        </table>
+      </md-content>
     </section>
   </div>
 </md-card>
