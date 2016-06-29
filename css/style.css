@@ -204,3 +204,12 @@ table.no-border, table.no-border tr, table.no-border tr td{
   border-collapse: collapse;
   border: none;
 }
+
+.cover {
+  z-index: 10;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  opacity: 0.1;
+}

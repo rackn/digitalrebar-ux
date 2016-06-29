@@ -18,7 +18,7 @@
     </md-input-container>
 
     <md-input-container ng-if='wizard.os' flex>
-      <label>Operating System</label>
+      <label>Metal Operating System</label>
       <md-select ng-model="workloads.os">
         <md-option ng-repeat="os in osList" value="{{os}}">
           {{os}}
@@ -130,6 +130,14 @@
             <md-icon>gps_fixed</md-icon>
             <md-tooltip>
               Auto Pilot
+            </md-tooltip>
+          </md-button>
+          <span flex></span>
+          <span flex>Status: {{wizardStatus}}</span>
+          <md-button class='md-raised md-primary' ng-if='overallStatus()' ng-click='startWizard()'>
+            <md-icon>arrow_forward</md-icon>
+            <md-tooltip>
+              Create Deployment
             </md-tooltip>
           </md-button>
         </md-card-actions>
