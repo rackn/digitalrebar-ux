@@ -3,7 +3,7 @@ workloads controller
 */
 (function () {
   angular.module('app')
-    .controller('WorkloadsCtrl', function ($scope, api, $location, $routeParams) {
+    .controller('WorkloadsCtrl', function ($scope, api, $location, $mdDialog, $routeParams) {
       $scope.$emit('title', 'Wizard'); // shows up on the top toolbar
 
       var workloads = this;
@@ -12,10 +12,10 @@ workloads controller
       this.os = '';
 
       $scope.terms = {
-        all: "Every Node",
-        odd: "One or Three Nodes",
+        all: "Every node",
+        odd: "Odd number of nodes",
         optional: "Optional",
-        exclusive: "Nodes with this service only have this service"
+        exclusive: "Node has only this service"
       }
 
       for (var i in $scope._providers) {
@@ -26,6 +26,18 @@ workloads controller
         this.provider = provider.name;
         break;
       }
+
+      if (this.provider === '' && Object.keys($scope._providers).length) {
+        $scope.confirm(undefined, {
+          title: "Redirect to Providers",
+          message: "You have no providers! Would you like to go to the providers page?",
+          yesCallback: function () {
+            $scope.setPath("/providers")
+          }
+        });
+      }
+
+
 
       var id = $routeParams.id;
 
@@ -41,6 +53,26 @@ workloads controller
       $scope.$emit('title', wizard.name + ' Wizard');
 
       this.name = barclamp.cfg_data.barclamp.name;
+
+      $scope.osList = [];
+
+      // get a list of operating systems that are available
+      // and supported by this barclamp
+      if (barclamp.cfg_data.barclamp.os_support) {
+        api('/api/v2/nodes/system-phantom.internal.local/attribs/provisioner-available-oses').
+        success(function (data) {
+          var supported = barclamp.cfg_data.barclamp.os_support;
+          console.log(data.value, supported)
+          for (var os in data.value) {
+            if (supported.includes(os) && data.value[os]) {
+              $scope.osList.push(os);
+              
+              if (!workloads.os)
+                workloads.os = os;
+            }
+          }
+        });
+      }
 
       $scope.roles = [];
       var serviceMap = $scope.serviceMap = {};
@@ -59,10 +91,10 @@ workloads controller
           return;
         }
 
+        // remove the services from this node
         for (var i in serviceMap[node.id]) {
           if (serviceMap[node.id][i]) {
-            workloads.selected.push(node);
-            return;
+            serviceMap[node.id][i] = false;
           }
         }
       };
@@ -74,6 +106,7 @@ workloads controller
         if (!wizard.create_nodes)
           return;
 
+        // negative ids so we know to create a new node
         var id = $scope.newId--;
         var node = {
           id: id,
@@ -87,13 +120,14 @@ workloads controller
         }
 
         workloads.selected.push(node);
-        $scope.createdNodes.push(node)
+        $scope.createdNodes.push(node);
+        return node;
       };
 
-      // create nodes if system nodes aren't allowed
+      // create new nodes if system nodes aren't allowed
       if (!wizard.system_nodes && wizard.create_nodes) {
         for (var i = 0; i < serviceList.length; i++) {
-          $scope.addNode();
+          var node = $scope.addNode();
         }
       }
 
@@ -104,23 +138,54 @@ workloads controller
         }
       };
 
+      $scope.overallStatus = function () {
+        if (!workloads.os.length && wizard.os)
+          return false;
+
+        if (workloads.selected.length == 0)
+          return false;
+
+        for (var i in serviceList) {
+          if (!$scope.getStatus(serviceList[i]))
+            return false;
+        }
+        return true;
+      };
+
       $scope.getStatus = function (service) {
         var req = wizard.services[service];
         var count = 0;
-        for (var node in workloads.selected) {
+        for (var i in workloads.selected) {
+          var node = workloads.selected[i];
           if (serviceMap[node.id][service])
             count++;
         }
 
         switch (req) {
         case 'all':
-          return count == workloads.selected.length;
+          count = 0;
+
+          // all nodes except exclusive
+          for (var i in workloads.selected) {
+            var node = workloads.selected[i];
+            var exclusive = false;
+            for (var name in serviceMap[node.id]) {
+              if (serviceMap[node.id][name] && wizard.services[name] == 'exclusive') {
+                exclusive = true;
+                break;
+              }
+            }
+            if (serviceMap[node.id][service] || exclusive)
+              count++;
+          }
+          return count == workloads.selected.length && workloads.selected.length > 0;
         case 'odd':
           return count % 2 == 1;
         case 'optional':
-          return true;
+          return workloads.selected.length > 0;
         case 'exclusive':
-          for (var node in workloads.selected) {
+          for (var i in workloads.selected) {
+            var node = workloads.selected[i];
             if (serviceMap[node.id][service])
               for (var name in serviceMap[node.id]) {
                 if (name !== service && serviceMap[node.id][name])

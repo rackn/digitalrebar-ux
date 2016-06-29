@@ -138,7 +138,7 @@
           <md-icon>track_changes</md-icon>
           </md-button>
         </div>
-        <md-progress-linear md-mode="determinate" value="{{api.queueLen == 0 ? 100 : api.queue.length/api.queueLen*100}}"> </md-progress-linear>
+        <md-progress-linear md-mode="determinate" value="{{api.queueLen == 0 ? 100 : (1-api.queue.length/api.queueLen)*100}}"> </md-progress-linear>
       </md-toolbar>
 
       <!-- Content -->

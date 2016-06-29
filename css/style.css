@@ -195,7 +195,12 @@ table.md-table td.md-cell md-icon {
 }
 
 .md-button.md-icon-button.toggled {
-  background: #5a5 !important;
+  background: rgb(46,125,50) !important;
   color: #f5f5f5 !important;
   fill: #f5f5f5 !important;
+}
+
+table.no-border, table.no-border tr, table.no-border tr td{
+  border-collapse: collapse;
+  border: none;
 }
