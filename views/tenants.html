@@ -1,7 +1,7 @@
 <!--
-users view
+Tenants view
 -->
-<md-card ng-switch="hasUsers">
+<md-card ng-switch="hasTenants">
   <md-content ng-switch-when="-1">
     <div layout="row" layout-sm="column" layout-align="space-around">
       <md-progress-circular md-mode="indeterminate"></md-progress-circular>
@@ -9,12 +9,12 @@ users view
   </md-content>
 
   <md-content ng-switch-when="0">
-    Error Loading Users
+    Error Loading Tenants
   </md-content>
 
   <md-content ng-switch-when="1">
     <md-list flex>
-      <md-list-item class="md-3-line" ng-repeat="user in userList">
+      <md-list-item class="md-3-line" ng-repeat="tenant in tenantList">
         <md-divider></md-divider>
 
         <div style='width: 50px; height: 50px; border-radius: 50%; background: #ddd; margin: auto; margin-right: 5px;'>
@@ -33,19 +33,20 @@ users view
         </div>
 
         <div class="md-list-item-text" layout="column">
-          <h3>{{ user.username }}</h3>
-          <h4>{{ user.email }}</h4>
+          <h3>{{ tenant.name }}</h3>
+          <h4>{{ tenant.description }}</h4>
+          <h4>{{ tenant.parent_id }}</h4>
         </div>
 
         <md-card-actions layout="row" layout-align="end center">
-          <md-button class='md-icon-button' ng-click='createUserPrompt($event, user)'>
+          <md-button class='md-icon-button' ng-click='createTenantPrompt($event, tenant)'>
             <md-icon>mode_edit</md-icon>
             <md-tooltip>Edit</md-tooltip>
           </md-button>
 
           <!-- Right side of toolbar -->
           <md-card-icon-actions layout-align='end center'>
-            <md-button class='md-icon-button' ng-click='deleteUser(user.name)'>
+            <md-button class='md-icon-button' ng-click='deleteTenant(tenant.name)'>
               <md-icon>delete</md-icon>
               <md-tooltip>Destroy</md-tooltip>
             </md-button>
@@ -59,8 +60,8 @@ users view
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
-  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createUserPrompt($event)'>
+  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createTenantPrompt($event)'>
     <md-icon>add</md-icon>
-    <md-tooltip>Create User</md-tooltip>
+    <md-tooltip>Create Tenant</md-tooltip>
   </md-button>
 </div>

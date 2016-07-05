@@ -164,6 +164,16 @@ var version = '0.1.3';
       controllerAs: 'users',
       templateUrl: 'views/users.html'
     }).
+    when('/tenants', {
+      controller: 'TenantsCtrl',
+      controllerAs: 'tenants',
+      templateUrl: 'views/tenants.html'
+    }).
+    when('/capabilities', {
+      controller: 'CapabilitiesCtrl',
+      controllerAs: 'capabilities',
+      templateUrl: 'views/capabilities.html'
+    }).
     when('/dns', {
       controller: 'DNSCtrl',
       controllerAs: 'dns',
@@ -337,15 +347,6 @@ var version = '0.1.3';
       }]
     }];
 
-    $scope.admin = [{
-      title: 'Settings',
-      icon: 'settings'
-    }, {
-      title: 'Users',
-      icon: 'supervisor_account',
-      path: '/users'
-    }, ];
-
     $scope.setPath = function (path) {
       $location.path(path);
     };
@@ -372,6 +373,10 @@ var version = '0.1.3';
     $rootScope.expandProvisioner = false;
     $rootScope.toggleExpandProvisioner = function () {
       $rootScope.expandProvisioner = !$rootScope.expandProvisioner;
+    }
+    $rootScope.expandAccess = false;
+    $rootScope.toggleExpandAccess = function () {
+      $rootScope.expandAccess = !$rootScope.expandAccess;
     }
 
     $rootScope.expandWorkloads = false;

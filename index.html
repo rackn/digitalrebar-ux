@@ -63,6 +63,8 @@
     <script src="js/provider.js"></script>
     <script src="js/annealer.js"></script>
     <script src="js/users.js"></script>
+    <script src="js/tenants.js"></script>
+    <script src="js/capabilities.js"></script>
     <script src="js/dns.js"></script>
     <script src="js/dhcp.js"></script>
     <script src="js/provisioner.js"></script>
@@ -100,10 +102,32 @@
 
         <md-divider></md-divider>
 
-        <!-- User menu -->
-        <md-list-item ng-repeat="item in admin" ng-click="setPath(item.path)">
-          <md-icon>{{item.icon}}</md-icon>
-          <p>{{item.title}}</p>
+        <!-- Access  menu -->
+        <md-list-item ng-click='toggleExpandAccess()'>
+          <md-icon>lock</md-icon>
+          <p>Access</p>
+          <md-icon>{{expandAccess?"expand_less":"expand_more"}}</md-icon>
+        </md-list-item>
+
+        <div ng-slide-down='expandAccess' duration='0.5' lazy-render>
+          <md-list-item ng-click='setPath("/users")'>
+            <md-icon style='padding-left: 1em;'>person</md-icon>
+            <p>Users</p>
+          </md-list-item>
+          <md-list-item ng-click='setPath("/tenants")'>
+            <md-icon style='padding-left: 1em;'>group</md-icon>
+            <p>Tenants</p>
+          </md-list-item>
+          <md-list-item ng-click='setPath("/capabilities")'>
+            <md-icon style='padding-left: 1em;'>group_work</md-icon>
+            <p>Capabilities</p>
+          </md-list-item>
+        </div>
+
+        <!-- Setting menu -->
+        <md-list-item md-ink-ripple ng-click="setPath('/settings')">
+          <md-icon>settings</md-icon>
+          <p>Settings</p>
         </md-list-item>
 
         <!-- Logout list item -->
