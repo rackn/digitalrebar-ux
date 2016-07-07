@@ -267,6 +267,9 @@ workloads controller
           }).error(function(e){console.log("failed on createDeployment",e)});
         };
 
+        // add 'rebar-installed-node' role if node provider type is metalprovider
+        // set metal node attrib: 'provisioner-target_os' to metal os
+
         var moveNodes = function () {
           console.log("Moving nodes")
 
