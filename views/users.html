@@ -1,41 +1,69 @@
 <!--
 users view
 -->
-<md-card ng-switch="hasUsers">
-  <md-content ng-switch-when="-1">
+<div ng-switch="hasUsers">
+  <div ng-switch-when="-1">
     <div layout="row" layout-sm="column" layout-align="space-around">
       <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     </div>
-  </md-content>
+  </div>
 
-  <md-content ng-switch-when="0">
+  <div ng-switch-when="0">
     Error Loading Users
-  </md-content>
+  </div>
 
-  <md-content ng-switch-when="1">
-    <md-list flex>
-      <md-list-item class="md-3-line" ng-repeat="user in userList">
-        <md-divider></md-divider>
+  <div ng-switch-when="1">
+    <md-card flex='100' ng-repeat="user in userList | orderBy:'username'">
 
-        <div style='width: 50px; height: 50px; border-radius: 50%; background: #ddd; margin: auto; margin-right: 5px;'>
-          <div style='width: 24px; margin: 13px; color: #fff;'>
-            <md-icon ng-if='user.is_admin' aria-label='Admin'>
-              security
-              <md-tooltip>
-                Admin
-              </md-tooltip>
-            </md-icon>
-
-            <md-icon ng-if='!user.is_admin' aria-label='Not Admin'>
-              person
-            </md-icon>
-          </div>
+      <md-toolbar ng-click="expand[user.id]=!expand[user.id]" md-ink-ripple>
+        <div class="md-toolbar-tools">
+          <h2 flex>
+            {{user.username}}
+          </h2>
+          <h2>
+            {{tenants[user.tenant_id].name || user.tenant_id}}
+          </h2>
+          <span>
+            <md-button class='md-icon-button'>
+              <md-icon ng-hide="expand[user.id]">expand_more</md-icon>
+              <md-icon ng-show="expand[user.id]">expand_less</md-icon>
+            </md-button>
+          </span>
         </div>
-
-        <div class="md-list-item-text" layout="column">
-          <h3>{{ user.username }}</h3>
-          <h4>{{ user.email }}</h4>
-        </div>
+      </md-toolbar>
+      <div ng-slide-down="expand[user.id]" lazy-render duration="0.25">
+        <section layout-padding style='overflow-x: auto;'>
+          <table>
+            <tr>
+              <td class='label'>
+                Email
+              </td>
+              <td>
+                {{user.email}}
+              </td>
+            </tr>
+            <tr>
+              <td class='label'>
+                Tenant
+              </td>
+              <td>
+                {{tenants[user.tenant_id].name || user.tenant_id}}
+              </td>
+            </tr>
+            <tr ng-repeat='(tenant_id, tenant) in user.caps'>
+              <td class='label' valign="top">
+                Capabilities ({{tenants[tenant_id].name || tenant_id}})
+              </td>
+              <td>
+                <md-chips ng-model='tenant.caps' readonly='true'>
+                  <md-chip-template style='font-family: monospace;'>
+                    {{capabilities[$chip].name}}
+                  </md-chip-template>
+                </md-chips>
+              </td>
+            </tr>
+          </table>
+        </section>
 
         <md-card-actions layout="row" layout-align="end center">
           <md-button class='md-icon-button' ng-click='createUserPrompt($event, user)'>
@@ -51,11 +79,11 @@ users view
             </md-button>
           </md-card-icon-actions>
         </md-card-actions>
-      </md-list-item>
-    </md-list>
-  </md-content>
+      </div>
+    </md-card>
+  </div>
 
-</md-card>
+</div>
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
