@@ -347,6 +347,32 @@ var version = '0.1.3';
       }]
     }];
 
+    $scope.managementMenu = [{
+      title: 'Access',
+      icon: 'lock',
+      expand: true,
+      expanded: function () {
+        return $scope.expandAccess; },
+      toggleExpand: $scope.toggleExpandAccess,
+      items: [{
+        title: 'Users',
+        icon: 'person',
+        path: '/users'
+      }, {
+        title: 'Tenants',
+        icon: 'group',
+        path: '/tenants'
+      }, {
+        title: 'Capabilities',
+        icon: 'group_work',
+        path: '/capabilities'
+      }]
+    }, {
+      title: 'Settings',
+      icon: 'settings',
+      path: '/settings'
+    }];
+
     $scope.setPath = function (path) {
       $location.path(path);
     };
