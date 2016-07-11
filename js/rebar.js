@@ -69,6 +69,7 @@
     $rootScope._node_roles = {};
     $rootScope._providers = {};
     $rootScope._barclamps = {};
+    $rootScope.wizardBarclamps = [];
 
     $rootScope.showDNS = false;
     $rootScope._DNS = { zones: [] };
@@ -404,6 +405,29 @@
       var id = barclamp.id;
       $rootScope._barclamps[id] = barclamp;
       $rootScope.$broadcast("barclamp" + id + "Done");
+
+      if (typeof barclamp.cfg_data.wizard !== 'undefined') {
+
+        if (barclamp.cfg_data.wizard.version != 2)
+          return;
+
+        var exists = false;
+        for (var i in $rootScope.wizardBarclamps) {
+          var b = $rootScope.wizardBarclamps[i];
+          if (b.id == id) {
+            exists = true;
+            break;
+          }
+        }
+        if (!exists) {
+          $rootScope.wizardBarclamps.push({
+            id: id,
+            title: barclamp.cfg_data.wizard.name,
+            icon: barclamp.cfg_data.wizard.icon || 'create_new_folder',
+            path: '/workloads/' + id
+          });
+        }
+      }
     };
 
     // api call for getting all the barclamps
