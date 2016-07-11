@@ -299,7 +299,18 @@ workloads controller
 
         }
 
-        console.log(JSON.stringify(data, null, "  "))
+
+
+        api("/api/utils/wizard", {
+          method: "POST",
+          data: data
+        }).success(function (resp) {
+          console.log(resp);
+        }).error(function (err) {
+          console.warn(err);
+        });
+
+        console.log(JSON.stringify(data, null, "  "));
       };
 
     });
