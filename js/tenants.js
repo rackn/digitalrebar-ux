@@ -27,31 +27,35 @@ tenants controller
         }
       };
 
-      api("/api/v2/tenants").
-      success(function (tenants) {
-        $scope.hasTenants = 1;
-        for (var i in tenants) {
-          $scope.tenants[tenants[i].id] = tenants[i];
-          tenants[i].children = [];
-        }
-        var parents = [];
-        for (var i in tenants) {
-          var tenant = tenants[i];
-          if (typeof tenant.parent_id === 'undefined' || !$scope.tenants[tenant.parent_id])
-            parents.push(tenant)
-          else {
-            $scope.tenants[tenant.parent_id].children.push(tenant)
+      $scope.update = function () {
+        api("/api/v2/tenants").
+        success(function (tenants) {
+          $scope.hasTenants = 1;
+          for (var i in tenants) {
+            $scope.tenants[tenants[i].id] = tenants[i];
+            tenants[i].children = [];
           }
-        }
+          var parents = [];
+          for (var i in tenants) {
+            var tenant = tenants[i];
+            if (typeof tenant.parent_id === 'undefined' || !$scope.tenants[tenant.parent_id])
+              parents.push(tenant)
+            else {
+              $scope.tenants[tenant.parent_id].children.push(tenant)
+            }
+          }
 
-        var inOrder = [];
-        inOrderMap(parents, inOrder);
-        $scope.tenantList = inOrder;
-      }).
-      error(function () {
-        api.toast("Error fetching tenants", "tenants");
-        $scope.hasTenants = 0;
-      });
+          var inOrder = [];
+          inOrderMap(parents, inOrder);
+          $scope.tenantList = inOrder;
+        }).
+        error(function () {
+          api.toast("Error fetching tenants", "tenants");
+          $scope.hasTenants = 0;
+        });
+      };
+
+      $scope.update();
 
       $scope.deleteTenant = function (uuid) {
         $scope.confirm(event, {
@@ -61,9 +65,10 @@ tenants controller
             api('/tenants/' + uuid, {
               method: 'DELETE'
             }).success(function (data) {
-              api.getHealth();
-            }).error(function () {
-              api.getHealth();
+              $scope.update();
+            }).error(function (err) {
+              $scope.update();
+              api.toast("Error deleting tenants - "+err.message, "tenants")
             });
           }
         });
@@ -80,11 +85,16 @@ tenants controller
           targetEvent: ev,
           locals: {
             editing: (typeof tenant !== 'undefined'),
+            tenants: $scope.tenants,
             tenant: tenant || { UUID: "", Content: "" }
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen
-        })
+        }).then(function () {
+          $scope.update();
+        }, function () {
+          $scope.update();
+        });
       }
     });
 })();

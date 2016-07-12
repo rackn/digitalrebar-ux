@@ -25,7 +25,13 @@
       <tr>
         <td class='label' valign="top">Parent</td>
         <td>
-          <input type='text' class='table-input' ng-model='locals.tenant.parent_id' />
+          <md-input-container class='md-block'>
+            <md-select ng-model="locals.tenant.parent_id">
+              <md-option ng-repeat="(tennant_id, t) in locals.tenants" value="{{tennant_id}}">
+                {{t.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
         </td>
       </tr>
     </table>

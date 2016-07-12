@@ -181,17 +181,17 @@ dialog controller
       } else {
         path = '/tenants';
         method = 'POST';
-        data = tenant;
+        data = angular.copy(tenant);
       }
 
       api(path, {
         method: method,
         data: data
       }).success(function (update) {
-        api.getHealth();
       }).error(function (err) {
-        api.getHealth();
+        api.toast("Error creating tenant - "+err.message, "tenants")
       });
+
 
       $mdDialog.hide();
     };
