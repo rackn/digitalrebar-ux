@@ -3,18 +3,50 @@ tenants controller
 */
 (function () {
   angular.module('app')
-    .controller('TenantsCtrl', function ($scope, api, $mdDialog, $mdMedia) {
+    .controller('TenantsCtrl', function ($scope, api, $mdDialog, $mdMedia, $routeParams) {
       $scope.$emit('title', 'Tenants'); // shows up on the top toolbar
 
       var tenants = this;
 
       $scope.hasTenants = -1;
       $scope.tenantList = [];
+      $scope.expand = {};
+
+      $scope.tenants = {};
+
+      if ($routeParams.id)
+        $scope.expand[$routeParams.id] = true;
+
+      var inOrderMap = function (map, arr, depth) {
+        if (typeof depth === 'undefined')
+          depth = 0
+        for (var i in map) {
+          arr.push(map[i]);
+          map[i].depth = depth;
+          inOrderMap(map[i].children, arr, depth + 1);
+        }
+      };
 
       api("/api/v2/tenants").
       success(function (tenants) {
         $scope.hasTenants = 1;
-        $scope.tenantList = tenants;
+        for (var i in tenants) {
+          $scope.tenants[tenants[i].id] = tenants[i];
+          tenants[i].children = [];
+        }
+        var parents = [];
+        for (var i in tenants) {
+          var tenant = tenants[i];
+          if (typeof tenant.parent_id === 'undefined' || !$scope.tenants[tenant.parent_id])
+            parents.push(tenant)
+          else {
+            $scope.tenants[tenant.parent_id].children.push(tenant)
+          }
+        }
+
+        var inOrder = [];
+        inOrderMap(parents, inOrder);
+        $scope.tenantList = inOrder;
       }).
       error(function () {
         api.toast("Error fetching tenants", "tenants");

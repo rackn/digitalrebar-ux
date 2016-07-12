@@ -1,43 +1,46 @@
 <!--
 Tenants view
 -->
-<md-card ng-switch="hasTenants">
-  <md-content ng-switch-when="-1">
+<div ng-switch="hasTenants">
+  <div ng-switch-when="-1">
     <div layout="row" layout-sm="column" layout-align="space-around">
       <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     </div>
-  </md-content>
+  </div>
 
-  <md-content ng-switch-when="0">
+  <div ng-switch-when="0">
     Error Loading Tenants
-  </md-content>
+  </div>
 
-  <md-content ng-switch-when="1">
-    <md-list flex>
-      <md-list-item class="md-3-line" ng-repeat="tenant in tenantList">
-        <md-divider></md-divider>
-
-        <div style='width: 50px; height: 50px; border-radius: 50%; background: #ddd; margin: auto; margin-right: 5px;'>
-          <div style='width: 24px; margin: 13px; color: #fff;'>
-            <md-icon ng-if='user.is_admin' aria-label='Admin'>
-              security
-              <md-tooltip>
-                Admin
-              </md-tooltip>
-            </md-icon>
-
-            <md-icon ng-if='!user.is_admin' aria-label='Not Admin'>
-              person
-            </md-icon>
-          </div>
+  <div ng-switch-when="1" layout-padding>
+    <md-card flex='100' ng-style='{"margin-left": tenant.depth+"em"}' style="padding: 0;" ng-repeat="tenant in tenantList">
+      <md-toolbar ng-click="expand[tenant.uuid]=!expand[tenant.uuid]" md-ink-ripple>
+        <div class='md-toolbar-tools'>
+          <h2 flex>
+            {{tenant.name}} {{tenant.depth}}
+          </h2>
+          <span>
+            <md-button class='md-icon-button'>
+              <md-icon ng-hide="expand[tenant.uuid]">expand_more</md-icon>
+              <md-icon ng-show="expand[tenant.uuid]">expand_less</md-icon>
+            </md-button>
+          </span>
         </div>
+      </md-toolbar>
 
-        <div class="md-list-item-text" layout="column">
-          <h3>{{ tenant.name }}</h3>
-          <h4>{{ tenant.description }}</h4>
-          <h4>{{ tenant.parent_id }}</h4>
-        </div>
-
+      <div ng-slide-down="expand[tenant.uuid]" lazy-render duration="0.25">
+        <section layout-padding style='overflow-x: auto;'>
+          <table>
+            <tr>
+              <td class='label'>
+                Description
+              </td>
+              <td>
+                {{tenant.description}}
+              </td>
+            </tr>
+          </table>
+        </section>
         <md-card-actions layout="row" layout-align="end center">
           <md-button class='md-icon-button' ng-click='createTenantPrompt($event, tenant)'>
             <md-icon>mode_edit</md-icon>
@@ -52,11 +55,11 @@ Tenants view
             </md-button>
           </md-card-icon-actions>
         </md-card-actions>
-      </md-list-item>
-    </md-list>
-  </md-content>
+      </div>
+    </md-card>
+  </div>
 
-</md-card>
+</div>
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
