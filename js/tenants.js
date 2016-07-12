@@ -12,6 +12,7 @@ tenants controller
       $scope.tenantList = [];
       $scope.expand = {};
 
+      $scope.users = {};
       $scope.tenants = {};
 
       if ($routeParams.id)
@@ -28,12 +29,14 @@ tenants controller
       };
 
       $scope.update = function () {
+
         api("/api/v2/tenants").
         success(function (tenants) {
           $scope.hasTenants = 1;
           for (var i in tenants) {
             $scope.tenants[tenants[i].id] = tenants[i];
             tenants[i].children = [];
+            tenants[i].users = [];
           }
           var parents = [];
           for (var i in tenants) {
@@ -48,6 +51,18 @@ tenants controller
           var inOrder = [];
           inOrderMap(parents, inOrder);
           $scope.tenantList = inOrder;
+          
+           // get a list of users
+          api("/api/v2/users").
+          success(function (users) {
+            for (var i in users) {
+              var user = users[i];
+              $scope.tenants[user.tenant_id].users.push(user)
+              $scope.users[user.id] = user;
+            }
+          }).error(function () {
+            api.toast("Error fetching users", "settings");
+          });
         }).
         error(function () {
           api.toast("Error fetching tenants", "tenants");

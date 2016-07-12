@@ -39,6 +39,18 @@ Tenants view
                 {{tenant.description}}
               </td>
             </tr>
+            <tr>
+              <td class='label' valign="top">
+                Users
+              </td>
+              <td>
+                <md-chips ng-model='tenant.users' readonly='true'>
+                  <md-chip-template style='font-family: monospace;' ng-click='setPath("/users/"+$chip.id)'>
+                    {{$chip.username}}
+                  </md-chip-template>
+                </md-chips>
+              </td>
+            </tr>
           </table>
         </section>
         <md-card-actions layout="row" layout-align="end center">
