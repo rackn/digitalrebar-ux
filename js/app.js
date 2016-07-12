@@ -444,6 +444,12 @@ var version = '0.1.3';
 
     $rootScope.$on('login', function (event, data) {
       $rootScope.user = data;
+
+      // get the current user data
+      api('/api/v2/users/'+data.username).success(function (data) {
+        $rootScope.user = data;
+      })
+
       $rootScope.shouldLogOut = localStorageService.get('remember');
 
       api('/api/v2/providers/templates').
