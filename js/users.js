@@ -47,7 +47,8 @@ users controller
           targetEvent: ev,
           locals: {
             editing: (typeof user !== 'undefined'),
-            user: user || { UUID: "", Content: "" }
+            user: user || { UUID: "", Content: "" },
+            tenants: $scope._tenants
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen

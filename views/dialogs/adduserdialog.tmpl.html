@@ -25,13 +25,25 @@
       <tr>
         <td class='label' valign="top">Tenant</td>
         <td>
-          <input type='text' class='table-input' ng-model='locals.user.tenant_id'/>
+          <md-input-container class='md-block'>
+            <md-select ng-model="locals.user.tenant_id" aria-label="tenant select">
+              <md-option ng-repeat="(tennant_id, t) in locals.tenants" value="{{tennant_id}}">
+                {{t.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
         </td>
       </tr>
       <tr>
         <td class='label' valign="top">Current Tenant</td>
         <td>
-          <input type='text' class='table-input' ng-model='locals.user.current_tenant_id'/>
+          <md-input-container class='md-block'>
+            <md-select ng-model="locals.user.current_tenant_id" aria-label="tenant select">
+              <md-option ng-repeat="(tennant_id, t) in locals.tenants" value="{{tennant_id}}">
+                {{t.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
         </td>
       </tr>
       <tr>

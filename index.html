@@ -135,8 +135,25 @@
           <md-icon>menu</md-icon>
           </md-button>
 
-          <h3>{{title}}</h3>
+          <h2>{{title}}</h2>
           <span flex></span>
+          <md-menu md-position-mode="target-right target" style='padding: 0;' ng-if='!provider'>
+            <h2 ng-click='$mdOpenMenu($event)'>
+              {{_tenants[user.current_tenant_id].name}}
+              <md-tooltip>
+                Change Current Tenant
+              </md-tooltip>
+            </h2>
+            <md-menu-content width="4">
+              <md-menu-item ng-repeat="(id, tenant) in _tenants">
+                <md-button ng-click="setTenant(id)">
+                  <div layout="row" flex>
+                    <p flex>{{tenant.name}}</p>
+                  </div>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
           <md-button class="md-icon-button" ng-click='reload()' />
           <md-tooltip>
             Refresh Data

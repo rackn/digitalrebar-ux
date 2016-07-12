@@ -414,16 +414,27 @@ var version = '0.1.3';
     $rootScope.expandProvisioner = false;
     $rootScope.toggleExpandProvisioner = function () {
       $rootScope.expandProvisioner = !$rootScope.expandProvisioner;
-    }
+    };
     $rootScope.expandAccess = false;
     $rootScope.toggleExpandAccess = function () {
       $rootScope.expandAccess = !$rootScope.expandAccess;
-    }
+    };
 
     $rootScope.expandWorkloads = false;
     $rootScope.toggleExpandWorkloads = function () {
       $rootScope.expandWorkloads = !$rootScope.expandWorkloads;
-    }
+    };
+
+    $rootScope.setTenant = function (tenant_id) {
+      api('/api/v2/users/'+$rootScope.user.id, {
+        method: "PUT",
+        data: {
+          current_tenant_id: tenant_id
+        }
+      }).success(function (user) {
+        $rootScope.user = user;
+      });
+    };
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
       var path = next.split('/#/')[1];
@@ -448,7 +459,7 @@ var version = '0.1.3';
       // get the current user data
       api('/api/v2/users/'+data.username).success(function (data) {
         $rootScope.user = data;
-      })
+      });
 
       $rootScope.shouldLogOut = localStorageService.get('remember');
 

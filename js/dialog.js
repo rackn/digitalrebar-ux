@@ -207,19 +207,19 @@ dialog controller
 
       data = user;
       if (locals.editing) {
-        path = '/users/' + user.UUID;
+        path = '/users/' + user.id;
         method = 'PUT';
-	if (user.password1 != "") {
+        if (user.password1 != "") {
           data["digest"] = true;
           data["password"] = user.password1;
-	}
+        }
       } else {
         path = '/users';
         method = 'POST';
-	if (user.password1 != "") {
+        if (user.password1 != "") {
           data["digest"] = true;
           data["password"] = user.password1;
-	}
+        }
         data = user;
       }
 
@@ -227,9 +227,9 @@ dialog controller
         method: method,
         data: data
       }).success(function (update) {
-        api.getHealth();
+        api.getUsers();
       }).error(function (err) {
-        api.getHealth();
+        api.getUsers();
       });
 
       $mdDialog.hide();

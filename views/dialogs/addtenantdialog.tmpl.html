@@ -26,7 +26,7 @@
         <td class='label' valign="top">Parent</td>
         <td>
           <md-input-container class='md-block'>
-            <md-select ng-model="locals.tenant.parent_id">
+            <md-select ng-model="locals.tenant.parent_id" aria-label="tenant select">
               <md-option ng-repeat="(tennant_id, t) in locals.tenants" value="{{tennant_id}}">
                 {{t.name}}
               </md-option>
