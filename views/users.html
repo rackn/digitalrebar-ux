@@ -35,7 +35,7 @@ users view
             Tenant
           </td>
           <td>
-            {{_tenants[user.tenant_id].name || user.tenant_id}}
+            <a ng-href='#/tenants/{{user.tenant_id}}'>{{_tenants[user.tenant_id].name || user.tenant_id}}</a>
           </td>
         </tr>
         <tr ng-repeat='(tenant_id, tenant) in user.caps'>
