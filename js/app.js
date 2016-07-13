@@ -179,16 +179,6 @@ var version = '0.1.3';
       controllerAs: 'tenants',
       templateUrl: 'views/tenants.html'
     }).
-    when('/capabilities', {
-      controller: 'CapabilitiesCtrl',
-      controllerAs: 'capabilities',
-      templateUrl: 'views/capabilities.html'
-    }).
-    when('/capabilities/:id', {
-      controller: 'CapabilitiesCtrl',
-      controllerAs: 'capabilities',
-      templateUrl: 'views/capabilities.html'
-    }).
     when('/dns', {
       controller: 'DNSCtrl',
       controllerAs: 'dns',
@@ -377,10 +367,6 @@ var version = '0.1.3';
         title: 'Tenants',
         icon: 'group',
         path: '/tenants'
-      }, {
-        title: 'Capabilities',
-        icon: 'group_work',
-        path: '/capabilities'
       }]
     }, {
       title: 'Settings',
