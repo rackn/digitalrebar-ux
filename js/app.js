@@ -164,6 +164,21 @@ var version = '0.1.3';
       controllerAs: 'users',
       templateUrl: 'views/users.html'
     }).
+    when('/users/:id', {
+      controller: 'UsersCtrl',
+      controllerAs: 'users',
+      templateUrl: 'views/users.html'
+    }).
+    when('/tenants', {
+      controller: 'TenantsCtrl',
+      controllerAs: 'tenants',
+      templateUrl: 'views/tenants.html'
+    }).
+    when('/tenants/:id', {
+      controller: 'TenantsCtrl',
+      controllerAs: 'tenants',
+      templateUrl: 'views/tenants.html'
+    }).
     when('/dns', {
       controller: 'DNSCtrl',
       controllerAs: 'dns',
@@ -337,14 +352,27 @@ var version = '0.1.3';
       }]
     }];
 
-    $scope.admin = [{
-      title: 'Settings',
-      icon: 'settings'
+    $scope.managementMenu = [{
+      title: 'Access',
+      icon: 'lock',
+      expand: true,
+      expanded: function () {
+        return $scope.expandAccess; },
+      toggleExpand: $scope.toggleExpandAccess,
+      items: [{
+        title: 'Users',
+        icon: 'person',
+        path: '/users'
+      }, {
+        title: 'Tenants',
+        icon: 'group',
+        path: '/tenants'
+      }]
     }, {
-      title: 'Users',
-      icon: 'supervisor_account',
-      path: '/users'
-    }, ];
+      title: 'Settings',
+      icon: 'settings',
+      path: '/settings'
+    }];
 
     $scope.setPath = function (path) {
       $location.path(path);
@@ -372,12 +400,27 @@ var version = '0.1.3';
     $rootScope.expandProvisioner = false;
     $rootScope.toggleExpandProvisioner = function () {
       $rootScope.expandProvisioner = !$rootScope.expandProvisioner;
-    }
+    };
+    $rootScope.expandAccess = false;
+    $rootScope.toggleExpandAccess = function () {
+      $rootScope.expandAccess = !$rootScope.expandAccess;
+    };
 
     $rootScope.expandWorkloads = false;
     $rootScope.toggleExpandWorkloads = function () {
       $rootScope.expandWorkloads = !$rootScope.expandWorkloads;
-    }
+    };
+
+    $rootScope.setTenant = function (tenant_id) {
+      api('/api/v2/users/'+$rootScope.user.id, {
+        method: "PUT",
+        data: {
+          current_tenant_id: tenant_id
+        }
+      }).success(function (user) {
+        $rootScope.user = user;
+      });
+    };
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
       var path = next.split('/#/')[1];
@@ -398,6 +441,12 @@ var version = '0.1.3';
 
     $rootScope.$on('login', function (event, data) {
       $rootScope.user = data;
+
+      // get the current user data
+      api('/api/v2/users/'+data.username).success(function (data) {
+        $rootScope.user = data;
+      });
+
       $rootScope.shouldLogOut = localStorageService.get('remember');
 
       api('/api/v2/providers/templates').

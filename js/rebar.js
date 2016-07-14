@@ -39,6 +39,7 @@
 
     $rootScope.$on('updateApi', function (event) {
       api.getHealth();
+      api.getUsers();
 
       // make the api calls and add callbacks
 
@@ -79,6 +80,10 @@
 
     $rootScope.showProvisioner = false;
     $rootScope._provisioner = { bootenvs: [], templates: [], machines: [] };
+
+    $rootScope._users = {};
+    $rootScope._tenants = {};
+    $rootScope._capabilities = {};
 
   });
 
@@ -240,6 +245,105 @@
         $rootScope.showDNS = false;
         $rootScope.showDHCP = false;
         $rootScope.showProvisioner = false;
+      });
+    };
+
+    var inOrderMap = function (map, arr, depth) {
+      if (typeof depth === 'undefined')
+        depth = 0;
+      for (var i in map) {
+        arr.push(map[i]);
+        map[i].depth = depth;
+        inOrderMap(map[i].children, arr, depth + 1);
+      }
+    };
+
+    api.getUsers = function () {
+      api("/api/v2/users").
+      success(function (users) {
+        $rootScope._users = {};
+        for (var i in users) {
+          users[i].caps = {};
+          $rootScope._users[users[i].id] = users[i];
+        }
+
+        // get capabilities for all users after getting users
+        api("/api/v2/user_tenant_capabilities").
+        success(function (caps) {
+          for (var i in caps) {
+            var cap = caps[i];
+            if (!$rootScope._users[cap.user_id].caps[cap.tenant_id]) {
+              $rootScope._users[cap.user_id].caps[cap.tenant_id] = {
+                id: cap.tenant_id,
+                caps: []
+              };
+            }
+            $rootScope._users[cap.user_id].caps[cap.tenant_id].caps.push(cap.capability_id);
+          }
+
+        }).
+        error(function () {
+          api.toast("Error fetching capabilities", "settings");
+        });
+
+        // get a list of tenants
+        api("/api/v2/tenants").
+        success(function (arr) {
+          $rootScope._tenants = {};
+          for (var i in arr) {
+            arr[i].children = [];
+            arr[i].users = [];          
+            $rootScope._tenants[arr[i].id] = arr[i];
+
+            // initialize empty caps where necessary
+            for (var j in users) {
+              if(typeof users[j].caps[arr[i].id] === 'undefined')
+                users[j].caps[arr[i].id] = {
+                id: arr[i].id,
+                caps: []
+              };
+            }
+          }
+
+          // move applicable users into their respected tenants
+          for (var i in users) {
+            $rootScope._tenants[users[i].tenant_id].users.push(users[i]);
+          }
+
+          // get the parents of each tenant and put tenants into map form
+          var parents = [];
+          for (var i in $rootScope._tenants) {
+            var tenant = $rootScope._tenants[i];
+            if (typeof tenant.parent_id === 'undefined' || !$rootScope._tenants[tenant.parent_id])
+              parents.push(tenant)
+            else {
+              $rootScope._tenants[tenant.parent_id].children.push(tenant)
+            }
+          }
+
+          // make an array with tenants traversed inOrder
+          $rootScope._tenantsInOrder = [];
+          inOrderMap(parents, $rootScope._tenantsInOrder);
+
+        }).
+        error(function () {
+          api.toast("Error fetching tenants", "settings");
+        });
+      }).
+      error(function () {
+        api.toast("Error fetching users", "settings");
+      });
+
+
+      // get a list of capabilities
+      api("/api/v2/capabilities").
+      success(function (arr) {
+        $rootScope._capabilities = {};
+        for (var i in arr)
+          $rootScope._capabilities[arr[i].id] = arr[i];
+      }).
+      error(function () {
+        api.toast("Error fetching capabilities", "settings");
       });
     };
 

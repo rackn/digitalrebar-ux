@@ -9,6 +9,16 @@ dialog controller
 
     // have icons persist
     $scope.icons = $rootScope.icons;
+    
+    $scope.fixCaps = function (tenant) {
+      var caps = locals.user.caps[tenant.id].caps;
+      for(var i in caps) {
+        var cap = caps[i];
+        if(typeof cap === "object") {
+          caps[i] = cap.id;
+        }
+      }
+    };
 
     $scope.providers = (function () {
       var providers = [];
@@ -163,6 +173,73 @@ dialog controller
         api.getHealth();
       }).error(function (err) {
         api.getHealth();
+      });
+
+      $mdDialog.hide();
+    };
+
+    this.createTenant = function () {
+      var tenant = $scope.locals.tenant;
+      var path, method, data;
+
+      if (locals.editing) {
+        path = '/tenants/' + tenant.uuid;
+        method = 'PATCH';
+        data = [{ "op": "replace", "path": "/name", "value": tenant.name },
+                { "op": "replace", "path": "/description", "value": tenant.description },
+                { "op": "replace", "path": "/parent_id", "value": tenant.parent_id }];
+      } else {
+        path = '/tenants';
+        method = 'POST';
+        data = angular.copy(tenant);
+      }
+
+      api(path, {
+        method: method,
+        data: data
+      }).success(function (update) {
+      }).error(function (err) {
+        api.toast("Error creating tenant - "+err.message, "tenants")
+      });
+
+
+      $mdDialog.hide();
+    };
+
+    this.createUser = function () {
+      var user = $scope.locals.user;
+      var path, method, data;
+
+      if (user.password1 != user.password2) {
+        api.toast('Passwords must match', 'user');
+        return;
+      }
+
+      data = user;
+      if (locals.editing) {
+        path = '/users/' + user.id;
+        method = 'PUT';
+        if (user.password1 != "") {
+          data["digest"] = true;
+          data["password"] = user.password1;
+        }
+      } else {
+        path = '/users';
+        method = 'POST';
+        if (user.password1 != "") {
+          data["digest"] = true;
+          data["password"] = user.password1;
+        }
+        data = user;
+      }
+
+      api(path, {
+        method: method,
+        data: data
+      }).success(function (update) {
+        api.getUsers();
+      }).error(function (err) {
+        api.getUsers();
       });
 
       $mdDialog.hide();

@@ -1,45 +1,84 @@
 <!--
 users view
 -->
-<md-card ng-switch="hasUsers">
-  <md-content ng-switch-when="-1">
-    <div layout="row" layout-sm="column" layout-align="space-around">
-      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+<md-card flex='100' ng-repeat="user in getUserList() | orderBy:'username'">
+
+  <md-toolbar ng-click="expand[user.id]=!expand[user.id]" md-ink-ripple>
+    <div class="md-toolbar-tools">
+      <h2 flex>
+        {{user.username}}
+      </h2>
+      <h2>
+        {{_tenants[user.tenant_id].name || user.tenant_id}}
+      </h2>
+      <span>
+        <md-button class='md-icon-button'>
+          <md-icon ng-hide="expand[user.id]">expand_more</md-icon>
+          <md-icon ng-show="expand[user.id]">expand_less</md-icon>
+        </md-button>
+      </span>
     </div>
-  </md-content>
+  </md-toolbar>
+  <div ng-slide-down="expand[user.id]" lazy-render duration="0.25">
+    <section layout-padding style='overflow-x: auto;'>
+      <table>
+        <tr>
+          <td class='label'>
+            Email
+          </td>
+          <td>
+            {{user.email}}
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>
+            Tenant
+          </td>
+          <td>
+            <a ng-href='#/tenants/{{_tenants[user.tenant_id].uuid}}'>{{_tenants[user.tenant_id].name || user.tenant_id}}</a>
+          </td>
+        </tr>
+        <tr ng-repeat='(tenant_id, tenant) in user.caps'>
+          <td class='label' valign="top">
+            Capabilities ({{_tenants[tenant_id].name || tenant_id}})
+          </td>
+          <td>
+            <md-chips ng-model='tenant.caps' readonly='true'>
+              <md-chip-template style='font-family: monospace;'>
+                {{_capabilities[$chip].name}}
+              </md-chip-template>
+            </md-chips>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-  <md-content ng-switch-when="0">
-    Error Loading Users
-  </md-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class='md-icon-button' ng-click='createUserPrompt($event, user)'>
+        <md-icon>mode_edit</md-icon>
+        <md-tooltip>Edit</md-tooltip>
+      </md-button>
 
-  <md-content ng-switch-when="1">
-    <md-list flex>
-      <md-list-item class="md-3-line" ng-repeat="user in userList | orderBy:'is_admin'">
-        <md-divider></md-divider>
+      <md-button class='md-icon-button' ng-click='editCapsPrompt($event, user)'>
+        <md-icon>settings_applications</md-icon>
+        <md-tooltip>Modify Capabilities</md-tooltip>
+      </md-button>
 
-        <div style='width: 50px; height: 50px; border-radius: 50%; background: #ddd; margin: auto; margin-right: 5px;'>
-          <div style='width: 24px; margin: 13px; color: #fff;'>
-            <md-icon ng-if='user.is_admin' aria-label='Admin'>
-              security
-              <md-tooltip>
-                Admin
-              </md-tooltip>
-            </md-icon>
-
-            <md-icon class='inset' ng-if='!user.is_admin' aria-label='Not Admin'>
-              person
-            </md-icon>
-          </div>
-        </div>
-
-        <div class="md-list-item-text" layout="column">
-          <h3>{{ user.username }}</h3>
-          <h4>{{ user.email }}</h4>
-          <p>
-            <md-icon ng-if='user.is_locked'>lock</md-icon>
-          </p>
-        </div>
-      </md-list-item>
-    </md-list>
-  </md-content>
+      <!-- Right side of toolbar -->
+      <md-card-icon-actions layout-align='end center'>
+        <md-button class='md-icon-button' ng-click='deleteUser(user.username)'>
+          <md-icon>delete</md-icon>
+          <md-tooltip>Destroy</md-tooltip>
+        </md-button>
+      </md-card-icon-actions>
+    </md-card-actions>
+  </div>
 </md-card>
+
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createUserPrompt($event)'>
+    <md-icon>add</md-icon>
+    <md-tooltip>Create User</md-tooltip>
+  </md-button>
+</div>

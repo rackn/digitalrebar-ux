@@ -63,6 +63,7 @@
     <script src="js/provider.js"></script>
     <script src="js/annealer.js"></script>
     <script src="js/users.js"></script>
+    <script src="js/tenants.js"></script>
     <script src="js/dns.js"></script>
     <script src="js/dhcp.js"></script>
     <script src="js/provisioner.js"></script>
@@ -75,8 +76,8 @@
       <md-toolbar class='md-tall md-hue-2'>
         <span flex></span>
         <div layout="column" class="md-toolbar-tools-bottom inset">
-          <div>{{user.username}}</div>
-          <div><a ng-href='{{host}}' style='color: #fff;'>{{host}}</a></div>
+          <div><a ng-href='#/users/{{user.id}}' style='color: #f5f5f5;'>{{user.username}}</a></div>
+          <div><a ng-href='{{host}}' style='color: #f5f5f5;'>{{host}}</a></div>
         </div>
       </md-toolbar>
 
@@ -100,11 +101,21 @@
 
         <md-divider></md-divider>
 
-        <!-- User menu -->
-        <md-list-item ng-repeat="item in admin" ng-click="setPath(item.path)">
-          <md-icon>{{item.icon}}</md-icon>
-          <p>{{item.title}}</p>
-        </md-list-item>
+        <!-- Access menu -->
+        <div ng-repeat="item in managementMenu" ng-if='!item.hide()'>
+          <md-list-item ng-click="item.expand ? item.toggleExpand() : setPath(item.path)">
+            <md-icon>{{item.icon}}</md-icon>
+            <p>{{item.title}}</p>
+            <md-icon ng-if='item.expand'>{{item.expanded()?"expand_less":"expand_more"}}</md-icon>
+          </md-list-item>
+
+          <div ng-slide-down='item.expanded()' duration='0.5' lazy-render ng-if='item.expand'>
+            <md-list-item ng-repeat='child in item.items' ng-click='setPath(child.path)'>
+              <md-icon style='padding-left: 1em;'>{{child.icon}}</md-icon>
+              <p>{{child.title}}</p>
+            </md-list-item>
+          </div>
+        </div>
 
         <!-- Logout list item -->
         <md-list-item ng-if='shouldLogOut' ng-click="logout()">
@@ -123,8 +134,25 @@
           <md-icon>menu</md-icon>
           </md-button>
 
-          <h3>{{title}}</h3>
+          <h2>{{title}}</h2>
           <span flex></span>
+          <md-menu md-position-mode="target-right target" style='padding: 0;' ng-if='!provider'>
+            <h2 ng-click='$mdOpenMenu($event)'>
+              {{_tenants[user.current_tenant_id].name}}
+              <md-tooltip>
+                Change Current Tenant
+              </md-tooltip>
+            </h2>
+            <md-menu-content width="4">
+              <md-menu-item ng-repeat="(id, tenant) in _tenants">
+                <md-button ng-click="setTenant(id)">
+                  <div layout="row" flex>
+                    <p flex>{{tenant.name}}</p>
+                  </div>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
           <md-button class="md-icon-button" ng-click='reload()' />
           <md-tooltip>
             Refresh Data
