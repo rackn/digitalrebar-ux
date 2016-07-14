@@ -59,6 +59,11 @@ users view
         <md-tooltip>Edit</md-tooltip>
       </md-button>
 
+      <md-button class='md-icon-button' ng-click='editCapsPrompt($event, user)'>
+        <md-icon>settings_applications</md-icon>
+        <md-tooltip>Modify Capabilities</md-tooltip>
+      </md-button>
+
       <!-- Right side of toolbar -->
       <md-card-icon-actions layout-align='end center'>
         <md-button class='md-icon-button' ng-click='deleteUser(user.username)'>

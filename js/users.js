@@ -59,5 +59,42 @@ users controller
         });
       };
 
+      $scope.editCapsPrompt = function (ev, temp) {
+        var user = angular.copy(temp);
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        var caps = [];
+        for (var id in $scope._capabilities) {
+          caps.push($scope._capabilities[id]);
+        }
+
+        for(var tenant_id in $scope._tenants) {
+          if(typeof user.caps[tenant_id] === 'undefined')
+            user.caps[tenant_id] = {
+              id: tenant_id,
+              caps: []
+            }
+        }
+        
+        $mdDialog.show({
+          controller: 'DialogController',
+          controllerAs: 'dialog',
+          templateUrl: 'views/dialogs/editcapabilitiesdialog.tmpl.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          locals: {
+            user: user,
+            tenants: $scope._tenantsInOrder,
+            capabilitiesList: caps,
+            capabilities: $scope._capabilities
+          },
+          clickOutsideToClose: true,
+          fullscreen: useFullScreen
+        }).then(function () {
+          api.getUsers();
+        }, function () {
+          api.getUsers();
+        });
+      };
+
     });
 })();

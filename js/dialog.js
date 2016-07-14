@@ -9,6 +9,16 @@ dialog controller
 
     // have icons persist
     $scope.icons = $rootScope.icons;
+    
+    $scope.fixCaps = function (tenant) {
+      var caps = locals.user.caps[tenant.id].caps;
+      for(var i in caps) {
+        var cap = caps[i];
+        if(typeof cap === "object") {
+          caps[i] = cap.id;
+        }
+      }
+    };
 
     $scope.providers = (function () {
       var providers = [];

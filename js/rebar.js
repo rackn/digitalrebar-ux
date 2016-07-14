@@ -294,6 +294,15 @@
             arr[i].children = [];
             arr[i].users = [];          
             $rootScope._tenants[arr[i].id] = arr[i];
+
+            // initialize empty caps where necessary
+            for (var j in users) {
+              if(typeof users[j].caps[arr[i].id] === 'undefined')
+                users[j].caps[arr[i].id] = {
+                id: arr[i].id,
+                caps: []
+              };
+            }
           }
 
           // move applicable users into their respected tenants
