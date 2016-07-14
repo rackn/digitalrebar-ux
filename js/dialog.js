@@ -2,7 +2,7 @@
 dialog controller
 */
 (function () {
-  angular.module('app').controller('DialogController', function ($scope, $rootScope, $mdDialog, locals, api, $mdToast) {
+  angular.module('app').controller('DialogController', function ($scope, $rootScope, $mdDialog, locals, api, $mdToast, debounce) {
     // keep locals from the config
     var dialog = this;
     $scope.locals = locals;
@@ -18,6 +18,16 @@ dialog controller
           caps[i] = cap.id;
         }
       }
+
+      locals.user.caps[tenant.id].caps = caps.reduce(function(arr, id) {
+        if(!arr.includes(id))
+          arr.push(id);
+        
+        return arr;
+      }, []);
+
+
+
     };
 
     $scope.providers = (function () {
@@ -279,6 +289,48 @@ dialog controller
 
       $mdDialog.hide();
     };
+
+    this.updateUserCaps = function () {
+      var user = locals.user;
+      var user_id = user.id;
+      var original = locals.original;
+      var diff = [];
+      for(var tenant_id in user.caps) {
+        var tenant = user.caps[tenant_id].caps;
+        var origTenant = original.caps[tenant_id].caps;
+        var added = tenant.filter(function(i) {return origTenant.indexOf(i) < 0;});
+        var removed = origTenant.filter(function(i) {return tenant.indexOf(i) < 0;});
+        for(var i in added) {
+          diff.push({
+            method: 'POST',
+            data: {
+              tenant_id: tenant_id,
+              user_id: user_id, 
+              capability_id: added[i]
+            }
+          });
+        }
+        for(var i in removed) {
+          diff.push({
+            method: 'DELETE',
+            params: {
+              tenant_id: tenant_id,
+              user_id: user_id,
+              capability_id: removed[i]
+            }
+          });
+        }
+      }
+      for(var i in diff) {
+        var config = diff[i];
+        api("/api/v2/user_tenant_capabilities", config).success(function(data) {
+          debounce(locals.update, 500, true)();
+        });
+      }
+
+      $mdDialog.hide();
+
+    }
 
   });
 })();

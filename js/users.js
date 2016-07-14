@@ -72,8 +72,9 @@ users controller
             user.caps[tenant_id] = {
               id: tenant_id,
               caps: []
-            }
+            };
         }
+        var original = angular.copy(user);
         
         $mdDialog.show({
           controller: 'DialogController',
@@ -83,6 +84,8 @@ users controller
           targetEvent: ev,
           locals: {
             user: user,
+            update: api.getUsers,
+            original: original,
             tenants: $scope._tenantsInOrder,
             capabilitiesList: caps,
             capabilities: $scope._capabilities
@@ -92,7 +95,6 @@ users controller
         }).then(function () {
           api.getUsers();
         }, function () {
-          api.getUsers();
         });
       };
 

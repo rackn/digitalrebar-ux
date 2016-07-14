@@ -15,13 +15,15 @@
           {{tenant.name}}
         </td>
         <td>
-          <md-chips ng-model='locals.user.caps[tenant.id].caps' placeholder='Capabilities' md-require-match="true" md-on-add="fixCaps(tenant)"> <!-- md-on-add only works with the first tenant, not the 2nd for some reason....... -->
-            <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in locals.capabilitiesList| filter:searchText" md-item-text="item.name" placeholder="Search for a Capability">
+          <md-chips ng-model='locals.user.caps[tenant.id].caps' placeholder='Capabilities' md-require-match="true" md-on-add="fixCaps(tenant)">
+            <!-- md-on-add only works with the first tenant, not the 2nd for some reason....... -->
+            <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in locals.capabilitiesList| filter:searchText" md-item-text="item.name" placeholder="Search for a Capability" ng-if='!locals.user.caps[tenant.id].caps.includes(item)'>
               <span md-highlight-text="searchText">
                 {{item.name}}
               </span>
             </md-autocomplete>
-            <md-chip-template style='font-family: monospace;'>{{locals.capabilities[$chip].name}} {{$chip}}
+            <md-chip-template style='font-family: monospace;'>
+              {{locals.capabilities[$chip].name}}
             </md-chip-template>
           </md-chips>
         </td>
