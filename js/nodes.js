@@ -109,6 +109,17 @@ node controller
       });
     };
 
+    $scope.assignNodesToTenant = function (arr, tenant_id) {
+      arr.forEach(function (node) {
+        api("/api/v2/nodes/" + node.id, {
+          method: "PUT",
+          data: {
+            tenant_id: tenant_id
+          }
+        }).success(api.addNode);
+      });
+    };
+
     // creates an array of unused roles for a specified deployment
     $scope.getRoles = function () {
       var roles = [];

@@ -28,11 +28,19 @@
               </div>
             </md-button>
           </md-menu-item>
-          <md-menu-item>
-            <md-button ng-click="$mdCloseMenu($event)">
+        </md-menu-content>
+      </md-menu>
+      <md-menu md-position-mode="target-right target">
+        <md-button class='md-icon-button' ng-click="$mdOpenMenu($event)">
+          <md-icon>group</md-icon>
+          <md-tooltip>Change Node Tenant</md-tooltip>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item ng-repeat="tenant in _tenantsInOrder">
+            <md-button ng-click="assignNodesToTenant(nodes.selected, tenant.id)">
               <div layout="row" flex>
-                <p flex>Cancel</p>
-                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">cancel</md-icon>
+                <p flex>{{tenant.name}}</p>
+                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">arrow_forward</md-icon>
               </div>
             </md-button>
           </md-menu-item>
@@ -56,6 +64,7 @@
           <th md-column>Description</th>
           <th md-column md-order-by='provider_id'>Provider</th>
           <th md-column md-order-by='deployment_id'>Deployment</th>
+          <th md-column md-order-by='tenant_id'>Tenant</th>
         </tr>
       </thead>
       <tbody md-body swap-md-paint-bg="status_{{!node.alive ? 'off' : node.status}} primary" swap-md-paint-fg="status_{{!node.alive ? 'off' : node.status}} foreground" ng-repeat="node in nodes.getNodes() | orderBy: myOrder">
@@ -74,8 +83,13 @@
           <td md-cell>{{node.description}}</td>
           <td md-cell><a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a></td>
           <td md-cell>
-            <a ng-href='#/dash/{{node.deployment_id}}'>
+            <a ng-href='#/deployments/{{node.deployment_id}}'>
               {{_deployments[node.deployment_id].name}}
+            </a>
+          </td>
+          <td md-cell>
+            <a ng-href='#/tenants/{{_tenants[node.tenant_id].uuid}}'>
+              {{_tenants[node.tenant_id].name}}
             </a>
           </td>
         </tr>
