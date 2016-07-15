@@ -107,6 +107,31 @@
       </tr>
       <tr>
         <td class='label'>
+          Tenant
+        </td>
+        <td>
+          <a ng-href='#/tenants/{{_tenants[network.tenant_id].uuid}}'>
+            {{_tenants[network.tenant_id].name}}
+          </a>
+          <md-menu md-position-mode="target-right target">
+            <span>
+              <md-icon style='width: 6px; height: 6px; position: relative; margin-top: -20px;' ng-click="$mdOpenMenu($event)">build</md-icon>
+            </span>
+            <md-menu-content width="4">
+              <md-menu-item ng-repeat="tenant in _tenantsInOrder">
+                <md-button ng-click="assignNetworksToTenant([network], tenant.id)">
+                  <div layout="row" flex>
+                    <p flex>{{tenant.name}}</p>
+                    <md-icon md-menu-align-target style="margin: auto 3px auto 0;">arrow_forward</md-icon>
+                  </div>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </td>
+      </tr>
+      <tr>
+        <td class='label'>
           Conduits
         </td>
         <td>

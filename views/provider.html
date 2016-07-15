@@ -43,6 +43,21 @@ provider view
         </tr>
         <tr>
           <td class='label'>
+            Tenant
+          </td>
+          <td>
+            <md-input-container class='md-block'>
+              <md-select ng-model="provider.tenant_id" aria-label="tenant select"  ng-if='editing'>
+                <md-option ng-repeat="(tennant_id, t) in _tenants" ng-value="tennant_id">
+                  {{t.name}}
+                </md-option>
+              </md-select>
+              <span ng-if='!editing'>{{_tenants[provider.tenant_id].name}}</span>
+            </md-input-container>
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>
             Description
           </td>
           <td>
@@ -72,7 +87,7 @@ provider view
             <td></td>
             <td>
               <a ng-href='{{options.href}}'>
-                <img ng-src='{{options.src}}' style='width:100%;'></a>
+                <img ng-src='{{options.src}}' style='height: 100px; width: auto;'></a>
               </a>
             </td>
           </tr>
@@ -131,6 +146,7 @@ provider view
           <th md-column md-order-by='name'>Name</th>
           <th md-column md-order-by='type'>Type</th>
           <th md-column>Description</th>
+          <th md-column md-order-by='tenant_id'>Tenant</th>
         </tr>
       </thead>
       <tbody md-body>
@@ -138,6 +154,7 @@ provider view
           <td md-cell><a ng-href='#/providers/{{provider.id}}'>{{provider.name}}</a></td>
           <td md-cell>{{provider.type}}</td>
           <td md-cell>{{provider.description}}</td>
+          <td md-cell><a ng-href='#/tenants/{{_tenants[provider.tenant_id].uuid}}'>{{_tenants[provider.tenant_id].name}}</a></td>
         </tr>
       </tbody>
     </table>

@@ -80,6 +80,17 @@ network controller
       });
     };
 
+    $scope.assignNetworksToTenant = function (arr, tenant_id) {
+      arr.forEach(function (network) {
+        api("/api/v2/networks/" + network.id, {
+          method: "PUT",
+          data: {
+            tenant_id: tenant_id,
+          }
+        }).success(api.addNetwork);
+      });
+    };
+
     $scope.delete = function (event) {
       $scope.confirm(event, {
         title: "Remove Network",

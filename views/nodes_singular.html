@@ -1,16 +1,17 @@
 <md-card>
   <md-toolbar class="md-default" md-theme='status_{{node.status}}'>
     <div class="md-toolbar-tools">
-      <span flex>
+      <span>
         <md-icon class='md-primary'>
           {{icons[node.status]}}
           <md-tooltip>
             {{node.status}}
           </md-tooltip>
         </md-icon>
-
-        {{node.name}}
       </span>
+      <h2 flex>
+        {{node.name}}
+      </h2>
       <md-button class='md-icon-button' ng-click='redeploy()'>
         <md-icon>replay</md-icon>
         <md-tooltip>Redeploy Node</md-tooltip>
@@ -68,11 +69,26 @@
                   </div>
                 </md-button>
               </md-menu-item>
-              <md-menu-item>
-                <md-button ng-click="$mdCloseMenu($event)">
+            </md-menu-content>
+          </md-menu>
+        </td>
+      </tr>
+      <tr>
+        <td class='label'>Tenant</td>
+        <td>
+          <a ng-href='#/tenants/{{_tenants[node.tenant_id].uuid}}'>
+            {{_tenants[node.tenant_id].name}}
+          </a>
+          <md-menu md-position-mode="target-right target">
+            <span>
+              <md-icon style='width: 6px; height: 6px; position: relative; margin-top: -20px;' ng-click="$mdOpenMenu($event)">build</md-icon>
+            </span>
+            <md-menu-content width="4">
+              <md-menu-item ng-repeat="tenant in _tenantsInOrder">
+                <md-button ng-click="assignNodesToTenant([node], tenant.id)">
                   <div layout="row" flex>
-                    <p flex>Cancel</p>
-                    <md-icon md-menu-align-target style="margin: auto 3px auto 0;">cancel</md-icon>
+                    <p flex>{{tenant.name}}</p>
+                    <md-icon md-menu-align-target style="margin: auto 3px auto 0;">arrow_forward</md-icon>
                   </div>
                 </md-button>
               </md-menu-item>
