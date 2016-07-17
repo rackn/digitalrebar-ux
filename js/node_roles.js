@@ -8,7 +8,9 @@ node role controller
 
     var node_roles = this;
 
-    $scope.myOrder = 'id'
+    $scope.myOrder = 'id';
+    $scope.scroll = 0;
+
     this.selected = [];
 
     // converts the _node_roles object that rootScope has into an array
