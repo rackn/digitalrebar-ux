@@ -226,6 +226,15 @@ workloads controller
             if (node.deployment_id != system_id)
               return;
 
+            var isMetal = $scope._providers[node.provider_id].type == 'MetalProvider';
+
+            if (isMetal && !wizard.system_nodes)
+              return;
+
+            if (!isMetal && !wizard.create_nodes)
+              return;
+
+
             if (!serviceMap[node.id]) {
               serviceMap[node.id] = {};
               for (var i in serviceList) {
