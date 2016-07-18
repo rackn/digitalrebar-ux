@@ -9,7 +9,23 @@ node role controller
     var node_roles = this;
 
     $scope.myOrder = 'id';
-    $scope.scroll = 0;
+
+    // used for showing the toolbar when scrolling beyond the runlog
+    $scope.style = {};
+    $scope.top = 0;
+    $scope.$watch('scroll', function(){
+      var top = $('#runlog').position().top - $('#runlog').height();
+      $scope.top = top;
+      if(top < 0) { // the top of the runlog toolbar is offscreen
+        $scope.style = {
+          position: 'fixed',
+          width: $('#runlog').width(),
+          top: $('#toolbar').height()
+        };
+      } else {
+        $scope.style = {};
+      }
+    })
 
     this.selected = [];
 
