@@ -114,7 +114,7 @@
 
     api.errors = [];
 
-    api.toast = function (message, error) {
+    api.toast = function (message, error, err) {
       $mdToast.show(
         $mdToast.simple()
         .textContent(message)
@@ -122,7 +122,7 @@
         .hideDelay(3000)
       );
       if (error) {
-        api.errors.push({ type: error, message: message });
+        api.errors.push({ type: error, message: message, err: err });
       }
     };
 
@@ -282,8 +282,8 @@
           }
 
         }).
-        error(function () {
-          api.toast("Error fetching capabilities", "settings");
+        error(function (err) {
+          api.toast("Error fetching capabilities", "settings", err);
         });
 
         // get a list of tenants
@@ -326,12 +326,12 @@
           inOrderMap(parents, $rootScope._tenantsInOrder);
 
         }).
-        error(function () {
-          api.toast("Error fetching tenants", "settings");
+        error(function (err) {
+          api.toast("Error fetching tenants", "settings", err);
         });
       }).
-      error(function () {
-        api.toast("Error fetching users", "settings");
+      error(function (err) {
+        api.toast("Error fetching users", "settings", err);
       });
 
 
@@ -343,7 +343,7 @@
           $rootScope._capabilities[arr[i].id] = arr[i];
       }).
       error(function () {
-        api.toast("Error fetching capabilities", "settings");
+        api.toast("Error fetching capabilities", "settings", err);
       });
     };
 

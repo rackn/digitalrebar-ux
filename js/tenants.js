@@ -24,7 +24,7 @@ tenants controller
               api.getUsers();
             }).error(function (err) {
               api.getUsers();
-              api.toast("Error deleting tenants - "+err.message, "tenants")
+              api.toast("Error deleting tenants - "+err.message, "tenants", err);
             });
           }
         });

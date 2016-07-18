@@ -36,7 +36,7 @@ provider controller
         }).
         success(api.addProvider).
         error(function (e) {
-          api.toast("Couldn't Save Provider", 'provider');
+          api.toast("Couldn't Save Provider", 'provider', e);
         });
         $scope.stopEditing();
       };
