@@ -17,7 +17,7 @@
       <input type="text" ng-model="workloads.name">
     </md-input-container>
 
-    <md-input-container ng-if='wizard.os' flex>
+    <md-input-container ng-if='wizard.os && wizard.system_nodes' flex>
       <label>Metal Operating System</label>
       <md-select ng-model="workloads.os">
         <md-option ng-repeat="os in osList" value="{{os}}">
@@ -25,6 +25,12 @@
         </md-option>
       </md-select>
     </md-input-container>
+
+    <md-autocomplete flex ng-if='wizard.os && wizard.create_nodes' ng-init='search=workloads.add_os' md-selected-item="selected" md-search-text="search" md-search-text-change="workloads.add_os=search" md-items="item in ['default_os'].concat(barclamp.cfg_data.barclamp.os_support) | filter:search" md-selected-item-change="workloads.add_os=selected||search" md-item-text="item" md-floating-label="Provider Operating System">
+      <md-item-template>
+        <span md-highlight-text="search">{{item}}</span>
+      </md-item-template>
+    </md-autocomplete>
 
     <md-input-container ng-if='wizard.create_nodes' flex>
       <label>Provider</label>
@@ -54,7 +60,7 @@
             </tr>
           </thead>
           <tbody md-body>
-            <tr md-row md-select="node" md-select-id="{{node.id}}" ng-repeat="node in getNodes() | orderBy: myOrder" md-on-deselect='tryDeselect'>
+            <tr md-row md-select="node" md-select-id="{{node.id}}" ng-repeat="node in getNodes() | orderBy: myOrder" md-on-deselect='tryDeselect' >
               <td md-cell>{{node.name}}</td>
               <td md-cell>
                 <span ng-repeat='service in roles' style='height: 10px;'>
@@ -92,10 +98,10 @@
           <table style='width: 100%;' class='no-border'>
             <tr ng-if='wizard.os'>
               <td>&bullet;</td>
-              <td>Operating system</td>
+              <td>Operating systems</td>
               <td style='width: 10%;'>
                 <md-icon>
-                  {{workloads.os ? 'done' : 'close'}}
+                  {{(workloads.os && wizard.system_nodes || !wizard.system_nodes) && (workloads.add_os && wizard.create_nodes || !wizard.create_nodes) ? 'done' : 'close'}}
                 </md-icon>
               </td>
             </tr>
