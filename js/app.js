@@ -290,11 +290,11 @@ var version = '0.1.3';
       scroll: '=scrollPosition'
     },
     link: function(scope, element, attrs) {
-      var windowEl = angular.element($window);
+      //var windowEl = angular.element($window);
       var handler = function() {
-        scope.scroll = windowEl.scrollTop();
+        scope.scroll = element.scrollTop();
       }
-      windowEl.on('scroll', scope.$apply.bind(scope, handler));
+      element.on('scroll', scope.$apply.bind(scope, handler));
       handler();
     }
   };
@@ -307,6 +307,7 @@ var version = '0.1.3';
 
     $scope.api = api;
     $scope.reload = api.reload;
+    $scope.scroll = 0;
 
     $scope.menu = [{
       title: 'Deployments',
