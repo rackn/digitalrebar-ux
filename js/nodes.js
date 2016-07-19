@@ -146,7 +146,7 @@ node controller
         }
       }).success(api.addNodeRole).
       error(function (err) {
-        api.toast("Error Adding Node Role - " + err.message);
+        api.toast("Error Adding Node Role", 'node_role', err);
       });
     };
 
@@ -160,7 +160,7 @@ node controller
             api('/api/v2/nodes/' + $scope.node.id + '/redeploy', {
               method: 'PUT'
             }).success(api.addNode).error(function (err) {
-              api.toast('Error Redeploying Node - ' + err.message, 'node');
+              api.toast('Error Redeploying Node', 'node', err);
             });
           }
         }
@@ -177,7 +177,7 @@ node controller
               api('/api/v2/nodes/' + node.id + '/redeploy', {
                 method: 'PUT'
               }).success(addNode).error(function (err) {
-                api.toast('Error Redeploying Node - ' + err.message, 'node');
+                api.toast('Error Redeploying Node', 'node', err);
               }).success(function () {
                 api.toast('Redeployed ' + nodes.selected.length + ' node' + (nodes.selected.length == 1 ? '' : 's'));
               })
@@ -200,7 +200,7 @@ node controller
           data: data
         });
         error(function (e) {
-          api.toast("Couldn't Save Attrib", 'attrib');
+          api.toast("Couldn't Save Attrib", 'attrib', e);
         });
 
       });

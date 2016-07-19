@@ -51,11 +51,11 @@ dialog controller
     this.updateBarclamp = function () {
       var config = $scope.locals.barclamp.cfg_data;
       if (!config) {
-        api.toast('Bad JSON', 'barclamp');
+        api.toast('Bad JSON', 'barclamp', {message: "dialog.js updateBarclamp"});
         return;
       }
       if (!config.barclamp.name) {
-        api.toast('Name is required', 'barclamp');
+        api.toast('Name is required', 'barclamp', {message: "dialog.js updateBarclamp"});
         return;
       }
       var payload = { 'value': config };
@@ -67,7 +67,7 @@ dialog controller
         success(api.addBarclamp);
         api.toast('Updated barclamp');
       }).error(function (err) {
-        api.toast('Error: ' + err.message, 'barclamp');
+        api.toast('Error Updating barclamp', 'barclamp', err);
       })
 
       $mdDialog.hide();
@@ -116,7 +116,7 @@ dialog controller
           data: payload,
         }).success(api.addNode).
         error(function (err) {
-          api.toast('Error: ' + err.message, 'node', 'node');
+          api.toast('Error updating node', 'node', err);
         });
       });
 
@@ -131,7 +131,7 @@ dialog controller
         data: locals.provider
       }).success(api.addProvider).
       error(function (err) {
-        api.toast("Error Adding Provider - " + err.message, 'provider');
+        api.toast("Error Adding Provider", 'provider', err);
       });
       $mdDialog.hide();
     };
@@ -143,7 +143,7 @@ dialog controller
         data: locals.network
       }).success(api.addNetwork).
       error(function (err) {
-        api.toast("Error Adding Network - " + err.message, 'network');
+        api.toast("Error Adding Network", 'network', err);
       });
       $mdDialog.hide();
     };
@@ -209,7 +209,7 @@ dialog controller
         data: data
       }).success(function (update) {
       }).error(function (err) {
-        api.toast("Error creating tenant - "+err.message, "tenants")
+        api.toast("Error creating tenant", "tenants", err)
       });
 
 

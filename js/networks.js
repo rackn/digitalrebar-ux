@@ -118,7 +118,7 @@ network controller
       }).
       success(api.addNetwork).
       error(function (e) {
-        api.toast("Couldn't Save Network - " + e.message, 'networks');
+        api.toast("Couldn't Save Network", 'networks', e);
       });
 
       $scope.stopEditing();
@@ -160,7 +160,7 @@ network controller
           $scope.ranges[obj.id] = angular.copy(obj);
         }).
         error(function (e) {
-          api.toast("Couldn't Save Network Range - " + e.message, 'network_ranges');
+          api.toast("Couldn't Save Network Range", 'network_ranges', e);
         });
 
       });
@@ -196,7 +196,7 @@ network controller
         $scope.ranges[obj.id] = angular.copy(obj);
       }).
       error(function (e) {
-        api.toast("Couldn't Add Network Range - " + e.message, 'network_ranges');
+        api.toast("Couldn't Add Network Range", 'network_ranges', e);
       });
     };
 
@@ -240,7 +240,7 @@ network controller
         $scope.router = angular.copy(obj);
       }).
       error(function (e) {
-        api.toast("Couldn't Save Network Router - " + e.message, 'network_routers');
+        api.toast("Couldn't Save Network Router", 'network_routers', e);
       });
 
       $scope.stopEditingRouter();
