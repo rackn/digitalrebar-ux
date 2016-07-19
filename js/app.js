@@ -291,6 +291,22 @@ var version = '0.1.3';
     }
   ]);
 
+  app.directive('scrollPosition', function($window) {
+  return {
+    scope: {
+      scroll: '=scrollPosition'
+    },
+    link: function(scope, element, attrs) {
+      //var windowEl = angular.element($window);
+      var handler = function() {
+        scope.scroll = element.scrollTop();
+      }
+      element.on('scroll', scope.$apply.bind(scope, handler));
+      handler();
+    }
+  };
+});
+
   app.controller('AppCtrl', function ($scope, $location, localStorageService, $mdSidenav, api) {
     $scope.toggleSideNav = function (menuId) {
       $mdSidenav(menuId).toggle();
@@ -298,6 +314,7 @@ var version = '0.1.3';
 
     $scope.api = api;
     $scope.reload = api.reload;
+    $scope.scroll = 0;
 
     $scope.menu = [{
       title: 'Deployments',

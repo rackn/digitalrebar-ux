@@ -1,5 +1,5 @@
 <md-card>
-  <md-toolbar class="md-default" md-theme='status_{{node_role.status}}'>
+  <md-toolbar class="md-default" md-theme='status_{{node_role.status}}' ng-style="style">
     <div class="md-toolbar-tools">
       <span>
         <md-icon class='md-primary'>
@@ -33,6 +33,13 @@
     </div>
 
   </md-toolbar>
+
+  <md-toolbar ng-if='top < 0'>
+    <div class='md-toolbar-tools'>
+      <h2>Node Role</h2>
+    </div>
+  </md-toolbar>
+
   <div class="md-toolbar-tools">
     <span>Attributes</span>
   </div>
@@ -43,12 +50,12 @@
 
 <!-- Run Log -->
 <md-card>
-  <md-toolbar class="md-table-toolbar md-default">
+  <md-toolbar class="md-table-toolbar md-default" id='runlog'>
     <div class="md-toolbar-tools">
       <span>Run Log</span>
     </div>
   </md-toolbar>
   <md-card-content>
     <pre class='runlog'>{{node_role.runlog || "None"}}</pre>
-    <md-card-content>
+  </md-card-content>
 </md-card>

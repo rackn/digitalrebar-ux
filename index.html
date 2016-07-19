@@ -129,7 +129,7 @@
 
     <md-content layout="column" layout-fill class='bg'>
       <!-- Header -->
-      <md-toolbar layout="column" class='md-whiteframe-z1' ng-show='isAuth()'>
+      <md-toolbar layout="column" class='md-whiteframe-z1' ng-show='isAuth()' id='toolbar'>
         <div class='md-toolbar-tools'>
           <md-button class="md-icon-button" ng-click="toggleSideNav('left')" hide-gt-md aria-label="Menu" />
           <md-icon>menu</md-icon>
@@ -171,7 +171,7 @@
       </md-toolbar>
 
       <!-- Content -->
-      <div ng-view ng-cloak style='overflow: auto;'>
+      <div ng-view ng-cloak style='overflow: auto;' scroll-position='scroll'>
       </div>
     </md-content>
 
