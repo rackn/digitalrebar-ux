@@ -26,7 +26,7 @@ node role controller
         api('/api/v2/node_roles/' + $scope.node_role.id + '/retry', {
           method: 'PUT'
         }).success(api.addNodeRole).error(function (err) {
-          api.toast('Error: ' + err.message, 'node_role', err);
+          api.toast('Error retrying node role', 'node_role', err);
         });
       }
     };

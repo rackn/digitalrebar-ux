@@ -1,0 +1,52 @@
+<md-card layout='column' flex>
+  <md-toolbar class='md-table-toolbar'>
+    <div class='md-toolbar-tools'>
+      <md-icon style='color: #fff;'>
+        search
+      </md-icon>
+      <input type="text" class='table-input' style='background: rgba(0,0,0,0); color: #fff;' ng-model="search" placeholder="Search Errors">
+    </div>
+  </md-toolbar>
+
+  <div style='text-align: center; padding: 1em;' ng-if='!api.errors.length'>
+    No Errors To Display
+  </div>
+  <md-table-container ng-if='api.errors.length'>
+    <table md-table>
+      <thead md-head md-order="order">
+        <tr md-row>
+          <th md-column md-order-by='type'>Type</th>
+          <th md-column md-order-by='message'>Message</th>
+          <th md-column md-order-by='date'>Date</th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row ng-repeat="error in api.errors | filter:search | orderBy: order">
+          <td md-cell>{{error.type}}</td>
+          <td md-cell>
+            <md-button class='md-icon-button' ng-click='showInfo($event, error)'>
+              <md-icon>
+                info_outline
+              </md-icon>
+              <md-tooltip>
+                Show More Information
+              </md-tooltip>
+            </md-button>
+            {{error.message}}
+          </td>
+          <td md-cell>{{error.date | date:'dd-MM-yy HH:mm:ssa'}}</td>
+          <td md-cell>
+            <md-button class='md-icon-button' ng-click='remove(error)'>
+              <md-icon>
+                remove
+              </md-icon>
+              <md-tooltip>
+                Remove Error
+              </md-tooltip>
+            </md-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+</md-card>

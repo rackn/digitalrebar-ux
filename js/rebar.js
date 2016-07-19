@@ -87,7 +87,7 @@
 
   });
 
-  app.factory('api', function ($http, $rootScope, $timeout, $mdToast, debounce) {
+  app.factory('api', function ($http, $rootScope, $timeout, $mdToast, debounce, localStorageService) {
 
 
     // function for calling api functions ( eg. /api/v2/nodes )
@@ -112,7 +112,7 @@
     api.queue = [];
     api.queueLen = 0;
 
-    api.errors = [];
+    api.errors = localStorageService.get('errors') || [];
 
     api.toast = function (message, error, err) {
       $mdToast.show(
@@ -122,7 +122,8 @@
         .hideDelay(3000)
       );
       if (error) {
-        api.errors.push({ type: error, message: message, err: err });
+        api.errors.push({ type: error, message: message, err: err, stack: new Error().stack, date: Date.now() });
+        localStorageService.add('errors', api.errors)
       }
     };
 

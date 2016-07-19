@@ -143,7 +143,7 @@ deployments controller
       api("/api/v2/deployments/" + id + "/propose", { method: "PUT" }).
       success(api.addDeployment).
       error(function (err) {
-        api.toast("Error Proposing Deployment " + $scope._deployments[id].name + " - " + err.message, 'deployment', err);
+        api.toast("Error Proposing Deployment " + $scope._deployments[id].name, 'deployment', err);
       });
     };
 
@@ -152,7 +152,7 @@ deployments controller
       api("/api/v2/deployments/" + id + "/commit", { method: "PUT" }).
       success(api.addDeployment).
       error(function () {
-        api.toast("Error Committing Deployment " + $scope._deployments[id].name + " - " + err.message, 'deployment', err);
+        api.toast("Error Committing Deployment " + $scope._deployments[id].name, 'deployment', err);
       });
     };
 
@@ -186,7 +186,7 @@ deployments controller
         }
       }).success(api.addDeploymentRole).
       error(function (err) {
-        api.toast("Error Adding Deployment Role - " + err.message, 'deployment_role', err);
+        api.toast("Error Adding Deployment Role", 'deployment_role', err);
       });
     };
 
@@ -211,7 +211,7 @@ deployments controller
           deployments.createStatusBarData();
         }).
         error(function (err) {
-          api.toast("Couldn't Create Deployment - " + err.message, 'deployment', err);
+          api.toast("Couldn't Create Deployment", 'deployment', err);
         });
       }, function () {});
     };
@@ -242,7 +242,7 @@ deployments controller
         }
       }).success(api.addNodeRole).
       error(function (err) {
-        api.toast("Error Adding Node Role - " + err.message, 'node_role', err);
+        api.toast("Error Adding Node Role", 'node_role', err);
       }).success(function () {
         $scope.setBindRole(deployment_id, role_id);
       });

@@ -226,6 +226,13 @@ var version = '0.1.3';
       templateUrl: 'views/workloads.html'
     }).
 
+
+    when('/logging', {
+      controller: 'LoggingCtrl',
+      controllerAs: 'logging',
+      templateUrl: 'views/logging.html'
+    }).
+
     otherwise({
       redirectTo: '/login'
     });
@@ -372,6 +379,10 @@ var version = '0.1.3';
       title: 'Settings',
       icon: 'settings',
       path: '/settings'
+    }, {
+      title: 'Error Backlog',
+      icon: 'error',
+      path: '/logging'
     }];
 
     $scope.setPath = function (path) {

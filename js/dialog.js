@@ -67,7 +67,7 @@ dialog controller
         success(api.addBarclamp);
         api.toast('Updated barclamp');
       }).error(function (err) {
-        api.toast('Error: ' + err.message, 'barclamp', err);
+        api.toast('Error Updating barclamp', 'barclamp', err);
       })
 
       $mdDialog.hide();
@@ -116,7 +116,7 @@ dialog controller
           data: payload,
         }).success(api.addNode).
         error(function (err) {
-          api.toast('Error: ' + err.message, 'node', err);
+          api.toast('Error updating node', 'node', err);
         });
       });
 
@@ -131,7 +131,7 @@ dialog controller
         data: locals.provider
       }).success(api.addProvider).
       error(function (err) {
-        api.toast("Error Adding Provider - " + err.message, 'provider', err);
+        api.toast("Error Adding Provider", 'provider', err);
       });
       $mdDialog.hide();
     };
@@ -143,7 +143,7 @@ dialog controller
         data: locals.network
       }).success(api.addNetwork).
       error(function (err) {
-        api.toast("Error Adding Network - " + err.message, 'network', err);
+        api.toast("Error Adding Network", 'network', err);
       });
       $mdDialog.hide();
     };
@@ -209,7 +209,7 @@ dialog controller
         data: data
       }).success(function (update) {
       }).error(function (err) {
-        api.toast("Error creating tenant - "+err.message, "tenants", err)
+        api.toast("Error creating tenant", "tenants", err)
       });
 
 
