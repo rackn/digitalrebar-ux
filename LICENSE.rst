@@ -60,7 +60,7 @@ program.
  
 It is further understood that the Application is primarily for evaluation and
 non-commercial use only. RackN defines "evaluation" use as the using the Application 
-for managing more than any combination of physical and virtual nodes equalling greater than 100 nodes. 
+for managing more than any combination of physical and virtual nodes less than or equalling 100 nodes. 
 If RackN learns of usage above this threashold, it will ask the user to engage in a software support agreement. 
 The use of the Application, for purpose of this agreement, includes uses on, or in conjunction with: personal and corporate
 products, professional services and development work in which revenue is
