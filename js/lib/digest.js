@@ -24,8 +24,7 @@ function digestAuthInterceptorProvider() {
 	
 	digestAuthInterceptorFactory.$inject = ['$q', '$injector', '$location', 'md5', 'localStorageService'];
 	function digestAuthInterceptorFactory($q, $injector, $location, md5, localStorageService) {
-		return DigestAuthInterceptor(username, password, maximumRetries, authenticationHeader, credentialsInvalidPath, $q, $injector, $location, md5, localStorageService);
-	}
+		return DigestAuthInterceptor(username, password, maximumRetries, authenticationHeader, credentialsInvalidPath, $q, $injector, $location, md5, localStorageService);	}
 }
 
 function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries, authenticationHeader, credentialsInvalidPath, $q, $injector, $location, md5, localStorageService) {
@@ -46,6 +45,7 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 		if(!config.api) // don't add auth header if I'm not using the api
 			return config;
 		var header = createHeader(config.method, config.url);
+		//console.log('header created: ', header)
 		if (header) {
 			config.headers.Authorization = header;
 		}
@@ -54,6 +54,7 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 	}
 	
 	function responseError(rejection) {
+		console.log("rejection",rejection)
 		if ((rejection.status !== 400 && rejection.status !== 401) ||
 			typeof rejection.config === 'undefined' ||
 			typeof rejection.config.headers === 'undefined'
@@ -139,8 +140,10 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 		})
 		.error(function(httpReject) {
 			HA1 = null;
-			if(typeof httpReject !== 'undefined')
+			if(typeof httpReject !== 'undefined') {
+				console.log('err',deferredResponse)
 				deferredResponse.reject(httpReject);
+			}
 		});
 		return deferredResponse.promise;
 	}

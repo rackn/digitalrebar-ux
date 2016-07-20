@@ -410,7 +410,6 @@ var version = '0.1.3';
     $scope.logout = function () {
       localStorageService.add('username', '');
       localStorageService.add('password', '');
-      localStorageService.add('remember', '');
       window.location.reload();
     };
 
