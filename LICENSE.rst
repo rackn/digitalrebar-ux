@@ -45,7 +45,7 @@ home or business, you may install and use the Application on any computer or
 computers of the type identified on the website.
  
 RackN reserves the right to add additional features or functions to the
-existing Application. You understand that RackN may require your review and
+existing Application. You acknowledge that RackN may require your review and
 acceptance of RackN then-current privacy policy and/or end user license
 agreement before you will be permitted a limited license for any subsequent
 versions of the Application. You acknowledge and agree that RackN has no
@@ -59,8 +59,10 @@ nor shall you modify the Application and/or merge it into another computer
 program.
  
 It is further understood that the Application is primarily for evaluation and
-non-commercial use. Non-commercial use of the Application, for purpose of this
-agreement, includes uses on or in conjunction with: personal and corporate
+non-commercial use only. RackN defines "evaluation" use as the using the Application 
+for managing more than any combination of physical and virtual nodes equalling greater than 100 nodes. 
+If RackN learns of usage above this threashold, it will ask the user to engage in a software support agreement. 
+The use of the Application, for purpose of this agreement, includes uses on, or in conjunction with: personal and corporate
 products, professional services and development work in which revenue is
 realized. The Application may not be offered for sale, used in conjunction
 with goods/services being offered for sale, or used in advertising without the
@@ -74,7 +76,7 @@ transmit, display, perform, reproduce, publish, license, create derivative
 works from, transfer, or sell any content, including, without limitation,
 copyright works, information, software, products or services.
  
-If you the Application, you agree to: a. not use the Application to disparage
+By accepting this agreement, you agree to: a. not use the Application to disparage
 RackN, its suppliers, products, partners, services and investors for
 promotional goods or for products which, in RackN sole judgment, may diminish
 or otherwise damage RackN goodwill in the Application including but not
