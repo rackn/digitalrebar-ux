@@ -282,9 +282,6 @@
             $rootScope._users[cap.user_id].caps[cap.tenant_id].caps.push(cap.capability_id);
           }
 
-        }).
-        error(function (err) {
-          api.toast("Error fetching capabilities", "settings", err);
         });
 
         // get a list of tenants
@@ -326,13 +323,7 @@
           $rootScope._tenantsInOrder = [];
           inOrderMap(parents, $rootScope._tenantsInOrder);
 
-        }).
-        error(function (err) {
-          api.toast("Error fetching tenants", "settings", err);
         });
-      }).
-      error(function (err) {
-        api.toast("Error fetching users", "settings", err);
       });
 
 
@@ -342,9 +333,6 @@
         $rootScope._capabilities = {};
         for (var i in arr)
           $rootScope._capabilities[arr[i].id] = arr[i];
-      }).
-      error(function () {
-        api.toast("Error fetching capabilities", "settings", err);
       });
     };
 
