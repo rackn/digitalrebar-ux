@@ -7,6 +7,10 @@ logging controller
       $scope.$emit('title', 'Error Logging'); // shows up on the top toolbar
 
       var logging = this;
+      $scope.query = {
+        page: 1,
+        limit: 10,
+      }
 
       $scope.showInfo = function (ev, err) {
          $mdDialog.show({
