@@ -26,14 +26,6 @@ login view
           <input type="password" ng-model='login.credentials.password' />
         </md-input-container>
 
-        <!-- Right justified login button  -->
-        <section layout='row' role="main">
-          <span class='inset'>
-            <md-checkbox ng-model="login.credentials.remember">
-              Remember Me
-            </md-checkbox>
-          </span>
-        </section>
         <md-button class="md-primary" type="submit" ng-disabled="!eula">
           Login
         </md-button>

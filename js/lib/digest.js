@@ -24,8 +24,7 @@ function digestAuthInterceptorProvider() {
 	
 	digestAuthInterceptorFactory.$inject = ['$q', '$injector', '$location', 'md5', 'localStorageService'];
 	function digestAuthInterceptorFactory($q, $injector, $location, md5, localStorageService) {
-		return DigestAuthInterceptor(username, password, maximumRetries, authenticationHeader, credentialsInvalidPath, $q, $injector, $location, md5, localStorageService);
-	}
+		return DigestAuthInterceptor(username, password, maximumRetries, authenticationHeader, credentialsInvalidPath, $q, $injector, $location, md5, localStorageService);	}
 }
 
 function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries, authenticationHeader, credentialsInvalidPath, $q, $injector, $location, md5, localStorageService) {
@@ -139,8 +138,9 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 		})
 		.error(function(httpReject) {
 			HA1 = null;
-			if(typeof httpReject !== 'undefined')
+			if(typeof httpReject !== 'undefined') {
 				deferredResponse.reject(httpReject);
+			}
 		});
 		return deferredResponse.promise;
 	}

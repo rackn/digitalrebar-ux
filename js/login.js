@@ -7,12 +7,9 @@ login controller
       $scope.$emit('title', 'Login'); // shows up on the top toolbar
 
       // model for the sign in form
-      $scope.initialRemember = localStorageService.get('remember');
-
       this.credentials = {
         username: localStorageService.get('username') || '',
         password: localStorageService.get('password') || '',
-        remember: localStorageService.get('remember') || false
       };
 
       this.hosts = localStorageService.get('hosts') || [];
@@ -64,12 +61,9 @@ login controller
               return;
           }
 
-          if ($scope.initialRemember) {
+          else if(login.credentials.username && login.credentials.password)
             login.signIn();
-          }
-
         }).error(function () {
-          $scope.initialRemember = false;
           login.state = -1; // error state
         });
       };
@@ -103,15 +97,11 @@ login controller
         login.testHost(login.host);
       };
 
-      $scope.cancelInitial = function () {
-        $scope.initialRemember = false;
-      };
       // function for the login button
       this.signIn = function () {
         console.log('attempting to sign in')
         localStorageService.add('username', login.credentials.username);
         localStorageService.add('password', login.credentials.password);
-        localStorageService.add('remember', login.credentials.remember);
 
         api('/api/v2/digest', {
           method: 'HEAD',
@@ -122,11 +112,8 @@ login controller
             'rackn': 'ux v' + version // let the logs know it's the ux
           }
         }).then(function (response) {
+          console.log('getting user')
           login.getUser();
-
-          // remove password if not remember
-          if (!login.credentials.remember)
-            localStorageService.add('password', undefined);
 
         }, function (response) {
           console.log('error', response);
@@ -143,8 +130,11 @@ login controller
         api('/api/v2/digest', { method: 'GET' }).then(function (resp) {
           $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
           $scope.$emit('startUpdating'); // start auto-updating the api data
+          console.log('success',$scope.lastPath)
+
           $location.path($scope.lastPath);
-        }, function (err) {});
+        }, function (err) {
+        });
       };
 
     });
