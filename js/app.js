@@ -458,9 +458,20 @@ var version = '0.1.3';
       else // default to Deployments
         path = 'deployments';
 
-      if (path !== 'login' && !$rootScope.isAuth()) {
-        $rootScope.lastPath = '/' + path;
-        $location.path('/login');
+      if(!$rootScope.isAuth()) {
+        var token = $cookies.get('DrAuthToken');
+        var username = $cookies.get('DrAuthUser');
+
+        if(typeof token !== 'undefined') {
+          $rootScope.$emit('login', { username: username }); //store the user in rootScope so the isAuth function can use it!
+          $rootScope.$emit('startUpdating'); // start auto-updating the api data
+        } else {
+          if (path !== 'login') {
+            $rootScope.lastPath = '/' + path;
+            $location.path('/login');
+            return
+          }          
+        }
       }
 
       if (path === 'login' && $rootScope.isAuth()) {
@@ -475,8 +486,6 @@ var version = '0.1.3';
       api('/api/v2/users/'+data.username).success(function (data) {
         $rootScope.user = data;
       });
-
-      $rootScope.shouldLogOut = localStorageService.get('remember');
 
       api('/api/v2/providers/templates').
       success(function (data) {
