@@ -124,10 +124,6 @@ login controller
         }).then(function (response) {
           login.getUser();
 
-          // remove password if not remember
-          if (!login.credentials.remember)
-            localStorageService.add('password', undefined);
-
         }, function (response) {
           console.log('error', response);
           $mdToast.show(
@@ -140,11 +136,19 @@ login controller
       };
 
       this.getUser = function () { // once we get a 200 success from signIn, we can get the user
+          console.log('getting user',$scope.lastPath)
         api('/api/v2/digest', { method: 'GET' }).then(function (resp) {
           $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
           $scope.$emit('startUpdating'); // start auto-updating the api data
+          console.log('success',$scope.lastPath)
+          // remove password if not remember
+          if (!login.credentials.remember)
+            localStorageService.add('password', undefined);
+
           $location.path($scope.lastPath);
-        }, function (err) {});
+        }, function (err) {
+          console.log('nopee')
+        });
       };
 
     });
