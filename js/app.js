@@ -273,6 +273,7 @@ var version = '0.1.3';
     }
   });
 
+  // stretch a div to match its content's height
   app.directive('elastic', [
     '$timeout',
     function ($timeout) {
