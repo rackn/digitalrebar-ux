@@ -31,11 +31,7 @@
     // use regex to get the current location
     var currentLocation = "https://" + location.hostname;
     var token = $cookies.get('DrAuthToken');
-    var port = ":3000";
-    if (typeof token !== 'undefined') {
-      port = "";
-    }
-    $rootScope.host = $cookies.get('host') || currentLocation + port;
+    $rootScope.host = $cookies.get('host') || currentLocation;
 
     $rootScope.$on('updateApi', function (event) {
       api.getHealth();
