@@ -10,7 +10,7 @@ logging controller
       $scope.query = {
         page: 1,
         limit: 10,
-      }
+      };
 
       $scope.showInfo = function (ev, err) {
          $mdDialog.show({
@@ -34,11 +34,11 @@ logging controller
           targetEvent: ev,
           clickOutsideToClose: true
         });
-      }
+      };
 
       $scope.remove = function (err) {
-        api.errors.splice(api.errors.indexOf(err), 1)
-        localStorageService.add('errors', api.errors)
-      }
+        api.errors.splice(api.errors.indexOf(err), 1);
+        localStorageService.add('errors', api.errors);
+      };
     });
 })();

@@ -21,6 +21,11 @@ table td.label {
   font-weight: bold;
 }
 
+.login-autocomplete md-input-container {
+  margin: 0;
+  padding: 0 !important;
+}
+
 json-text {
   font-family: monospace;
 }

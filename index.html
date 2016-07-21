@@ -119,7 +119,7 @@
         </div>
 
         <!-- Logout list item -->
-        <md-list-item ng-click="logout()" ng-if="$cookies.get('DrAuthToken')">
+        <md-list-item ng-click="logout()" ng-if="shouldLogOut">
           <md-icon>exit_to_app</md-icon>
           <p>Logout</p>
         </md-list-item>
