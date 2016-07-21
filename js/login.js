@@ -12,6 +12,32 @@ login controller
         password: localStorageService.get('password') || '',
       };
 
+      $scope.acceptedEula = localStorageService.get('accept_eula') || false;
+
+      $scope.acceptEula = function (ev) {
+        if($scope.acceptedEula) {
+          localStorageService.add('accept_eula', false);
+          $scope.acceptedEula = false;
+        } else {        
+          $mdDialog.show({
+            controller: 'LoginCtrl',
+            templateUrl: 'views/dialogs/accepteuladialog.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: false
+          }).then(function(accepted){
+            localStorageService.add('accept_eula', accepted);
+            $scope.acceptedEula = localStorageService.get('accept_eula');
+          }, function(){
+
+          });
+        }
+      };
+
+      $scope.answerEula = function (val) {
+        $mdDialog.hide(val);
+      };
+
       this.hosts = localStorageService.get('hosts') || [];
 
       this.host = $scope.host;
@@ -99,6 +125,10 @@ login controller
 
       // function for the login button
       this.signIn = function () {
+        if(!$scope.acceptedEula) {
+          api.toast("Please Accept the Eula")
+          return;
+        }
         console.log('attempting to sign in')
         localStorageService.add('username', login.credentials.username);
         localStorageService.add('password', login.credentials.password);
