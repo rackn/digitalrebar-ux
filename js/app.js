@@ -300,7 +300,7 @@ var version = '0.1.3';
     link: function(scope, element, attrs) {
       //var windowEl = angular.element($window);
       var handler = function() {
-        scope.scroll = element.scrollTop();
+        scope.scroll = element.scrollTop;
       }
       element.on('scroll', scope.$apply.bind(scope, handler));
       handler();
