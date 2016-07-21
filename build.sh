@@ -1,3 +1,6 @@
+#!/bin/bash
+# Tool for minifying everything
+
 # remove existing build dir and create new ones
 [ -d "_build" ] && rm -rf _build
 mkdir _build 

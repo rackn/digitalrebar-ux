@@ -6,8 +6,6 @@ role controller
 
     $scope.$emit('title', 'Roles'); // shows up on the top toolbar
 
-    var roles = this;
-
     $scope.myOrder = 'jig_name';
     $scope.flags = ["library", "implicit", "bootstrap",
       "discovery", "cluster", "destructive", "abstract"

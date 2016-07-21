@@ -6,7 +6,6 @@ users controller
     .controller('UsersCtrl', function ($scope, api, $mdMedia, $mdDialog, $routeParams) {
       $scope.$emit('title', 'Users'); // shows up on the top toolbar
 
-      var users = this;
       $scope.expand = {};
 
       if ($routeParams.id)

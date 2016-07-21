@@ -4,7 +4,6 @@ dialog controller
 (function () {
   angular.module('app').controller('DialogController', function ($scope, $rootScope, $mdDialog, locals, api, $mdToast, debounce) {
     // keep locals from the config
-    var dialog = this;
     $scope.locals = locals;
 
     // have icons persist

@@ -6,8 +6,6 @@ barclamps controller
 
     $scope.$emit('title', 'Barclamps'); // shows up on the top toolbar
 
-    var barclamps = this;
-
     $scope.myOrder = 'id'
 
     // converts the barclamps object that rootScope has into an array

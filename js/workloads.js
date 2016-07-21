@@ -135,7 +135,7 @@ workloads controller
       // create new nodes if system nodes aren't allowed
       if (!wizard.system_nodes && wizard.create_nodes) {
         for (var i = 0; i < serviceList.length; i++) {
-          var node = $scope.addNode();
+          $scope.addNode();
         }
       }
 
