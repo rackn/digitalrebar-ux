@@ -480,7 +480,6 @@ var version = '0.1.3';
     $rootScope.$on('login', function (event, data) {
       $rootScope.user = data;
       $rootScope.shouldLogOut = !!localStorageService.get('password')
-      console.log("should",$rootScope.shouldLogOut)
       // get the current user data
       api('/api/v2/users/'+data.username).success(function (data) {
         $rootScope.user = data;
