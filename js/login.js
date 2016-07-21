@@ -142,7 +142,6 @@ login controller
             'rackn': 'ux v' + version // let the logs know it's the ux
           }
         }).then(function (response) {
-          console.log('getting user')
           login.getUser();
 
         }, function (response) {
@@ -160,7 +159,6 @@ login controller
         api('/api/v2/digest', { method: 'GET' }).then(function (resp) {
           $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
           $scope.$emit('startUpdating'); // start auto-updating the api data
-          console.log('success',$scope.lastPath)
 
           $location.path($scope.lastPath);
         }, function (err) {
