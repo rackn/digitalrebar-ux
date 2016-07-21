@@ -6,8 +6,6 @@ tenants controller
     .controller('TenantsCtrl', function ($scope, api, $mdDialog, $mdMedia, $routeParams) {
       $scope.$emit('title', 'Tenants'); // shows up on the top toolbar
 
-      var tenants = this;
-
       $scope.expand = {};
 
       if ($routeParams.id)

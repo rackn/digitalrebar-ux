@@ -25,3 +25,9 @@
 2. `python simple-https.py [port]`
 
 3. Open `https://localhost` in any browser (reminder: add [port] if given)
+
+### Minify
+
+1. `npm install cssnano-cli html-minifier-cli uglify-js`
+
+2. `./build.sh`

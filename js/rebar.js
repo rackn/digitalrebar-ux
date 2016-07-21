@@ -30,7 +30,6 @@
   app.run(function ($rootScope, $cookies, api, $interval) {
     // use regex to get the current location
     var currentLocation = "https://" + location.hostname;
-    var token = $cookies.get('DrAuthToken');
     $rootScope.host = $cookies.get('host') || currentLocation;
 
     $rootScope.$on('updateApi', function (event) {
@@ -344,7 +343,6 @@
 
       if (type == 'deployment') {
         ['nodes', 'node_roles'].forEach(function (item) {
-          var removed = [];
           var name = /^.*(?=s)/.exec(item)[0];
           for (var id in $rootScope['_' + item]) {
             var child = $rootScope['_' + item][id];

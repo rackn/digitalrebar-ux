@@ -6,8 +6,6 @@ provider controller
     .controller('ProviderCtrl', function ($scope, $location, $routeParams, api, $mdMedia, $mdDialog) {
       $scope.$emit('title', 'Provider'); // shows up on the top toolbar
 
-      var provider = this;
-
       this.getProviders = function () {
         var providers = [];
         for (var id in $scope._providers) {

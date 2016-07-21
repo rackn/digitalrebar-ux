@@ -26,8 +26,6 @@ provisioner controller
       }
       $scope.$emit('title', title);
 
-      var provisioner = this;
-
       $scope.expand = {};
       $scope.attribs = [];
 

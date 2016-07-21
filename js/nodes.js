@@ -211,7 +211,6 @@ node controller
       if (!$scope.editing)
         return;
 
-      var data = angular.copy($scope.attribs);
       $scope.attribs = $scope._attribs;
       $scope.provider = $scope._providers[$scope.id];
       $scope.editing = false;

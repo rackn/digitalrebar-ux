@@ -6,7 +6,6 @@ logging controller
     .controller('LoggingCtrl', function ($scope, api, $mdDialog, $mdMedia, localStorageService) {
       $scope.$emit('title', 'Error Logging'); // shows up on the top toolbar
 
-      var logging = this;
       $scope.query = {
         page: 1,
         limit: 10,
