@@ -28,6 +28,6 @@
 
 ### Minify
 
-1. `npm install cssnano-cli html-minifier uglify-js`
+1. `npm install cssnano-cli html-minifier-cli uglify-js`
 
 2. `./build.sh`
