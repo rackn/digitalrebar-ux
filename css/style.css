@@ -16,6 +16,10 @@ md-sidenav ng-md-icon {
   top: 5px;
 }
 
+.md-toolbar-tools span md-icon, .md-toolbar-tools span a, .md-toolbar-tools span  {
+  margin-left: 4px;
+}
+
 table td.label {
   text-align: right;
   font-weight: bold;

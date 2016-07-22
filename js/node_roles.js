@@ -13,17 +13,23 @@ node role controller
     // used for showing the toolbar when scrolling beyond the runlog
     $scope.style = {};
     $scope.top = 0;
-    $scope.$watch('scroll', function(){
+    $scope.$watch('scroll', function() {
+      if(!$scope.id)
+        return;
+
       var top = $('#runlog').position().top - $('#runlog').height();
       $scope.top = top;
+      var toolbar = $('.md-default:not(#runlog)');
       if(top < 0) { // the top of the runlog toolbar is offscreen
         $scope.style = {
-          position: 'fixed',
-          width: $('#runlog').width(),
-          top: $('#toolbar').height()
+          'position': 'fixed'
         };
+        toolbar.css('width', $('#runlog').width());
+        toolbar.css('top', $('#toolbar').height());
       } else {
         $scope.style = {};
+        toolbar.css('width', 'auto');
+        toolbar.css('top', 'auto');
       }
     })
 

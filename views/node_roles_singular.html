@@ -8,16 +8,16 @@
             {{node_role.status}}
           </md-tooltip>
         </md-icon>
-        <a ng-href='#/deployments/{{node_role.deployment_id}}'>
+        <a ng-href='#/deployments/{{node_role.deployment_id}}'  swap-md-paint-fg="status_{{node_role.status}} foreground">
           {{_deployments[node_role.deployment_id].name}}
         </a>
-        <a ng-href='#/nodes/{{node_role.node_id}}'>
+        <a ng-href='#/nodes/{{node_role.node_id}}'  swap-md-paint-fg="status_{{node_role.status}} foreground">
           {{_nodes[node_role.node_id].name}}
         </a>
         <md-icon class='md-primary'>
           {{_roles[node_role.role_id].icon}}
         </md-icon>
-        <a ng-href='#/roles/{{node_role.role_id}}'>
+        <a ng-href='#/roles/{{node_role.role_id}}'  swap-md-paint-fg="status_{{node_role.status}} foreground">
           {{_roles[node_role.role_id].name}}
         </a>
       </span>
