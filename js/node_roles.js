@@ -19,15 +19,17 @@ node role controller
 
       var top = $('#runlog').position().top - $('#runlog').height();
       $scope.top = top;
+      var toolbar = $('.md-default:not(#runlog)');
       if(top < 0) { // the top of the runlog toolbar is offscreen
         $scope.style = {
           'position': 'fixed'
         };
-        var toolbar = $('md-toolbar .md-default');
         toolbar.css('width', $('#runlog').width());
         toolbar.css('top', $('#toolbar').height());
       } else {
         $scope.style = {};
+        toolbar.css('width', 'auto');
+        toolbar.css('top', 'auto');
       }
     })
 
