@@ -16,14 +16,14 @@ node role controller
     $scope.$watch('scroll', function() {
       if(!$scope.id)
         return;
-      
+
       var top = $('#runlog').position().top - $('#runlog').height();
       $scope.top = top;
       if(top < 0) { // the top of the runlog toolbar is offscreen
         $scope.style = {
-          position: 'fixed',
-          width: $('#runlog').width(),
-          top: $('#toolbar').height()
+          'position': 'fixed',
+          'width': ''+$('#runlog').width(),
+          'top': ''+$('#toolbar').height()
         };
       } else {
         $scope.style = {};
