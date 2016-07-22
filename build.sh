@@ -13,9 +13,9 @@ cp css/*.* _build/css
 
 # css bundle
 echo Copying CSS
-cat css/style.css \
-bower_components/angular-material/angular-material.css \
+cat bower_components/angular-material/angular-material.css \
 bower_components/angular-material-data-table/dist/md-data-table.min.css \
+css/style.css \
 > _build/css/style.temp.css
 
 # compress css bundle
