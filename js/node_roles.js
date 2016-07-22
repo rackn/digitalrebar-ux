@@ -21,10 +21,11 @@ node role controller
       $scope.top = top;
       if(top < 0) { // the top of the runlog toolbar is offscreen
         $scope.style = {
-          'position': 'fixed',
-          'width': ''+$('#runlog').width(),
-          'top': ''+$('#toolbar').height()
+          'position': 'fixed'
         };
+        var toolbar = $('md-toolbar .md-default');
+        toolbar.css('width', $('#runlog').width());
+        toolbar.css('top', $('#toolbar').height());
       } else {
         $scope.style = {};
       }
