@@ -2,7 +2,7 @@
 deployments controller
 */
 (function () {
-  angular.module('app').controller('DeploymentsCtrl', function ($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams, api) {
+  angular.module('app').controller('DeploymentsCtrl', function ($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams, api, $filter) {
     $scope.$emit('title', 'Deployments'); // shows up on the top toolbar
 
     var deployments = this;
@@ -91,6 +91,7 @@ deployments controller
     this.createPieChartData = function () {
       $timeout(function () {
         for (var id in $scope._deployments) {
+          $scope.updateMatrix($scope._deployments[id]);
           deployments.deploymentPie[id] = deployments.getNodeCounts($scope._deployments[id]);
         }
       }, 500);
@@ -214,6 +215,22 @@ deployments controller
         });
       }, function () {});
     };
+
+    $scope.matrix = {};
+    $scope.updateMatrix = function (deployment) {
+      var roles = {};
+      var node_roles = $filter('from')($scope._node_roles, 'deployment', deployment)
+      for(var i in node_roles) {
+        var role = node_roles[i];
+        if($scope._nodes[role.node_id].system)
+          node_roles.splice(node_roles.indexOf(role), 1);
+        else {
+          roles[role.role_id] = roles[role.role_id] || {};
+          roles[role.role_id][role.node_id] = role.id;
+        }
+      }
+      $scope.matrix[deployment.id] = roles;
+    }
 
     // create an object that links node roles to nodes with the deployment and parent role
     $scope.setBindRole = function (deployment_id, role_id) {

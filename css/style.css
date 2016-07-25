@@ -30,6 +30,30 @@ table td.label {
   padding: 0 !important;
 }
 
+th.angled {
+  height: 140px;
+  whitespace: nowrap;
+}
+
+th.angled div {
+  position: relative;
+  transform: translate(5px, 60px) rotateZ(-45deg);
+  white-space: nowrap;
+  width: 24px;
+  height: 24px;
+}
+
+th.angled div a {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.status {
+  padding: 4px;
+  border-radius: 50%;
+}
+
+
 json-text {
   font-family: monospace;
 }
