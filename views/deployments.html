@@ -63,6 +63,52 @@ deployments view
           </span>
         </md-tab>
 
+        <!-- Node/Roles Matrix tab -->
+        <md-tab label="Matrix" layout-padding>
+          <table>
+            <thead>
+              <th></th>
+              <th valign="bottom">Nodes</th>
+              <th ng-repeat="(id, nroles) in matrix[deployment.id]" class='angled'>
+                <div>
+                  <a ng-href='#/roles/{{id}}'>
+                    <md-icon style='transform: rotateZ(45deg)'>{{_roles[id].icon}}</md-icon>
+                    {{_roles[id].name}}
+                  </a>
+                </div>
+              </th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy:'name'">
+                <td>
+                  <span>
+                    <md-icon class='status' swap-md-paint-bg="status_{{!node.alive ? 'off' : node.status}} primary" swap-md-paint-fg="status_{{!node.alive ? 'off' : node.status}} foreground">
+                      {{icons[!node.alive ? 'off' : node.status]}}
+                    </md-icon>
+                    <md-tooltip>
+                      {{!node.alive ? 'off' : node.status}}
+                    </md-tooltip>
+                  </span>
+                </td>
+                <td class='label'>
+                  <a ng-href='#/nodes/{{node.id}}'>{{node.name}}</a>
+                </td>
+                <td ng-repeat='(id, node_roles) in matrix[deployment.id]'>
+                  <span ng-if='node_roles[node.id]'>
+                    <md-icon class='status' swap-md-paint-bg="status_{{_node_roles[node_roles[node.id]].status}} primary" swap-md-paint-fg="status_{{_node_roles[node_roles[node.id]].status}} foreground" ng-click='setPath("/node_roles/"+node_roles[node.id])'>
+                      {{icons[_node_roles[node_roles[node.id]].status]}}
+                    </md-icon>
+                    <md-tooltip>
+                      {{_node_roles[node_roles[node.id]].status}}
+                    </md-tooltip>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </md-tab>
+
+
       </md-tabs>
 
       <md-divider></md-divider>
@@ -191,11 +237,8 @@ deployments view
           <md-tooltip>Bind Node Roles</md-tooltip>
         </md-button>
 
-        <md-card-icon-actions layout-align='centeer center'>
-          <md-button class='md-icon-button' ng-click='showMatrixDialog($event, deployment)'>
-            <md-icon>grid_on</md-icon>
-            <md-tooltip>Node/Role Matrix</md-tooltip>
-          </md-button>
+        <md-card-icon-actions layout-align='center center'>
+          <!-- Buttons in center of deployment card -->
         </md-card-icon-actions>
 
         <!-- Right side of toolbar -->
