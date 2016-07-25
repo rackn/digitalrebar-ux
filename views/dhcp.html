@@ -112,7 +112,7 @@
         </thead>
         <tbody md-body>
           <tr md-row ng-repeat='option in subnet.options | orderBy: optionOrder'>
-            <td md-cell>{{option.id}}</td>
+            <td md-cell>{{optionMap[option.id] || option.id}}</td>
             <td md-cell>{{option.value}}</td>
             </td>
           </tr>
