@@ -2,7 +2,7 @@
 deployments controller
 */
 (function () {
-  angular.module('app').controller('DeploymentsCtrl', function ($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams, api) {
+  angular.module('app').controller('DeploymentsCtrl', function ($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, $routeParams, api, $filter) {
     $scope.$emit('title', 'Deployments'); // shows up on the top toolbar
 
     var deployments = this;
@@ -213,6 +213,27 @@ deployments controller
           api.toast("Couldn't Create Deployment", 'deployment', err);
         });
       }, function () {});
+    };
+
+    $scope.showMatrixDialog = function (ev, deployment) {
+      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+      $mdDialog.show({
+        controller: 'DialogController',
+        controllerAs: 'ctrl',
+        templateUrl: 'views/dialogs/noderolematrixdialog.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        locals: {
+          deployment: deployment,
+          nodes: $filter('from')($scope._nodes, 'deployment', deployment),
+          deployment_roles: $filter('from')($scope._deployment_roles, 'deployment', deployment),
+          roles: $scope._roles,
+          icons: $scope.icons,
+
+        },
+        clickOutsideToClose: true,
+        fullscreen: useFullScreen
+      });
     };
 
     // create an object that links node roles to nodes with the deployment and parent role

@@ -191,6 +191,13 @@ deployments view
           <md-tooltip>Bind Node Roles</md-tooltip>
         </md-button>
 
+        <md-card-icon-actions layout-align='centeer center'>
+          <md-button class='md-icon-button' ng-click='showMatrixDialog($event, deployment)'>
+            <md-icon>grid_on</md-icon>
+            <md-tooltip>Node/Role Matrix</md-tooltip>
+          </md-button>
+        </md-card-icon-actions>
+
         <!-- Right side of toolbar -->
         <md-card-icon-actions layout-align='end center'>
           <md-button class='md-icon-button' ng-click='deleteDeployment($event, id)'>
