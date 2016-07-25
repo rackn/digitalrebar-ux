@@ -4,7 +4,7 @@ logging controller
 (function () {
   angular.module('app')
     .controller('LoggingCtrl', function ($scope, api, $mdDialog, $mdMedia, localStorageService) {
-      $scope.$emit('title', 'Error Logging'); // shows up on the top toolbar
+      $scope.$emit('title', 'Alert History'); // shows up on the top toolbar
 
       $scope.query = {
         page: 1,

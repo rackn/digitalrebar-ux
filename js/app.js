@@ -227,7 +227,7 @@ var version = '0.1.3';
     }).
 
 
-    when('/logging', {
+    when('/alerts', {
       controller: 'LoggingCtrl',
       controllerAs: 'logging',
       templateUrl: 'views/logging.html'
@@ -398,9 +398,9 @@ var version = '0.1.3';
       icon: 'settings',
       path: '/settings'
     }, {
-      title: 'Error Backlog',
+      title: 'Alerts',
       icon: 'error',
-      path: '/logging'
+      path: '/alerts'
     }];
 
     $scope.setPath = function (path) {
