@@ -81,6 +81,7 @@ deployments controller
       disableHighlight: true,
       borderWidth: 2,
       borderColor: '#fff',
+      fillColor: '#fff',
       width: '2em',
       height: '2em'
     };
@@ -98,6 +99,12 @@ deployments controller
     };
 
     this.deploymentStatus = {};
+    $scope.deploymentStates = {
+      '-1': 'error', // error
+      '0': 'reserved', // proposed
+      '1': 'todo', // committed
+      '2': 'ready'
+    };
 
     // creates the node role status data for all the deployments
     // takes a sum of the all the node roles and all the errors

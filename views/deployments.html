@@ -5,9 +5,17 @@ deployments view
   <md-card ng-repeat='(id, deployment) in _deployments' flex='100'>
 
     <!-- Top bar for each deployment -->
-    <md-toolbar flex layout='column' ng-class="{'md-warn': deployments.deploymentStatus[id].error > 0}" ng-click="deployments.toggleExpand(deployment)" md-ink-ripple>
+    <md-toolbar flex layout='column' md-theme='status_{{deploymentStates[deployment.state]}}' ng-class="{'md-warn': deployments.deploymentStatus[id].error > 0}" ng-click="deployments.toggleExpand(deployment)" md-ink-ripple>
       <section layout='row'>
         <div class="md-toolbar-tools">
+          <span>
+            <md-icon>
+              {{icons[deploymentStates[deployment.state]]}}
+            </md-icon>
+            <md-tooltip>
+              {{deploymentStates[deployment.state]}}
+            </md-tooltip>
+          </span>
           <h2 class="md-flex">{{deployment.name}}</h2>
         </div>
         <span flex></span>
@@ -205,6 +213,16 @@ deployments view
           <md-tooltip>Commit</md-tooltip>
         </md-button>
 
+        <md-button class='md-icon-button' ng-if='deployment.state > 0' ng-click='proposeDeployment(id)'>
+          <md-icon>mode_edit</md-icon>
+          <md-tooltip>Propose</md-tooltip>
+        </md-button>
+
+        <md-button class='md-icon-button' ng-click='showAddNodeDialog($event, id)'>
+          <md-icon>add_box</md-icon>
+          <md-tooltip>Add Node</md-tooltip>
+        </md-button>
+
         <md-menu md-position-mode="target-right target" ng-if='deployment.state == 0' style='padding: 0;'>
           <md-button class='md-icon-button' ng-click='$mdOpenMenu($event)'>
             <md-icon>add_circle</md-icon>
@@ -221,16 +239,6 @@ deployments view
             </md-menu-item>
           </md-menu-content>
         </md-menu>
-
-        <md-button class='md-icon-button' ng-if='deployment.state > 0' ng-click='proposeDeployment(id)'>
-          <md-icon>mode_edit</md-icon>
-          <md-tooltip>Propose</md-tooltip>
-        </md-button>
-
-        <md-button class='md-icon-button' ng-click='showAddNodeDialog($event, id)'>
-          <md-icon>add_box</md-icon>
-          <md-tooltip>Add Node</md-tooltip>
-        </md-button>
 
         <md-button class='md-icon-button' ng-click='binding[id]=!binding[id]'>
           <md-icon>link</md-icon>
