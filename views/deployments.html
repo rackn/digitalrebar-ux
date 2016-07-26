@@ -10,10 +10,10 @@ deployments view
         <div class="md-toolbar-tools">
           <span>
             <md-icon>
-              {{icons[deploymentStates[deployment.state]]}}
+              {{deploymentIcons[deploymentStates[deployment.state]]}}
             </md-icon>
             <md-tooltip>
-              {{deploymentStates[deployment.state]}}
+              {{deploymentStateNames[deployment.state]}}
             </md-tooltip>
           </span>
           <h2 class="md-flex">{{deployment.name}}</h2>

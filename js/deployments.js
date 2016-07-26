@@ -103,7 +103,19 @@ deployments controller
       '-1': 'error', // error
       '0': 'reserved', // proposed
       '1': 'todo', // committed
-      '2': 'ready'
+      '2': 'ready' // active
+    };
+    $scope.deploymentStateNames = {
+      '-1': 'error',
+      '0': 'proposed',
+      '1': 'committed',
+      '2': 'active'
+    };
+    $scope.deploymentIcons = {
+      'error': 'warning', // error
+      'reserved': 'playlist_add', // proposed
+      'todo': 'playlist_play', // committed
+      'ready': 'playlist_add_check' // active
     };
 
     // creates the node role status data for all the deployments
