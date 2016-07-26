@@ -53,7 +53,7 @@ deployments view
         <md-tab label="Roles">
 
           <!-- Add all the Deployment Roles-->
-          <span ng-repeat="role in _deployment_roles | from:'deployment':deployment | orderBy: 'cohort'">
+          <span ng-repeat="role in _deployment_roles | from:'deployment':deployment | orderBy:role.cohort">
             <md-button class="md-fab md-primary md-mini" ng-href='#/deployment_roles/{{role.id}}'>
               <md-tooltip md-direction="bottom">
                 {{_roles[role.role_id].name}}
