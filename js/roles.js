@@ -22,6 +22,7 @@ role controller
 
     $scope.id = $routeParams.id;
     $scope.role = {};
+    $scope.metadata = {};
     $scope.editing = false;
     var hasCallback = false;
 
@@ -29,6 +30,8 @@ role controller
       if ($scope.editing) return;
 
       $scope.role = $scope._roles[$scope.id];
+      $scope.metadata = JSON.stringify($scope.role.metadata, null, "  ")
+      console.log($scope.metadata)
       if (!$scope.role)
         $location.path('/roles');
       else if (!hasCallback) {
