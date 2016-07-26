@@ -49,13 +49,21 @@
 </md-card>
 
 <!-- Run Log -->
-<md-card>
+<md-card ng-if='node_role.runlog'>
   <md-toolbar class="md-table-toolbar md-default" id='runlog'>
     <div class="md-toolbar-tools">
-      <span>Run Log</span>
+      <h2 flex>Run Log</h2>
+      <md-button clipboard class='md-icon-button' supported='supported' text="node_role.runlog" on-copied='onCopy(true)' on-error='onCopy(false, err)'>
+        <md-icon>
+          content_paste
+        </md-icon>
+        <md-tooltip>
+          Copy Log to Clipboard
+        </md-tooltip>
+      </md-button>
     </div>
   </md-toolbar>
   <md-card-content>
-    <pre class='runlog'>{{node_role.runlog || "None"}}</pre>
+    <pre class='runlog'>{{node_role.runlog}}</pre>
   </md-card-content>
 </md-card>

@@ -92,6 +92,14 @@ node role controller
         }
       });
     };
+    $scope.supported = false;
+    $scope.onCopy = function (succ, err) {
+      if(succ) {
+        api.toast('Copied Runlog to Clipboard');
+      } else {
+        api.toast('Copy Runlog to Clipboard Failed');
+      }
+    }
 
     $scope.id = $routeParams.id;
     $scope.node_role = {};
@@ -103,7 +111,11 @@ node role controller
     var updateNodeRole = function () {
       if ($scope.editing) return;
 
+      var runlog = $scope.node_role.runlog;
       $scope.node_role = $scope._node_roles[$scope.id];
+      if(runlog && $scope.node_role.runlog && runlog.length > $scope.node_role.runlog.length)
+        $scope.node_role.runlog = runlog;
+
       if (!$scope.node_role)
         $location.path('/node_roles');
       else {
