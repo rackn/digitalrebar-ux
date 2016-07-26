@@ -424,7 +424,7 @@
     api.addDeploymentRole = function (role) {
       // allow deployment roles to be sorted by cohort
       role.cohort = function () {
-        $rootScope._roles[role.role_id].cohort;
+        return $rootScope._roles[role.role_id].cohort;
       };
       var id = role.id;
       $rootScope._deployment_roles[id] = role;
