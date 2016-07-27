@@ -380,26 +380,6 @@ var version = '0.1.3';
         icon: 'insert_drive_file',
         path: '/provisioner/templates'
       }]
-    }, {
-      title: 'Advanced',
-      icon: 'developer_board',
-      expand: true,
-      expanded: function () {
-        return $scope.expandAdvanced; },
-      toggleExpand: $scope.toggleExpandAdvanced,
-      items: [{
-        title: 'API Call Helper',
-        icon: 'insert_link',
-        path: '/api_helper'
-      }, {
-        title: 'Deployment Roles',
-        icon: 'label_outline',
-        path: '/deployment_roles'
-      }, {
-        title: 'Node Roles',
-        icon: 'label',
-        path: '/node_roles'
-      }]
     }];
 
     $scope.managementMenu = [{
@@ -426,6 +406,26 @@ var version = '0.1.3';
       title: 'Alerts',
       icon: 'error',
       path: '/alerts'
+    }, {
+      title: 'Advanced',
+      icon: 'developer_board',
+      expand: true,
+      expanded: function () {
+        return $scope.expandAdvanced; },
+      toggleExpand: $scope.toggleExpandAdvanced,
+      items: [{
+        title: 'API Call Helper',
+        icon: 'insert_link',
+        path: '/api_helper'
+      }, {
+        title: 'Deployment Roles',
+        icon: 'label_outline',
+        path: '/deployment_roles'
+      }, {
+        title: 'Node Roles',
+        icon: 'label',
+        path: '/node_roles'
+      }]
     }];
 
     $scope.setPath = function (path) {
