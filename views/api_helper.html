@@ -26,6 +26,7 @@
             <option value='options'>OPTIONS</option>
             <option value='connect'>CONNECT</option>
             <option value='path'>PATH</option>
+            <option value='patch'>PATCH</option>
           </select>
           <input type='text' class='table-input' ng-model='route' placeholder="/api/v2/" />
         </td>
@@ -39,7 +40,7 @@
       <tr>
         <td></td>
         <td layout='column'>
-          <md-button class='md-raised md-primary' flex ng-click='testApi()'> 
+          <md-button class='md-raised md-primary' ng-click='testApi()'> 
             Run API
           </md-button>
         </td>
