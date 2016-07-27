@@ -39,5 +39,35 @@ logging controller
         api.errors.splice(api.errors.indexOf(err), 1);
         localStorageService.add('errors', api.errors);
       };
+
+      $scope.method = 'get';
+      $scope.payload = '{}';
+      $scope.route = '';
+      $scope.class = {};
+
+      $scope.parse = function (data) {
+        try {
+          var a = JSON.parse(data);
+          return a;
+        } catch (e) {
+          return false;
+        }
+      };
+
+      $scope.testApi = function () {
+        api($scope.route, {method: $scope.method, data: JSON.parse($scope.payload)}).
+        success(function (data) {
+          $scope.class = {success: true};
+          $scope.output = JSON.stringify(data, null, "  ");
+        }).error(function (err) {
+          $scope.class = {error: true};
+          $scope.output = JSON.stringify(err, null, "  ") || err;
+        });
+      };
+
+      $scope.clearOutput = function () {
+        $scope.output = "";
+        $scope.class = {};
+      }
     });
 })();
