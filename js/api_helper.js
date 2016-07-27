@@ -20,6 +20,11 @@ api helper controller
         }
       };
 
+      $scope.$watch('method', function (method) {
+        if(method === 'patch' && $scope.payload == '{}')
+          $scope.payload = '[\n  { "op": "replace/add/remove", "path": "/attrName", "value": "foo" }\n]'
+      })
+
       $scope.testApi = function () {
         api($scope.route, {method: $scope.method, data: JSON.parse($scope.payload)}).
         success(function (data) {
