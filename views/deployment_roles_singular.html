@@ -1,14 +1,14 @@
 <md-card>
-  <md-toolbar class="md-table-toolbar md-default">
+  <md-toolbar>
     <div class="md-toolbar-tools">
       <span>
-        <a ng-href='#/deployments/{{deployment_role.deployment_id}}'>
+        <a ng-href='#/deployments/{{deployment_role.deployment_id}}' swap-md-paint-fg="default foreground">
           {{_deployments[deployment_role.deployment_id].name}}
         </a>
         <md-icon class='md-primary'>
           {{_roles[deployment_role.role_id].icon}}
         </md-icon>
-        <a ng-href='#/roles/{{deployment_role.role_id}}'>
+        <a ng-href='#/roles/{{deployment_role.role_id}}' swap-md-paint-fg="default foreground">
           {{_roles[deployment_role.role_id].name}}
         </a>
       </span>
@@ -28,7 +28,8 @@
         <md-tooltip>Destroy</md-tooltip>
       </md-button>
     </div>
-
+  </md-toolbar>
+  <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
       <span>Attributes</span>
       <span flex></span>
@@ -37,4 +38,24 @@
 
   <div data-ng-include="'views/attrib_render.tmpl.html'">
   </div>
+</md-card>
+
+<!-- Show node roles -->
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span>Node Roles</span>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <span ng-repeat="role in _node_roles | from:'deployment':_deployments[deployment_role.deployment_id] | filter:{role_id: deployment_role.role_id} | orderBy: role.cohort()">
+
+      <md-button class="md-fab md-primary" md-theme="status_{{role.status}}" ng-href='#/node_roles/{{role.id}}'>
+        <md-icon>{{icons[role.status]}}</md-icon>
+        <md-tooltip md-direction="bottom">
+          {{_nodes[role.node_id].name}}
+        </md-tooltip>
+      </md-button>
+    </span>
+  </md-card-content>
 </md-card>

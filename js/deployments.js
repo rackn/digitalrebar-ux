@@ -238,14 +238,19 @@ deployments controller
     $scope.matrix = {};
     $scope.updateMatrix = function (deployment) {
       var roles = {};
-      var node_roles = $filter('from')($scope._node_roles, 'deployment', deployment)
+      var node_roles = $filter('from')($scope._node_roles, 'deployment', deployment);
+      var deployment_roles = $filter('from')($scope._deployment_roles, 'deployment', deployment);
+      var roleToDeploymentRole = {};
+      for(var i in deployment_roles)
+        roleToDeploymentRole[deployment_roles[i].role_id] = deployment_roles[i].id
       for(var i in node_roles) {
         var role = node_roles[i];
         if($scope._nodes[role.node_id].system)
           node_roles.splice(node_roles.indexOf(role), 1);
         else {
-          roles[role.role_id] = roles[role.role_id] || {};
-          roles[role.role_id][role.node_id] = role.id;
+          var id = roleToDeploymentRole[role.role_id];
+          roles[id] = roles[id] || {};
+          roles[id][role.node_id] = role.id;
         }
       }
       $scope.matrix[deployment.id] = roles;
