@@ -1,7 +1,11 @@
 <md-card>
   <md-toolbar class="md-table-toolbar md-default" ng-hide='node_roles.selected.length'>
     <div class="md-toolbar-tools">
-      <span>Node Roles ({{getNodeRoles().length}})</span>
+      <span flex>Node Roles ({{getNodeRoles().length}})</span>
+      <md-button class='md-icon-button' ng-click='retrySelected(getNodeRoles())'>
+        <md-icon>redo</md-icon>
+        <md-tooltip>Retry All</md-tooltip>
+      </md-button>
     </div>
   </md-toolbar>
 
@@ -9,6 +13,10 @@
     <div class="md-toolbar-tools">
       <span>{{node_roles.selected.length}} node role{{node_roles.selected.length != 1 && 's' || ''}} selected</span>
       <span flex></span>
+      <md-button class='md-icon-button' ng-click='retrySelected()'>
+        <md-icon>redo</md-icon>
+        <md-tooltip>Retry Selected</md-tooltip>
+      </md-button>
       <md-button class='md-icon-button' ng-click='destroySelected()'>
         <md-icon>delete</md-icon>
         <md-tooltip>Destroy Node Roles</md-tooltip>

@@ -39,7 +39,8 @@ node role controller
     $scope.getNodeRoles = function () {
       var roles = [];
       for (var id in $scope._node_roles) {
-        roles.push($scope._node_roles[id]);
+        if($scope._nodes[$scope._node_roles[id].node_id].variant !== 'phantom')
+          roles.push($scope._node_roles[id]);
       }
       return roles;
     };
@@ -73,6 +74,23 @@ node role controller
           });
 
         }
+      });
+    };
+
+    $scope.retrySelected = function (arr) {
+      var roles = node_roles.selected
+      if(arr)
+        roles = arr
+      roles.forEach(function (node_role) {
+        if (node_role.id) {
+          api('/api/v2/node_roles/' + node_role.id + '/retry', {
+            method: 'PUT'
+          }).success(function () {
+          });
+        }
+
+        if(!arr)
+          node_roles.selected = [];
       });
     };
 
