@@ -176,7 +176,7 @@ node controller
             if (node.id) {
               api('/api/v2/nodes/' + node.id + '/redeploy', {
                 method: 'PUT'
-              }).success(addNode).error(function (err) {
+              }).error(function (err) {
                 api.toast('Error Redeploying Node', 'node', err);
               }).success(function () {
                 api.toast('Redeployed ' + nodes.selected.length + ' node' + (nodes.selected.length == 1 ? '' : 's'));
