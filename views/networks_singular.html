@@ -142,7 +142,12 @@
         <td class='label'>
           VLAN
         </td>
-        <td>
+        <td layout='row'>
+          <md-switch ng-model="network.use_vlan" aria-label="Switch" ng-disabled='!editing' style='margin: 0;'>
+            <md-tooltip>
+              Enable/Disable VLAN
+            </md-tooltip>
+          </md-switch>
           <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.vlan' />
         </td>
       </tr>
@@ -158,7 +163,12 @@
         <td class='label'>
           Team
         </td>
-        <td>
+        <td layout='row'>
+          <md-switch ng-model="network.use_team" aria-label="Switch" ng-disabled='!editing' style='margin: 0;'>
+            <md-tooltip>
+              Enable/Disable Team
+            </md-tooltip>
+          </md-switch>
           <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.team_mode' />
         </td>
       </tr>
@@ -166,8 +176,12 @@
         <td class='label'>
           Bridge
         </td>
-        <td>
-          <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.use_bridge' />
+        <td layout='row'>
+          <md-switch ng-model="network.use_bridge" aria-label="Switch" ng-disabled='!editing' style='margin: 0;'>
+            <md-tooltip>
+              Enable/Disable Bridge
+            </md-tooltip>
+          </md-switch>
         </td>
       </tr>
     </table>
@@ -236,7 +250,7 @@
             <th>Last IP</th>
           </thead>
           <tbody>
-            <tr ng-repeat="(id, range) in ranges | orderBy:'name'">
+            <tr ng-repeat="(id, range) in ranges">
               <td>
                 <input type='text' class='table-input' ng-readonly="!editingRanges" ng-model='range.name' />
               </td>
