@@ -80,7 +80,7 @@ deployments view
               <th ng-repeat="(id, nroles) in matrix[deployment.id]" class='angled'>
                 <div>
                   <a ng-href='#/deployment_roles/{{id}}'>
-                    <md-icon style='transform: rotateZ(45deg)'>{{_roles[id].icon}}</md-icon>
+                    <md-icon style='transform: rotateZ(45deg)'>{{_roles[_deployment_roles[id].role_id].icon}}</md-icon>
                     {{_roles[_deployment_roles[id].role_id].name}}
                   </a>
                 </div>
