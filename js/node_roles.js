@@ -14,7 +14,7 @@ node role controller
     $scope.style = {};
     $scope.top = 0;
     $scope.$watch('scroll', function() {
-      if(!$scope.id)
+      if(!$scope.id || !$('#runlog').position())
         return;
 
       var top = $('#runlog').position().top - $('#runlog').height();
