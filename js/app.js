@@ -237,6 +237,11 @@ var version = '0.1.3';
       controllerAs: 'apiHelper',
       templateUrl: 'views/api_helper.html'
     }).
+    when('/attribs', {
+      controller: 'AttribsCtrl',
+      controllerAs: 'attribs',
+      templateUrl: 'views/attribs.html'
+    }).
 
     otherwise({
       redirectTo: '/login'
@@ -425,6 +430,10 @@ var version = '0.1.3';
         title: 'Node Roles',
         icon: 'label',
         path: '/node_roles'
+      }, {
+        title: 'Attributes',
+        icon: 'list',
+        path: '/attribs'
       }]
     }];
 
