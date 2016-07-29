@@ -1,0 +1,24 @@
+<md-dialog aria-label="Edit Attrib" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{locals.attrib.name}} - {{locals.attrib.description}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <!-- Network data -->
+    <md-dialog-content layout-padding>
+      <pre>{{locals.attrib.schema | json}}</pre>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <span flex></span>
+      <md-button ng-click='dialog.editAttrib()' class='md-primary md-raised' target="_blank" md-autofocus>
+        Update
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

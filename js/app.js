@@ -440,7 +440,7 @@ var version = '0.1.3';
 
   });
 
-  app.run(function ($rootScope, $location, $http, $cookies, debounce, $interval, localStorageService, api, $mdDialog) {
+  app.run(function ($rootScope, $location, $http, $cookies, debounce, $interval, localStorageService, api, $mdDialog, $mdMedia) {
 
     $rootScope.user;
     $rootScope.isAuth = function () {
@@ -527,6 +527,25 @@ var version = '0.1.3';
     $rootScope.$on('title', function (event, data) {
       $rootScope.title = data;
     });
+
+    $rootScope.showEditAttribDialog = function (ev, attrib) {
+      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+      $mdDialog.show({
+        controller: 'DialogController',
+        controllerAs: 'dialog',
+        templateUrl: 'views/dialogs/editattribdialog.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        locals: {
+          id: attrib.id,
+          value: attrib.value,
+          attrib: attrib,
+          api: api
+        },
+        clickOutsideToClose: true,
+        fullscreen: useFullScreen
+      });
+    }
 
     // a confirm dialog
     /*

@@ -101,6 +101,54 @@
       'deployment_roles', 'networks', 'providers', 'barclamps'
     ];
 
+    api.testSchema = function (data, schema) {
+      if (typeof data === 'undefined' && !schema.required)
+        return true;
+
+      switch (schema.type) {
+      case 'str': // data is a string
+        return typeof data == 'string';
+
+      case 'bool': // data is a boolean
+        return typeof data == 'boolean';
+
+      case 'int': // data is a number
+        return typeof data == 'number';
+
+      case 'seq': // data is an array
+        if (typeof data != 'object' || !Array.isArray(data))
+          return false;
+
+        var newSchema = schema.sequence[0]
+        // test all items in data against the schema's sequence
+        for (var i in data) {
+          if (!api.testSchema(data[i], newSchema))
+            return false;
+        }
+
+        return true;
+      case 'map': // data is a hash table
+        if (typeof data != 'object' || Array.isArray(data))
+          return false;
+
+        // check if data's children are valid
+        for (var key in schema.mapping) {
+          var newSchema = schema.mapping[key];
+          if (!api.testSchema(data[key], newSchema))
+            return false;
+        }
+
+        // check if data has extra keys
+        for (var key in data) {
+          if (typeof schema.mapping[key] === 'undefined')
+            return false;
+        }
+
+        return true;
+      }
+      return false;
+    }
+
 
     api.lastUpdate = new Date().getTime();
 
