@@ -274,7 +274,7 @@ var version = '0.1.3';
   // formats strings into pretty json
   app.filter('json', function () {
     return function (text) {
-      return JSON.stringify(text, null, '  ').trim();
+      return JSON.stringify(text, null, '  ');
     }
   });
 
@@ -538,7 +538,7 @@ var version = '0.1.3';
         targetEvent: ev,
         locals: {
           id: attrib.id,
-          value: attrib.value,
+          value: JSON.stringify(attrib.value, null, '  '),
           attrib: attrib,
           api: api
         },

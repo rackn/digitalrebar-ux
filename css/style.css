@@ -31,6 +31,13 @@ table td.label {
   padding: 0 !important;
 }
 
+.success {
+  background: #dfd;
+}
+.error {
+  background: #fdd;
+}
+
 th.angled {
   height: 140px;
   whitespace: nowrap;
