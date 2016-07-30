@@ -237,6 +237,11 @@ var version = '0.1.3';
       controllerAs: 'apiHelper',
       templateUrl: 'views/api_helper.html'
     }).
+    when('/attribs', {
+      controller: 'AttribsCtrl',
+      controllerAs: 'attribs',
+      templateUrl: 'views/attribs.html'
+    }).
 
     otherwise({
       redirectTo: '/login'
@@ -274,7 +279,7 @@ var version = '0.1.3';
   // formats strings into pretty json
   app.filter('json', function () {
     return function (text) {
-      return JSON.stringify(text, null, '  ').trim();
+      return JSON.stringify(text, null, '  ');
     }
   });
 
@@ -425,6 +430,10 @@ var version = '0.1.3';
         title: 'Node Roles',
         icon: 'label',
         path: '/node_roles'
+      }, {
+        title: 'Attributes',
+        icon: 'list',
+        path: '/attribs'
       }]
     }];
 
@@ -440,7 +449,7 @@ var version = '0.1.3';
 
   });
 
-  app.run(function ($rootScope, $location, $http, $cookies, debounce, $interval, localStorageService, api, $mdDialog) {
+  app.run(function ($rootScope, $location, $http, $cookies, debounce, $interval, localStorageService, api, $mdDialog, $mdMedia) {
 
     $rootScope.user;
     $rootScope.isAuth = function () {
@@ -527,6 +536,25 @@ var version = '0.1.3';
     $rootScope.$on('title', function (event, data) {
       $rootScope.title = data;
     });
+
+    $rootScope.showEditAttribDialog = function (ev, attrib) {
+      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+      $mdDialog.show({
+        controller: 'DialogController',
+        controllerAs: 'dialog',
+        templateUrl: 'views/dialogs/editattribdialog.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        locals: {
+          id: attrib.id,
+          value: JSON.stringify(attrib.value, null, '  '),
+          attrib: attrib,
+          api: api
+        },
+        clickOutsideToClose: true,
+        fullscreen: useFullScreen
+      });
+    }
 
     // a confirm dialog
     /*

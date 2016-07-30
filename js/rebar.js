@@ -101,6 +101,105 @@
       'deployment_roles', 'networks', 'providers', 'barclamps'
     ];
 
+    api.testSchema = function (data, schema) {
+      if (typeof data === 'undefined' && !schema.required)
+        return true;
+
+      switch (schema.type) {
+      case 'any': // data is anything
+        return true;
+
+      case 'str': // data is a string
+        if  (typeof data != 'string')
+          return false;
+
+        if (!schema.pattern)
+          return true;
+
+        var regex = new RegExp(schema.pattern.substr(1, schema.pattern.length - 2));
+        return !!data.match(regex);
+
+      case 'bool': // data is a boolean
+        return typeof data == 'boolean';
+
+      case 'int': // data is a number
+        return typeof data == 'number';
+
+      case 'seq': // data is an array
+        if (typeof data != 'object' || !Array.isArray(data))
+          return false;
+
+        var newSchema = schema.sequence[0];
+        // test all items in data against the schema's sequence
+        for (var i in data) {
+          if (!api.testSchema(data[i], newSchema))
+            return false;
+        }
+
+        return true;
+      case 'map': // data is a hash table
+        if (typeof data != 'object' || Array.isArray(data))
+          return false;
+
+        // handle cases where '=' is the only thing passed in mapping
+        if(typeof schema.mapping['='] !== 'undefined') {
+          var newSchema = schema.mapping['='];
+          for (var key in data) {
+            if (!api.testSchema(data[key], newSchema))
+              return false;
+          }
+        } else {
+          // check if data's children are valid
+          for (var key in schema.mapping) {
+            var newSchema = schema.mapping[key];
+            if (!api.testSchema(data[key], newSchema))
+              return false;
+          }
+
+          // check if data has extra keys
+          for (var key in data) {
+            if (typeof schema.mapping[key] === 'undefined')
+              return false;
+          }
+          
+        }
+
+
+        return true;
+      }
+      return false;
+    }
+
+    api.exampleFromSchema = function (schema) {
+      switch (schema.type) {
+      case 'any':
+        return '=' + (schema.required ? '*' : '');
+        
+      case 'str':
+        return 'string' + (schema.required ? '*' : '') + (schema.pattern ? ' ' + schema.pattern : '');
+
+      case 'bool':
+        return 'boolean' + (schema.required ? '*' : '');
+
+      case 'int':
+        return 'number' + (schema.required ? '*' : '');
+
+      case 'seq':
+        var newSchema = schema.sequence[0];
+        newSchema.required = schema.required;
+        var arr = [api.exampleFromSchema(newSchema)];
+        return arr;
+
+      case 'map': 
+        var map = {};
+        for (var key in schema.mapping) {
+          var newSchema = schema.mapping[key];
+          map[key] = api.exampleFromSchema(newSchema);
+        }
+        return map;
+      }
+    }
+
 
     api.lastUpdate = new Date().getTime();
 

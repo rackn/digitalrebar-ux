@@ -24,9 +24,6 @@ dialog controller
         
         return arr;
       }, []);
-
-
-
     };
 
     $scope.providers = (function () {
@@ -45,6 +42,16 @@ dialog controller
 
     $scope.cancel = function () {
       $mdDialog.cancel();
+    };
+
+    $scope.parse = function (data, bool) {
+      try {
+        var a = JSON.parse(data);
+        // sometimes data can be "false"
+        return (bool ? typeof a !== 'undefined' : a);
+      } catch (e) {
+        return false;
+      }
     };
 
     this.updateBarclamp = function () {
@@ -329,7 +336,29 @@ dialog controller
 
       $mdDialog.hide();
 
-    }
+    };
+
+    this.editAttrib = function () {
+      var id = locals.id;
+      var value;
+      try {
+        value = JSON.parse(locals.value);        
+      } catch (e){
+        return;
+      }
+      api("/api/v2/attribs/" + id, {
+        method: 'PUT',
+        data: {
+          value: value
+        }
+      }).success(function (data) {
+        api.toast('Updated Attrib!');
+      }).
+      error(function (err) {
+        api.toast('Error updating attrib','attrib',err);
+      });
+      $mdDialog.hide();
+    };
 
   });
 })();

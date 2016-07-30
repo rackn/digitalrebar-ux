@@ -8,7 +8,7 @@
     Error Loading Attributes
   </md-card-content>
   <md-card-content ng-switch-when="1">
-    <table layout-padding>
+    <table layout-padding flex>
       <tbody>
         <tr ng-repeat="attrib in attribs | orderBy:'name'">
           <td class='label' valign="top">
@@ -42,6 +42,16 @@
             <div data-ng-switch-default>
               <input type='text' class='table-input' ng-readonly="!attrib.writable || attrib.writable && !editing" style='font-family: monospace;' ng-model='attrib.value' />
             </div>
+          </td>
+          <td ng-if='attrib.writable'>
+            <md-button class='md-icon-button' ng-click='showEditAttribDialog($event, attrib)'>
+              <md-icon>
+                edit
+              </md-icon>
+              <md-tooltip>
+                Edit Attrib
+              </md-tooltip>
+            </md-button>
           </td>
         </tr>
       </tbody>
