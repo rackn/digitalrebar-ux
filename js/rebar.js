@@ -217,7 +217,7 @@
       );
       if (error) {
         api.errors.push({ type: error, message: message, err: err, stack: new Error().stack, date: Date.now() });
-        localStorageService.add('errors', api.errors)
+        localStorageService.add('errors', api.errors);
       }
     };
 
@@ -227,7 +227,12 @@
         api["add" + camelCase(name)](obj);
       }).
       error(function (err) {
+        if(err === "Unauthorized\n") {
+          $rootScope.$broadcast(name+id+'Done');
+          return;
+        }
         api.remove(name, id);
+        $rootScope.$broadcast(name+id+'Done');
       });
     };
 
@@ -438,7 +443,9 @@
         return;
 
       console.log('removing ' + type + ' ' + parentId);
+      
       delete $rootScope['_' + type + 's'][parentId];
+      $rootScope.$broadcast(type + parentId + "Done");
 
       if (type == 'deployment') {
         ['nodes', 'node_roles'].forEach(function (item) {
@@ -580,7 +587,7 @@
 
     // api call for getting all the node roles
     api.getNodeRoles = function () {
-      return api('/api/v2/node_roles?runlog').
+      return api('/api/v2/node_roles').
       success(function (data) {
         $rootScope._node_roles = {};
         data.map(api.addNodeRole);

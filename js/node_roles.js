@@ -129,14 +129,11 @@ node role controller
     var updateNodeRole = function () {
       if ($scope.editing) return;
 
-      var runlog = $scope.node_role.runlog;
-      $scope.node_role = $scope._node_roles[$scope.id];
-      if(runlog && $scope.node_role.runlog && runlog.length > $scope.node_role.runlog.length)
-        $scope.node_role.runlog = runlog;
-
-      if (!$scope.node_role)
+      if (!$scope._node_roles[$scope.id])
         $location.path('/node_roles');
       else {
+        $scope.node_role = $scope._node_roles[$scope.id];
+        
         if ($scope.hasAttrib == -1) {
           api('/api/v2/node_roles/' + $scope.node_role.id + "/attribs").
           success(function (obj) {
