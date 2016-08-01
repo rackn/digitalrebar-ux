@@ -87,7 +87,7 @@ login controller
               return;
           }
 
-          else if(login.credentials.username && login.credentials.password)
+          else if(localStorageService.get('username') && localStorageService.get('password'))
             login.signIn();
         }).error(function () {
           login.state = -1; // error state
