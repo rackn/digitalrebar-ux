@@ -4,7 +4,8 @@ var version = '0.1.3';
   var app = angular.module('app', [
     'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
     'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table',
-    'debounce', 'jsontext', 'ng-slide-down', 'swapMdPaint', 'angular-clipboard'
+    'debounce', 'jsontext', 'ng-slide-down', 'swapMdPaint', 'angular-clipboard',
+    'ngMessages'
   ]);
 
   app.config(function ($httpProvider, $routeProvider, $mdThemingProvider, apiProvider) {
