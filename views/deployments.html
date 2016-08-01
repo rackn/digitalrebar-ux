@@ -203,17 +203,17 @@ deployments view
 
       <!-- Toolbar with icons -->
       <md-card-actions layout="row" layout-align="start center">
-        <md-button class='md-icon-button' ng-if='deployment.state == -1' ng-click='proposeDeployment(id)'>
+        <md-button class='md-icon-button' ng-show='deployment.state == -1' ng-click='proposeDeployment(id)'>
           <md-icon>build</md-icon>
           <md-tooltip>Correct</md-tooltip>
         </md-button>
 
-        <md-button class='md-icon-button' ng-if='deployment.state == 0' ng-click='commitDeployment(id)'>
+        <md-button class='md-icon-button' ng-show='deployment.state == 0' ng-click='commitDeployment(id)'>
           <md-icon>save</md-icon>
           <md-tooltip>Commit</md-tooltip>
         </md-button>
 
-        <md-button class='md-icon-button' ng-if='deployment.state > 0' ng-click='proposeDeployment(id)'>
+        <md-button class='md-icon-button' ng-show='deployment.state > 0' ng-click='proposeDeployment(id)' ng-if='!deployment.system'>
           <md-icon>mode_edit</md-icon>
           <md-tooltip>Propose</md-tooltip>
         </md-button>
@@ -223,7 +223,7 @@ deployments view
           <md-tooltip>Add Node</md-tooltip>
         </md-button>
 
-        <md-menu md-position-mode="target-right target" ng-if='deployment.state == 0' style='padding: 0;'>
+        <md-menu md-position-mode="target-right target" ng-show='deployment.state == 0' style='padding: 0;'>
           <md-button class='md-icon-button' ng-click='$mdOpenMenu($event)'>
             <md-icon>add_circle</md-icon>
             <md-tooltip>Add Role</md-tooltip>
