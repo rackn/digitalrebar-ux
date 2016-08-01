@@ -132,12 +132,13 @@ node role controller
       var lastTime = $scope.node_role.updated_at;
       var runlog = $scope.node_role.runlog;
       $scope.node_role = $scope._node_roles[$scope.id];
-      if(new Date(lastTime).getTime() > new Date($scope.node_role.updated_at).getTime())
-        $scope.node_role.runlog = runlog;
-
       if (!$scope.node_role)
         $location.path('/node_roles');
       else {
+        
+        if(new Date(lastTime).getTime() > new Date($scope.node_role.updated_at).getTime())
+          $scope.node_role.runlog = runlog;
+
         if ($scope.hasAttrib == -1) {
           api('/api/v2/node_roles/' + $scope.node_role.id + "/attribs").
           success(function (obj) {
