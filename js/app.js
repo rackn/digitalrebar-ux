@@ -324,7 +324,6 @@ var version = '0.1.3';
     };
 
     $scope.api = api;
-    $scope.reload = api.reload;
     $scope.scroll = 0;
 
     $scope.menu = [{

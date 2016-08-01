@@ -158,11 +158,11 @@
               </md-menu-item>
             </md-menu-content>
           </md-menu>
-          <md-button class="md-icon-button" ng-click='reload()'>
+          <md-button class="md-icon-button" ng-click='api.reload()'">
             <md-tooltip>
               Refresh Data
             </md-tooltip>
-            <md-icon>refresh</md-icon>
+            <md-icon ng-class="{pulse: api.reloading}">refresh</md-icon>
           </md-button>
           <md-button class="md-icon-button" ng-href='#/annealer'>
             <md-tooltip>

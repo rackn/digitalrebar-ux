@@ -26,23 +26,27 @@
       return result;
     };
   });
-
-  app.run(function ($rootScope, $cookies, api, $interval) {
+  app.run(function ($rootScope, $cookies, api, $interval, debounce) {
     // use regex to get the current location
     var currentLocation = "https://" + location.hostname;
     $rootScope.host = $cookies.get('host') || currentLocation;
 
     $rootScope.$on('updateApi', function (event) {
+      api.reloading = true;
       api.getHealth();
       api.getUsers();
 
       // make the api calls and add callbacks
+      function finishReloading () {
+        api.reloading = false;
+      }
 
       // loops through 'fetch', calling api.getDeployments 
       //      and emitting the proper callback (deploymentsDone)
       app.types.forEach(function (name) {
         api["get" + camelCase(name)]().success(function () {
           $rootScope.$broadcast(name + 'Done');
+          debounce(finishReloading, 2000)();
         });
       });
     });
@@ -55,7 +59,6 @@
     $rootScope.tryFetch = function () {
       $rootScope.$emit('updateApi');
     };
-
 
     $rootScope._deployments = {};
     $rootScope._deployment_roles = {};
@@ -96,6 +99,7 @@
       args.url = $rootScope.host + path;
       return $http(args);
     };
+    api.reloading = false;
 
     app.types = ['deployments', 'roles', 'nodes', 'node_roles',
       'deployment_roles', 'networks', 'providers', 'barclamps'
