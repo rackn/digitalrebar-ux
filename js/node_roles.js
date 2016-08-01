@@ -129,21 +129,11 @@ node role controller
     var updateNodeRole = function () {
       if ($scope.editing) return;
 
-      var lastTime;
-      var runlog;
-      if($scope.node_role) {        
-        runlog = $scope.node_role.runlog;
-        lastTime = $scope.node_role.updated_at;
-      }
-      
-      $scope.node_role = $scope._node_roles[$scope.id];
-      if (!$scope.node_role)
+      if (!$scope._node_roles[$scope.id])
         $location.path('/node_roles');
       else {
+        $scope.node_role = $scope._node_roles[$scope.id];
         
-        if(new Date(lastTime).getTime() > new Date($scope.node_role.updated_at).getTime())
-          $scope.node_role.runlog = runlog;
-
         if ($scope.hasAttrib == -1) {
           api('/api/v2/node_roles/' + $scope.node_role.id + "/attribs").
           success(function (obj) {
