@@ -129,9 +129,10 @@ node role controller
     var updateNodeRole = function () {
       if ($scope.editing) return;
 
+      var lastTime = $scope.node_role.updated_at;
       var runlog = $scope.node_role.runlog;
       $scope.node_role = $scope._node_roles[$scope.id];
-      if(runlog && $scope.node_role.runlog && runlog.length > $scope.node_role.runlog.length)
+      if(new Date(lastTime).getTime() > new Date($scope.node_role.updated_at).getTime())
         $scope.node_role.runlog = runlog;
 
       if (!$scope.node_role)
