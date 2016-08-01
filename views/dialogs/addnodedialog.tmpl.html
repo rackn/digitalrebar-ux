@@ -16,10 +16,10 @@
           <label>Name</label>
           <input required type='text' name='name' md-minlength='1' md-maxlength='25' ng-pattern="/^[a-zA-Z0-9-]{1,25}$/" ng-model='locals.base_name' />
           <div ng-messages="nodeForm.name.$error">
-            <div ng-message="required">You must enter a node name</div>
-            <div ng-message="md-maxlength">Your name is too long (25 char max)</div>
-            <div ng-message="md-minlength">Your name is too short (1 char min)</div>
-            <div ng-message="pattern">Your name contains invalid characters (a-zA-Z0-9-)</div>
+            <div ng-message="required">Enter a node name</div>
+            <div ng-message="md-maxlength">Entered name is too long (25 char max)</div>
+            <div ng-message="md-minlength">Entered name is too short (1 char min)</div>
+            <div ng-message="pattern">Entered name contains invalid characters (a-zA-Z0-9-)</div>
           </div>
         </md-input-container>
 
@@ -31,7 +31,7 @@
             </md-option>
           </md-select>
           <div ng-messages="nodeForm.provider.$error">
-            <div ng-message="required">You must select a provider</div>
+            <div ng-message="required">Select a provider</div>
           </div>
         </md-input-container>
 
@@ -46,7 +46,7 @@
             REMINDER: Nodes in proposed non-system deployments will NOT automatically deploy
           </div>
           <div ng-messages="nodeForm.deployment_id.$error">
-            <div ng-message="required">You must select a deployment</div>
+            <div ng-message="required">Select a deployment</div>
           </div>
         </md-input-container>
 
@@ -54,7 +54,7 @@
           <label>OS</label>
           <input required type='text' name='os' ng-model='locals.add_os' />
           <div ng-messages="nodeForm.os.$error">
-            <div ng-message="required">You must enter an os. Default is default_os</div>
+            <div ng-message="required">Enter an os. Default is default_os</div>
           </div>
         </md-input-container>
 
@@ -62,8 +62,8 @@
           <label>Number</label>
           <input required type="number" name='count' step="1" ng-model="locals.number" min="1" />
           <div ng-messages="nodeForm.count.$error">
-            <div ng-message="required">You must enter a number</div>
-            <div ng-message="min">You must enter a number greater than 0</div>
+            <div ng-message="required">Enter a number</div>
+            <div ng-message="min">Enter a number greater than 0</div>
           </div>
         </md-input-container>
 
