@@ -43,7 +43,7 @@
             </md-option>
           </md-select>
           <div ng-hide='locals._deployments[locals.deployment_id].system || !locals.deployment_id' style='color: #444; font-size: smaller '>
-            NOTE: Nodes in proposed non-system deployments will NOT automatically deploy
+            REMINDER: Nodes in proposed non-system deployments will NOT automatically deploy
           </div>
           <div ng-messages="nodeForm.deployment_id.$error">
             <div ng-message="required">You must select a deployment</div>
