@@ -72,7 +72,17 @@ deployments view
         </md-tab>
 
         <!-- Node/Roles Matrix tab -->
-        <md-tab label="Matrix" layout-padding>
+        <md-tab label="Matrix" layout-padding layout='row'>
+          <!-- Add all the nodes as list items -->
+          <span ng-repeat="role in _node_roles | from:'node':phantoms[deployment.id] | orderBy:_roles[role.role_id].cohort">
+            <!-- Node button -->
+            <md-button class="md-primary md-raised" md-theme="status_{{role.status}}" ng-href="#/node_roles/{{role.id}}">
+              <md-tooltip md-direction="bottom">
+                {{_roles[role.role_id].name}}
+              </md-tooltip>
+              <md-icon aria-label='role icon'>{{_roles[role.role_id].icon}}</md-icon>
+            </md-button>
+          </span>
           <table>
             <thead>
               <th></th>

@@ -236,16 +236,24 @@ deployments controller
     };
 
     $scope.matrix = {};
+    $scope.phantoms = {};
     $scope.updateMatrix = function (deployment) {
+      for (var i in $scope._nodes) {
+        var node = $scope._nodes[i];
+        if(node.variant === 'phantom' && node.deployment_id === deployment.id) {
+          $scope.phantoms[deployment.id] = node;
+          break;
+        }
+      }
       var roles = {};
       var node_roles = $filter('from')($scope._node_roles, 'deployment', deployment);
       var deployment_roles = $filter('from')($scope._deployment_roles, 'deployment', deployment);
       var roleToDeploymentRole = {};
-      for(var i in deployment_roles)
-        roleToDeploymentRole[deployment_roles[i].role_id] = deployment_roles[i].id
-      for(var i in node_roles) {
+      for (var i in deployment_roles)
+        roleToDeploymentRole[deployment_roles[i].role_id] = deployment_roles[i].id;
+      for (var i in node_roles) {
         var role = node_roles[i];
-        if($scope._nodes[role.node_id].system)
+        if ($scope._nodes[role.node_id].system)
           node_roles.splice(node_roles.indexOf(role), 1);
         else {
           var id = roleToDeploymentRole[role.role_id];
