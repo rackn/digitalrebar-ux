@@ -39,7 +39,8 @@ node role controller
     $scope.getNodeRoles = function () {
       var roles = [];
       for (var id in $scope._node_roles) {
-        if($scope._nodes[$scope._node_roles[id].node_id].variant !== 'phantom')
+        var node = $scope._nodes[$scope._node_roles[id].node_id];
+        if(node && node.variant !== 'phantom')
           roles.push($scope._node_roles[id]);
       }
       return roles;
