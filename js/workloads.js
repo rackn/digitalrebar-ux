@@ -13,10 +13,10 @@ workloads controller
       this.add_os = 'default_os'; // provider os
 
       $scope.terms = {
-        all: "Every node",
-        odd: "Odd number of nodes",
-        optional: "Optional",
-        exclusive: "Node has only this service"
+        cluster: "Cluster: On 1 or 3+ Nodes",
+        worker: "Worker: Nodes not used by Cluster",
+        optional: "User defined",
+        required: "Every node"
       }
 
       for (var i in $scope._providers) {
