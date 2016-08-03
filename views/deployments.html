@@ -73,15 +73,17 @@ deployments view
 
         <!-- Node/Roles Matrix tab -->
         <md-tab label="Matrix" layout-padding layout='row'>
-          <h3 style='margin-left: 1em'>Services</h3>
-          <span ng-repeat="role in _node_roles | from:'node':phantoms[deployment.id] | orderBy:_roles[role.role_id].cohort">
-            <md-button class="md-primary md-raised" md-theme="status_{{role.status}}" ng-href="#/node_roles/{{role.id}}">
-              <md-tooltip md-direction="bottom">
-                {{_roles[role.role_id].name}}
-              </md-tooltip>
-              <md-icon aria-label='role icon'>{{_roles[role.role_id].icon}}</md-icon>
-            </md-button>
-          </span>
+          <div style='text-align: right; width: 100%;'>
+            <h3 style='margin-right: 1em'>Services</h3>
+            <span ng-repeat="role in _node_roles | from:'node':phantoms[deployment.id] | orderBy:_roles[role.role_id].cohort">
+              <md-button class="md-primary md-raised square-button" md-theme="status_{{role.status}}" ng-href="#/node_roles/{{role.id}}">
+                <md-tooltip md-direction="bottom">
+                  {{_roles[role.role_id].name}}
+                </md-tooltip>
+                <md-icon aria-label='role icon'>{{_roles[role.role_id].icon}}</md-icon>
+              </md-button>
+            </span>
+          </div>
           <div style='overflow-x: auto'>
             <table>
               <thead>
