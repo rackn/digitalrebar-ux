@@ -238,6 +238,7 @@ deployments controller
     $scope.matrix = {};
     $scope.phantoms = {};
     $scope.updateMatrix = function (deployment) {
+      console.log('updating matrix for',deployment.id)
       for (var i in $scope._nodes) {
         var node = $scope._nodes[i];
         if(node.variant === 'phantom' && node.deployment_id === deployment.id) {
@@ -251,10 +252,12 @@ deployments controller
       var roleToDeploymentRole = {};
       for (var i in deployment_roles)
         roleToDeploymentRole[deployment_roles[i].role_id] = deployment_roles[i].id;
-      for (var i in node_roles) {
+      for (var i = 0; i < node_roles.length; i++) {
         var role = node_roles[i];
-        if ($scope._nodes[role.node_id].system)
-          node_roles.splice(node_roles.indexOf(role), 1);
+        var node = $scope._nodes[role.node_id];
+        if (node && node.system) {
+          node_roles.splice(i--, 1);
+        }
         else {
           var id = roleToDeploymentRole[role.role_id];
           roles[id] = roles[id] || {};
@@ -278,6 +281,22 @@ deployments controller
           $scope.bindRoles[deployment_id].roles[node_role.node_id] = node_role;
       }
     };
+
+    $scope.matrixUpdateLoop = function () {
+      for (var id in $scope._deployments) {
+        $scope.updateMatrix($scope._deployments[id]);
+      }
+
+      $timeout.cancel($scope.updateInterval);
+      $scope.updateInterval = $timeout($scope.matrixUpdateLoop, 2000);
+
+    };
+
+    $scope.matrixUpdateLoop();
+
+    $scope.$on('$routeChangeStart', function () {
+      $timeout.cancel($scope.updateInterval);
+    });
 
     // binds a node role to the deployment, role, and node
     $scope.bindNodeRole = function (deployment_id, role_id, node_id) {

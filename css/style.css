@@ -38,6 +38,11 @@ table td.label {
   background: #fdd;
 }
 
+.square-button {
+  min-width: 36px;
+  padding: 0;
+}
+
 th.angled {
   height: 140px;
   whitespace: nowrap;
