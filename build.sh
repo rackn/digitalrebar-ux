@@ -39,6 +39,8 @@ bower_components/angular-material-data-table/dist/md-data-table.min.js \
 bower_components/angular-md5/angular-md5.min.js \
 bower_components/angular-local-storage/dist/angular-local-storage.min.js \
 bower_components/swap-md-paint/swap-md-paint.js \
+bower_components/vis/dist/vis.min.js \
+bower_components/angular-visjs/angular-vis.js \
 js/*.js \
 js/lib/*.js \
 --stats --compress > _build/bundle.min.js 
