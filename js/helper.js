@@ -3,17 +3,18 @@ api helper controller
 */
 (function () {
   angular.module('app')
-    .controller('ApiHelperCtrl', function ($scope, api) {
+    .controller('ApiHelperCtrl', function ($scope, api, localStorageService) {
       $scope.$emit('title', 'API Helper'); // shows up on the top toolbar
 
       $scope.method = 'get';
-      $scope.payload = '{}';
+      $scope.payload = localStorageService.get('api_helper') || '{}';
       $scope.route = '';
       $scope.class = {};
 
       $scope.parse = function (data) {
         try {
           var a = JSON.parse(data);
+          localStorageService.add('api_helper', data);
           return a;
         } catch (e) {
           return false;
