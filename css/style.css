@@ -254,3 +254,8 @@ table.no-border, table.no-border tr, table.no-border tr td{
   background: #000;
   opacity: 0.1;
 }
+
+.graph {
+  height: 600px;
+  width: 100%;
+}

@@ -5,7 +5,7 @@ var version = '0.1.3';
     'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
     'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table',
     'debounce', 'jsontext', 'ng-slide-down', 'swapMdPaint', 'angular-clipboard',
-    'ngMessages'
+    'ngMessages', 'ngVis'
   ]);
 
   app.config(function ($httpProvider, $routeProvider, $mdThemingProvider, apiProvider) {
