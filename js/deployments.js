@@ -263,7 +263,6 @@ deployments controller
     $scope.matrix = {};
     $scope.phantoms = {};
     $scope.updateMatrix = function (deployment) {
-      console.log('updating matrix for',deployment.id)
       for (var i in $scope._nodes) {
         var node = $scope._nodes[i];
         if(node.variant === 'phantom' && node.deployment_id === deployment.id) {
