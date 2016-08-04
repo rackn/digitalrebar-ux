@@ -47,32 +47,8 @@ deployments controller
     };
 
     $scope.expand = {};
-
-    api("/api/v2/node_roles/graph").
-      success(function (obj) {
-        var parsedData = vis.network.convertDot(obj["string"]);
-        $scope.graphData = {
-          nodes: parsedData.nodes,
-          edges: parsedData.edges
-        }
-        $scope.graphOptions = parsedData.options;
-        $scope.graphOptions = {
-		/*
-          layout: {
-            hierarchical: {
-              enabled:true,
-              levelSeparation: 150,
-              direction: 'UD',        // UD, DU, LR, RL
-              sortMethod: 'directed'   // hubsize, directed
-            }
-          }
-	  */
-        }
-        console.log($scope.graphOptions);
-      }).
-      error(function (err) {
-        api.toast("Error Getting Graph Data", 'node_role', err);
-      });
+    $scope.graphData = {};
+    $scope.graphOptions = {};
 
     if ($routeParams.id)
       $scope.expand[$routeParams.id] = true;
@@ -80,6 +56,33 @@ deployments controller
     // called when a deployment is clicked
     this.toggleExpand = function (deployment) {
       $scope.expand[deployment.id] = !$scope.expand[deployment.id];
+
+      if ($scope.expand[deployment.id]) {
+        api("/api/v2/node_roles/graph?deployment_id="+deployment.id).
+          success(function (obj) {
+            var parsedData = vis.network.convertDot(obj["string"]);
+            $scope.graphData[deployment.id] = {
+              nodes: parsedData.nodes,
+              edges: parsedData.edges
+            }
+            $scope.graphOptions[deployment.id] = parsedData.options;
+            $scope.graphOptions[deployment.id] = {
+/*
+              layout: {
+                hierarchical: {
+                  enabled:true,
+                  levelSeparation: 150,
+                  direction: 'UD',        // UD, DU, LR, RL
+                  sortMethod: 'directed'   // hubsize, directed
+                }
+              }
+*/
+            }
+          }).
+          error(function (err) {
+            api.toast("Error Getting Graph Data", 'node_role', err);
+          });
+      }
     };
 
     // makes a map of node simpleState => number of nodes with that simpleState
