@@ -1,0 +1,66 @@
+<div layout='row' class='wizard-pane'>
+  <div class='wizard-icon'>
+    <md-icon>directions_bus</md-icon>
+  </div>
+  <div layout='column'>
+    <div class='wizard-content' flex>
+      <h1>Select Your Deployment Specific Options</h1>
+      <div layout='column'>
+        <md-input-container class='md-block' flex ng-repeat='attrib in wizard.base_attribs'>
+          <div ng-switch='attribMap[attrib].schema.type'>
+            <div ng-switch-when='str'>
+              <label>{{attrib}}</label>
+              <input type="text" ng-model="workloads.attribs[attrib]">
+            </div>
+            <div ng-switch-when='int'>
+              <label>{{attrib}}</label>
+              <input type="number" ng-model="workloads.attribs[attrib]">
+            </div>
+            <div ng-switch-when='bool'>
+              <md-checkbox ng-model="workloads.attribs[attrib]" style='margin-bottom: 32px;'>
+                {{attrib}}
+              </md-checkbox>
+            </div>
+          </div>
+        </md-input-container>
+      </div>
+      <md-toolbar class='md-table-toolbar md-default' md-ink-ripple ng-if='wizard.advanced_attribs.length'>
+        <div class='md-toolbar-tools' ng-click='toggleAdvanced()'>
+          <span>
+            <md-icon>
+              developer_board 
+            </md-icon>
+          </span>
+          <h2 flex>Advanced Attributes</h2>
+          <span>
+            <md-icon>
+              {{showAdvanced ? 'expand_less' : 'expand_more'}}
+            </md-icon>
+            <md-tooltip>
+              {{showAdvanced ? 'Expand Less' : 'Expand More'}}
+            </md-tooltip>
+          </span>
+        </div>
+      </md-toolbar>
+      <div ng-slide-down='showAdvanced' duration='0.5' layout='column' style='margin-top: 16px;'>
+        <md-input-container class='md-block' flex ng-repeat='attrib in wizard.advanced_attribs'>
+          <div ng-switch='attribMap[attrib].schema.type'>
+            <div ng-switch-when='str'>
+              <label>{{attrib}}</label>
+              <input type="text" ng-model="workloads.attribs[attrib]">
+            </div>
+            <div ng-switch-when='int'>
+              <label>{{attrib}}</label>
+              <input type="number" ng-model="workloads.attribs[attrib]">
+            </div>
+            <div ng-switch-when='bool'>
+              <md-checkbox ng-model="workloads.attribs[attrib]" style='margin-bottom: 32px;'>
+                {{attrib}}
+              </md-checkbox>
+            </div>
+          </div>
+        </md-input-container>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,17 +7,128 @@ workloads controller
       $scope.$emit('title', 'Wizard'); // shows up on the top toolbar
 
       var workloads = this;
+      this.deployment_id = -1;
+      this.add_os = 'default_os';
+      this.required_service = '';
       this.selected = [];
-      this.provider = '';
-      this.os = ''; // metal os
-      this.add_os = 'default_os'; // provider os
+      this.attribs = {};
 
-      $scope.terms = {
-        cluster: "Cluster: On 1 or 3+ Nodes",
-        worker: "Worker: Nodes not used by Cluster",
-        optional: "User defined",
-        required: "Every node"
+      $scope.done = 0;
+      $scope.status = 0;
+      $scope.steps = [
+        {
+          name: "Deployment",
+          path: "views/wizard/deployment.html",
+          icon: "directions_bike",
+          complete: function () {
+            var deployment = $scope._deployments[workloads.deployment_id];
+            // no deployment selected
+            if (!deployment)
+              return false;
+
+            // deployment isn't proposed
+            if (deployment.state != 0)
+              return false;
+
+            return true;
+          }
+        },
+        {
+          name: "OS",
+          path: "views/wizard/os.html",
+          icon: "directions_car",
+          complete: function () {
+            // no metal os selected
+            if (wizard.os && wizard.system_nodes && !workloads.os)
+              return false;
+
+            // no cloud os selected
+            if (wizard.os && wizard.create_nodes && !workloads.add_os)
+              return false;
+
+            // no provider given
+            if (wizard.create_nodes && !workloads.provider)
+              return false;
+
+            return true;
+          }
+        },
+        {
+          name: "Attributes",
+          path: "views/wizard/attributes.html",
+          icon: "directions_bus",
+          complete: function () {
+            return true;
+          }
+        },
+        {
+          name: "Nodes",
+          path: "views/wizard/nodes.html",
+          icon: "directions_boat",
+        },
+        {
+          name: "Overview",
+          path: "views/wizard/overview.html",
+          icon: "airplanemode_active",
+        },
+      ];
+
+      $scope.setProgress = function (status) {
+        if(status <= $scope.status)
+          $scope.done = status;
+      };
+
+      $scope.nextStep = function () {
+        if ($scope.status > $scope.done)
+          $scope.done ++;
+        else if ($scope.status == $scope.done) {
+          if ($scope.steps[$scope.done].complete()) {
+            $scope.done ++;
+            $scope.status ++;
+          }
+        }
       }
+
+      $scope.prevStep = function () {
+        if ($scope.done > 0)
+          $scope.done --;
+      }
+
+      $scope.getDeployments = function () {
+        var deployments = [];
+        for (var i in $scope._deployments) {
+          var deployment = $scope._deployments[i];
+          if (deployment.system)
+            continue;
+
+          deployments.push(deployment);
+        }
+        return deployments;
+      };
+
+      $scope.createDeploymentPrompt = function (ev) {
+        var confirm = $mdDialog.prompt()
+          .title('Create Deployment')
+          .textContent('Enter the Name of the New Deployment')
+          .placeholder('Deployment Name')
+          .targetEvent(ev)
+          .ok('Create')
+          .cancel('Cancel');
+        $mdDialog.show(confirm).then(function (name) {
+          api('/api/v2/deployments', {
+            method: "POST",
+            data: {
+              name: name
+            }
+          }).success(api.addDeployment).
+          success(function (obj) {
+            workloads.deployment_id = obj.id;
+          }).
+          error(function (err) {
+            api.toast("Couldn't Create Deployment", 'deployment', err);
+          });
+        }, function () {});
+      };
 
       for (var i in $scope._providers) {
         var provider = $scope._providers[i];
@@ -28,7 +139,7 @@ workloads controller
         break;
       }
 
-      if (this.provider === '' && Object.keys($scope._providers).length) {
+      /*if (this.provider === '' && Object.keys($scope._providers).length) {
         $scope.confirm(undefined, {
           title: "Redirect to Providers",
           message: "You have no providers! Would you like to go to the providers page?",
@@ -36,9 +147,12 @@ workloads controller
             $scope.setPath("/providers")
           }
         });
-      }
+      }*/
 
-
+      $scope.showAdvanced = false;
+      $scope.toggleAdvanced = function () {
+        $scope.showAdvanced = !$scope.showAdvanced;
+      };
 
       var id = $routeParams.id;
 
@@ -57,39 +171,45 @@ workloads controller
 
       $scope.osList = [];
 
-      // get a list of operating systems that are available
-      // and supported by this barclamp
-      //if (barclamp.cfg_data.barclamp.os_support) {
       api('/api/v2/nodes/system-phantom.internal.local/attribs/provisioner-available-oses').
       success(function (data) {
-        /*var supported = barclamp.cfg_data.barclamp.os_support;
-        console.log(data.value, supported)
-        for (var os in data.value) {
-          if (supported.includes(os) && data.value[os]) {
-            $scope.osList.push(os);
-
-            if (!workloads.os)
-              workloads.os = os;
-          }
-        }*/
         if (data.value) {
           $scope.osList = Object.keys(data.value);
           if ($scope.osList.length)
             workloads.os = $scope.osList[0];
         }
       });
-      //}
+
+      $scope.attribMap = {};
+      api('/api/v2/attribs').
+      success(function (data) {
+        for(var i in data) {
+          var attrib = data[i];
+          $scope.attribMap[attrib.name] = attrib;
+        }
+        
+        for (var i in wizard.base_attribs) {
+          var attrib = wizard.base_attribs[i]
+          workloads.attribs[attrib] = $scope.attribMap[attrib].default.value;
+        }
+
+        for (var i in wizard.advanced_attribs) {
+          var attrib = wizard.advanced_attribs[i]
+          workloads.attribs[attrib] = $scope.attribMap[attrib].default.value;
+        }
+      }).error(function (err) {
+        api.toast('Error fetching Attribs', 'attribs', err);
+      });
 
       $scope.roles = [];
       $scope.roleMap = {};
       var serviceMap = $scope.serviceMap = {};
-      var serviceList = Object.keys(wizard.services);
       for (var id in $scope._roles) {
         var role = $scope._roles[id];
-        if (serviceList.includes(role.name)) {
+        $scope.roleMap[role.name] = role;
+        /*if (serviceList.includes(role.name)) {
           $scope.roles.push(role);
-          $scope.roleMap[role.name] = role;
-        }
+        }*/
       }
 
       $scope.tryDeselect = function (node) {
@@ -122,9 +242,12 @@ workloads controller
         };
 
         serviceMap[node.id] = {};
-        for (var i in serviceList) {
-          var service = serviceList[i]
-          serviceMap[node.id][service] = false;
+        var req = false;
+        for (var i in wizard.services) {
+          var service = wizard.services[i];
+          serviceMap[node.id][service.name] = service.type == 'required' && !req;
+          if (service.type == 'required')
+            req = true;
         }
 
         workloads.selected.push(node);
@@ -134,75 +257,105 @@ workloads controller
 
       // create new nodes if system nodes aren't allowed
       if (!wizard.system_nodes && wizard.create_nodes) {
-        for (var i = 0; i < serviceList.length; i++) {
-          $scope.addNode();
+        var numCluster = 0;
+        var numWorker = 0;
+        var clusters = {};
+        var workers = {};
+        // get the max count for worker and cluster roles
+        for (var i = 0; i < wizard.services.length; i++) {
+          var service = wizard.services[i];
+
+          // add services to the keys of designated objects
+          if (service.type == 'cluster')
+            clusters[service.name] = 1;
+          else if (service.type == 'worker')
+            workers[service.name] = 1;
+
+          if (service.count > 0) {
+            if (service.type == 'cluster' && service.count > numCluster)
+              numCluster = service.count;
+            else if (service.type == 'worker' && service.count > numWorker)
+              numWorker = service.count;
+          }
+        }
+        // create the number of virtual nodes
+        for (var i = 0; i < numCluster + numWorker; i++) {
+          var node = $scope.addNode();
+          if (i < numCluster) {
+            for (var j in clusters)
+              serviceMap[node.id][j] = true;
+          } else {
+            for (var j in workers)
+              serviceMap[node.id][j] = true;
+          }
         }
       }
 
       $scope.select = function (node, service) {
-        serviceMap[node.id][service.name] = !serviceMap[node.id][service.name];
-        if (!workloads.selected.includes(node)) {
-          workloads.selected.push(node);
-        }
-      };
-
-      $scope.overallStatus = function () {
-        if (!workloads.os.length && wizard.os)
-          return false;
-
-        if (workloads.selected.length == 0)
-          return false;
-
-        for (var i in serviceList) {
-          if (!$scope.getStatus(serviceList[i]))
-            return false;
-        }
-        return true;
-      };
-
-      $scope.getStatus = function (service) {
-        var req = wizard.services[service];
-        var count = 0;
-        for (var i in workloads.selected) {
-          var node = workloads.selected[i];
-          if (serviceMap[node.id][service])
-            count++;
-        }
-
-        switch (req) {
-        case 'all':
-          count = 0;
-
-          // all nodes except exclusive
-          for (var i in workloads.selected) {
-            var node = workloads.selected[i];
-            var exclusive = false;
-            for (var name in serviceMap[node.id]) {
-              if (serviceMap[node.id][name] && wizard.services[name] == 'exclusive') {
-                exclusive = true;
+        var state = serviceMap[node.id][service.name];
+        switch (service.type) {
+        case 'required': // functions as a radio: only one at a time
+          if (state)
+            return;
+          for(var i in serviceMap[node.id]) {
+            var s;
+            for(var j in wizard.services) {
+              if (wizard.services[j].name === i) {
+                s = wizard.services[j];
                 break;
               }
             }
-            if (serviceMap[node.id][service] || exclusive)
-              count++;
+            if(s.type == 'required')
+              serviceMap[node.id][i] = false;
           }
-          return count == workloads.selected.length && workloads.selected.length > 0;
-        case 'odd':
-          return count % 2 == 1;
-        case 'optional':
-          return workloads.selected.length > 0;
-        case 'exclusive':
-          for (var i in workloads.selected) {
-            var node = workloads.selected[i];
-            if (serviceMap[node.id][service])
-              for (var name in serviceMap[node.id]) {
-                if (name !== service && serviceMap[node.id][name])
-                  return false;
+          serviceMap[node.id][service.name] = true;
+          break;
+
+        case 'cluster': // functions like optional, but disables worker
+          if (!state) {
+            for(var i in serviceMap[node.id]) {
+            var s;
+            for(var j in wizard.services) {
+              if (wizard.services[j].name === i) {
+                s = wizard.services[j];
+                break;
               }
+            }
+            if(s.type == 'worker')
+              serviceMap[node.id][i] = false;
           }
-          return true;
+            serviceMap[node.id][service.name] = true;            
+          } else {
+            serviceMap[node.id][service.name] = false;
+          }
+          break;
+
+        case 'worker': // functions like optional, but disables cluster
+          if (!state) {
+            for(var i in serviceMap[node.id]) {
+              var s;
+              for(var j in wizard.services) {
+                if (wizard.services[j].name === i) {
+                  s = wizard.services[j];
+                  break;
+                }
+              }
+              if(s.type == 'cluster')
+                serviceMap[node.id][i] = false;
+            }
+            serviceMap[node.id][service.name] = true;            
+          } else {
+            serviceMap[node.id][service.name] = false;
+          }
+          break;
+
+        default:
+          serviceMap[node.id][service.name] = !serviceMap[node.id][service.name];
+          break;
         }
-        return false;
+        if (!workloads.selected.includes(node)) {
+          workloads.selected.push(node);
+        }
       };
 
       $scope.getNodes = function () {
@@ -237,8 +390,8 @@ workloads controller
 
             if (!serviceMap[node.id]) {
               serviceMap[node.id] = {};
-              for (var i in serviceList) {
-                var service = serviceList[i]
+              for (var i in wizard.services) {
+                var service = wizard.services[i]
                 serviceMap[node.id][service] = false;
               }
             }
@@ -246,80 +399,6 @@ workloads controller
           });
         }
         return nodes.concat($scope.createdNodes);
-      };
-
-      $scope.generateBlob = function () {
-        var data = {
-          name: workloads.name,
-          os: workloads.os
-        };
-
-        if (wizard.create_nodes) {
-          data.provider = {
-            name: provider.name,
-            os: workloads.add_os
-          };
-        }
-
-        var virtualNodes = 0;
-        data.nodes = [];
-
-        for (var i in workloads.selected) {
-          var node = workloads.selected[i];
-          var id = node.id;
-          var roles = [];
-
-          for (var role in serviceMap[id]) {
-            if (serviceMap[id][role])
-              roles.push($scope.roleMap[role].id);
-          }
-
-          roles = roles.sort();
-
-          if (id > 0) {
-            data.nodes.push({
-              node_id: id,
-              roles: roles
-            });
-          } else {
-            var existing = false;
-            // check to see if we already have a cloud node with the same roles
-            for (var j in data.nodes) {
-              var n = data.nodes[j];
-              if (n.id > 0)
-                continue;
-              // unfortunately the only way to compare arrays
-              if (JSON.stringify(n.roles) == JSON.stringify(roles)) {
-                n.node_count++;
-                existing = true;
-                break;
-              }
-            }
-
-            if (!existing) {
-              console.log("Adding virtual node",virtualNodes+1)
-              data.nodes.push({
-                node_id: -(++virtualNodes),
-                roles: roles,
-                node_count: 1
-              });
-            }
-          }
-
-        }
-
-
-
-        api("/api/utils/wizard", {
-          method: "POST",
-          data: data
-        }).success(function (resp) {
-          console.log(resp);
-        }).error(function (err) {
-          console.warn(err);
-        });
-
-        console.log(JSON.stringify(data, null, "  "));
       };
 
     });
