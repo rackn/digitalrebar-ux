@@ -132,7 +132,7 @@ deployments view
         <!-- Graph tab -->
         <md-tab label="Graph">
           <div class="graph">
-            <vis-network data='graphData' options='graphOptions' events="{}"></vis-network>
+            <vis-network data='graphData[deployment.id]' options='graphOptions[deployment.id]' events="{}"></vis-network>
           </div>
         </md-tab>
 
