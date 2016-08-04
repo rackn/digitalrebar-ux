@@ -264,6 +264,7 @@ deployments controller
     };
 
     $scope.matrix = {};
+    $scope.matrix_order = {};
     $scope.phantoms = {};
     $scope.updateMatrix = function (deployment) {
       for (var i in $scope._nodes) {
@@ -291,6 +292,16 @@ deployments controller
           roles[id][role.node_id] = role.id;
         }
       }
+      var keys = Object.keys(roles);
+      keys.sort(function(a, b) {
+        var dra = $scope._deployment_roles[a];
+	var ra = $scope._roles[dra.role_id];
+        var drb = $scope._deployment_roles[b];
+	var rb = $scope._roles[drb.role_id];
+
+	return ra.cohort - rb.cohort;
+      });
+      $scope.matrix_order[deployment.id] = keys;
       $scope.matrix[deployment.id] = roles;
     }
 
