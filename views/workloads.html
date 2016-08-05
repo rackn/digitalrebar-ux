@@ -15,7 +15,7 @@
     <input type='number' ng-model='done' />
     <div layout='row'>
       <div ng-repeat='step in steps' class='step' ng-class="{completed:$index < done, progress: $index==done}" ng-click='setProgress($index)'>
-        <md-icon>{{$index < done ? 'done' : step.icon}}</md-icon>
+        <md-icon>{{done > $index ? 'done' : step.icon}}</md-icon>
         <md-tooltip>
           {{step.name}}
         </md-tooltip>
