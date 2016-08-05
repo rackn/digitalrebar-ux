@@ -65,6 +65,41 @@ workloads controller
           name: "Nodes",
           path: "views/wizard/nodes.html",
           icon: "directions_boat",
+          complete: function (output) {
+            if (workloads.selected.length == 0)
+              return output ? [false, 'You must select at least one node'] : false;
+
+            var cluster = 0;
+            var hasCluster = false;
+            for (var i in workloads.selected) {
+              var canHaveRequired = false;
+              var hasRequired = false;
+              var node = workloads.selected[i];
+              for(var j in wizard.services) {
+                var service = wizard.services[j];
+                var hasService = serviceMap[node.id][service.name];
+                if (service.type == 'cluster')
+                  hasCluster = true;
+                if (service.type == 'required')
+                  canHaveRequired = true;
+
+                if (hasService && service.type == 'required')
+                  hasRequired = true;
+
+                if (hasService && service.type == 'cluster') {
+                  cluster ++;
+                }
+              }
+              if(!hasRequired && canHaveRequired)
+                return output ? [false, 'Every node must have a Required Service'] : false;
+            }
+
+
+            if (cluster % 2 != 1 && hasCluster)
+              return output ? [false, 'An Odd Number of Cluster Services is Required'] : false;
+
+            return output ? [true, ''] : true;
+          }
         },
         {
           name: "Overview",
@@ -78,13 +113,21 @@ workloads controller
           $scope.done = status;
       };
 
+      $scope.canNext = false;
+      $scope.setCanNext = function () {
+        $scope.canNext = true;
+      }
+
       $scope.nextStep = function () {
-        if ($scope.status > $scope.done)
+        if ($scope.status > $scope.done) {
           $scope.done ++;
+          $scope.canNext = false;
+        }
         else if ($scope.status == $scope.done) {
           if ($scope.steps[$scope.done].complete()) {
             $scope.done ++;
             $scope.status ++;
+            $scope.canNext = false;
           }
         }
       }
@@ -238,7 +281,8 @@ workloads controller
         var id = $scope.newId--;
         var node = {
           id: id,
-          name: "Virtual Node " + (-id)
+          name: "Virtual Node " + (-id),
+          count: 1,
         };
 
         serviceMap[node.id] = {};
@@ -305,7 +349,7 @@ workloads controller
                 break;
               }
             }
-            if(s.type == 'required')
+            if(s && s.type == 'required')
               serviceMap[node.id][i] = false;
           }
           serviceMap[node.id][service.name] = true;
@@ -314,16 +358,16 @@ workloads controller
         case 'cluster': // functions like optional, but disables worker
           if (!state) {
             for(var i in serviceMap[node.id]) {
-            var s;
-            for(var j in wizard.services) {
-              if (wizard.services[j].name === i) {
-                s = wizard.services[j];
-                break;
+              var s;
+              for(var j in wizard.services) {
+                if (wizard.services[j].name === i) {
+                  s = wizard.services[j];
+                  break;
+                }
               }
+              if(s.type == 'worker')
+                serviceMap[node.id][i] = false;
             }
-            if(s.type == 'worker')
-              serviceMap[node.id][i] = false;
-          }
             serviceMap[node.id][service.name] = true;            
           } else {
             serviceMap[node.id][service.name] = false;
