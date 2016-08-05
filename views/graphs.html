@@ -1,0 +1,45 @@
+<md-card flex>
+  <section>
+    <table>
+      <tr>
+        <td style='font-weight: bold; text-align: right; width: 100px;'>Type</td>
+        <td>
+          <select ng-model='graphType' class='table-input'>
+            <option value='node_roles'>Node Role</option>
+            <option value='roles'>Role</option>
+          </select>
+        </td>
+        <td>
+          Hierarchical Layout
+          <md-switch ng-model="graphHLayout" aria-label="Switch" style='margin: 0;'>
+            <md-tooltip>
+              Enable Hierarchical Layout
+            </md-tooltip>
+          </md-switch>
+        </td>
+        <td>
+          <md-button class='md-raised md-primary' ng-click='getGraph()'> 
+            Get Graph
+          </md-button>
+        </td>
+      </tr>
+    </table>
+  </section>
+</md-card>
+<md-card flex>
+  <div ng-switch="hasGraph">
+    <md-card-content ng-switch-when="-1">
+      <div layout="row" layout-sm="column" layout-align="space-around">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
+    </md-card-content>
+    <md-card-content ng-switch-when="0">
+      Error Loading Graph
+    </md-card-content>
+    <md-card-content ng-switch-when="1">
+      <div class="graph">
+        <vis-network data='graphData' options='graphOptions' events="{}"></vis-network>
+      </div>
+    </md-card-content>
+  </div>
+</md-card>
