@@ -12,7 +12,7 @@
         </div>
         <md-input-container ng-if='wizard.os && wizard.system_nodes' flex>
           <label>Metal Operating System</label>
-          <md-select ng-model="workloads.os">
+          <md-select ng-model="workloads.attribs['provisioner-target_os']">
             <md-option ng-repeat="os in osList" value="{{os}}">
               {{os}}
             </md-option>

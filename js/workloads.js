@@ -39,7 +39,7 @@ workloads controller
           icon: "directions_car",
           complete: function () {
             // no metal os selected
-            if (wizard.os && wizard.system_nodes && !workloads.os)
+            if (wizard.os && wizard.system_nodes && !workloads.attribs["provisioner-target_os"])
               return false;
 
             // no cloud os selected
@@ -105,6 +105,9 @@ workloads controller
           name: "Overview",
           path: "views/wizard/overview.html",
           icon: "airplanemode_active",
+          complete: function () {
+            return true;
+          }
         },
       ];
 
@@ -214,14 +217,16 @@ workloads controller
 
       $scope.osList = [];
 
-      api('/api/v2/nodes/system-phantom.internal.local/attribs/provisioner-available-oses').
-      success(function (data) {
-        if (data.value) {
-          $scope.osList = Object.keys(data.value);
-          if ($scope.osList.length)
-            workloads.os = $scope.osList[0];
-        }
-      });
+      if (wizard.system_nodes)
+        api('/api/v2/nodes/system-phantom.internal.local/attribs/provisioner-available-oses').
+        success(function (data) {
+          if (data.value) {
+            $scope.osList = Object.keys(data.value);
+            if ($scope.osList.length) {
+              workloads.attribs["provisioner-target_os"] = $scope.osList[0];
+            }
+          }
+        });
 
       $scope.attribMap = {};
       api('/api/v2/attribs').
@@ -233,12 +238,16 @@ workloads controller
         
         for (var i in wizard.base_attribs) {
           var attrib = wizard.base_attribs[i]
-          workloads.attribs[attrib] = $scope.attribMap[attrib].default.value;
+          if(typeof workloads.attribs[attrib] === 'undefined') {
+            workloads.attribs[attrib] = $scope.attribMap[attrib].default.value;
+          }
         }
 
         for (var i in wizard.advanced_attribs) {
           var attrib = wizard.advanced_attribs[i]
-          workloads.attribs[attrib] = $scope.attribMap[attrib].default.value;
+          if(typeof workloads.attribs[attrib] === 'undefined') {
+            workloads.attribs[attrib] = $scope.attribMap[attrib].default.value;
+          }
         }
       }).error(function (err) {
         api.toast('Error fetching Attribs', 'attribs', err);
@@ -282,7 +291,6 @@ workloads controller
         var node = {
           id: id,
           name: "Virtual Node " + (-id),
-          count: 1,
         };
 
         serviceMap[node.id] = {};
@@ -444,6 +452,84 @@ workloads controller
         }
         return nodes.concat($scope.createdNodes);
       };
+
+      $scope.generateBlob = function () {
+        var data = {
+          attribs: workloads.attribs
+        };
+
+        if (wizard.create_nodes) {
+          data.provider = {
+            name: provider.name,
+            hints:  {
+              os: workloads.add_os,
+              image_id: workloads.add_os,
+              disks: [{
+                autoDelete: true,
+                boot: true,
+                type: "PERSISTENT",
+                initializeParams: {
+                  sourceImage: workloads.add_os,
+                },
+              }],
+            }
+          };
+        }
+
+        var virtualNodes = 0;
+        data.nodes = [];
+
+        for (var i in workloads.selected) {
+          var node = workloads.selected[i];
+          var id = node.id;
+          var roles = [];
+
+          for(var j in wizard.services) {
+            var service = wizard.services[j];
+            var hasService = serviceMap[node.id][service.name];
+            if (hasService) {
+              for(var k in service.roles) {
+                var role = service.roles[k];
+                roles.push(role);
+              }
+            }
+          }
+
+          roles = roles.sort();
+
+          if (id > 0) {
+            data.nodes.push({
+              node_id: id,
+              roles: roles
+            });
+          } else {
+            var existing = false;
+            // check to see if we already have a cloud node with the same roles
+            for (var j in data.nodes) {
+              var n = data.nodes[j];
+              if (n.id > 0)
+                continue;
+              // unfortunately the only way to compare arrays
+              if (JSON.stringify(n.roles) == JSON.stringify(roles)) {
+                n.count++;
+                existing = true;
+                break;
+              }
+            }
+
+            if (!existing) {
+              console.log("Adding virtual node",virtualNodes+1)
+              data.nodes.push({
+                id: -(++virtualNodes),
+                roles: roles,
+                count: 1
+              });
+            }
+          }
+        }
+
+        return data;
+      }
 
     });
 })();
