@@ -243,6 +243,11 @@ var version = '0.1.3';
       controllerAs: 'attribs',
       templateUrl: 'views/attribs.html'
     }).
+    when('/graphs', {
+      controller: 'GraphsCtrl',
+      controllerAs: 'graphs',
+      templateUrl: 'views/graphs.html'
+    }).
 
     otherwise({
       redirectTo: '/login'
@@ -434,6 +439,10 @@ var version = '0.1.3';
         title: 'Attributes',
         icon: 'list',
         path: '/attribs'
+      }, {
+        title: 'Graphs',
+        icon: 'pie_chart_outlined',
+        path: '/graphs'
       }]
     }];
 
