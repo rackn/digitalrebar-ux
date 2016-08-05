@@ -264,3 +264,118 @@ table.no-border, table.no-border tr, table.no-border tr td{
   height: 600px;
   width: 100%;
 }
+
+.step {
+  width: 20%;
+  padding: 4px;
+  text-align: center;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  transform: translateX(0);
+  outline: none;
+}
+
+.step md-icon {
+  margin: auto;
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+  outline: none;
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid lightgrey;
+  color: lightgrey;
+  background-color: rgba(21,101,192, 0);
+  transition: border-color 0.5s, background-color 0.5s, color 0.5s;
+}
+
+.step:not(:first-child) md-icon:before {
+  position: absolute;
+  height: 1;
+  left: 0;
+  top: 50%;
+  content: '';
+  width: calc(50% - 4px - 16px);
+  border-bottom: 2px solid lightgrey;
+  transition: border-color 0.5s;
+}
+
+.step:not(:last-child) md-icon:after {
+  position: absolute;
+  z-index: -5;
+  height: 1;
+  right: 0;
+  top: 50%;
+  content: '';
+  width: calc(50% - 4px - 16px);
+  border-bottom: 2px solid lightgrey;
+  transition: border-color 0.5s;
+}
+
+.step.completed md-icon {
+  color: #fff;
+  background-color: rgb(21,101,192);
+  border-color: rgb(21,101,192);
+}
+
+.step.progress md-icon {
+  color: rgb(21,101,192);
+  border-color: rgb(21,101,192);
+}
+
+.step.progress:not(:first-child) md-icon:before {
+  border-color: rgb(21,101,192);
+}
+
+.step.completed:not(:first-child) md-icon:before {
+  border-color: rgb(21,101,192);
+}
+
+.step.completed:not(:last-child) md-icon:after {
+  border-color: rgb(21,101,192);
+}
+
+.wizard-icon {
+  padding: 1em;
+}
+
+.wizard-icon md-icon {
+  font-size: 120px;
+  width: 120px;
+  height: 120px;
+  color: rgb(21,101,192);
+}
+
+.wizard-pane {
+  width: 80%;
+  margin: auto;
+}
+
+.wizard-content h1 {
+  font-weight: normal;
+}
+
+.wizard-content h2 {
+  font-weight: normal;
+  text-align: center;
+}
+
+.wizard-content .icon-container {
+  text-align: center;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px;
+}
+
+.wizard-content .icon-container md-icon {
+  font-size: 100px;
+  color: rgb(33, 150, 243);
+  width: 100px;
+  height: 100px;
+}
+
+.wizard-content md-input-container {
+  margin: 0;
+}
