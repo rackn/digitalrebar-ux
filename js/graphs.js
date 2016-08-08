@@ -16,6 +16,15 @@ graphs controller
     $scope.graphBarclamp = null;
     $scope.graphHLayout = false;
 
+    $scope.graphLayoutOptions = {
+      hierarchical: {
+        enabled:true,
+        levelSeparation: 150,
+        direction: 'UD',        // UD, DU, LR, RL
+        sortMethod: 'directed'   // hubsize, directed
+      }
+    };
+
     $scope.getGraph = function() { 
       $scope.hasGraph = -1;
       api("/api/v2/"+$scope.graphType+"/graph").
@@ -26,15 +35,8 @@ graphs controller
             edges: parsedData.edges
           }
           $scope.graphOptions = parsedData.options;
-	  if ($scope.graphHLayout) {
-            $scope.graphOptions["layout"] = {
-                hierarchical: {
-                  enabled:true,
-                  levelSeparation: 150,
-                  direction: 'UD',        // UD, DU, LR, RL
-                  sortMethod: 'directed'   // hubsize, directed
-                }
-              };
+          if ($scope.graphHLayout) {
+            $scope.graphOptions["layout"] = $scope.graphLayoutOptions;
           }
           $scope.hasGraph = 1;
         }).
@@ -43,6 +45,18 @@ graphs controller
           api.toast("Error Getting Graph Data", 'node_role', err);
         });
     }
+
+    $scope.$watch('graphHLayout', function (val) {
+      if(val) {
+        $scope.graphOptions["layout"] = $scope.graphLayoutOptions;
+      } else {
+        $scope.graphOptions["layout"] = {
+          hierarchical: {
+            enabled: false,
+          }
+        };
+      }
+    })
 
     $scope.getGraph();
   });

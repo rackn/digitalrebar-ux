@@ -1,45 +1,42 @@
-<md-card flex>
-  <section>
-    <table>
-      <tr>
-        <td style='font-weight: bold; text-align: right; width: 100px;'>Type</td>
-        <td>
-          <select ng-model='graphType' class='table-input'>
-            <option value='node_roles'>Node Role</option>
-            <option value='roles'>Role</option>
-          </select>
-        </td>
-        <td>
-          Hierarchical Layout
-          <md-switch ng-model="graphHLayout" aria-label="Switch" style='margin: 0;'>
-            <md-tooltip>
-              Enable Hierarchical Layout
-            </md-tooltip>
-          </md-switch>
-        </td>
-        <td>
-          <md-button class='md-raised md-primary' ng-click='getGraph()'> 
-            Get Graph
-          </md-button>
-        </td>
-      </tr>
-    </table>
-  </section>
-</md-card>
-<md-card flex>
+<md-card flex class='graph-card'>
   <div ng-switch="hasGraph">
-    <md-card-content ng-switch-when="-1">
+    <md-card-content ng-switch-when="-1" style='margin-top: 4em'>
       <div layout="row" layout-sm="column" layout-align="space-around">
         <md-progress-circular md-mode="indeterminate"></md-progress-circular>
       </div>
     </md-card-content>
-    <md-card-content ng-switch-when="0">
+    <md-card-content ng-switch-when="0" style='margin-top: 4em'>
       Error Loading Graph
     </md-card-content>
-    <md-card-content ng-switch-when="1">
+    <md-card-content ng-switch-when="1"  style='padding: 0;'>
       <div class="graph">
         <vis-network data='graphData' options='graphOptions' events="{}"></vis-network>
       </div>
     </md-card-content>
   </div>
+  <section class='graph-overlay' layout='row'>
+    <md-input-container style='margin: 0 1em 0 1em;'>
+      <md-select ng-model='graphType' ng-change='getGraph()'>
+        <md-option value='node_roles'>Node Role</md-option>
+        <md-option value='roles'>Role</md-option>
+      </md-select>
+    </md-input-container>
+    
+    <div>
+      <md-checkbox ng-model="graphHLayout" aria-label="checkbox" style='margin: 8px;'>
+        Hierarchical Layout
+      </md-checkbox>
+    </div>
+
+    <span flex></span>
+
+    <md-button class='md-icon-button' ng-click='getGraph()'> 
+      <md-icon>
+        refresh
+      </md-icon>
+      <md-tooltip>
+        Reload Graph
+      </md-tooltip>
+    </md-button>
+  </section>
 </md-card>
