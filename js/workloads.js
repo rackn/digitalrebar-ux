@@ -3,7 +3,7 @@ workloads controller
 */
 (function () {
   angular.module('app')
-    .controller('WorkloadsCtrl', function ($scope, api, $location, $mdDialog, $routeParams) {
+    .controller('WorkloadsCtrl', function ($scope, api, $location, $mdDialog, $routeParams, localStorageService) {
       $scope.$emit('title', 'Wizard'); // shows up on the top toolbar
 
       var workloads = this;
@@ -12,6 +12,8 @@ workloads controller
       this.required_service = '';
       this.selected = [];
       this.attribs = {};
+
+      $scope.submitStatus = 0;
 
       $scope.done = 0;
       $scope.status = 0;
@@ -107,9 +109,34 @@ workloads controller
           icon: "airplanemode_active",
           complete: function () {
             return true;
-          }
+          },
+          onStep: function () {
+            $scope.submitStatus = 0;
+            api("/api/v2/deployments/"+workloads.deployment_id+"/batch", {
+              method: "PUT",
+              data: $scope.generateBlob()
+            }).
+            success(function (){
+              $scope.submitStatus = 1;
+            }).error(function (err) {
+              api.toast("Error Running Wizard", "deployments", err)
+              $scope.submitStatus = -1;
+            })
+          },
         },
+        {
+          path: "views/wizard/done.html",
+          complete: function() { return false; },
+          finalStep: true,
+        }
       ];
+
+      $scope.editInHelper = function () {
+        localStorageService.add('api_helper_payload', JSON.stringify($scope.generateBlob(), null, "  "));
+        localStorageService.add('api_helper_method', 'put');
+        localStorageService.add('api_helper_route', '/api/v2/deployments/'+workloads.deployment_id+'/batch');
+        $location.path("/api_helper");
+      };
 
       $scope.setProgress = function (status) {
         if(status <= $scope.status)
@@ -128,6 +155,10 @@ workloads controller
         }
         else if ($scope.status == $scope.done) {
           if ($scope.steps[$scope.done].complete()) {
+
+            if($scope.steps[$scope.done].onStep)
+              $scope.steps[$scope.done].onStep();
+
             $scope.done ++;
             $scope.status ++;
             $scope.canNext = false;
@@ -518,7 +549,6 @@ workloads controller
             }
 
             if (!existing) {
-              console.log("Adding virtual node",virtualNodes+1)
               data.nodes.push({
                 id: -(++virtualNodes),
                 roles: roles,
