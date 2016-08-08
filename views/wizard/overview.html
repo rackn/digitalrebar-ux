@@ -4,7 +4,15 @@
   </div>
   <div class='wizard-content' flex>
     <h1>Overview the JSON That Will Be Sent</h1>
-    <pre>{{generateBlob() | json}}</pre>
+    <div layout='row'>
+      <pre flex>{{generateBlob() | json}}</pre>
+      <div layout-padding layout-align='center' layou='column'>
+        <md-button class='md-primary md-icon-button' ng-click='editInHelper()'>
+          <md-icon>create</md-icon>
+          <md-tooltip>Edit in API Call Helper</md-tooltip>
+        </md-button>
+      </div>
+    </div>  
     
   </div>
 </div>

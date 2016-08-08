@@ -6,15 +6,17 @@ api helper controller
     .controller('ApiHelperCtrl', function ($scope, api, localStorageService) {
       $scope.$emit('title', 'API Helper'); // shows up on the top toolbar
 
-      $scope.method = 'get';
-      $scope.payload = localStorageService.get('api_helper') || '{}';
-      $scope.route = '';
+      $scope.method = localStorageService.get('api_helper_method') || 'get';
+      $scope.payload = localStorageService.get('api_helper_payload') || '{}';
+      $scope.route = localStorageService.get('api_helper_route') || '';
       $scope.class = {};
 
       $scope.parse = function (data) {
         try {
           var a = JSON.parse(data);
-          localStorageService.add('api_helper', data);
+          localStorageService.add('api_helper_payload', data);
+          localStorageService.add('api_helper_method', $scope.method);
+          localStorageService.add('api_helper_route', $scope.route);
           return a;
         } catch (e) {
           return false;

@@ -13,7 +13,7 @@
 
   <md-content layout-padding layout='column'>
     <div layout='row'>
-      <div ng-repeat='step in steps' class='step' ng-class="{completed:$index < done, progress: $index==done}" ng-click='setProgress($index)'>
+      <div ng-repeat='step in steps' class='step' ng-class="{completed:$index < done, progress: $index==done}" ng-if='!step.finalStep' ng-click='setProgress($index)'>
         <md-icon>{{done > $index ? 'done' : step.icon}}</md-icon>
         <md-tooltip>
           {{step.name}}
@@ -21,7 +21,7 @@
       </div>
     </div>
     <ng-include src='steps[done].path' class='wizard-include' onload='setCanNext()'> </ng-include>
-    <md-card-actions layout='row' layout-align='end center'>
+    <md-card-actions layout='row' layout-align='end center' ng-hide='steps[done].finalStep'>
       <md-button class='md-primary' ng-disabled='done == 0' ng-click='prevStep()'>
         Back
       </md-button>
