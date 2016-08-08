@@ -379,3 +379,16 @@ table.no-border, table.no-border tr, table.no-border tr td{
 .wizard-content md-input-container {
   margin: 0;
 }
+
+.graph-card {
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.graph-overlay {
+  padding: 4px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+}
