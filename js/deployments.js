@@ -294,12 +294,30 @@ deployments controller
       }
       var keys = Object.keys(roles);
       keys.sort(function(a, b) {
-        var dra = $scope._deployment_roles[a];
-	var ra = $scope._roles[dra.role_id];
-        var drb = $scope._deployment_roles[b];
-	var rb = $scope._roles[drb.role_id];
+        var rac = 0;
+        var rbc = 0;
 
-	return ra.cohort - rb.cohort;
+        if (typeof a != 'undefined') {
+          var dra = $scope._deployment_roles[a];
+          if (typeof dra != 'undefined') {
+            var ra = $scope._roles[dra.role_id];
+            if (typeof ra != 'undefined') {
+              rac = ra.cohort
+            }
+          }
+        }
+
+        if (typeof b != 'undefined') {
+          var drb = $scope._deployment_roles[b];
+          if (typeof drb != 'undefined') {
+            var rb = $scope._roles[drb.role_id];
+            if (typeof rb != 'undefined') {
+              rbc = rb.cohort
+            }
+          }
+        }
+
+        return rac - rbc;
       });
       $scope.matrix_order[deployment.id] = keys;
       $scope.matrix[deployment.id] = roles;
