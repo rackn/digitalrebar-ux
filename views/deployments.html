@@ -164,7 +164,7 @@ deployments view
         </md-toolbar>
         <section layout='row' style='max-height: 400px;'>
           <md-list flex='33' style='overflow-y: auto;'>
-            <md-list-item class='md-table-toolbar alternate' ng-repeat="role in _deployment_roles | from:'deployment':deployment | orderBy: 'cohort'" ng-click='setBindRole(id, role.role_id)' aria-label='Role' md-ink-ripple>
+            <md-list-item class='md-table-toolbar alternate' ng-repeat="role in _deployment_roles | from:'deployment':deployment | orderBy: _roles[role.role_id].cohort" ng-click='setBindRole(id, role.role_id)' aria-label='Role' md-ink-ripple>
               <span flex>{{_roles[role.role_id].name}}</span>
               <span>
                   <md-icon>
@@ -176,7 +176,7 @@ deployments view
           </md-list>
           <md-divider></md-divider>
           <md-list style='overflow-y: auto;' flex='66'>
-            <md-list-item ng-if='bindRoles[id]' ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy: 'name'">
+            <md-list-item ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy: 'name'">
               <md-divider></md-divider>
 
               <!-- Node button -->
@@ -205,7 +205,7 @@ deployments view
                   </md-tooltip>
                 </md-button>
               </span>
-              <span ng-hide='bindRoles[id].roles[node.id]'>
+              <span ng-hide='!bindRoles[id] || bindRoles[id].roles[node.id]'>
                 <md-button class='md-icon-button' ng-click='bindNodeRole(id, bindRoles[id].role_id, node.id)'>
                   <md-icon>add</md-icon>
                   <md-tooltip>
@@ -249,7 +249,7 @@ deployments view
           </md-button>
           <md-menu-content width="4">
             <md-menu-item ng-repeat="role in getRoles(id) | filter:{milestone: true} | orderBy:'name'">
-              <md-button ng-click="addRole(role.id, id)">
+              <md-button ng-click="addRole(role.id, id)" md-prevent-menu-close="md-prevent-menu-close">
                 <div layout="row" flex>
                   <p flex>{{role.name}}</p>
                   <md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{role.icon}}</md-icon>
