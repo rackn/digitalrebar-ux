@@ -14,16 +14,53 @@
       </div>
     </md-card-content>
   </div>
-  <section class='graph-overlay' layout='row'>
+  <section class='graph-overlay' layout-gt-sm='row' layout='column'>
     <md-input-container style='margin: 0 1em 0 1em;'>
-      <md-select ng-model='graphType' ng-change='getGraph()'>
+      <md-select ng-model='graphType' ng-change='getGraph()' aria-label="select">
         <md-option value='node_roles'>Node Role</md-option>
         <md-option value='roles'>Role</md-option>
       </md-select>
     </md-input-container>
-    
+
+    <md-input-container style='margin: 0 1em 0 1em;' ng-show="graphType == 'node_roles'">
+      <md-select ng-model='graphDeployment' ng-change='getGraph()' aria-label="select">
+        <md-option value='0'>No Deployment</md-option>
+        <md-option ng-repeat="(id, deployment) in _deployments" value='{{id}}'>
+          {{deployment.name}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container style='margin: 0 1em 0 1em;' ng-show="graphType == 'node_roles'">
+      <md-select ng-model='graphNode' ng-change='getGraph()' aria-label="select">
+        <md-option value='0'>No Node</md-option>
+        <md-option ng-repeat="(id, node) in _nodes" ng-if="node.variant != 'phantom'" value='{{id}}'>
+          {{node.name}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container style='margin: 0 1em 0 1em;'>
+      <md-select ng-model='graphRole' ng-change='getGraph()' aria-label="select">
+        <md-option value='0'>No Role</md-option>
+        <md-option ng-repeat="(id, role) in _roles" value='{{id}}'>
+          <md-icon style='margin: 0 8px 4px 0;'>{{role.icon}}</md-icon>
+          {{role.name}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container style='margin: 0 1em 0 1em;' ng-show="graphType == 'roles'">
+      <md-select ng-model='graphBarclamp' ng-change='getGraph()' aria-label="select">
+        <md-option value='0'>No Barclamp</md-option>
+        <md-option ng-repeat="(id, barclamp) in _barclamps" value='{{id}}'>
+          {{barclamp.name}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
     <div>
-      <md-checkbox ng-model="graphHLayout" aria-label="checkbox" style='margin: 8px;'>
+      <md-checkbox ng-model="graphHLayout" aria-label="checkbox" style='margin: 8px 8px 8px 16px;'>
         Hierarchical Layout
       </md-checkbox>
     </div>
