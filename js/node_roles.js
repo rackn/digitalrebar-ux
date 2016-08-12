@@ -13,7 +13,7 @@ node role controller
     // used for showing the toolbar when scrolling beyond the runlog
     $scope.style = {};
     $scope.top = 0;
-    $scope.$watch('scroll', function() {
+    $scope.updateScroll = function() {
       if(!$scope.id || !$('#runlog').position())
         return;
 
@@ -31,7 +31,9 @@ node role controller
         toolbar.css('width', 'auto');
         toolbar.css('top', 'auto');
       }
-    })
+    }
+
+    $scope.$watch('scroll', $scope.updateScroll)
 
     this.selected = [];
 
@@ -51,7 +53,7 @@ node role controller
       if ($scope.node_role.id) {
         api('/api/v2/node_roles/' + $scope.node_role.id + '/retry', {
           method: 'PUT'
-        }).success(api.addNodeRole).error(function (err) {
+        }).success(api.addNodeRole).success($scope.updateScroll).error(function (err) {
           api.toast('Error retrying node role', 'node_role', err);
         });
       }
