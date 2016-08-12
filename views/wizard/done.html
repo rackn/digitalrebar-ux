@@ -1,10 +1,8 @@
-<div layout='row' class='wizard-pane'>
+<div layout='column' layout-gt-xs='row' class='wizard-pane'>
   <div class='wizard-icon'>
     <md-icon ng-show='submitStatus == -1'>close</md-icon>
-    <md-icon ng-show='submitStatus == 0' class='rotate'>hourhlass_empty</md-icon>
+    <md-icon ng-show='submitStatus == 0' class='rotate'>hourglass_empty</md-icon>
     <md-icon ng-show='submitStatus == 1'>check</md-icon>
-    <md-icon></md-icon>
-    <md-icon></md-icon>
   </div>
   <div class='wizard-content' flex>
     <h1>
