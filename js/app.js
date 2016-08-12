@@ -493,6 +493,7 @@ var version = '0.1.3';
         }
       }).success(function (user) {
         $rootScope.user = user;
+        api.reload();
       });
     };
 
