@@ -2,7 +2,7 @@
 dialog controller
 */
 (function () {
-  angular.module('app').controller('DialogController', function ($scope, $rootScope, $mdDialog, locals, api, $mdToast, debounce) {
+  angular.module('app').controller('DialogController', function ($scope, $rootScope, $mdDialog, locals, api, $mdToast, debounce, $location, localStorageService) {
     // keep locals from the config
     $scope.locals = locals;
 
@@ -79,43 +79,53 @@ dialog controller
       $mdDialog.hide();
     };
 
+    this.editNodesInHelper = function () {
+      var provider = locals.providers[locals.provider].name;
+      var payload = {
+        'name': locals.base_name + "." + provider + ".neode.org",
+        'description': "created by rebar",
+        'provider': provider,
+        'deployment_id': locals.deployment_id,
+        'hints': {
+          'use-proxy': false,
+          'use-ntp': false,
+          'use-dns': false,
+          'use-logging': false,
+          'provider-create-hint': locals.providers[locals.provider].auth_details['provider-create-hint']
+        }
+      };
+
+      payload.hints['provider-create-hint']['hostname'] = locals.base_name;
+
+
+      localStorageService.add('api_helper_payload', JSON.stringify(payload, null, "  "));
+      localStorageService.add('api_helper_method', 'post');
+      localStorageService.add('api_helper_route', '/api/v2/nodes/');
+      $mdDialog.hide();
+      $location.path("/api_helper");
+    }
+
     this.addNodes = function () {
       // create a list of `locals.number` numbers 
       var times = Array.apply(null, { length: locals.number }).map(Number.call, Number);
+      var provider = locals.providers[locals.provider].name;
 
       times.forEach(function (i) {
         var payload = {
-          'name': locals.base_name + "-" + i + "." + locals.provider + ".neode.org",
+          'name': locals.base_name + "-" + i + "." + provider + ".neode.org",
           'description': "created by rebar",
-          'provider': locals.provider,
+          'provider': provider,
           'deployment_id': locals.deployment_id,
           'hints': {
             'use-proxy': false,
             'use-ntp': false,
             'use-dns': false,
             'use-logging': false,
-            'provider-create-hint': {
-              'hostname': locals.base_name + '-' + i
-            }
+            'provider-create-hint': locals.providers[locals.provider].auth_details['provider-create-hint']
           }
         };
-        if (locals.add_os != "default_os") {
-          // packet
-          payload.hints['provider-create-hint'].os = locals.add_os;
-          // aws
-          payload.hints['provider-create-hint'].image_id = locals.add_os;
-          // google
-          payload.hints['provider-create-hint'].disks = [];
-          payload.hints['provider-create-hint'].disks.push({
-            'autoDelete': true,
-            'boot': true,
-            'type': 'PERSISTENT',
-            'initializeParams': {
-              'sourceImage': locals.add_os
-            }
-          });
-        };
 
+        payload.hints['provider-create-hint']['hostname'] = locals.base_name + '-' + i;
 
         api('/api/v2/nodes', {
           method: "POST",
