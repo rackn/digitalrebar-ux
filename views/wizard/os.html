@@ -10,7 +10,7 @@
           <md-icon>computer</md-icon>
           <md-tooltip>Metal</md-tooltip>
         </div>
-        <md-input-container ng-if='wizard.os && wizard.system_nodes' flex>
+        <md-input-container ng-if='wizard.system_nodes' flex>
           <label>Metal Operating System</label>
           <md-select ng-model="workloads.attribs['provisioner-target_os']">
             <md-option ng-repeat="os in osList" value="{{os}}">
@@ -24,11 +24,6 @@
           <md-icon>cloud</md-icon>
           <md-tooltip>Cloud</md-tooltip>
         </div>
-        <md-autocomplete flex ng-if='wizard.os && wizard.create_nodes' ng-init='search=workloads.add_os' md-selected-item="selected" md-search-text="search" md-search-text-change="workloads.add_os=search" md-items="item in ['default_os'].concat(barclamp.cfg_data.barclamp.os_support) | filter:search" md-selected-item-change="workloads.add_os=selected||search" md-item-text="item" md-floating-label="Provider Operating System">
-          <md-item-template>
-            <span md-highlight-text="search">{{item}}</span>
-          </md-item-template>
-        </md-autocomplete>
 
         <md-input-container ng-if='wizard.create_nodes' flex>
           <label>Provider</label>

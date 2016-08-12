@@ -6,6 +6,9 @@
     <div class='wizard-content' flex>
       <h1>Select Your Deployment Specific Options</h1>
       <div layout='column'>
+        <p ng-show='!wizard.base_attribs'>
+          No Options Available
+        </p>
         <md-input-container class='md-block' flex ng-repeat='attrib in wizard.base_attribs'>
           <div ng-switch='attribMap[attrib].schema.type'>
             <div ng-switch-when='str'>
