@@ -26,7 +26,7 @@
         <md-input-container class='md-block'>
           <label>Provider</label>
           <md-select required name='provider' ng-model="locals.provider">
-            <md-option ng-repeat="provider in providers" value="{{provider.name}}">
+            <md-option ng-repeat="provider in providers" value="{{provider.id}}">
               {{provider.name}}
             </md-option>
           </md-select>
@@ -50,13 +50,6 @@
           </div>
         </md-input-container>
 
-        <md-input-container class='md-block'>
-          <label>OS</label>
-          <input required type='text' name='os' ng-model='locals.add_os' />
-          <div ng-messages="nodeForm.os.$error">
-            <div ng-message="required">Enter an os. Default is default_os</div>
-          </div>
-        </md-input-container>
 
         <md-input-container class='md-block'>
           <label>Number</label>
@@ -73,6 +66,14 @@
       <a ng-href='#/providers'>Providers</a>
       <br/>
       <span flex></span>
+      <md-button ng-click='dialog.editNodesInHelper()' ng-disabled='nodeForm.$error.required' class='md-icon-button md-primary' target="_blank" md-autofocus>
+        <md-icon>
+          edit
+        </md-icon>
+        <md-tooltip>
+          Edit in API Call Helper
+        </md-tooltip>
+      </md-button>
       <md-button ng-click='dialog.addNodes()' ng-disabled='nodeForm.$error.required' class='md-primary md-raised' target="_blank" md-autofocus>
         Add
       </md-button>
