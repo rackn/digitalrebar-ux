@@ -15,7 +15,7 @@ workloads controller
       $scope.submitStatus = 0;
 
       $scope.done = 0;
-      $scope.status = 6;
+      $scope.status = 0;
       $scope.steps = [{
         name: "Deployment",
         path: "views/wizard/deployment.html",
