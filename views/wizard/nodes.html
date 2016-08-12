@@ -36,7 +36,7 @@
                 <span ng-repeat='service in wizard.services' style='height: 10px;' ng-if='service.type==type'>
                   <md-button ng-click='select(node, service)' class='md-icon-button' ng-class='{"toggled md-whiteframe-2dp": serviceMap[node.id][service.name]}'>
                     <md-icon>
-                      {{service.icon}}
+                      {{service.icon || "blur_circular"}}
                     </md-icon>
                     <md-tooltip>
                       {{service.description}}

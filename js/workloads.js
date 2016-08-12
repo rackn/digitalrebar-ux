@@ -395,7 +395,7 @@ workloads controller
                   break;
                 }
               }
-              if (s.type == 'worker')
+              if (s && s.type == 'worker')
                 serviceMap[node.id][i] = false;
             }
             serviceMap[node.id][service.name] = true;
@@ -414,7 +414,7 @@ workloads controller
                   break;
                 }
               }
-              if (s.type == 'control')
+              if (s && s.type == 'control')
                 serviceMap[node.id][i] = false;
             }
             serviceMap[node.id][service.name] = true;
@@ -503,12 +503,8 @@ workloads controller
                 var serviceRoles = service.roles[k];
                 for (var l in serviceRoles) {
                   var reqs = serviceRoles[l];
-                  if (serviceMap[node.id][l]) {
-                    for (var m in reqs) {
-                      if (roles.indexOf(reqs[m]) < 0) {
-                        roles.push(reqs[m]);
-                      }
-                    }
+                  if (serviceMap[node.id][k] && roles.indexOf(reqs) < 0) {
+                    roles.push(reqs);
                   }
                 }
               }
