@@ -14,7 +14,7 @@
       </div>
     </md-card-content>
   </div>
-  <section class='graph-overlay' layout='row'>
+  <section class='graph-overlay' layout-gt-sm='row' layout='column'>
     <md-input-container style='margin: 0 1em 0 1em;'>
       <md-select ng-model='graphType' ng-change='getGraph()' aria-label="select">
         <md-option value='node_roles'>Node Role</md-option>
@@ -60,7 +60,7 @@
     </md-input-container>
 
     <div>
-      <md-checkbox ng-model="graphHLayout" aria-label="checkbox" style='margin: 8px;'>
+      <md-checkbox ng-model="graphHLayout" aria-label="checkbox" style='margin: 8px 8px 8px 16px;'>
         Hierarchical Layout
       </md-checkbox>
     </div>
