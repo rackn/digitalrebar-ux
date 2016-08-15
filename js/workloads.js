@@ -204,7 +204,6 @@ workloads controller
           continue;
         }
         this.provider = provider.name;
-        break;
       }
 
       /*if (this.provider === '' && Object.keys($scope._providers).length) {
@@ -481,9 +480,14 @@ workloads controller
         };
 
         if (wizard.create_nodes) {
+          var hints = $scope.providerMap[workloads.provider].auth_details["provider-create-hint"];
+          if (hints == null) {
+            var ptype = $scope.providerMap[workloads.provider]["type"];
+            hints = $scope.providerTemplates[ptype]["provider-create-hint"].default;
+          }
           data.provider = {
             name: workloads.provider,
-            hints: $scope.providerMap[workloads.provider].auth_details["provider-create-hint"],
+            hints: hints,
           };
         }
 
