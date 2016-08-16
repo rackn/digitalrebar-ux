@@ -7,8 +7,10 @@ workloads controller
       $scope.$emit('title', 'Wizard'); // shows up on the top toolbar
 
       var workloads = this;
-      this.deployment_id = -1;
       this.required_service = '';
+      this.commit = true;
+      this.deployment_id = 0;
+      this.createDeployment = true;
       this.selected = [];
       this.attribs = {};
 
@@ -21,15 +23,22 @@ workloads controller
         path: "views/wizard/deployment.html",
         icon: "directions_bike",
         complete: function () {
-          var deployment = $scope._deployments[workloads.deployment_id];
-          // no deployment selected
-          if (!deployment)
-            return false;
+          if (workloads.createDeployment) {
+            // no deployment selected
+            var deployment = workloads.name;
+            if (!deployment)
+              return false;            
+          } else {
+            var deployment = $scope._deployments[workloads.deployment_id];
+            // no deployment selected
+            if (!deployment)
+              return false;
 
-          // deployment isn't proposed
-          if (deployment.state != 0)
-            return false;
-
+            // deployment isn't proposed
+            if (deployment.state != 0)
+              return false;            
+          }
+          
           return true;
         }
       }, {
@@ -103,8 +112,8 @@ workloads controller
         },
         onStep: function () {
           $scope.submitStatus = 0;
-          api("/api/v2/deployments/" + workloads.deployment_id + "/batch", {
-            method: "PUT",
+          api("/api/v2/deployments" + (workloads.createDeployment ? "" : "/" + workloads.deployment_id + "/batch"), {
+            method: workloads.createDeployment ? "POST" : "PUT",
             data: $scope.generateBlob()
           }).
           success(function () {
@@ -123,8 +132,8 @@ workloads controller
 
       $scope.editInHelper = function () {
         localStorageService.add('api_helper_payload', JSON.stringify($scope.generateBlob(), null, "  "));
-        localStorageService.add('api_helper_method', 'put');
-        localStorageService.add('api_helper_route', '/api/v2/deployments/' + workloads.deployment_id + '/batch');
+        localStorageService.add('api_helper_method', workloads.createDeployment ? 'post' : 'put');
+        localStorageService.add('api_helper_route', workloads.createDeployment ? '/api/v2/deployments' : '/api/v2/deployments/' + workloads.deployment_id + '/batch');
         $location.path("/api_helper");
       };
 
@@ -476,8 +485,11 @@ workloads controller
 
       $scope.generateBlob = function () {
         var data = {
+          commit: workloads.commit,
           attribs: workloads.attribs
         };
+        if (workloads.createDeployment)
+          data.name = workloads.name;
 
         if (wizard.create_nodes) {
           var hints = $scope.providerMap[workloads.provider].auth_details["provider-create-hint"];
