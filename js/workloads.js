@@ -21,7 +21,7 @@ workloads controller
       $scope.steps = [{
         name: "Deployment",
         path: "views/wizard/deployment.html",
-        icon: "directions_bike",
+        icon: "directions_run",
         complete: function () {
           if (workloads.createDeployment) {
             // no deployment selected
@@ -38,13 +38,13 @@ workloads controller
             if (deployment.state != 0)
               return false;            
           }
-          
+
           return true;
         }
       }, {
         name: "OS",
         path: "views/wizard/os.html",
-        icon: "directions_car",
+        icon: "directions_bike",
         complete: function () {
           // no metal os selected
           if (wizard.system_nodes && !workloads.attribs["provisioner-target_os"])
@@ -59,14 +59,14 @@ workloads controller
       }, {
         name: "Attributes",
         path: "views/wizard/attributes.html",
-        icon: "directions_bus",
+        icon: "directions_car",
         complete: function () {
           return true;
         }
       }, {
         name: "Nodes",
         path: "views/wizard/nodes.html",
-        icon: "directions_boat",
+        icon: "directions_bus",
         complete: function (output) {
           if (workloads.selected.length == 0)
             return output ? [false, 'You must select at least one node'] : false;

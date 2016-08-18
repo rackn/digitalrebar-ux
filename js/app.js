@@ -25,13 +25,13 @@ var version = '0.1.3';
     // theme to stop warnings/bugs
     $mdThemingProvider.theme('status_').
     primaryPalette('green', {
-      'default': '800'
+      'default': '600'
     }).accentPalette('grey', { 'default': '900' });
 
     // themes for different status colors
     $mdThemingProvider.theme('status_ready').
     primaryPalette('green', {
-      'default': '800'
+      'default': '600'
     }).accentPalette('grey', { 'default': '900' });
 
     $mdThemingProvider.theme('status_error').
