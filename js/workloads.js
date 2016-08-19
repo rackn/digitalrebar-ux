@@ -503,6 +503,11 @@ workloads controller
           };
         }
 
+        // If we have a role apply order, then pass it along
+        if (wizard.role_apply_order && wizard.role_apply_order.length > 1) {
+          data.role_apply_order = wizard.role_apply_order;
+        }
+
         var virtualNodes = 0;
         data.nodes = [];
 
