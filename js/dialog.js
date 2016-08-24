@@ -36,6 +36,18 @@ dialog controller
       return providers;
     })();
 
+    $scope.providerMap = (function () {
+      var pm = {};
+      for (var i in locals.providers) {
+        var provider = locals.providers[i];
+          pm[provider.name] = provider;
+          if (provider.type === 'MetalProvider' || provider.type == '') {
+            continue;
+          }
+      }
+      return pm;
+    })()
+
     $scope.hide = function () {
       $mdDialog.hide();
     };
@@ -81,6 +93,13 @@ dialog controller
 
     this.editNodesInHelper = function () {
       var provider = locals.providers[locals.provider].name;
+
+      var hints = $scope.providerMap[provider].auth_details["provider-create-hint"];
+      if (hints == null) {
+        var ptype = $scope.providerMap[provider]["type"];
+        hints = $rootScope.providerTemplates[ptype]["provider-create-hint"].default;
+      }
+
       var payload = {
         'name': locals.base_name + "." + provider + ".neode.org",
         'description': "created by rebar",
@@ -91,7 +110,7 @@ dialog controller
           'use-ntp': false,
           'use-dns': false,
           'use-logging': false,
-          'provider-create-hint': locals.providers[locals.provider].auth_details['provider-create-hint']
+          'provider-create-hint': hints
         }
       };
 
@@ -111,6 +130,12 @@ dialog controller
       var provider = locals.providers[locals.provider].name;
 
       times.forEach(function (i) {
+        var hints = $scope.providerMap[provider].auth_details["provider-create-hint"];
+        if (hints == null) {
+          var ptype = $scope.providerMap[provider]["type"];
+          hints = $rootScope.providerTemplates[ptype]["provider-create-hint"].default;
+        }
+
         var payload = {
           'name': locals.base_name + "-" + i + "." + provider + ".neode.org",
           'description': "created by rebar",
@@ -121,7 +146,7 @@ dialog controller
             'use-ntp': false,
             'use-dns': false,
             'use-logging': false,
-            'provider-create-hint': locals.providers[locals.provider].auth_details['provider-create-hint']
+            'provider-create-hint': hints
           }
         };
 
