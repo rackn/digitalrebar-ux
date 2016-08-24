@@ -47,14 +47,10 @@ workloads controller
         icon: "directions_bike",
         complete: function () {
           // no metal os selected
-          if (wizard.system_nodes && !workloads.attribs["provisioner-target_os"])
-            return false;
-
-          // no provider given
-          if (wizard.create_nodes && !workloads.provider)
-            return false;
-
-          return true;
+          var metal = (wizard.system_nodes && !workloads.attribs["provisioner-target_os"]);
+          // no providers selected
+          var cloud = (wizard.create_nodes && !workloads.provider);
+          return !metal || !cloud;
         }
       }, {
         name: "Attributes",
