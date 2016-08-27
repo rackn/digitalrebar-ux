@@ -14,7 +14,7 @@
 
 1.  generate server.pem with the following command:
 
-    * `openssl req -new -x509 -keyout server.pem -out server.pem -days 365 -nodes`
+    * `openssl req -new -x509 -keyout server-key.pem -out server.pem -days 365 -nodes`
 
 2. place `server.pem` in the same location as `simple-https.py`
 
