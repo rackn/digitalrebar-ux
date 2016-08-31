@@ -168,7 +168,7 @@ node role controller
     }
 
     $scope.getApiUpdate = function () {
-      if ($scope.editing || !$scope.node_role) return;
+      if ($scope.editing || !$scope.node_role || !$scope.id) return;
 
       api.fetch('node_role', $scope.id).success(function () {
         $scope.updateInterval = $timeout($scope.getApiUpdate, 2000);
