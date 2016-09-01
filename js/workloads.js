@@ -11,6 +11,7 @@ workloads controller
       this.commit = true;
       this.deployment_id = 0;
       this.createDeployment = true;
+      this.use_system = false;
       this.selected = [];
       this.attribs = {};
 
@@ -23,6 +24,9 @@ workloads controller
         path: "views/wizard/deployment.html",
         icon: "directions_run",
         complete: function () {
+          // set this to a better value
+          workloads.use_system = !wizard.create_nodes;
+          // deployment logic
           if (workloads.createDeployment) {
             // no deployment selected
             var deployment = workloads.name;
@@ -38,7 +42,6 @@ workloads controller
             if (deployment.state != 0)
               return false;            
           }
-
           return true;
         }
       }, {
@@ -47,10 +50,10 @@ workloads controller
         icon: "directions_bike",
         complete: function () {
           // no metal os selected
-          var metal = (wizard.system_nodes && !workloads.attribs["provisioner-target_os"]);
+          var metal = (wizard.system_nodes && workloads.attribs["provisioner-target_os"] && workloads.use_system);
           // no providers selected
-          var cloud = (wizard.create_nodes && !workloads.provider);
-          return !metal || !cloud;
+          var cloud = (wizard.create_nodes && workloads.provider);
+          return metal || cloud;
         }
       }, {
         name: "Attributes",
@@ -211,16 +214,6 @@ workloads controller
         this.provider = provider.name;
       }
 
-      /*if (this.provider === '' && Object.keys($scope._providers).length) {
-        $scope.confirm(undefined, {
-          title: "Redirect to Providers",
-          message: "You have no providers! Would you like to go to the providers page?",
-          yesCallback: function () {
-            $scope.setPath("/providers")
-          }
-        });
-      }*/
-
       $scope.showAdvanced = false;
       $scope.toggleAdvanced = function () {
         $scope.showAdvanced = !$scope.showAdvanced;
@@ -248,6 +241,11 @@ workloads controller
       success(function (data) {
         if (data.value) {
           $scope.osList = Object.keys(data.value);
+          // remove available OSes that are not in the barclamp supported OS list (skip if there are no supported in the list)
+          for (var i in $scope.osList) {
+            if (barclamp.cfg_data.barclamp.os_support.length && barclamp.cfg_data.barclamp.os_support.indexOf($scope.osList[i]) == -1)
+              $scope.osList.splice(i, 1);
+          }
           if ($scope.osList.length) {
             workloads.attribs["provisioner-target_os"] = $scope.osList[0];
           }
@@ -309,7 +307,7 @@ workloads controller
       $scope.createdNodes = [];
 
       $scope.addNode = function () {
-        if (!wizard.create_nodes)
+        if (!wizard.create_nodes || workloads.use_system)
           return;
 
         // negative ids so we know to create a new node
@@ -334,7 +332,7 @@ workloads controller
       };
 
       // create new nodes if system nodes aren't allowed
-      if (!wizard.system_nodes && wizard.create_nodes) {
+      if (wizard.create_nodes && !workloads.use_system) {
         var numControl = 0;
         var numWorker = 0;
         var controls = {};
@@ -438,7 +436,7 @@ workloads controller
 
       $scope.getNodes = function () {
         var nodes = [];
-        if (wizard.system_nodes) {
+        if (wizard.system_nodes && workloads.use_system) {
           var system_id = 1;
           for (var i in $scope._deployments) {
             var deployment = $scope._deployments[i];
@@ -457,14 +455,13 @@ workloads controller
             if (node.deployment_id != system_id)
               return;
 
-            var isMetal = $scope._providers[node.provider_id].type == 'MetalProvider';
+            var isMetal = $scope._providers[node.provider_id].type == 'MetalProvider' && workloads.use_system;
 
             if (isMetal && !wizard.system_nodes)
               return;
 
             if (!isMetal && !wizard.create_nodes)
               return;
-
 
             if (!serviceMap[node.id]) {
               serviceMap[node.id] = {};
@@ -487,7 +484,7 @@ workloads controller
         if (workloads.createDeployment)
           data.name = workloads.name;
 
-        if (wizard.create_nodes) {
+        if (wizard.create_nodes && !workloads.use_system) {
           var hints = $scope.providerMap[workloads.provider].auth_details["provider-create-hint"];
           if (hints == null) {
             var ptype = $scope.providerMap[workloads.provider]["type"];
@@ -497,11 +494,6 @@ workloads controller
             name: workloads.provider,
             hints: hints,
           };
-        }
-
-        // If we have a role apply order, then pass it along
-        if (wizard.role_apply_order && wizard.role_apply_order.length > 1) {
-          data.role_apply_order = wizard.role_apply_order;
         }
 
         var virtualNodes = 0;
@@ -558,6 +550,11 @@ workloads controller
               });
             }
           }
+        }
+
+        // If we have a role apply order, then pass it along
+        if (wizard.role_apply_order && wizard.role_apply_order.length > 1) {
+          data.role_apply_order = wizard.role_apply_order;
         }
 
         return data;

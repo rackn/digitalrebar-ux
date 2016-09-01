@@ -5,7 +5,12 @@
   <div class='wizard-content' flex>
     <h1>Select Your OS</h1>
     <div layout='row'>
-      <div flex layout='column' ng-if='wizard.system_nodes'>
+      <md-switch ng-model='workloads.use_system' ng-if='wizard.system_nodes' ng-disabled="workloads.use_system ? onTrue : onFalse">
+        Use Existing System Nodes?
+      </md-switch>
+    </div>
+    <div layout='row'>
+      <div flex layout='column' ng-if='wizard.system_nodes && workloads.use_system'>
         <div class='icon-container'>
           <md-icon>computer</md-icon>
           <md-tooltip>Metal</md-tooltip>
@@ -19,7 +24,7 @@
           </md-select>
         </md-input-container>
       </div>
-      <div flex layout='column' ng-if='wizard.create_nodes'>
+      <div flex layout='column' ng-if='wizard.create_nodes && !workloads.use_system'>
         <div class='icon-container'>
           <md-icon>cloud</md-icon>
           <md-tooltip>Cloud</md-tooltip>
