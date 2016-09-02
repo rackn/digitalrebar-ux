@@ -65,7 +65,7 @@ workloads controller
       }, {
         name: "Nodes",
         path: "views/wizard/nodes.html",
-        icon: "directions_bus",
+        icon: "directions_train",
         complete: function (output) {
           if (workloads.selected.length == 0)
             return output ? [false, 'You must select at least one node'] : false;
@@ -307,7 +307,7 @@ workloads controller
       $scope.createdNodes = [];
 
       $scope.addNode = function () {
-        if (!wizard.create_nodes || workloads.use_system)
+        if (workloads.use_system)
           return;
 
         // negative ids so we know to create a new node
@@ -326,13 +326,13 @@ workloads controller
             req = true;
         }
 
-        workloads.selected.push(node);
         $scope.createdNodes.push(node);
+        workloads.selected.push(node);
         return node;
       };
 
       // create new nodes if system nodes aren't allowed
-      if (wizard.create_nodes && !workloads.use_system) {
+      if (!workloads.use_system) {
         var numControl = 0;
         var numWorker = 0;
         var controls = {};
@@ -455,12 +455,10 @@ workloads controller
             if (node.deployment_id != system_id)
               return;
 
-            var isMetal = $scope._providers[node.provider_id].type == 'MetalProvider' && workloads.use_system;
-
-            if (isMetal && !wizard.system_nodes)
+            if (workloads.use_system && !wizard.system_nodes)
               return;
 
-            if (!isMetal && !wizard.create_nodes)
+            if (!workloads.use_system  && !wizard.create_nodes)
               return;
 
             if (!serviceMap[node.id]) {
@@ -472,8 +470,11 @@ workloads controller
             }
             nodes.push(node);
           });
+        } else {
+          nodes = $scope.createdNodes;
         }
-        return nodes.concat($scope.createdNodes);
+        workloads.selected = nodes;
+        return nodes;
       };
 
       $scope.generateBlob = function () {
