@@ -504,6 +504,7 @@ workloads controller
           var node = workloads.selected[i];
           var id = node.id;
           var roles = [];
+          var label = "node";
 
           for (var j in wizard.services) {
             var service = wizard.services[j];
@@ -515,6 +516,9 @@ workloads controller
                   var reqs = serviceRoles[l];
                   if (serviceMap[node.id][k] && roles.indexOf(reqs) < 0) {
                     roles.push(reqs);
+                    // figure out name for label (assume not BOTH cluster and worker)
+                    if (label === "node" && (k === "control" || k === "worker"))
+                      label = k;
                   }
                 }
               }
@@ -546,6 +550,7 @@ workloads controller
             if (!existing) {
               data.nodes.push({
                 id: -(++virtualNodes),
+                prefix: workloads.name + "-" + label,
                 roles: roles,
                 count: 1,
               });
