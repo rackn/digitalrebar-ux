@@ -180,30 +180,6 @@ workloads controller
         return deployments;
       };
 
-      $scope.createDeploymentPrompt = function (ev) {
-        var confirm = $mdDialog.prompt()
-          .title('Create Deployment')
-          .textContent('Enter the Name of the New Deployment')
-          .placeholder('Deployment Name')
-          .targetEvent(ev)
-          .ok('Create')
-          .cancel('Cancel');
-        $mdDialog.show(confirm).then(function (name) {
-          api('/api/v2/deployments', {
-            method: "POST",
-            data: {
-              name: name
-            }
-          }).success(api.addDeployment).
-          success(function (obj) {
-            workloads.deployment_id = obj.id;
-          }).
-          error(function (err) {
-            api.toast("Couldn't Create Deployment", 'deployment', err);
-          });
-        }, function () {});
-      };
-
       $scope.providerMap = {};
       for (var i in $scope._providers) {
         var provider = $scope._providers[i];
