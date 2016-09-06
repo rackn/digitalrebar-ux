@@ -10,10 +10,6 @@
         <div class="md-toolbar-tools" layout='row'>
           <h2>{{workloads.selected.length}} node{{workloads.selected.length != 1 && 's' || ''}} selected</h2>
           <div flex style='color: #c44; font-size: 0.75em; text-align: center;'>{{steps[done].complete(true)[1]}}</div>
-          <md-button class='md-icon-button' ng-if='wizard.create_nodes' ng-click='addNode()'>
-            <md-icon>add</md-icon>
-            <md-tooltip>Add Node</md-tooltip>
-          </md-button>
         </div>
       </md-toolbar>
 

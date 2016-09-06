@@ -24,8 +24,6 @@ workloads controller
         path: "views/wizard/deployment.html",
         icon: "directions_run",
         complete: function () {
-          // set this to a better value
-          workloads.use_system = !wizard.create_nodes;
           // deployment logic
           if (workloads.createDeployment) {
             // no deployment selected
@@ -42,6 +40,8 @@ workloads controller
             if (deployment.state != 0)
               return false;            
           }
+          // set use system based on wizard
+          workloads.use_system = !wizard.create_nodes;
           return true;
         }
       }, {
@@ -95,8 +95,6 @@ workloads controller
             if (!hasRequired && canHaveRequired)
               return output ? [false, 'Every node must have a Required Service'] : false;
           }
-
-
           if (control % 2 != 1 && hasControl)
             return output ? [false, 'An Odd Number of Control Services is Required'] : false;
 
@@ -206,6 +204,8 @@ workloads controller
 
       var barclamp = $scope.barclamp = $scope._barclamps[id];
       var wizard = $scope.wizard = barclamp.cfg_data.wizard;
+      var serviceMap = $scope.serviceMap = {};
+
       $scope.$emit('title', wizard.name + ' Wizard');
 
       this.name = barclamp.cfg_data.barclamp.name;
@@ -219,7 +219,7 @@ workloads controller
           $scope.osList = Object.keys(data.value);
           // remove available OSes that are not in the barclamp supported OS list (skip if there are no supported in the list)
           for (var i in $scope.osList) {
-            if (barclamp.cfg_data.barclamp.os_support.length && barclamp.cfg_data.barclamp.os_support.indexOf($scope.osList[i]) == -1)
+            if (barclamp.cfg_data.barclamp.os_support && barclamp.cfg_data.barclamp.os_support.length && barclamp.cfg_data.barclamp.os_support.indexOf($scope.osList[i]) == -1)
               $scope.osList.splice(i, 1);
           }
           if ($scope.osList.length) {
@@ -255,13 +255,90 @@ workloads controller
 
       $scope.roles = [];
       $scope.roleMap = {};
-      var serviceMap = $scope.serviceMap = {};
       for (var id in $scope._roles) {
         var role = $scope._roles[id];
         $scope.roleMap[role.name] = role;
         /*if (serviceList.includes(role.name)) {
           $scope.roles.push(role);
         }*/
+      }
+
+      // find the first required service, if any
+      for (var i = 0; i < wizard.services.length; i++) {
+        var type = wizard.services[i].type;
+        if (type === "required") {
+          workloads.required_service = wizard.services[i].name;
+          break;
+        }
+      }
+
+      // in this model, we pre-collect BOTH the system and created nodes up front
+
+      // build list of created nodes
+      $scope.newId = -1;
+      $scope.createdNodes = [];
+
+      if (wizard.create_nodes){
+        // create nodes from service list
+        for (var i = 0; i < wizard.services.length; i++) {
+          var type = wizard.services[i].type;
+          var count = wizard.services[i].count;
+          if (count > 0 && (type === "control" || type === "worker")) {
+            for (var j = 0; j < count; j++) {
+              // negative ids so we know to create a new node
+              var nid = $scope.newId--;
+              var node = {
+                id: nid,
+                name: -nid + "-create-" + type + "-" + j+1,
+                order: nid
+              };
+              // service map nodes
+              serviceMap[nid] = {};
+              serviceMap[nid][type] = true;
+              if (workloads.required_service != '')
+                serviceMap[nid][workloads.required_service] = true
+              // collect nodes
+              $scope.createdNodes.push(node);
+            }
+          }
+        }
+      }
+
+      // collect system nodes
+      $scope.systemNodes = [];
+
+      if (wizard.system_nodes) {
+        // retrieve nodes from system deployment
+        var system_id = 0;
+        for (var i in $scope._deployments) {
+          var deployment = $scope._deployments[i];
+          if (deployment.system) {
+            system_id = i;
+            break;
+          }
+        }
+        // collect system nodes
+        Object.keys($scope._nodes).forEach(function (id) {
+          var node = $scope._nodes[id];
+          // add node if isn't in system deployment or a system node
+          if (!node.system && node.deployment_id == system_id) {
+            // service map nodes
+            serviceMap[id] = {};
+            for (var i = 0; i < wizard.services.length; i++) {
+              var type = wizard.services[i].type;
+              var count = wizard.services[i].count;
+              if (count > 0 && (type === "control" || type === "worker")) {
+                serviceMap[id][type] = true;
+                wizard.services[i].count--;
+                break;
+              }
+            }
+            if (workloads.required_service != '')
+              serviceMap[id][workloads.required_service] = true
+            // collect nodes
+            $scope.systemNodes.push(node);
+          }
+        });
       }
 
       $scope.tryDeselect = function (node) {
@@ -278,70 +355,6 @@ workloads controller
           }
         }
       };
-
-      $scope.newId = -1;
-      $scope.createdNodes = [];
-
-      $scope.addNode = function () {
-        if (workloads.use_system)
-          return;
-
-        // negative ids so we know to create a new node
-        var id = $scope.newId--;
-        var node = {
-          id: id,
-          name: "Virtual Node " + (-id),
-        };
-
-        serviceMap[node.id] = {};
-        var req = false;
-        for (var i in wizard.services) {
-          var service = wizard.services[i];
-          serviceMap[node.id][service.name] = service.type == 'required' && !req;
-          if (service.type == 'required')
-            req = true;
-        }
-
-        $scope.createdNodes.push(node);
-        workloads.selected.push(node);
-        return node;
-      };
-
-      // create new nodes if system nodes aren't allowed
-      if (!workloads.use_system) {
-        var numControl = 0;
-        var numWorker = 0;
-        var controls = {};
-        var workers = {};
-        // get the max count for worker and control roles
-        for (var i = 0; i < wizard.services.length; i++) {
-          var service = wizard.services[i];
-
-          // add services to the keys of designated objects
-          if (service.type == 'control')
-            controls[service.name] = 1;
-          else if (service.type == 'worker')
-            workers[service.name] = 1;
-
-          if (service.count > 0) {
-            if (service.type == 'control' && service.count > numControl)
-              numControl = service.count;
-            else if (service.type == 'worker' && service.count > numWorker)
-              numWorker = service.count;
-          }
-        }
-        // create the number of virtual nodes
-        for (var i = 0; i < numControl + numWorker; i++) {
-          var node = $scope.addNode();
-          if (i < numControl) {
-            for (var j in controls)
-              serviceMap[node.id][j] = true;
-          } else {
-            for (var j in workers)
-              serviceMap[node.id][j] = true;
-          }
-        }
-      }
 
       $scope.select = function (node, service) {
         var state = serviceMap[node.id][service.name];
@@ -411,46 +424,12 @@ workloads controller
       };
 
       $scope.getNodes = function () {
-        var nodes = [];
-        if (wizard.system_nodes && workloads.use_system) {
-          var system_id = 1;
-          for (var i in $scope._deployments) {
-            var deployment = $scope._deployments[i];
-            if (deployment.system) {
-              system_id = i;
-              break;
-            }
-          }
-
-          Object.keys($scope._nodes).forEach(function (id) {
-            var node = $scope._nodes[id];
-            if (node.system)
-              return;
-
-            // node isn't in system deployment
-            if (node.deployment_id != system_id)
-              return;
-
-            if (workloads.use_system && !wizard.system_nodes)
-              return;
-
-            if (!workloads.use_system  && !wizard.create_nodes)
-              return;
-
-            if (!serviceMap[node.id]) {
-              serviceMap[node.id] = {};
-              for (var i in wizard.services) {
-                var service = wizard.services[i]
-                serviceMap[node.id][service] = false;
-              }
-            }
-            nodes.push(node);
-          });
+        if (workloads.use_system) {
+          workloads.selected = $scope.systemNodes;
         } else {
-          nodes = $scope.createdNodes;
+          workloads.selected = $scope.createdNodes;
         }
-        workloads.selected = nodes;
-        return nodes;
+        return workloads.selected;
       };
 
       $scope.generateBlob = function () {
