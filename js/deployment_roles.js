@@ -81,6 +81,7 @@ deployment role controller
     };
 
     $scope.id = $routeParams.id;
+    $scope.target = { obj: 'deployment_role_id', id: $routeParams.id }
     $scope.deployment_role = {};
     $scope.hasAttrib = -1;
     $scope.attribs = [];

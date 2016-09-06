@@ -123,6 +123,7 @@ node role controller
     }
 
     $scope.id = $routeParams.id;
+    $scope.target = { obj: 'node_role_id', id: $routeParams.id }
     $scope.node_role = {};
     $scope.hasAttrib = -1;
     $scope.attribs = [];

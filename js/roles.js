@@ -21,6 +21,7 @@ role controller
     }
 
     $scope.id = $routeParams.id;
+    $scope.target = { obj: 'role_id', id: $routeParams.id }
     $scope.role = {};
     $scope.metadata = {};
     $scope.editing = false;
