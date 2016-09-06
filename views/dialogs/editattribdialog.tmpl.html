@@ -24,7 +24,7 @@
       <span ng-show='!parse(locals.value,1)'>JSON Parsing Error</span>
       <span ng-show='parse(locals.value,1) && !locals.api.testSchema(parse(locals.value), locals.attrib.schema)'>Value does not follow Schema</span>
       <span flex></span>
-      <md-button ng-click='dialog.editAttrib()' class='md-primary md-raised' target="_blank" md-autofocus ng-disabled="!parse(locals.value,1)">
+      <md-button ng-click='dialog.editAttrib(locals.target)' class='md-primary md-raised' target="_blank" md-autofocus ng-disabled="!parse(locals.value,1)">
         <span ng-show='!locals.api.testSchema(parse(locals.value), locals.attrib.schema)'>Force</span>
         Update
       </md-button>

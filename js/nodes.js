@@ -225,6 +225,7 @@ node controller
     };
 
     $scope.id = $routeParams.id;
+    $scope.target = { obj: 'node_id', id: $routeParams.id }
     $scope.node = {};
     $scope.hasAttrib = -1;
     $scope.attribs = [];

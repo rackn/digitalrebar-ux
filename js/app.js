@@ -547,7 +547,7 @@ var version = '0.1.3';
       $rootScope.title = data;
     });
 
-    $rootScope.showEditAttribDialog = function (ev, attrib) {
+    $rootScope.showEditAttribDialog = function (ev, attrib, target) {
       var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
       $mdDialog.show({
         controller: 'DialogController',
@@ -559,7 +559,8 @@ var version = '0.1.3';
           id: attrib.id,
           value: JSON.stringify(attrib.value, null, '  '),
           attrib: attrib,
-          api: api
+          api: api,
+          target: target
         },
         clickOutsideToClose: true,
         fullscreen: useFullScreen

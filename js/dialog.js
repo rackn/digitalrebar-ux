@@ -373,7 +373,7 @@ dialog controller
 
     };
 
-    this.editAttrib = function () {
+    this.editAttrib = function (target) {
       var id = locals.id;
       var value;
       try {
@@ -381,11 +381,11 @@ dialog controller
       } catch (e){
         return;
       }
+      var obj = { value: value };
+      obj[target["obj"]] = target["id"];
       api("/api/v2/attribs/" + id, {
         method: 'PUT',
-        data: {
-          value: value
-        }
+        data: obj
       }).success(function (data) {
         api.toast('Updated Attrib!');
       }).
