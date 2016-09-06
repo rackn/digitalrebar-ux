@@ -289,7 +289,7 @@ workloads controller
               var nid = $scope.newId--;
               var node = {
                 id: nid,
-                name: -nid + "-create-" + type + "-" + j+1,
+                name: -nid + "-create-" + type + "-" + (j+1),
                 order: nid
               };
               // service map nodes
@@ -440,7 +440,7 @@ workloads controller
         if (workloads.createDeployment)
           data.name = workloads.name;
 
-        if (wizard.create_nodes && !workloads.use_system) {
+        if (!workloads.use_system) {
           var hints = $scope.providerMap[workloads.provider].auth_details["provider-create-hint"];
           if (hints == null) {
             var ptype = $scope.providerMap[workloads.provider]["type"];
