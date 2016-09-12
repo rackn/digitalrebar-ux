@@ -383,14 +383,32 @@ dialog controller
       }
       var obj = { value: value };
       obj[target["obj"]] = target["id"];
-      api("/api/v2/attribs/" + id, {
-        method: 'PUT',
-        data: obj
+      // figure out right method to propose
+      var propose_url = '';
+      switch (target["obj"]) {
+        case "node_role_id":
+          propose_url = "/api/v2/node_roles/" + target["id"] + "/propose";
+          break;
+        case "deployment_role_id":
+          propose_url = "/api/v2/deployment_roles/" + target["id"] + "/propose";
+          break;
+      }
+      // put attrib in proposed mode
+      api(propose_url, { method: 'PUT'
       }).success(function (data) {
-        api.toast('Updated Attrib!');
-      }).
-      error(function (err) {
-        api.toast('Error updating attrib','attrib',err);
+        api("/api/v2/attribs/" + id, {
+          method: 'PUT',
+          data: obj
+        }).success(function (data) {
+          api.toast('Updated Attrib!');
+          // update the on screen value (no auto refresh on attribs)
+          locals.attrib.value = data.value;
+        }).
+        error(function (err) {
+          api.toast('Error updating attrib','attrib',err);
+        });
+      }).error(function (err) {
+        api.toast('Error proposing target object',target["obj"],err);
       });
       $mdDialog.hide();
     };

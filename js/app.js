@@ -64,6 +64,11 @@ var version = '0.1.3';
       'default': '500'
     }).accentPalette('grey', { 'default': '900' });
 
+    $mdThemingProvider.theme('status_proposed').
+    primaryPalette('blue', {
+      'default': '400'
+    }).accentPalette('grey', { 'default': '900' });
+
     $mdThemingProvider.alwaysWatchTheme(true);
 
     $routeProvider.
@@ -617,7 +622,8 @@ var version = '0.1.3';
       'todo': 'play_circle_outline',
       'off': 'power_settings_new',
       'queue': 'update',
-      'reserved': 'pause_circle_outline'
+      'reserved': 'pause_circle_outline',
+      'proposed': 'add_circle_outline'
     };
 
     $rootScope.states = {
@@ -626,7 +632,7 @@ var version = '0.1.3';
       '1': 'todo', //todo
       '2': 'process', //transition
       '3': 'queue', //blocked
-      '4': 'reserved' //proposed
+      '4': 'proposed' //proposed
     };
 
 

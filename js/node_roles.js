@@ -59,6 +59,19 @@ node role controller
       }
     };
 
+    $scope.commit = function () {
+      // if we have a valid node selected
+      if ($scope.node_role.id) {
+        api('/api/v2/node_roles/' + $scope.node_role.id + '/commit', {
+          method: 'PUT'
+        }).success(api.addNodeRole)
+            .success($scope.updateScroll)
+            .error(function (err) {
+              api.toast('Error committing node role', 'node_role', err);
+            });
+      }
+    };
+
     $scope.destroySelected = function () {
       $scope.confirm(event, {
         title: "Destroy Node Roles",
