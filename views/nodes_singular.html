@@ -1,11 +1,11 @@
 <md-card>
-  <md-toolbar class="md-default" md-theme='status_{{node.status}}'>
+  <md-toolbar class="md-default" md-theme='status_{{ nodes.getStatus(node) }}'>
     <div class="md-toolbar-tools">
       <span>
         <md-icon class='md-primary'>
-          {{icons[node.status]}}
+          {{ icons[nodes.getStatus(node)] }}
           <md-tooltip>
-            {{node.status}}
+            {{node.available ? '' : 'Reserved'}} {{node.status}}
           </md-tooltip>
         </md-icon>
       </span>
@@ -41,6 +41,14 @@
         </md-menu-content>
       </md-menu>
 
+      <md-button class='md-icon-button' ng-if='node.available' ng-click='reserve(true)'>
+        <md-icon>pause</md-icon>
+        <md-tooltip>Reserve Node</md-tooltip>
+      </md-button>
+      <md-button class='md-icon-button' ng-if='!node.available' ng-click='reserve(false)'>
+        <md-icon>play_arrow</md-icon>
+        <md-tooltip>Release Node</md-tooltip>
+      </md-button>
       <md-button class='md-icon-button' ng-click='nodes.deleteNode()'>
         <md-icon>delete</md-icon>
         <md-tooltip>Delete Node</md-tooltip>

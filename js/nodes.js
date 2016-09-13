@@ -19,6 +19,18 @@ node controller
       return nodes;
     };
 
+    this.getStatus = function(node) {
+      if (node.alive) {
+        if (node.available) {
+          return node.status;
+        } else {
+          return 'reserved';
+        }
+      } else {
+        return 'off';
+      }
+    }
+
     this.deleteSelected = function (event) {
       $scope.confirm(event, {
         title: "Delete Nodes",
@@ -165,6 +177,18 @@ node controller
           }
         }
       });
+    };
+
+    $scope.reserve = function (reserve) {
+      // if we have a valid node selected
+      if ($scope.node.id) {
+        api('/api/v2/nodes/' + $scope.node.id, {
+          method: 'PUT',
+          data: { 'available': !reserve }
+        }).success(api.addNode).error(function (err) {
+          api.toast('Error Reserving', 'node', err);
+        });
+      }
     };
 
     $scope.redeploySelected = function () {
