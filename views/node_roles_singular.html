@@ -22,7 +22,11 @@
         </a>
       </span>
       <span flex></span>
-      <md-button class='md-icon-button' ng-click='retry()'>
+      <md-button class='md-icon-button' ng-click='commit()' ng-show='node_role.state == 4' >
+        <md-icon>save</md-icon>
+        <md-tooltip>Commit</md-tooltip>
+      </md-button>
+      <md-button class='md-icon-button' ng-click='retry()' ng-show='node_role.state != 4' >
         <md-icon>redo</md-icon>
         <md-tooltip>Retry</md-tooltip>
       </md-button>
