@@ -123,7 +123,9 @@
       </tr>
       <tr>
         <td class='label'>Address</td>
-        <td>{{node.address}}</td>
+        <td>
+          <a target="_new" ng-href="https://{{node.address.slice(0,-3)}}">{{node.address}}</a>
+        </td>
       </tr>
       <tr>
         <td class='label'>Status</td>
