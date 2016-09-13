@@ -67,14 +67,14 @@
           <th md-column md-order-by='tenant_id'>Tenant</th>
         </tr>
       </thead>
-      <tbody md-body swap-md-paint-bg="status_{{!node.alive ? 'off' : node.status}} primary" swap-md-paint-fg="status_{{!node.alive ? 'off' : node.status}} foreground" ng-repeat="node in nodes.getNodes() | orderBy: myOrder">
+      <tbody md-body swap-md-paint-bg="status_{{ nodes.getStatus(node) }} primary" swap-md-paint-fg="status_{{ nodes.getStatus(node) }} foreground" ng-repeat="node in nodes.getNodes() | orderBy: myOrder">
         <tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select>
           <td md-cell>
             <md-icon>
-              {{icons[node.status]}}
+              {{ icons[nodes.getStatus(node)] }}
             </md-icon>
             <md-tooltip>
-              {{node.reserved ? 'Reserved' : ''}} {{node.alive ? 'On' : 'Off'}} {{states[node.state]}}
+              {{node.available ? '' : 'Reserved'}} {{node.alive ? 'On' : 'Off'}} {{states[node.state]}}
             </md-tooltip>
           </td>
 
