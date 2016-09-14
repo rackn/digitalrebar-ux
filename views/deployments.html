@@ -270,7 +270,11 @@ deployments view
 
         <!-- Right side of toolbar -->
         <md-card-icon-actions layout-align='end center'>
-          <md-button class='md-icon-button' ng-click='deleteDeployment($event, id)'>
+          <md-button class='md-icon-button' ng-if='!deployment.system' ng-click='redeployDeployment($event, id)'>
+            <md-icon>low_priority</md-icon>
+            <md-tooltip>Redeploy All Nodes</md-tooltip>
+          </md-button>
+          <md-button class='md-icon-button' ng-if='!deployment.system' ng-click='deleteDeployment($event, id)'>
             <md-icon>delete</md-icon>
             <md-tooltip>Destroy</md-tooltip>
           </md-button>
