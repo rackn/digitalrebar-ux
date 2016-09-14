@@ -168,6 +168,23 @@ deployments controller
       });
     };
 
+    // creates a confirmation dialog before redeploying the deployment
+    $scope.redeployDeployment = function (event, id) {
+      $scope.confirm(event, {
+        title: "Redeploy All Nodes in Deployment",
+        message: "Are you sure you want to redeploy " + $scope._deployments[id].name + "?",
+        yesCallback: function () {
+          api("/api/v2/deployments/" + id + "/redeploy", { method: "PUT" }).
+          success(function () {
+            $scope.updateMatrix($scope._deployments[id]);
+          }).
+          error(function (err) {
+            api.toast("Error Redeploying Deployment", 'deployment', err);
+          })
+        }
+      });
+    };
+
     // creates a confirmation dialog before deleting the deployment
     $scope.deleteDeployment = function (event, id) {
       $scope.confirm(event, {

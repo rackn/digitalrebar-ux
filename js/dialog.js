@@ -403,6 +403,10 @@ dialog controller
           api.toast('Updated Attrib!');
           // update the on screen value (no auto refresh on attribs)
           locals.attrib.value = data.value;
+          // track local DR proposed
+          if (target["obj"] == "deployment_role_id") {
+            $rootScope._deployment_roles[target["id"]].proposed = true;
+          }
         }).
         error(function (err) {
           api.toast('Error updating attrib','attrib',err);
