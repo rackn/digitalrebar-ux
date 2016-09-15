@@ -1,9 +1,9 @@
 <md-card>
-  <md-toolbar class="md-default" md-theme='status_{{ nodes.getStatus(node) }}'>
+  <md-toolbar class="md-default" md-theme='status_{{ api.getNodeStatus(node) }}'>
     <div class="md-toolbar-tools">
       <span>
         <md-icon class='md-primary'>
-          {{ icons[nodes.getStatus(node)] }}
+          {{api.getNodeIcon(node)}}
           <md-tooltip>
             {{node.available ? '' : 'Reserved'}} {{node.status}}
           </md-tooltip>
@@ -13,7 +13,7 @@
         {{node.name}}
       </span>
       <md-button class='md-icon-button' ng-click='redeploy()'>
-        <md-icon>replay</md-icon>
+        <md-icon>low_priority</md-icon>
         <md-tooltip>Redeploy Node</md-tooltip>
       </md-button>
       <md-menu md-position-mode="target-right target" style='padding: 0;'>

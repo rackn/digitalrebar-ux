@@ -25,7 +25,10 @@ deployment role controller
       if ($scope.deployment_role.id) {
         api('/api/v2/deployment_roles/' + $scope.deployment_role.id + '/propose', {
           method: 'PUT'
-        }).success(api.addDeploymentRole).error(function (err) {
+        }).success(function () {
+          $scope.deployment_role.proposed = true;
+          api.addDeploymentRole;
+        }).error(function (err) {
           api.toast('Error Proposing Deployment Role', 'deployment_role', err);
         });
       }
@@ -36,7 +39,10 @@ deployment role controller
       if ($scope.deployment_role.id) {
         api('/api/v2/deployment_roles/' + $scope.deployment_role.id + '/commit', {
           method: 'PUT'
-        }).success(api.addDeploymentRole).error(function (err) {
+        }).success(function () {
+          $scope.deployment_role.proposed = false;
+          api.addDeploymentRole;
+        }).error(function (err) {
           api.toast('Error Committing Deployment Role' , 'deployment_role', err);
         });
       }

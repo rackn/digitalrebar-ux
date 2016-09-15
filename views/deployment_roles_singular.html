@@ -1,7 +1,10 @@
 <md-card>
-  <md-toolbar>
+  <md-toolbar class="md-default" md-theme='{{ deployment_role.proposed ? "status_proposed" : "status_ready" }}' ng-style="style">
     <div class="md-toolbar-tools">
       <span>
+        <md-icon class='md-primary'>
+          {{ icons[ deployment_role.proposed ? "proposed" : "ready"] }}
+        </md-icon>
         <a ng-href='#/deployments/{{deployment_role.deployment_id}}' swap-md-paint-fg="default foreground">
           {{_deployments[deployment_role.deployment_id].name}}
         </a>
@@ -14,12 +17,12 @@
       </span>
       <span flex></span>
 
-      <md-button class='md-icon-button' ng-click='propose()'>
+      <md-button class='md-icon-button' ng-if='!deployment_role.proposed' ng-click='propose()'>
         <md-icon>mode_edit</md-icon>
         <md-tooltip>Propose</md-tooltip>
       </md-button>
 
-      <md-button class='md-icon-button' ng-click='commit()'>
+      <md-button class='md-icon-button' ng-if='deployment_role.proposed' ng-click='commit()'>
         <md-icon>save</md-icon>
         <md-tooltip>Commit</md-tooltip>
       </md-button>

@@ -11,7 +11,7 @@
       <span>{{nodes.selected.length}} node{{nodes.selected.length != 1 && 's' || ''}} selected</span>
       <span flex></span>
       <md-button class='md-icon-button' ng-click='redeploySelected()'>
-        <md-icon>replay</md-icon>
+        <md-icon>low_priority</md-icon>
         <md-tooltip>Redeploy Nodes</md-tooltip>
       </md-button>
       <md-menu md-position-mode="target-right target">
@@ -67,11 +67,11 @@
           <th md-column md-order-by='tenant_id'>Tenant</th>
         </tr>
       </thead>
-      <tbody md-body swap-md-paint-bg="status_{{ nodes.getStatus(node) }} primary" swap-md-paint-fg="status_{{ nodes.getStatus(node) }} foreground" ng-repeat="node in nodes.getNodes() | orderBy: myOrder">
+      <tbody md-body swap-md-paint-bg="status_{{ api.getNodeStatus(node) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(node) }} foreground" ng-repeat="node in nodes.getNodes() | orderBy: myOrder">
         <tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select>
           <td md-cell>
             <md-icon>
-              {{ icons[nodes.getStatus(node)] }}
+              {{ api.getNodeIcon(node) }}
             </md-icon>
             <md-tooltip>
               {{node.available ? '' : 'Reserved'}} {{node.alive ? 'On' : 'Off'}} {{states[node.state]}}

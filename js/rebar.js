@@ -636,6 +636,26 @@
       });
     };
 
+    api.getNodeStatus = function(node) {
+      if (node.alive) {
+        if (node.available) {
+          return node.status;
+        } else {
+          return 'reserved';
+        }
+      } else {
+        return 'off';
+      }
+    }
+
+    api.getNodeIcon = function(node) {
+      var ns = api.getNodeStatus(node);
+      if (ns === 'ready')
+        return node.icon;
+      else
+        return $rootScope.icons[ns];
+    }
+
     return api;
 
   });

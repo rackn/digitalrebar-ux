@@ -121,7 +121,7 @@ provider view
 					<md-tooltip md-direction="bottom">
 						{{node.name}}
 					</md-tooltip>
-					<md-icon>{{icons[node.status]}}</md-icon>
+					<md-icon>{{ nodes.getIcon(node) }}</md-icon>
 				</md-button>
 
 			</span>
