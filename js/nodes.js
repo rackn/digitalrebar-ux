@@ -19,18 +19,6 @@ node controller
       return nodes;
     };
 
-    this.getStatus = function(node) {
-      if (node.alive) {
-        if (node.available) {
-          return node.status;
-        } else {
-          return 'reserved';
-        }
-      } else {
-        return 'off';
-      }
-    }
-
     this.deleteSelected = function (event) {
       $scope.confirm(event, {
         title: "Delete Nodes",

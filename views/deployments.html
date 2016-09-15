@@ -46,13 +46,12 @@ deployments view
           <!-- Add all the nodes as list items -->
           <span ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy: 'name'">
               <!-- Node button -->
-              <md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="#/nodes/{{node.id}}">
+              <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(node) }}" ng-href="#/nodes/{{node.id}}">
                 <md-tooltip md-direction="bottom">
                   {{node.name}}
                 </md-tooltip>
-                <md-icon aria-label='{{node.status}}'>{{icons[node.status]}}</md-icon>
+                <md-icon aria-label='{{ api.getNodeStatus(node) }}'>{{ api.getNodeIcon(node) }}</md-icon>
               </md-button>
-
             </span>
 
         </md-tab>
@@ -102,8 +101,8 @@ deployments view
                 <tr ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy:'name'">
                   <td>
                     <span>
-                      <md-icon class='status' swap-md-paint-bg="status_{{!node.alive ? 'off' : node.status}} primary" swap-md-paint-fg="status_{{!node.alive ? 'off' : node.status}} foreground">
-                        {{icons[!node.alive ? 'off' : node.status]}}
+                      <md-icon class='status' swap-md-paint-bg="status_{{ api.getNodeStatus(node) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(node) }} foreground">
+                        {{ api.getNodeIcon(node) }}
                       </md-icon>
                       <md-tooltip>
                         {{!node.alive ? 'off' : node.status}}
@@ -180,11 +179,11 @@ deployments view
               <md-divider></md-divider>
 
               <!-- Node button -->
-              <md-button class="md-fab md-primary md-mini" md-theme="status_{{node.status}}" ng-href="#/nodes/{{node.id}}">
+              <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(node) }}" ng-href="#/nodes/{{node.id}}">
                 <md-tooltip md-direction="bottom">
                   {{node.status}}
                 </md-tooltip>
-                <md-icon aria-label='{{node.status}}'>{{icons[node.status]}}</md-icon>
+                <md-icon aria-label='{{ api.getNodeStatus(node) }}'>{{ api.getNodeIcon(node) }}</md-icon>
               </md-button>
               <span flex>
                 {{node.name}}
