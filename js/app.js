@@ -1,4 +1,4 @@
-var version = '0.1.3';
+var version = '0.1.4';
 
 (function () {
   var app = angular.module('app', [
@@ -195,6 +195,11 @@ var version = '0.1.3';
       controllerAs: 'dhcp',
       templateUrl: 'views/dhcp.html'
     }).
+    when('/engine', {
+      controller: 'EngineCtrl',
+      controllerAs: 'engine',
+      templateUrl: 'views/engine.html'
+    }).
     when('/provisioner/templates', {
       controller: 'ProvisionerCtrl',
       controllerAs: 'provisioner',
@@ -373,6 +378,12 @@ var version = '0.1.3';
       path: '/dhcp',
       hide: function () {
         return !$scope.showDHCP; }
+    }, {
+      title: 'Rule Engine',
+      icon: 'settings_input_composite',
+      path: '/engine',
+      hide: function () {
+        return !$scope.showEngine; }
     }, {
       title: 'Provisioner',
       icon: 'local_shipping',

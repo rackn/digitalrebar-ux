@@ -79,6 +79,7 @@
     $rootScope.showProvisioner = false;
     $rootScope._provisioner = { bootenvs: [], templates: [], machines: [] };
 
+    $rootScope._engine = {};
     $rootScope._users = {};
     $rootScope._tenants = {};
     $rootScope._capabilities = {};
@@ -320,6 +321,13 @@
         $rootScope.showDNS = typeof map['dns-mgmt-service'] !== 'undefined';
         $rootScope.showDHCP = typeof map['dhcp-mgmt-service'] !== 'undefined';
         $rootScope.showProvisioner = typeof map['provisioner-mgmt-service'] !== 'undefined';
+        $rootScope.showEngine = typeof map['rule-engine-service'] !== 'undefined';
+
+        if ($rootScope.showEngine) {
+          api('/rule-engine/api/v0/rulesets/').success(function (data) {
+            $rootScope._engine = data;
+          });
+        }
 
         if ($rootScope.showDNS) {
           api('/dns/zones').success(function (data) {
