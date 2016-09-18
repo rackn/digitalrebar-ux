@@ -198,7 +198,7 @@ var version = '0.1.4';
     when('/engine', {
       controller: 'EngineCtrl',
       controllerAs: 'engine',
-      templateUrl: 'views/rule_engine.html'
+      templateUrl: 'views/engine.html'
     }).
     when('/provisioner/templates', {
       controller: 'ProvisionerCtrl',

@@ -1,146 +1,57 @@
-<md-card ng-repeat='rule in _Engine'>
+<md-card ng-repeat='ruleset in _engine'>
   <md-toolbar class="md-default">
     <div class="md-toolbar-tools">
       <span flex>
-        {{subnet.name}}
+        <md-button class='md-icon-button' ng-click=''>
+          <md-icon>{{ ruleset.Active ? "visibility" : "visibility_off"}}</md-icon>
+          <md-tooltip>{{ ruleset.Active ? "Active" : "Inactive"}}</md-tooltip>
+        </md-button>
+        {{ruleset.Name}}: {{ ruleset.Description }}
       </span>
     </div>
   </md-toolbar>
 
-
-
-      - Name: 'test logging rule'
-        EventSelectors:
-          - event: on_milestone
-        WantsAttribs:
-          - disks
-        Matchers:
-          - Enabled: true
-          - JSON: 
-              Selector: ':root .Attribs .disks :has( .removable:val(false) )'
-              SaveAs: 'harddisks'
-          - Len:
-              Var: harddisks
-              SaveAs: driveCount
-          - Gt: [ '$driveCount', 3 ]
-        Actions:
-          - Log: true
-          - Script: |
-              echo "System has {{.Vars.driveCount}} drives, which is more than the 3 we were looking for"
-
-
   <md-card-content>
-    <table layout-padding style='min-width: 50%;'>
-      <tr>
-        <td class='label'>Name</td>
-        <td>
-          {{rule.name}}
-        </td>
-      </tr>
-      <tr>
-        <td class='label'>Events</td>
-        <td>
-          {{rule.EventSelectors}}
-        </td>
-      </tr>
-      <tr>
-        <td class='label'>Attribs</td>
-        <td>
-          {{rule.WantsAttribs}}
-        </td>
-      </tr>
-      <tr>
-        <td class='label'>Active Start</td>
-        <td>
-          {{subnet.active_start}}
-        </td>
-      </tr>
-      <tr>
-        <td class='label'>Active End</td>
-        <td>
-          {{subnet.active_end}}
-        </td>
-      </tr>
-      <tr>
-        <td class='label'>Active Lease Time</td>
-        <td>
-          {{subnet.active_lease_time}}
-        </td>
-      </tr>
-      <tr>
-        <td class='label'>Reserved Lease Time</td>
-        <td>
-          {{subnet.reserved_lease_time}}
-        </td>
-      </tr>
-    </table>
-    <h3>Leases</h3>
     <md-table-container>
-      <table md-table>
-        <thead md-head md-order="leaseOrder">
+      <table md-table ng-model="ruleset.Rules">
+        <thead md-head>
           <tr md-row>
-            <th md-column md-order-by='valid'>Valid</th>
-            <th md-column md-order-by='ip'>IP</th>
-            <th md-column md-order-by='mac'>MAC</th>
-            <th md-column md-order-by='expire_time'>Expire Time</th>
+            <th md-column>Name</th>
+            <th md-column>Event Selectors</th>
+            <th md-column>Wants Attribs</th>
+            <th md-column>Matchers</th>
+            <th md-column>Actions</th>
           </tr>
         </thead>
-        <tbody md-body>
-          <tr md-row ng-repeat='lease in subnet.leases | orderBy: leaseOrder'>
-            <td md-cell>
-              <md-icon>
-                {{lease.valid ? 'done' : 'close'}}
-                <md-tooltip>
-                  {{lease.valid ? 'Valid' : 'Invalid'}}
-                </md-tooltip>
-              </md-icon>
-            </td>
-            <td md-cell>{{lease.ip}}</td>
-            <td md-cell>{{lease.mac}}</td>
-            <td md-cell>{{lease.expire_time}}</td>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </md-table-container>
-
-    <h3>Bindings</h3>
-    <md-table-container>
-      <table md-table>
-        <thead md-head md-order="bindingOrder">
-          <tr md-row>
-            <th md-column md-order-by='ip'>IP</th>
-            <th md-column md-order-by='mac'>MAC</th>
-          </tr>
-        </thead>
-        <tbody md-body>
-          <tr md-row ng-repeat='binding in subnet.bindings | orderBy: bindingOrder'>
-            <td md-cell>{{binding.ip}}</td>
-            <td md-cell>{{binding.mac}}</td>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </md-table-container>
-
-    <h3>Options</h3>
-    <md-table-container>
-      <table md-table>
-        <thead md-head md-order="optionOrder">
-          <tr md-row>
-            <th md-column md-order-by='id'>ID</th>
-            <th md-column md-order-by='value'>Value</th>
-          </tr>
-        </thead>
-        <tbody md-body>
-          <tr md-row ng-repeat='option in subnet.options | orderBy: optionOrder'>
-            <td md-cell>{{optionMap[option.id] || option.id}}</td>
-            <td md-cell>{{option.value}}</td>
-            </td>
-          </tr>
+        <tbody md-body ng-repeat="rule in ruleset.Rules">
+          <td md-cell>{{rule.Name || "not set"}}</td>
+          <td md-cell>
+            <span flex ng-repeat="event in rule.EventSelectors">
+              When <strong>{{ event.event }}</strong> on <strong>{{ event.obj_class || "any"}}</strong> with <strong>{{ event.obj_id || "any" }}</strong>
+            </span>
+          </td>
+          <td md-cell>
+            <div flex ng-if="!rule.WantsAttribs">not set</div>
+            <span flex ng-repeat="attrib in rule.WantsAttribs">
+              {{attrib}}
+            </span>
+          </td>
+          <td md-cell>
+            <span flex ng-repeat="match in rule.Matchers">
+              <div flex ng-if='match.JSON'><strong>JSON:</strong> {{match.JSON}}</div>
+              <div flex ng-if='match.Eq'><strong>Equals:</strong> {{match.Eq}}</div>
+              <div flex ng-if='!match.Eq || !match.JSON'>{{match.Eq}}</div>
+            </span>
+          </td>
+          <td md-cell>
+            <span flex ng-repeat="action in rule.Actions">
+              <div flex ng-if='action.Bind'><strong>Bind:</strong>{{action.Bind}}</div>
+              <div flex ng-if='action.Node'><strong>Node:</strong>{{action.Node}}</div>
+              <div flex ng-if='!action.Node || !action.Bind'>{{action}}</div>
+            </span>
+          </td>
         </tbody>
       </table>
     </md-table-container>
   </md-card-content>
-
 </md-card>
