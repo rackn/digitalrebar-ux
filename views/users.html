@@ -6,10 +6,11 @@ users view
   <md-toolbar ng-click="expand[user.id]=!expand[user.id]" md-ink-ripple>
     <div class="md-toolbar-tools">
       <h2 flex>
+        <md-icon aria-label="User">person</md-icon>
         {{user.username}}
       </h2>
       <h2>
-        {{_tenants[user.tenant_id].name || user.tenant_id}}
+        <md-icon aria-label="Tenant">group</md-icon> {{_tenants[user.tenant_id].name || user.tenant_id}}
       </h2>
       <span>
         <md-button class='md-icon-button'>
