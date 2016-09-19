@@ -110,7 +110,7 @@ deployments view
                     </span>
                   </td>
                   <td class='label'>
-                    <a ng-href='#/nodes/{{node.id}}'>{{node.name}}</a>
+                    <a ng-href='#/nodes/{{node.id}}' title="{{node.name}}">{{api.truncName(node.name)}}</a>
                   </td>
                   <td ng-repeat='id in matrix_order[deployment.id]'>
                     <span ng-if='matrix[deployment.id][id][node.id]'>
