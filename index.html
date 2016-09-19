@@ -149,7 +149,7 @@
           <span flex></span>
           <md-menu md-position-mode="target-right target" style='padding: 0;' ng-if='!provider'>
             <h2 ng-click='$mdOpenMenu($event)'>
-              {{_tenants[user.current_tenant_id].name}}
+              <md-icon aria-label="Tenant">group</md-icon> {{_tenants[user.current_tenant_id].name}}
               <md-tooltip>
                 Change Current Tenant
               </md-tooltip>
