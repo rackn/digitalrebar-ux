@@ -261,21 +261,31 @@ dialog controller
       var user = $scope.locals.user;
       var path, method, data;
 
+      if (user.password1.length < 6) {
+        api.toast('Password must be at least 6 characters', 'user');
+        return;
+      }
+
       if (user.password1 != user.password2) {
         api.toast('Passwords must match', 'user');
         return;
       }
 
+      // if we don't have a current tenant then assume it
+      if (!user.current_tenant_id) {
+        user.current_tenant_id = user.tenant_id;
+      }
+
       data = user;
       if (locals.editing) {
-        path = '/users/' + user.id;
+        path = '/api/v2/users/' + user.id;
         method = 'PUT';
         if (user.password1 != "") {
           data["digest"] = true;
           data["password"] = user.password1;
         }
       } else {
-        path = '/users';
+        path = '/api/v2/users';
         method = 'POST';
         if (user.password1 != "") {
           data["digest"] = true;
