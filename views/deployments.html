@@ -8,15 +8,18 @@ deployments view
     <md-toolbar flex layout='column' md-theme='status_{{deploymentStates[deployment.state]}}' ng-class="{'md-warn': deployments.deploymentStatus[id].error > 0}" ng-click="deployments.toggleExpand(deployment)" md-ink-ripple>
       <section layout='row'>
         <div class="md-toolbar-tools">
-          <span>
+          <h2 flex>
             <md-icon>
               {{deploymentIcons[deploymentStates[deployment.state]]}}
             </md-icon>
             <md-tooltip>
               {{deploymentStateNames[deployment.state]}}
             </md-tooltip>
-          </span>
-          <h2 class="md-flex">{{deployment.name}}</h2>
+            {{deployment.name}}
+          </h2>
+          <h2>
+            <md-icon aria-label="Tenant">group</md-icon> {{_tenants[deployment.tenant_id].name}}
+          </h2>
         </div>
         <span flex></span>
 
