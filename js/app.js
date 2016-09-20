@@ -185,6 +185,11 @@ var version = '0.1.4';
       controllerAs: 'tenants',
       templateUrl: 'views/tenants.html'
     }).
+    when('/capabilities', {
+      controller: 'CapabilitiesCtrl',
+      controllerAs: 'capabilities',
+      templateUrl: 'views/capabilities.html'
+    }).
     when('/dns', {
       controller: 'DNSCtrl',
       controllerAs: 'dns',
@@ -431,6 +436,10 @@ var version = '0.1.4';
         title: 'Tenants',
         icon: 'group',
         path: '/tenants'
+      }, {
+        title: 'Capabilities',
+        icon: 'traffic',
+        path: '/capabilities'
       }]
     }, {
       title: 'Settings',

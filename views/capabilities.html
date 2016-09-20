@@ -1,0 +1,19 @@
+<!--
+capabilities view
+-->
+{{ $scope._capabilities }}
+<md-card flex='100' ng-repeat="cap in _capabilities | orderBy:'name'">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 flex>
+        <md-icon aria-label="Capability">traffic</md-icon>
+        {{cap.name}} : {{cap.description}}
+      </h2>
+    </div>
+  </md-toolbar>
+  <div lazy-render duration="0.25">
+    <section layout-padding style='overflow-x: auto;'>
+      {{ cap.includes }}
+    </section>
+  </div>
+</md-card>
