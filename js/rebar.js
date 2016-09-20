@@ -664,6 +664,12 @@
         return $rootScope.icons[ns];
     }
 
+    api.truncName = function(name) {
+      return name.substring(0,name.indexOf("."));
+    };
+
+
+
     return api;
 
   });

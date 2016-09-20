@@ -112,7 +112,7 @@
 
         <md-divider></md-divider>
 
-        <!-- Access menu -->
+        <!-- Management menu -->
         <div ng-repeat="item in managementMenu" ng-if='!item.hide()'>
           <md-list-item ng-click="item.expand ? item.toggleExpand() : setPath(item.path)">
             <md-icon>{{item.icon}}</md-icon>

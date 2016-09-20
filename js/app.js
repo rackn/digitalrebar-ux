@@ -366,49 +366,57 @@ var version = '0.1.4';
       title: 'Networks',
       icon: 'swap_horiz',
       path: '/networks'
-    }, {
-      title: 'DNS Zones',
-      icon: 'public',
-      path: '/dns',
-      hide: function () {
-        return !$scope.showDNS; }
-    }, {
-      title: 'DHCP Subnets',
-      icon: 'device_hub',
-      path: '/dhcp',
-      hide: function () {
-        return !$scope.showDHCP; }
-    }, {
-      title: 'Rule Engine',
-      icon: 'settings_input_composite',
-      path: '/engine',
-      hide: function () {
-        return !$scope.showEngine; }
-    }, {
-      title: 'Provisioner',
-      icon: 'local_shipping',
-      hide: function () {
-        return !$scope.showProvisioner; },
-      expand: true,
-      expanded: function () {
-        return $scope.expandProvisioner; },
-      toggleExpand: $scope.toggleExpandProvisioner,
-      items: [{
-        title: 'Machines',
-        icon: 'dns',
-        path: '/provisioner/machines'
-      }, {
-        title: 'Boot Environments',
-        icon: 'album',
-        path: '/provisioner/bootenvs'
-      }, {
-        title: 'Templates',
-        icon: 'insert_drive_file',
-        path: '/provisioner/templates'
-      }]
     }];
 
     $scope.managementMenu = [{
+      title: 'Services',
+      icon: "tune",
+      expand: true,
+      expanded: function () {
+        return $scope.expandServices; },
+      toggleExpand: $scope.toggleExpandServices,
+      items: [{
+        title: 'Rule Engine',
+        icon: 'settings_input_composite',
+        path: '/engine',
+        hide: function () {
+          return !$scope.showEngine; }
+        }, {
+          title: 'DHCP Subnets',
+          icon: 'device_hub',
+          path: '/dhcp',
+          hide: function () {
+            return !$scope.showDHCP; }
+        }, {
+          title: 'DNS Zones',
+          icon: 'public',
+          path: '/dns',
+          hide: function () {
+            return !$scope.showDNS; }
+        }]
+      }, {
+        title: 'Provisioner',
+        icon: 'local_shipping',
+        hide: function () {
+          return !$scope.showProvisioner; },
+        expand: true,
+        expanded: function () {
+          return $scope.expandProvisioner; },
+        toggleExpand: $scope.toggleExpandProvisioner,
+        items: [{
+          title: 'Machines',
+          icon: 'dns',
+          path: '/provisioner/machines'
+        }, {
+          title: 'Boot Environments',
+          icon: 'album',
+          path: '/provisioner/bootenvs'
+        }, {
+          title: 'Templates',
+          icon: 'insert_drive_file',
+          path: '/provisioner/templates'
+        }]
+      }, {
       title: 'Access',
       icon: 'lock',
       expand: true,
@@ -483,6 +491,10 @@ var version = '0.1.4';
     $rootScope.lastPath = '/';
     $rootScope.shouldLogOut = false;
 
+    $rootScope.expandServices = false;
+    $rootScope.toggleExpandServices = function () {
+      $rootScope.expandServices = !$rootScope.expandServices;
+    };
     $rootScope.expandProvisioner = false;
     $rootScope.toggleExpandProvisioner = function () {
       $rootScope.expandProvisioner = !$rootScope.expandProvisioner;
