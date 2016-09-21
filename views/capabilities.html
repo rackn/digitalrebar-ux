@@ -2,7 +2,7 @@
 capabilities view
 -->
 {{ $scope._capabilities }}
-<md-card flex='100' ng-repeat="cap in _capabilities | orderBy:'name'">
+<md-card flex='100' ng-repeat="cap in _capabilities | groupsonly | orderBy:'name'">
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h2 flex>
@@ -13,7 +13,11 @@ capabilities view
   </md-toolbar>
   <div lazy-render duration="0.25">
     <section layout-padding style='overflow-x: auto;'>
-      {{ cap.includes }}
+      <md-chips ng-model='cap.includes' readonly='true'>
+        <md-chip-template style='font-family: monospace;'>
+          {{ $chip }}
+        </md-chip-template>
+      </md-chips>
     </section>
   </div>
 </md-card>
