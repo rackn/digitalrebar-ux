@@ -48,7 +48,7 @@ capabilities controller
       return function(cap) {
         filter = [];
         for (var i in cap) {
-          if (cap[i].source === "dr-groups")
+          if (cap[i].source === "dr-groups" | cap[i].source === "user-defined")
             filter.push(cap[i]);
         }
         return filter;
