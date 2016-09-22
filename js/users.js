@@ -24,7 +24,7 @@ users controller
           title: "Remove User",
           message: "Are you sure you want to remove this user?",
           yesCallback: function () {
-            api('/users/' + uuid, {
+            api('/api/v2/users/' + uuid, {
               method: 'DELETE'
             }).success(function (data) {
               api.getUsers();

@@ -1,0 +1,35 @@
+<!--
+capabilities view
+-->
+<md-card flex='100' ng-repeat="cap in _capabilities | groupsonly | orderBy:'name'">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 flex>
+        <md-icon aria-label="Capability">traffic</md-icon>
+        {{cap.name}} : {{cap.description}}
+      </h2>
+      <md-button class='md-icon-button' ng-click="updateCapability(cap)">
+        <md-icon>save</md-icon>
+        <md-tooltip>Update Capability</md-tooltip>
+      </md-button>
+      <md-button class='md-icon-button' ng-click="deleteCapability(cap)">
+        <md-icon>delete</md-icon>
+        <md-tooltip>Delete Capability</md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <div lazy-render duration="0.25">
+    <section layout-padding style='overflow-x: auto;'>
+      <md-chips ng-model='cap.includes' placeholder='Capabilities' md-require-match="true">
+        <md-chip-template style='font-family: monospace;'>
+          {{ $chip }}
+        </md-chip-template>
+        <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in rawCapabilities(cap.includes) | filter:searchText" md-item-text="item" placeholder="Add Capability" ng-if='item != cap.name'>
+          <span md-highlight-text="searchText">
+            {{item}}
+          </span>
+        </md-autocomplete>
+      </md-chips>
+    </section>
+  </div>
+  </md-card>
