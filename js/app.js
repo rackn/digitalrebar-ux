@@ -484,9 +484,14 @@ var version = '0.1.4';
     };
 
     $scope.logout = function () {
+      sessionStorage.clear();
+      localStorage.clear();
       localStorageService.add('username', '');
       localStorageService.add('password', '');
-      window.location.reload();
+      $scope.confirm(event, {
+        title: "Cannot Loggout",
+        message: "At this time, you must close the browser to change user sessions"
+      });
     };
 
   });
@@ -498,7 +503,6 @@ var version = '0.1.4';
       return !!$rootScope.user;
     };
     $rootScope.lastPath = '/';
-    $rootScope.shouldLogOut = false;
 
     $rootScope.expandServices = false;
     $rootScope.toggleExpandServices = function () {
@@ -564,7 +568,6 @@ var version = '0.1.4';
 
     $rootScope.$on('login', function (event, data) {
       $rootScope.user = data;
-      $rootScope.shouldLogOut = !!localStorageService.get('password')
       // get the current user data
       api('/api/v2/users/'+data.username).success(function (data) {
         $rootScope.user = data;

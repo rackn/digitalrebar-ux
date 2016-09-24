@@ -1,7 +1,7 @@
 RACKN LIMITED USE SOFTWARE END USER LICENSE AGREEMENT
 =====================================================
 
-*Note: This license applies to extensions, related components and software supporting the Apache 2 licensed Digital Rebar project.  It does not supersede the Digital Rebar license.*
+*Note: This license applies to extensions, related components and software supporting the Apache 2 licensed Digital Rebar project (https://github.com/digitalrebar/digitalrebar/blob/master/LICENSE.md).  It does not supersede the Digital Rebar license.*
 
 *This UX provides a wrapper for the Digital Rebar API (http://rebar.digital).  There is no requirement to use the UX to access Digital Rebar functionality. It is possible to take all actions exposed in the UX via the API or CLI.*
  
