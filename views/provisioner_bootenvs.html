@@ -59,6 +59,12 @@
           </td>
         </tr>
         <tr>
+          <td class='label'>OS Available</td>
+          <td>
+            {{env.Available}}
+          </td>
+        </tr>
+        <tr>
           <td class='label'>Kernel</td>
           <td>
             {{env.Kernel}}
@@ -84,6 +90,16 @@
           <td class='label'>Required Params</td>
           <td>
             <md-chips ng-model='env.RequiredParams' readonly='true'>
+              <md-chip-template style='font-family: monospace;'>
+                {{$chip}}
+              </md-chip-template>
+            </md-chips>
+          </td>
+        </tr>
+        <tr>
+          <td class='label'>Errors</td>
+          <td>
+            <md-chips ng-model='env.Errors' readonly='true'>
               <md-chip-template style='font-family: monospace;'>
                 {{$chip}}
               </md-chip-template>
