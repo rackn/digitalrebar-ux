@@ -5,17 +5,20 @@
 [ -d "_build" ] && rm -rf _build
 mkdir _build 
 mkdir _build/css 
+mkdir _build/css/font 
 
 # copy base files
 echo Moving Images
 cp favicon.ico _build/favicon.ico 
 cp css/*.* _build/css 
+cp css/font/*.* _build/css/font 
 
 # css bundle
 echo Copying CSS
 cat bower_components/angular-material/angular-material.css \
 bower_components/angular-material-data-table/dist/md-data-table.min.css \
 css/style.css \
+css/font.css \
 > _build/css/style.temp.css
 
 # compress css bundle
