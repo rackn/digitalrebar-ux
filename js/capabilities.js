@@ -43,6 +43,21 @@ capabilities controller
         return raw;
       };
 
+      $scope.createCapabilityPrompt = function (ev) {
+        $mdDialog.show({
+          controller: 'DialogController',
+          controllerAs: 'dialog',
+          templateUrl: 'views/dialogs/addcapabilitydialog.tmpl.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          locals: {
+            editing: false
+          },
+          clickOutsideToClose: true,
+          fullscreen: false
+        });
+      };
+
     })
     .filter('groupsonly', function(){
       return function(cap) {

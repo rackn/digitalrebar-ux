@@ -520,11 +520,9 @@ workloads controller
             kvp = workloads.keys[k];
             if (kvp && kvp[1].length > 20) {
               if (!data.public_keys) {
-                data.public_keys = [];
+                data.public_keys = {};
               }
-              var o = {};
-              o[kvp[0]] = kvp[1];
-              data.public_keys.push(o);
+              data.public_keys[kvp[0]] = kvp[1];
             }
           }
         }
