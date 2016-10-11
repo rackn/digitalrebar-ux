@@ -39,6 +39,6 @@
     "swap-md-paint": "^0.5.0"
   },
   "resolutions": {
-    "angular": "1.4.12"
+    "angular": "~1.4.12"
   }
 }
