@@ -267,6 +267,7 @@ dialog controller
         data = [{ "op": "replace", "path": "/description", "value": capability.description }];
       } else {
         capability.includes = ["USER_LOGIN"];
+        capability.source = "user-defined";
         path = '/api/v2/capabilities';
         method = 'POST';
         data = angular.copy(capability);
@@ -276,6 +277,10 @@ dialog controller
         method: method,
         data: data
       }).success(function (update) {
+        if (!locals.editing) {
+          api.toast("Added capability " + capability.name);
+          api.getHealth();
+        }
       }).error(function (err) {
         api.toast("Error creating capability", "capabilities", err)
       });
