@@ -150,6 +150,24 @@ node controller
       });
     };
 
+    $scope.setPower = function (action) {
+      $scope.confirm(event, {
+        title: "Redeploy Node",
+        message: "Are you sure you want to set power to "+action+"?",
+        yesCallback: function () {
+          // if we have a valid node selected
+          if ($scope.node.id) {
+            api('/api/v2/nodes/' + $scope.node.id + '/power', {
+              data: { poweraction: action},
+              method: 'PUT'
+            }).success(api.addNode).error(function (err) {
+              api.toast('Error Powering Node', 'node', err);
+            });
+          }
+        }
+      });
+    };
+
     $scope.redeploy = function () {
       $scope.confirm(event, {
         title: "Redeploy Node",
@@ -241,6 +259,17 @@ node controller
     $scope.node = {};
     $scope.hasAttrib = -1;
     $scope.attribs = [];
+    $scope.power = [];
+    // icons used by nodes for power values
+    $scope.powers = {
+      'identify': 'lightbulb_outline',
+      'on': 'settings_power',
+      'off': 'power_settings_new',
+      'cycle': 'loop',
+      'reboot': 'settings_backup_restore',
+      'reset': 'settings_backup_restore',
+      'halt': 'gavel'
+    };
     $scope.editing = false;
     var hasCallback = false;
 
@@ -252,6 +281,11 @@ node controller
       if (!$scope.node)
         $location.path('/nodes');
       else {
+
+        api("/api/v2/nodes/" + $scope.node.id + "/power").
+        success(function (obj) {
+          $scope.power = obj;
+        });
 
         if ($scope.hasAttrib == -1) {
           api('/api/v2/nodes/' + $scope.node.id + "/attribs").

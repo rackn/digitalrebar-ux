@@ -12,6 +12,10 @@
       <span flex>
         {{node.name}}
       </span>
+      <md-button ng-repeat="pb in power" class='md-icon-button' ng-click='setPower(pb)'>
+        <md-icon>{{ powers[pb] || powers["on"] }}</md-icon>
+        <md-tooltip>{{ pb }}</md-tooltip>
+      </md-button>
       <md-button class='md-icon-button' ng-click='redeploy()'>
         <md-icon>low_priority</md-icon>
         <md-tooltip>Redeploy Node</md-tooltip>
