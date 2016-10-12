@@ -87,7 +87,8 @@
       <md-toolbar class='md-tall md-hue-2'>
         <span flex></span>
         <div layout="column" class="md-toolbar-tools-bottom inset">
-          <div><a ng-href='#/users/{{user.id}}' style='color: #f5f5f5;'>{{user.username}}</a></div>
+          <div><a ng-href='#/users/{{user.id}}' style='color: #f5f5f5;'>
+          <md-icon>person</md-icon> {{user.username}}</a></div>
           <div><a target="_blank" ng-href='{{host}}' style='color: #f5f5f5;'>{{host}}</a></div>
         </div>
       </md-toolbar>
@@ -129,7 +130,7 @@
         </div>
 
         <!-- Logout list item -->
-        <md-list-item ng-click="logout()" ng-if="shouldLogOut">
+        <md-list-item ng-click="logout()">
           <md-icon>exit_to_app</md-icon>
           <p>Logout</p>
         </md-list-item>
@@ -176,6 +177,12 @@
               Annealer
             </md-tooltip>
             <md-icon>track_changes</md-icon>
+          </md-button>
+          <md-button target="_new" class="md-icon-button" ng-href='http://digital-rebar.readthedocs.io/en/latest/'>
+            <md-tooltip>
+              Documentation
+            </md-tooltip>
+            <md-icon>help_outline</md-icon>
           </md-button>
         </div>
         <md-progress-linear md-mode="determinate" value="{{api.queueLen == 0 ? 100 : (1-api.queue.length/api.queueLen)*100}}"> </md-progress-linear>

@@ -21,14 +21,15 @@ capabilities controller
       $scope.deleteCapability = function(cap) {
         $scope.confirm(event, {
           title: "Delete Capability",
-          message: "Are you sure you want to delete selected capability?",
+          message: "Are you sure you want to delete " + cap.name + " capability?",
           yesCallback: function () {
             api('/api/v2/capabilities/' + cap.id, {
               method: 'DELETE'
             }).error(function (err) {
               api.toast('Error Deleted Capability', 'capability', err);
             }).success(function () {
-              api.toast('Deleted ' + capability + ' capability');
+              api.toast('Deleted ' + cap.name + ' capability');
+              api.getHealth();
             })
           }
         });
@@ -41,6 +42,21 @@ capabilities controller
             raw.push($scope._capabilities[i].name);
         }
         return raw;
+      };
+
+      $scope.createCapabilityPrompt = function (ev) {
+        $mdDialog.show({
+          controller: 'DialogController',
+          controllerAs: 'dialog',
+          templateUrl: 'views/dialogs/addcapabilitydialog.tmpl.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          locals: {
+            editing: false
+          },
+          clickOutsideToClose: true,
+          fullscreen: false
+        });
       };
 
     })

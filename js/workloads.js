@@ -14,6 +14,7 @@ workloads controller
       this.use_system = false;
       this.selected = [];
       this.attribs = {};
+      this.keys = [ ["", ""]];
 
       $scope.submitStatus = 0;
 
@@ -509,6 +510,19 @@ workloads controller
                 roles: roles,
                 count: 1,
               });
+            }
+          }
+        }
+
+        // If we have keys, add them here
+        for (var k in workloads.keys) {
+          if (workloads.keys[k]) {
+            kvp = workloads.keys[k];
+            if (kvp && kvp[1].length > 20) {
+              if (!data.public_keys) {
+                data.public_keys = {};
+              }
+              data.public_keys[kvp[0]] = kvp[1];
             }
           }
         }

@@ -234,7 +234,7 @@ dialog controller
       var path, method, data;
 
       if (locals.editing) {
-        path = '/tenants/' + tenant.uuid;
+        path = '/api/v2/tenants/' + tenant.uuid;
         method = 'PATCH';
         data = [{ "op": "replace", "path": "/name", "value": tenant.name },
                 { "op": "replace", "path": "/description", "value": tenant.description },
@@ -253,6 +253,37 @@ dialog controller
         api.toast("Error creating tenant", "tenants", err)
       });
 
+
+      $mdDialog.hide();
+    };
+
+    this.createCapability = function () {
+      var capability = $scope.locals.capability;
+      var path, method, data;
+
+      if (locals.editing) {
+        path = '/api/v2/capabilities/' + capability.id;
+        method = 'PATCH';
+        data = [{ "op": "replace", "path": "/description", "value": capability.description }];
+      } else {
+        capability.includes = ["USER_LOGIN"];
+        capability.source = "user-defined";
+        path = '/api/v2/capabilities';
+        method = 'POST';
+        data = angular.copy(capability);
+      }
+
+      api(path, {
+        method: method,
+        data: data
+      }).success(function (update) {
+        if (!locals.editing) {
+          api.toast("Added capability " + capability.name);
+          api.getHealth();
+        }
+      }).error(function (err) {
+        api.toast("Error creating capability", "capabilities", err)
+      });
 
       $mdDialog.hide();
     };

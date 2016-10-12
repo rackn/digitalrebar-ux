@@ -2,19 +2,19 @@
 capabilities view
 -->
 <md-card flex='100' ng-repeat="cap in _capabilities | groupsonly | orderBy:'name'">
-  <md-toolbar>
+  <md-toolbar md-theme="status_{{ (cap.source=='user-defined' ? 'ready' : 'proposed') }}">
     <div class="md-toolbar-tools">
       <h2 flex>
-        <md-icon aria-label="Capability">traffic</md-icon>
+        <md-icon aria-label="Capability" title="{{cap.source}}">traffic</md-icon>
         {{cap.name}} : {{cap.description}}
       </h2>
+      <md-button class='md-icon-button' ng-click="deleteCapability(cap)" ng-if='cap.source == "user-defined"'>
+        <md-icon>delete</md-icon>
+        <md-tooltip>Delete Capability</md-tooltip>
+      </md-button>
       <md-button class='md-icon-button' ng-click="updateCapability(cap)">
         <md-icon>save</md-icon>
         <md-tooltip>Update Capability</md-tooltip>
-      </md-button>
-      <md-button class='md-icon-button' ng-click="deleteCapability(cap)">
-        <md-icon>delete</md-icon>
-        <md-tooltip>Delete Capability</md-tooltip>
       </md-button>
     </div>
   </md-toolbar>
@@ -33,3 +33,11 @@ capabilities view
     </section>
   </div>
   </md-card>
+
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createCapabilityPrompt($event)'>
+    <md-icon>add</md-icon>
+    <md-tooltip>Create Capaility</md-tooltip>
+  </md-button>
+</div>
