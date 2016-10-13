@@ -434,6 +434,7 @@ workloads controller
       };
 
       $scope.generateBlob = function () {
+        console.log("JSON generate starting");
         var data = {
           commit: workloads.commit,
           attribs: workloads.attribs
@@ -443,7 +444,7 @@ workloads controller
 
         if (!workloads.use_system) {
           var hints = $scope.providerMap[workloads.provider].auth_details["provider-create-hint"];
-          if (hints == null) {
+          if (!hints) {
             var ptype = $scope.providerMap[workloads.provider]["type"];
             hints = $scope.providerTemplates[ptype]["provider-create-hint"].default;
           }
@@ -452,6 +453,7 @@ workloads controller
             hints: hints,
           };
         }
+        console.log("JSON generating nodes in " + data);
 
         var virtualNodes = 0;
         data.nodes = [];
@@ -462,6 +464,7 @@ workloads controller
           var roles = [];
           var label = "node";
 
+          console.log("JSON generate adding roles to node " + node);
           for (var j in wizard.services) {
             var service = wizard.services[j];
             var hasService = serviceMap[node.id][service.name];
@@ -515,9 +518,10 @@ workloads controller
         }
 
         // If we have keys, add them here
+        console.log("JSON generate adding keys");
         for (var k in workloads.keys) {
           if (workloads.keys[k]) {
-            kvp = workloads.keys[k];
+            var kvp = workloads.keys[k];
             if (kvp && kvp[1].length > 20) {
               if (!data.public_keys) {
                 data.public_keys = {};
@@ -528,6 +532,7 @@ workloads controller
         }
 
         // If we have a role apply order, then pass it along
+        console.log("JSON generate apply order");
         if (wizard.role_apply_order && wizard.role_apply_order.length > 1) {
           data.role_apply_order = wizard.role_apply_order;
         }

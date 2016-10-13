@@ -461,13 +461,9 @@ var version = '0.1.4';
         icon: 'insert_link',
         path: '/api_helper'
       }, {
-        title: 'Deployment Roles',
+        title: 'Roles',
         icon: 'label_outline',
-        path: '/deployment_roles'
-      }, {
-        title: 'Node Roles',
-        icon: 'label',
-        path: '/node_roles'
+        path: '/roles'
       }, {
         title: 'Attributes',
         icon: 'list',

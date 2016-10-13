@@ -1,8 +1,19 @@
 <md-card>
   <md-toolbar class="md-table-toolbar md-default" ng-hide='deployment_roles.selected.length'>
     <div class="md-toolbar-tools">
-      <span>Deployment Roles ({{getDeploymentRoles().length}})</span>
-    </div>
+      <span flex>Deployment Roles ({{getDeploymentRoles().length}})</span>
+      <md-button class='md-icon-button' ng-href='#/roles'>
+        <md-icon>label_outline</md-icon>
+        <md-tooltip md-direction="bottom">
+          Roles
+        </md-tooltip>
+      </md-button>
+      <md-button class='md-icon-button' ng-href='#/node_roles'>
+        <md-icon>dns</md-icon>
+        <md-tooltip md-direction="bottom">
+          Node Roles
+        </md-tooltip>
+      </md-button>    </div>
   </md-toolbar>
 
   <md-toolbar class="md-table-toolbar alternate" ng-show='deployment_roles.selected.length'>
