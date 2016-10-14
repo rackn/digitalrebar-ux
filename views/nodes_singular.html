@@ -28,10 +28,8 @@
         <md-menu-content width="4">
           <md-menu-item ng-repeat="role in getRoles() | orderBy:'name'">
             <md-button ng-click="bindNodeRole(role.role_id)">
-              <div layout="row" flex>
-                <p flex>{{_roles[role.role_id].name}}</p>
-                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{_roles[role.role_id].icon}}</md-icon>
-              </div>
+              <md-tooltip>{{role.name}}</md-tooltip>
+              <md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{role.icon}}</md-icon>
             </md-button>
           </md-menu-item>
           <md-menu-item ng-if='getRoles().length == 0'>
