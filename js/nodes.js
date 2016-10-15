@@ -284,6 +284,11 @@ node controller
 
         api("/api/v2/nodes/" + $scope.node.id + "/power").
         success(function (obj) {
+          // remove non-action power options
+          for (var i in obj) {
+            if (["status", "on?"].includes(obj[i]))
+              obj.splice(i, 1);
+          }
           $scope.power = obj;
         });
 
