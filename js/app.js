@@ -150,6 +150,11 @@ var version = '0.1.4';
       controllerAs: 'networks',
       templateUrl: 'views/networks_singular.html'
     }).
+    when('/switches', {
+      controller: 'SwitchesCtrl',
+      controllerAs: 'switches',
+      templateUrl: 'views/switches.html'
+    }).
     when('/providers', {
       controller: 'ProviderCtrl',
       controllerAs: 'providers',
