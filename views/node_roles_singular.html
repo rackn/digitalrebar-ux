@@ -43,7 +43,14 @@
       <h2>Node Role</h2>
     </div>
   </md-toolbar>
-
+  <div class="md-toolbar-tools" ng-show="node_role.state<0">
+    <span>
+      <a target="_new" href="{{helplink + '/' + _roles[node_role.role_id].name + '.html'}}">
+        <md-icon>help</md-icon>
+        Role Troubleshooting Help
+      </a>
+    </span>
+  </div>
   <div class="md-toolbar-tools">
     <span>Attributes</span>
   </div>

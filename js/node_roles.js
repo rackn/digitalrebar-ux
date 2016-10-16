@@ -141,6 +141,7 @@ node role controller
     $scope.hasAttrib = -1;
     $scope.attribs = [];
     $scope.editing = false;
+    $scope.helplink = "http://digital-rebar.readthedocs.io/en/latest/deployment/troubleshooting/roles";
     var hasCallback = false;
 
     var updateNodeRole = function () {
