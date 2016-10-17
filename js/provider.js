@@ -23,6 +23,25 @@ provider controller
         }
       });
 
+      $scope.deleteProvider = function(provider) {
+        $scope.confirm(event, {
+          title: "Delete Provider",
+          message: "Are you sure you want to delete " + provider.name + " Provider?",
+          yesCallback: function () {
+            api('/api/v2/providers/' + provider.id, {
+              method: 'DELETE'
+            }).error(function (err) {
+              api.toast('Error Deleted Provider', 'capability', err);
+            }).success(function () {
+              $scope._providers[provider.id].name = "DELETED-" + $scope._providers[provider.id].name
+              api.toast('Deleted ' + provider.name + ' capability');
+              api.getHealth();
+              $location.path('/providers');
+            })
+          }
+        });
+      };
+
       $scope.saveProvider = function () {
         if (!$scope.editing)
           return;

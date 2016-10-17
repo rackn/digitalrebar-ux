@@ -1,5 +1,5 @@
 <md-dialog aria-label="Add Provider" ng-cloak flex-gt-sm='50'>
-  <form>
+  <form name="form">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Creating {{locals.provider.type}}</h2>
@@ -19,7 +19,7 @@
               Provider
             </td>
             <td>
-              <input type='text' class='table-input' ng-model='locals.provider.name' />
+              <input type='text' id="name" name="name" class='table-input' ng-minlength='1' ng-required=true ng-model='locals.provider.name' />
             </td>
           </tr>
           <tr>
@@ -45,7 +45,7 @@
                 {{options.name}}
               </td>
               <td>
-                <input type='password' class='table-input' ng-model='locals.provider.auth_details[name]' ng-value='options.default' />
+                <input type='password' id=password class='table-input'ng-model='locals.provider.auth_details[name]' ng-value='options.default' />
               </td>
             </tr>
 
@@ -73,7 +73,7 @@
     </md-dialog-content>
     <md-dialog-actions>
       <span flex></span>
-      <md-button ng-click='dialog.addProvider()' class='md-primary md-raised' target="_blank" md-autofocus>
+      <md-button ng-click='dialog.addProvider()' ng-disabled="!form.name.$valid" class='md-primary md-raised' target="_blank" md-autofocus>
         Add
       </md-button>
     </md-dialog-actions>
