@@ -396,7 +396,7 @@ workloads controller
           }
           break;
 
-        case 'worker': // functions like optional, but disables control
+        case 'worker': // functions like optional
           if (!state) {
             for (var i in serviceMap[node.id]) {
               var s;
@@ -406,8 +406,6 @@ workloads controller
                   break;
                 }
               }
-              if (s && s.type == 'control')
-                serviceMap[node.id][i] = false;
             }
             serviceMap[node.id][service.name] = true;
           } else {
