@@ -27,6 +27,12 @@ provider view
             Stop Editing
           </md-tooltip>
         </md-button>
+        <md-button class='md-icon-button' ng-click='deleteProvider(provider)'>
+          <md-icon>delete</md-icon>
+          <md-tooltip>
+            Delete Provider
+          </md-tooltip>
+        </md-button>
       </div>
     </md-toolbar>
 
@@ -38,7 +44,7 @@ provider view
             Provider
           </td>
           <td>
-            <input type='text' ng-readonly="!editing" class='table-input' ng-model='provider.name' />
+            <input type='text' ng-minlength='1' ng-required=true ng-readonly="!editing" class='table-input' ng-model='provider.name' />
           </td>
         </tr>
         <tr>
