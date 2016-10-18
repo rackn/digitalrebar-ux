@@ -6,9 +6,18 @@
     <h1>Select Metal OS or Provider</h1>
     <div>
       <md-switch ng-model='workloads.use_system' ng-if='wizard.system_nodes' ng-disabled="workloads.use_system ? onTrue : onFalse">
-        Use System Nodes?
+        Use Existing Nodes?
       </md-switch>
       <div ng-if='wizard.system_nodes && workloads.use_system'>
+        <md-icon title="Deployment">dashboard</md-icon>
+        <md-input-container flex>
+          <label>Pool</label>
+          <md-select aria-label="deployments select" ng-model="workloads.source" ng-change="collectNodes()">
+            <md-option ng-repeat="d in _deployments" value="{{d.name}}">
+              {{d.name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
         <md-icon title="Metal">computer</md-icon>
         <md-input-container flex>
           <label>Operating System</label>
@@ -23,7 +32,7 @@
         <md-icon>cloud</md-icon>
         <md-input-container flex>
           <label>Cloud Provider</label>
-          <md-select aria-label="provider select" ng-model="workloads.provider">
+          <md-select aria-label="provider select" ng-model="workloads.provider" ng-change="createNodes()" >
             <md-option ng-repeat="provider in _providers" value="{{provider.name}}" ng-if='provider.type != "MetalProvider" && provider.type != ""'>
               {{provider.name}}
             </md-option>

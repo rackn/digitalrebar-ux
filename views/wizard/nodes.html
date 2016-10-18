@@ -4,7 +4,9 @@
   </div>
   <div class='wizard-content' flex>
     <h1>Select the Services for Your Nodes</h1>
-
+    <span ng-show="workloads.use_system">
+      Installing {{ workloads.attribs['provisioner-target_os'] }} from {{ workloads.source }} deployment.
+    </span>
     <md-card>
       <md-toolbar class="md-table-toolbar md-default" >
         <div class="md-toolbar-tools" layout='row'>
