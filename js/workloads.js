@@ -10,6 +10,7 @@ workloads controller
       this.required_service = '';
       this.commit = true;
       this.deployment_id = 0;
+      this.source = 'system';
       this.createDeployment = true;
       this.use_system = false;
       this.selected = [];
@@ -278,69 +279,84 @@ workloads controller
       // build list of created nodes
       $scope.newId = -1;
       $scope.createdNodes = [];
+      $scope.systemNodes = [];
 
-      if (wizard.create_nodes){
-        // create nodes from service list
-        for (var i = 0; i < wizard.services.length; i++) {
-          var type = wizard.services[i].type;
-          var count = wizard.services[i].count;
-          if (count > 0 && (type === "control" || type === "worker")) {
-            for (var j = 0; j < count; j++) {
-              // negative ids so we know to create a new node
-              var nid = $scope.newId--;
-              var node = {
-                id: nid,
-                name: -nid + "-create-" + type + "-" + (j+1),
-                order: nid
-              };
-              // service map nodes
-              serviceMap[nid] = {};
-              serviceMap[nid][type] = true;
-              if (workloads.required_service != '')
-                serviceMap[nid][workloads.required_service] = true
-              // collect nodes
-              $scope.createdNodes.push(node);
+      $scope.createNodes = function() {
+        createdNodes = [];
+        if (wizard.create_nodes){
+          // create nodes from service list
+          for (var i = 0; i < wizard.services.length; i++) {
+            var type = wizard.services[i].type;
+            var count = wizard.services[i].count;
+            if (count > 0 && (type === "control" || type === "worker")) {
+              for (var j = 0; j < count; j++) {
+                // negative ids so we know to create a new node
+                var nid = $scope.newId--;
+                var node = {
+                  id: nid,
+                  name: -nid + "-create-" + type + "-" + (j+1),
+                  order: nid
+                };
+                // service map nodes
+                serviceMap[nid] = {};
+                serviceMap[nid][type] = true;
+                if (workloads.required_service != '')
+                  serviceMap[nid][workloads.required_service] = true
+                // collect nodes
+                $scope.createdNodes.push(node);
+              }
             }
           }
         }
-      }
+      };
+      $scope.createNodes();
 
-      // collect system nodes
-      $scope.systemNodes = [];
+      $scope.collectNodes = function() {
 
-      if (wizard.system_nodes) {
-        // retrieve nodes from system deployment
-        var system_id = 0;
-        for (var i in $scope._deployments) {
-          var deployment = $scope._deployments[i];
-          if (deployment.system) {
-            system_id = i;
-            break;
+        $scope.systemNodes = [];
+
+        if (wizard.system_nodes) {
+          // retrieve nodes from system deployment
+          var system_id = 0;
+          for (var i in $scope._deployments) {
+            var deployment = $scope._deployments[i];
+            if (deployment.system) {
+              system_id = i;
+              break;
+            }
           }
-        }
-        // collect system nodes
-        Object.keys($scope._nodes).forEach(function (id) {
-          var node = $scope._nodes[id];
-          // add node if isn't in system deployment or a system node
-          if (!node.system && node.deployment_id == system_id) {
-            // service map nodes
-            serviceMap[id] = {};
-            for (var i = 0; i < wizard.services.length; i++) {
-              var type = wizard.services[i].type;
-              var count = wizard.services[i].count;
-              if (count > 0 && (type === "control" || type === "worker")) {
-                serviceMap[id][type] = true;
-                wizard.services[i].count--;
+          // collect system nodes
+          Object.keys($scope._nodes).forEach(function (id) {
+            var node = $scope._nodes[id];
+            var source_id = system_id;
+            for (var i in $scope._deployments) {
+              if ($scope._deployments[i].name == workloads.source) {
+                source_id = $scope._deployments[i].id
                 break;
               }
             }
-            if (workloads.required_service != '')
-              serviceMap[id][workloads.required_service] = true
-            // collect nodes
-            $scope.systemNodes.push(node);
-          }
-        });
-      }
+            // add node if isn't in source deployment or a system node
+            if (!node.system && node.deployment_id == source_id) {
+              // service map nodes
+              serviceMap[id] = {};
+              for (var i = 0; i < wizard.services.length; i++) {
+                var type = wizard.services[i].type;
+                var count = wizard.services[i].count;
+                if (count > 0 && (type === "control" || type === "worker")) {
+                  serviceMap[id][type] = true;
+                  wizard.services[i].count--;
+                  break;
+                }
+              }
+              if (workloads.required_service != '')
+                serviceMap[id][workloads.required_service] = true
+              // collect nodes
+              console.log("adding node " + node.name + " from deployment id " + source_id);
+              $scope.systemNodes.push(node);
+            }
+          });
+        }
+      };
 
       $scope.tryDeselect = function (node) {
         if (node.id < 0) { // remove node that hasn't been created
