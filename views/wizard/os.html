@@ -12,7 +12,7 @@
         <md-icon title="Deployment">dashboard</md-icon>
         <md-input-container flex>
           <label>Pool</label>
-          <md-select aria-label="deployments select" ng-model="workloads.source" ng-change="collectNodes()">
+          <md-select aria-label="deployments select" ng-model="workloads.source">
             <md-option ng-repeat="d in _deployments" value="{{d.name}}">
               {{d.name}}
             </md-option>

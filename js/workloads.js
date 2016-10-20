@@ -62,6 +62,7 @@ workloads controller
         path: "views/wizard/attributes.html",
         icon: "directions_car",
         complete: function () {
+          $scope.collectNodes();
           return true;
         }
       }, {
@@ -315,7 +316,7 @@ workloads controller
 
         $scope.systemNodes = [];
 
-        if (wizard.system_nodes) {
+        if (wizard.system_nodes && workloads.use_system) {
           // retrieve nodes from system deployment
           var system_id = 0;
           for (var i in $scope._deployments) {
