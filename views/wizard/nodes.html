@@ -13,6 +13,18 @@
           <h2>{{workloads.selected.length}} node{{workloads.selected.length != 1 && 's' || ''}} selected</h2>
           <div flex style='color: #c44; font-size: 0.75em; text-align: center;'>{{steps[done].complete(true)[1]}}</div>
         </div>
+        <div>
+          <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='addNodes()' ng-hide="workloads.use_system">
+            <md-icon>add</md-icon>
+            <md-tooltip>Add Nodes</md-tooltip>
+          </md-button>
+        </div>
+        <div>
+          <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='collectNodes()' ng-show="workloads.use_system">
+            <md-icon>replay</md-icon>
+            <md-tooltip>Regather Nodes from Pool</md-tooltip>
+          </md-button>
+        </div>
       </md-toolbar>
 
       <md-table-container style="overflow-y: auto; max-height: 300px;">
@@ -27,7 +39,7 @@
             </tr>
           </thead>
           <tbody md-body>
-            <tr md-row md-select="node" md-select-id="{{node.id}}" ng-repeat="node in getNodes() | orderBy: order" md-on-deselect='tryDeselect' >
+            <tr md-row md-select="node" md-select-id="{{node.id}}" ng-repeat="node in getNodes() | orderBy: order">
               <td md-cell>{{node.name}}</td>
               <td md-cell ng-repeat='type in ["required","control","worker","optional"]'>
                 <span flex></span>
