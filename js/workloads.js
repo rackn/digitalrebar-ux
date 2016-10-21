@@ -283,7 +283,7 @@ workloads controller
       $scope.systemNodes = [];
 
       $scope.createNodes = function() {
-        createdNodes = [];
+        $scope.createdNodes = [];
         if (wizard.create_nodes){
           // create nodes from service list
           for (var i = 0; i < wizard.services.length; i++) {
