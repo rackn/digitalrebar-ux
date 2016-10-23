@@ -6,6 +6,8 @@ dialog controller
     // keep locals from the config
     $scope.locals = locals;
 
+    locals.api = api;
+
     // have icons persist
     $scope.icons = $rootScope.icons;
     
@@ -358,6 +360,70 @@ dialog controller
         path = '/provisioner/bootenvs';
         method = 'POST';
         data = env;
+      }
+
+      api(path, {
+        method: method,
+        data: data
+      }).success(function (update) {
+        api.getHealth();
+      }).error(function (err) {
+        api.getHealth();
+      });
+
+      $mdDialog.hide();
+    };
+
+
+    this.profileSelectChanged = function (values, old_key, new_key) {
+      var d = values[old_key];
+      values[new_key] = d;
+      if (typeof locals.attribs[new_key]["default"] !== undefined) {
+        values[new_key].value = JSON.stringify(locals.attribs[new_key]["default"].value)
+      }
+      if (old_key != new_key) {
+        delete values[old_key];
+      }
+    }
+
+    this.profileClearData = function (values, key) {
+      delete values[key];
+      return true;
+    }
+
+    this.profileNewValue = function (values) {
+      values["new"] = { "name": "new", "value": "" };
+      return true;
+    }
+
+    this.createProfile = function () {
+      var profile = $scope.locals.profile;
+      var path, method, data;
+
+      var newprofile = {};
+      newprofile.name = profile.name;
+      newprofile.values = {};
+      for(var key in profile.values) {
+        newprofile.values[key] = JSON.parse(profile.values[key].value)
+      }
+
+      if (locals.editing) {
+        path = '/api/v2/profiles/' + newprofile.name;
+        method = 'PATCH';
+        data = [];
+        var original = locals.original;
+        for (var key in newprofile) {
+          if (JSON.stringify(newprofile[key]) !== JSON.stringify(original[key]))
+            data.push({
+              op: "replace",
+              path: "/" + key,
+              value: newprofile[key]
+            })
+        }
+      } else {
+        path = '/api/v2/profiles';
+        method = 'POST';
+        data = newprofile;
       }
 
       api(path, {

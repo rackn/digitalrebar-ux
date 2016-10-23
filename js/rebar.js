@@ -64,6 +64,7 @@
     $rootScope._deployment_roles = {};
     $rootScope._roles = {};
     $rootScope._nodes = {};
+    $rootScope._profiles = {};
     $rootScope._networks = {};
     $rootScope._node_roles = {};
     $rootScope._providers = {};
@@ -102,11 +103,13 @@
     };
     api.reloading = false;
 
-    app.types = ['deployments', 'roles', 'nodes', 'node_roles',
+    app.types = ['deployments', 'roles', 'nodes', 'profiles', 'node_roles',
       'deployment_roles', 'networks', 'providers', 'barclamps'
     ];
 
     api.testSchema = function (data, schema) {
+      if (typeof schema === 'undefined')
+        return true;
       if (typeof data === 'undefined' && !schema.required)
         return true;
 
@@ -176,6 +179,8 @@
     }
 
     api.exampleFromSchema = function (schema) {
+      if (typeof schema === 'undefined')
+        return "";
       switch (schema.type) {
       case 'any':
         return '=' + (schema.required ? '*' : '');
@@ -521,6 +526,21 @@
       success(function (data) {
         $rootScope._nodes = {};
         data.map(api.addNode);
+      });
+    };
+
+    api.addProfile = function (profile) {
+      var id = profile.id;
+      $rootScope._profiles[id] = profile;
+      $rootScope.$broadcast("profile" + id + "Done");
+    };
+
+    // api call for getting all the nodes
+    api.getProfiles = function () {
+      return api('/api/v2/profiles').
+      success(function (data) {
+        $rootScope._profiles = {};
+        data.map(api.addProfile);
       });
     };
 

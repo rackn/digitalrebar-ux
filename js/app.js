@@ -241,6 +241,17 @@ var version = '0.1.4';
       templateUrl: 'views/provisioner_machines.html'
     }).
 
+    when('/profiles', {
+      controller: 'ProfileCtrl',
+      controllerAs: 'profile',
+      templateUrl: 'views/profiles.html'
+    }).
+    when('/profiles/:id', {
+      controller: 'ProfileCtrl',
+      controllerAs: 'profile',
+      templateUrl: 'views/profiles.html'
+    }).
+
     when('/workloads/:id', {
       controller: 'WorkloadsCtrl',
       controllerAs: 'workloads',
@@ -372,6 +383,10 @@ var version = '0.1.4';
       title: 'Nodes',
       icon: 'dns',
       path: '/nodes'
+    }, {
+      title: 'Profiles',
+      icon: 'group_work',
+      path: '/profiles'
     }, {
       title: 'Networks',
       icon: 'swap_horiz',
