@@ -312,6 +312,24 @@ workloads controller
       };
       $scope.createNodes();
 
+      $scope.addNodes = function() {
+        // negative ids so we know to create a new node
+        var nid = $scope.newId--;
+        var node = {
+          id: nid,
+          name: -nid + "-added-node",
+          order: nid
+        };
+        // service map nodes
+        serviceMap[nid] = {};
+        if (workloads.required_service != '');
+          serviceMap[nid][workloads.required_service] = true;
+        serviceMap[nid]['worker'] = true;
+        // add nodes
+        $scope.createdNodes.push(node);
+      }
+
+
       $scope.collectNodes = function() {
 
         $scope.systemNodes = [];
@@ -356,21 +374,6 @@ workloads controller
               $scope.systemNodes.push(node);
             }
           });
-        }
-      };
-
-      $scope.tryDeselect = function (node) {
-        if (node.id < 0) { // remove node that hasn't been created
-          $scope.createdNodes.splice($scope.createdNodes.indexOf(node), 1);
-          delete serviceMap[node.id];
-          return;
-        }
-
-        // remove the services from this node
-        for (var i in serviceMap[node.id]) {
-          if (serviceMap[node.id][i]) {
-            serviceMap[node.id][i] = false;
-          }
         }
       };
 
