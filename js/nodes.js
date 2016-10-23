@@ -85,10 +85,30 @@ node controller
         targetEvent: ev,
         locals: {
           base_name: 'digital-rebar-node',
-          providers: $scope._providers,
+          _providers: $scope._providers,
+          _profiles: $scope._profiles,
+          profiles: ["foo"],
           add_os: 'default_os',
           number: 1,
           _deployments: $scope._deployments
+        },
+        clickOutsideToClose: true,
+        fullscreen: useFullScreen
+      });
+    };
+
+    this.showEditNodeDialog = function (ev, node) {
+      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+      console.log(node);
+      $mdDialog.show({
+        controller: 'DialogController',
+        controllerAs: 'dialog',
+        templateUrl: 'views/dialogs/editnodedialog.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        locals: {
+          node: node,
+          _profiles: $scope._profiles
         },
         clickOutsideToClose: true,
         fullscreen: useFullScreen
