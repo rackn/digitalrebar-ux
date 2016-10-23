@@ -106,6 +106,7 @@ dialog controller
         'name': locals.base_name + "." + provider + ".neode.org",
         'description': "created by rebar",
         'provider': provider,
+        'profiles': profiles,
         'deployment_id': locals.deployment_id,
         'hints': {
           'use-proxy': false,
