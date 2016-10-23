@@ -66,6 +66,7 @@
     $rootScope._nodes = {};
     $rootScope._profiles = {};
     $rootScope._networks = {};
+    $rootScope._network_ranges = {};
     $rootScope._node_roles = {};
     $rootScope._providers = {};
     $rootScope._barclamps = {};
@@ -104,7 +105,7 @@
     api.reloading = false;
 
     app.types = ['deployments', 'roles', 'nodes', 'profiles', 'node_roles',
-      'deployment_roles', 'networks', 'providers', 'barclamps'
+      'deployment_roles', 'networks', 'network_ranges', 'providers', 'barclamps'
     ];
 
     api.testSchema = function (data, schema) {
@@ -599,7 +600,22 @@
       $rootScope.$broadcast("network" + id + "Done");
     };
 
-    // api call for getting all the providers
+    api.addRange = function (range) {
+      var id = range.id;
+      $rootScope._network_ranges[id] = range;
+      $rootScope.$broadcast("network_range" + id + "Done");
+    };
+
+    // api call for getting all the network ranges
+    api.getNetworkRanges = function () {
+      return api('/api/v2/network_ranges').
+      success(function (data) {
+        $rootScope._network_ranges = {};
+        data.map(api.addRange);
+      });
+    };
+
+    // api call for getting all the networks
     api.getNetworks = function () {
       return api('/api/v2/networks').
       success(function (data) {

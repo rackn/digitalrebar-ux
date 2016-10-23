@@ -12,22 +12,22 @@
       <span flex>
         {{node.name}}
       </span>
-      <md-button ng-repeat="pb in power" class='md-icon-button' ng-click='setPower(pb)'>
+      <md-button ng-repeat="pb in power" aria-label="{{pb}}" class='md-icon-button' ng-click='setPower(pb)'>
         <md-icon>{{ powers[pb] || powers["on"] }}</md-icon>
         <md-tooltip>{{ pb }}</md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-click='redeploy()'>
+      <md-button class='md-icon-button' aria-label="redeploy" ng-click='redeploy()'>
         <md-icon>low_priority</md-icon>
         <md-tooltip>Redeploy Node</md-tooltip>
       </md-button>
       <md-menu md-position-mode="target-right target" style='padding: 0;'>
-        <md-button class='md-icon-button' ng-click='$mdOpenMenu($event)'>
+        <md-button class='md-icon-button' aria-label="bind" ng-click='$mdOpenMenu($event)'>
           <md-icon>link</md-icon>
           <md-tooltip>Bind Node Role</md-tooltip>
         </md-button>
         <md-menu-content width="4">
           <md-menu-item ng-repeat="role in getRoles() | orderBy:'name'">
-            <md-button ng-click="bindNodeRole(role.role_id)">
+            <md-button aria-label="{{role.name}}" ng-click="bindNodeRole(role.role_id)">
               <md-tooltip>{{role.name}}</md-tooltip>
               <md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{role.icon}}</md-icon>
             </md-button>
@@ -142,8 +142,24 @@
         </td>
       </tr>
     </table>
-  </md-card-content>
-
+    <!-- Show Networks ONLY FOR METAL PROVIDER -->
+    <div ng-show="nics != {}">
+      <span class='label'>
+        <md-icon>swap_horiz</md-icon>
+        Network Interfaces
+      </span>
+      <ul>
+        <li ng-repeat="network in nics | orderBy: _networks[network[0].network_id].name">
+          <a title='{{_networks[network[0].network_id].description}}' href='#/networks/{{network[0].network_id}}'>{{_networks[network[0].network_id].name}}</a>:
+          <span ng-repeat="nic in network | orderBy: _network_ranges[nic.network_range_id].name">
+            {{ _network_ranges[nic.network_range_id].name }}
+            <a target="_new" href="https://{{nic.address}}">{{nic.address}}</a>
+            ({{ _network_ranges[nic.network_range_id].conduit }})
+            {{ $last ? '' : ", "}}
+          </span>
+        </li>
+      </ul>
+    </div>
 </md-card>
 
 <!-- Show node roles -->
@@ -155,11 +171,11 @@
   </md-toolbar>
   <md-card-content>
     <span ng-repeat="role in _node_roles | from:'node':node | orderBy: role.cohort()">
-
-      <md-button class="md-fab md-primary" md-theme="status_{{role.status}}" ng-href='#/node_roles/{{role.id}}'>
+      <md-button class="md-fab md-primary" aria-label="{{_roles[role.role_id].name}}" md-theme="status_{{role.status}}" ng-href='#/node_roles/{{role.id}}'>
         <md-icon>{{_roles[role.role_id].icon}}</md-icon>
         <md-tooltip md-direction="bottom">
           {{_roles[role.role_id].name}}
+          }
         </md-tooltip>
       </md-button>
     </span>

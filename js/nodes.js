@@ -260,6 +260,7 @@ node controller
     $scope.hasAttrib = -1;
     $scope.attribs = [];
     $scope.power = [];
+    $scope.nics = {};
     // icons used by nodes for power values
     $scope.powers = {
       'identify': 'lightbulb_outline',
@@ -290,6 +291,16 @@ node controller
               obj.splice(i, 1);
           }
           $scope.power = obj;
+        });
+
+        api("/api/v2/nodes/" + $scope.node.id + "/network_allocations").
+        success(function (obj) {
+          //$scope.nics = obj;
+          for (var i in obj) {
+            if (!$scope.nics[obj[i].network_id])
+              $scope.nics[obj[i].network_id] = [];
+            $scope.nics[obj[i].network_id].push(obj[i]);
+          };
         });
 
         if ($scope.hasAttrib == -1) {
