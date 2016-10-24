@@ -117,9 +117,9 @@ node controller
         locals: {
           _profiles: $scope.rawProfiles(node.profiles),
           node: node,
-          name: new String(node.name),
-          descripion: new String(node.descripion),
-          profiles: new Array(node.profiles),
+          name1: node.name,
+          descripion1: node.descripion,
+          profiles1: node.profiles,
           id: node.id
         },
         clickOutsideToClose: true,
