@@ -65,6 +65,10 @@
   <md-card-content>
     <table layout-padding>
       <tr>
+        <td class='label'>Description</td>
+        <td>{{ (node.description.length > 0 ? node.description : "[not set]") }}</td>
+      </tr>
+      <tr>
         <td class='label'>Deployment</td>
         <td>
           <a ng-href='#/deployments/{{node.deployment_id}}'>
