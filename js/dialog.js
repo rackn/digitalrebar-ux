@@ -95,10 +95,11 @@ dialog controller
 
     this.updateNode= function() {
       var payload = {
-        name: locals.name,
-        description: locals.description,
-        profiles: locals.profiles
+        'name': locals.name1,
+        'description': locals.description1,
+        'profiles': locals.profiles1
       };
+      console.log(payload);
       api('/api/v2/nodes/' + locals.id, {
         method: 'PUT',
         data: payload
