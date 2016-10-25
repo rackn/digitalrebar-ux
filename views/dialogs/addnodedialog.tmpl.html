@@ -54,7 +54,7 @@
           <section layout-padding ng-hide="locals._profiles.length > 0">
             No Profiles Available
           </section>
-          <section layout-padding style='overflow-x: auto;' ng-show="locals._profiles.length > 0">
+          <section layout-padding style='overflow-x: auto;' ng-if="locals._profiles.length > 0">
             <md-chips ng-model='locals.profiles' placeholder='Profiles (optional)' md-require-match="true">
               <md-chip-template style='font-family: monospace;'>
                 {{ $chip }}

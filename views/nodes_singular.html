@@ -189,7 +189,7 @@
   </md-toolbar>
   <md-card-content>
     <span ng-repeat="role in _node_roles | from:'node':node | orderBy: role.cohort()">
-      <md-button class="md-fab md-primary" md-theme="status_{{role.status}}" ng-href='#/node_roles/{{role.id}}'>
+      <md-button class="md-fab md-primary" aria-label="role" md-theme="status_{{role.status}}" ng-href='#/node_roles/{{role.id}}'>
         <md-tooltip md-direction="bottom">{{_roles[role.role_id].name}}</md-tooltip>
         <md-icon>{{_roles[role.role_id].icon}}</md-icon>
       </md-button>

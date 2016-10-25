@@ -119,7 +119,7 @@ node controller
           _profiles: $scope.rawProfiles(node.profiles),
           node: node,
           name1: node.name,
-          descripion1: node.descripion,
+          description1: node.description,
           profiles1: node.profiles,
           id: node.id
         },
