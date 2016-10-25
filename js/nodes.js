@@ -327,6 +327,7 @@ node controller
 
         api("/api/v2/nodes/" + $scope.node.id + "/network_allocations").
         success(function (obj) {
+          $scope.nics = {};
           //$scope.nics = obj;
           for (var i in obj) {
             if (!$scope.nics[obj[i].network_id])
