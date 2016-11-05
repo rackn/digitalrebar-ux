@@ -20,8 +20,11 @@
           <md-tooltip>Move Nodes</md-tooltip>
         </md-button>
         <md-menu-content width="4">
+          <md-switch ng-model='move_tenant'>
+            Move Reassigns Tenant?
+          </md-switch>
           <md-menu-item ng-repeat="deployment in _deployments">
-            <md-button ng-click="assignNodes(nodes.selected, deployment.id)">
+            <md-button ng-click="assignNodes(nodes.selected, deployment.id, move_tenant)">
               <div layout="row" flex>
                 <p flex>{{deployment.name}}</p>
                 <md-icon md-menu-align-target style="margin: auto 3px auto 0;">arrow_forward</md-icon>

@@ -8,6 +8,7 @@ node controller
 
     var nodes = this;
     this.selected = [];
+    $scope.move_tenant = true;
 
     // converts the _nodes object that rootScope has into an array
     this.getNodes = function () {
@@ -95,16 +96,20 @@ node controller
       });
     };
 
-    $scope.assignNodes = function (arr, deployment_id) {
+    $scope.assignNodes = function (arr, deployment_id, move_tenant) {
       arr.forEach(function (node) {
-        api("/api/v2/nodes/" + node.id, {
-          method: "PUT",
-          data: {
+        var d = {
             node_deployment: {
               deployment_id: deployment_id,
               old_deployment: node.deployment_id
             }
-          }
+          };
+        if (move_tenant) {
+          d.tenant_id = $scope._deployments[deployment_id].tenant_id;
+        }
+        api("/api/v2/nodes/" + node.id, {
+          method: "PUT",
+          data: d
         }).success(api.addNode);
       });
     };
