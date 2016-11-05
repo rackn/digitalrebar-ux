@@ -75,6 +75,15 @@ node controller
       });
     };
 
+    $scope.rawProfiles = function(current) {
+      raw = [];
+      for (var i in $scope._profiles) {
+        if (!current.includes($scope._profiles[i].name))
+          raw.push($scope._profiles[i].name);
+      }
+      return raw;
+    };
+
     this.showAddNodeDialog = function (ev) {
       var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
       $mdDialog.show({
@@ -85,10 +94,33 @@ node controller
         targetEvent: ev,
         locals: {
           base_name: 'digital-rebar-node',
-          providers: $scope._providers,
+          _providers: $scope._providers,
+          _profiles: $scope.rawProfiles([]),
+          profiles: [],
           add_os: 'default_os',
           number: 1,
           _deployments: $scope._deployments
+        },
+        clickOutsideToClose: true,
+        fullscreen: useFullScreen
+      });
+    };
+
+    this.showEditNodeDialog = function (ev, node) {
+      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+      $mdDialog.show({
+        controller: 'DialogController',
+        controllerAs: 'dialog',
+        templateUrl: 'views/dialogs/editnodedialog.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        locals: {
+          _profiles: $scope.rawProfiles(node.profiles),
+          node: node,
+          name1: node.name,
+          description1: node.description,
+          profiles1: node.profiles,
+          id: node.id
         },
         clickOutsideToClose: true,
         fullscreen: useFullScreen

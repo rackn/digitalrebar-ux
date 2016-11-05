@@ -30,8 +30,8 @@ dialog controller
 
     $scope.providers = (function () {
       var providers = [];
-      for (var id in locals.providers) {
-        var provider = locals.providers[id];
+      for (var id in locals._providers) {
+        var provider = locals._providers[id];
         if (Object.keys(provider.auth_details).length)
           providers.push(provider);
       }
@@ -40,8 +40,8 @@ dialog controller
 
     $scope.providerMap = (function () {
       var pm = {};
-      for (var i in locals.providers) {
-        var provider = locals.providers[i];
+      for (var i in locals._providers) {
+        var provider = locals._providers[i];
           pm[provider.name] = provider;
           if (provider.type === 'MetalProvider' || provider.type == '') {
             continue;
@@ -93,6 +93,24 @@ dialog controller
       $mdDialog.hide();
     };
 
+    this.updateNode= function() {
+      var payload = {
+        'name': locals.name1,
+        'description': locals.description1,
+        'profiles': locals.profiles1
+      };
+      api('/api/v2/nodes/' + locals.id, {
+        method: 'PUT',
+        data: payload
+      }).success(function (update) {
+        api.toast('Updated Node ' + locals.node.name);
+        api.addNode;
+        $mdDialog.hide();
+      }).error(function (err) {
+        api.toast('Error Updating Node', 'node', err);
+      });
+    };
+
     this.editNodesInHelper = function () {
       var provider = locals.providers[locals.provider].name;
 
@@ -106,6 +124,7 @@ dialog controller
         'name': locals.base_name + "." + provider + ".neode.org",
         'description': "created by rebar",
         'provider': provider,
+        'profiles': profiles,
         'deployment_id': locals.deployment_id,
         'hints': {
           'use-proxy': false,
@@ -129,19 +148,19 @@ dialog controller
     this.addNodes = function () {
       // create a list of `locals.number` numbers 
       var times = Array.apply(null, { length: locals.number }).map(Number.call, Number);
-      var provider = locals.providers[locals.provider].name;
+      var provider = locals._providers[locals.provider].name;
+      var hints = $scope.providerMap[provider].auth_details["provider-create-hint"];
+      if (hints == null) {
+        var ptype = $scope.providerMap[provider]["type"];
+        hints = $rootScope.providerTemplates[ptype]["provider-create-hint"].default;
+      }
 
       times.forEach(function (i) {
-        var hints = $scope.providerMap[provider].auth_details["provider-create-hint"];
-        if (hints == null) {
-          var ptype = $scope.providerMap[provider]["type"];
-          hints = $rootScope.providerTemplates[ptype]["provider-create-hint"].default;
-        }
-
         var payload = {
           'name': locals.base_name + "-" + i + "." + provider + ".neode.org",
           'description': "created by rebar",
           'provider': provider,
+          'profiles': locals.profiles,
           'deployment_id': locals.deployment_id,
           'hints': {
             'use-proxy': false,

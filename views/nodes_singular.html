@@ -55,11 +55,19 @@
         <md-icon>delete</md-icon>
         <md-tooltip>Delete Node</md-tooltip>
       </md-button>
+      <md-button class='md-icon-button' ng-click='nodes.showEditNodeDialog($event, node)'>
+        <md-icon>mode_edit</md-icon>
+        <md-tooltip>Edit Node</md-tooltip>
+      </md-button>
     </div>
   </md-toolbar>
 
   <md-card-content>
     <table layout-padding>
+      <tr>
+        <td class='label'>Description</td>
+        <td>{{ (node.description.length > 0 ? node.description : "[not set]") }}</td>
+      </tr>
       <tr>
         <td class='label'>Deployment</td>
         <td>
@@ -141,7 +149,16 @@
           <a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a>
         </td>
       </tr>
+      <tr>
+        <td class='label'><a ng-href='#/profiles'>Profile(s)</a></td>
+        <td>
+          <span ng-repeat="p in node.profiles | orderBy: p">
+            {{p}}{{ $last ? '' : ", "}}
+          </span>
+        </td>
+      </tr>
     </table>
+
     <!-- Show Networks ONLY FOR METAL PROVIDER -->
     <div ng-show="nics != {}">
       <span class='label'>
@@ -160,6 +177,7 @@
         </li>
       </ul>
     </div>
+  </md-card-content>
 </md-card>
 
 <!-- Show node roles -->
@@ -171,11 +189,9 @@
   </md-toolbar>
   <md-card-content>
     <span ng-repeat="role in _node_roles | from:'node':node | orderBy: role.cohort()">
-      <md-button class="md-fab md-primary" aria-label="{{_roles[role.role_id].name}}" md-theme="status_{{role.status}}" ng-href='#/node_roles/{{role.id}}'>
+      <md-button class="md-fab md-primary" aria-label="role" md-theme="status_{{role.status}}" ng-href='#/node_roles/{{role.id}}'>
+        <md-tooltip md-direction="bottom">{{_roles[role.role_id].name}}</md-tooltip>
         <md-icon>{{_roles[role.role_id].icon}}</md-icon>
-        <md-tooltip md-direction="bottom">
-          {{_roles[role.role_id].name}}
-        </md-tooltip>
       </md-button>
     </span>
   </md-card-content>

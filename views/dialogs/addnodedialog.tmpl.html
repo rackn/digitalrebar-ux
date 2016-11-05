@@ -26,7 +26,7 @@
         <md-input-container class='md-block'>
           <label>Provider</label>
           <md-select required name='provider' ng-model="locals.provider">
-            <md-option ng-repeat="provider in providers" value="{{provider.id}}">
+            <md-option ng-repeat="provider in locals._providers" value="{{provider.id}}" ng-if="!['metal','phantom'].includes(provider.name)">
               {{provider.name}}
             </md-option>
           </md-select>
@@ -35,7 +35,7 @@
           </div>
         </md-input-container>
 
-        <md-input-container class='md-block' style='padding-bottom: 16px;'>
+        <md-input-container class='md-block'>
           <label>Deployment</label>
           <md-select required name='deployment_id' ng-model="locals.deployment_id">
             <md-option ng-repeat="(id, deployment) in locals._deployments" value="{{id}}">
@@ -50,6 +50,23 @@
           </div>
         </md-input-container>
 
+        <md-input-container class='md-block' style='padding-bottom: 16px;'>
+          <section layout-padding ng-hide="locals._profiles.length > 0">
+            No Profiles Available
+          </section>
+          <section layout-padding style='overflow-x: auto;' ng-if="locals._profiles.length > 0">
+            <md-chips ng-model='locals.profiles' placeholder='Profiles (optional)' md-require-match="true">
+              <md-chip-template style='font-family: monospace;'>
+                {{ $chip }}
+              </md-chip-template>
+              <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in locals._profiles | filter:searchText" md-item-text="item" placeholder="Add Profiles">
+                <span md-highlight-text="searchText">
+                  {{item}}
+                </span>
+              </md-autocomplete>
+            </md-chips>          
+          </section>
+        </md-input-container>
 
         <md-input-container class='md-block'>
           <label>Number</label>
