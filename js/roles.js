@@ -50,26 +50,26 @@ role controller
 
       $scope.role = $scope._roles[$scope.id];
 
-      // find parents and chidlren
-      for (var id in $scope._roles) {
-        var r = $scope._roles[id];
-        if ($scope.role.requires.includes(r.name))
-          $scope.relations["Parents"].push(r);
-        else if ($scope._roles[id].requires.includes($scope.role.name))
-          $scope.relations["Children"].push(r);
-        else if ($scope.role.provides.includes(r.name))
-          $scope.relations["Provides"].push(r);
-        else if ($scope.role.conflicts.includes(r.name))
-          $scope.relations["Conflicts"].push(r);
-      }
-
-      $scope.metadata = JSON.stringify($scope.role.metadata, null, "  ")
       //console.log($scope.metadata)
-      if (!$scope.role)
-        $location.path('/api/v2/roles');
-      else if (!hasCallback) {
-        hasCallback = true;
-        $scope.$on('role' + $scope.role.id + "Done", updateRole);
+      if (typeof $scope.role != 'undefined') {
+        // find parents and chidlren
+        for (var id in $scope._roles) {
+          var r = $scope._roles[id];
+          if ('requires' in $scope.role && $scope.role.requires.includes(r.name))
+            $scope.relations["Parents"].push(r);
+          else if ('requires' in $scope._roles[id] && $scope._roles[id].requires.includes($scope.role.name))
+            $scope.relations["Children"].push(r);
+          else if ('provides' in $scope.role && $scope.role.provides.includes(r.name))
+            $scope.relations["Provides"].push(r);
+          else if ('conflicts' in $scope.role && $scope.role.conflicts.includes(r.name))
+            $scope.relations["Conflicts"].push(r);
+        }
+        $scope.metadata = JSON.stringify($scope.role.metadata, null, "  ")
+
+        if (!hasCallback) {
+          hasCallback = true;
+          $scope.$on('role' + $scope.role.id + "Done", updateRole);
+        }
       }
     };
 

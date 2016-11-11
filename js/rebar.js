@@ -72,6 +72,11 @@
     $rootScope._barclamps = {};
     $rootScope.wizardBarclamps = [];
 
+    $rootScope.showBiosSettings= true;
+    $rootScope.showBiosUpdates= true;
+    $rootScope.showIpmiUpdates= true;
+    $rootScope.showRaidUpdates= false;
+
     $rootScope.showDNS = false;
     $rootScope._DNS = { zones: [] };
 
@@ -85,7 +90,6 @@
     $rootScope._users = {};
     $rootScope._tenants = {};
     $rootScope._capabilities = {};
-
   });
 
   app.factory('api', function ($http, $rootScope, $timeout, $mdToast, debounce, localStorageService) {

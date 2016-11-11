@@ -195,6 +195,28 @@ var version = '0.1.4';
       controllerAs: 'capabilities',
       templateUrl: 'views/capabilities.html'
     }).
+    when('/bios/settings', {
+      controller: 'BiosSettingsCntrl',
+      controllerAs: 'biossettings',
+      templateUrl: 'views/bios_settings.html'
+    }).
+    when('/bios/updates', {
+      controller: 'BiosUpdatesCntrl',
+      controllerAs: 'biosupdates',
+      templateUrl: 'views/bios_updates.html'
+    }).
+    when('/ipmi/updates', {
+      controller: 'IPMIUpdatesCntrl',
+      controllerAs: 'ipmiupdates',
+      templateUrl: 'views/ipmi_updates.html'
+    }).
+    /*
+    when('/raid/updates', {
+      controller: 'RaidUpdatesCntrl',
+      controllerAs: 'raidupdates',
+      templateUrl: 'views/raid_updates.html'
+    }).
+    */
     when('/dns', {
       controller: 'DNSCtrl',
       controllerAs: 'dns',
@@ -419,6 +441,40 @@ var version = '0.1.4';
           hide: function () {
             return !$scope.showDNS; }
         }]
+    }, {
+      title: 'Hardware',
+      icon: "computer",
+      expand: true,
+      expanded: function () {
+        return $scope.expandHardware; },
+      toggleExpand: $scope.toggleExpandHardware,
+      items: [{
+          title: 'BIOS Settings',
+          icon: 'map',
+          path: '/bios/settings',
+          hide: function () {
+            return !$scope.showBiosSettings; }
+        }, {
+          title: 'BIOS Updates',
+          icon: 'flash_on',
+          path: '/bios/updates',
+          hide: function () {
+            return !$scope.showBiosUpdates; }
+        }, {
+          title: 'IPMI Updates',
+          icon: 'flash_on',
+          path: '/ipmi/updates',
+          hide: function () {
+            return !$scope.showIPMIUpdates; }
+/*
+        }, {
+          title: 'Raid Updates',
+          icon: 'flash_on',
+          path: '/raid/updates',
+          hide: function () {
+            return !$scope.showRaidUpdates; }
+*/
+        }]
       }, {
         title: 'Provisioner',
         icon: 'local_shipping',
@@ -523,6 +579,10 @@ var version = '0.1.4';
     $rootScope.expandServices = false;
     $rootScope.toggleExpandServices = function () {
       $rootScope.expandServices = !$rootScope.expandServices;
+    };
+    $rootScope.expandHardware = false;
+    $rootScope.toggleExpandHardware = function () {
+      $rootScope.expandHardware = !$rootScope.expandHardware;
     };
     $rootScope.expandProvisioner = false;
     $rootScope.toggleExpandProvisioner = function () {
