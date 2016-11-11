@@ -6,6 +6,8 @@ dhcp controller
     .controller('DHCPCtrl', function ($scope, api, $mdDialog, $mdMedia) {
       $scope.$emit('title', 'DHCP Subnets'); // shows up on the top toolbar
 
+      $scope.expand = {};
+
       $scope.optionMap = {
         "0": "Pad",
         "1": "Subnet Mask",

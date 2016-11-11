@@ -1,12 +1,19 @@
 <md-card ng-repeat='subnet in _DHCP.subnets'>
-  <md-toolbar class="md-default">
+  <md-toolbar class="md-default" ng-click="expand[subnet.Name]=!expand[subnet.Name]">
     <div class="md-toolbar-tools">
       <span flex>
         {{subnet.name}}
       </span>
+      <span>
+        <md-button class="md-icon-button">
+          <md-icon ng-hide="expand[subnet.Name]">expand_more</md-icon>
+          <md-icon ng-show="expand[subnet.Name]">expand_less</md-icon>
+        </md-button>
+      </span>
     </div>
   </md-toolbar>
 
+<div ng-slide-down='expand[subnet.Name]' lazy-render duration='0.5'>
   <md-card-content>
     <table layout-padding style='min-width: 50%;'>
       <tr>
@@ -120,5 +127,6 @@
       </table>
     </md-table-container>
   </md-card-content>
+</div>
 
 </md-card>
