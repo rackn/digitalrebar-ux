@@ -1,5 +1,5 @@
 <md-card ng-repeat='env in _provisioner.bootenvs'>
-  <md-toolbar class="md-default" ng-click="expand[env.Name]=!expand[env.Name]">
+  <md-toolbar class="md-default" ng-click="expand[env.Name]=!expand[env.Name]" md-theme="status_{{env.Available == true ? 'ready' : 'off'}}">
     <div class="md-toolbar-tools">
       <span flex>
         {{env.Name}}
