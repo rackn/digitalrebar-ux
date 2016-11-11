@@ -31,7 +31,6 @@ bios settings controller
               });
               $scope.updates.push(newobj)
             });
-            console.log("GREG: obj = ", $scope.updates);
           }).
           error(function (err) {
             api.toast("Error Bios Updates Data", 'bios_update', err);

@@ -31,7 +31,6 @@ bios settings controller
                 });
                 $scope.updates.push(newobj)
               });
-              console.log("GREG: obj = ", $scope.updates);
           }).
           error(function (err) {
             api.toast("Error IPMI Updates Data", 'ipmi_updates', err);

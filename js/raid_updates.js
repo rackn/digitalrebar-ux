@@ -14,7 +14,6 @@ bios settings controller
         api("/api/v2/attribs/bios-set-mapping").
           success(function (obj) {
               $scope.settings = obj.default.value;
-              console.log("GREG: obj = ", obj.default.value);
           }).
           error(function (err) {
             api.toast("Error Bios Setting Data", 'bios_setting', err);
