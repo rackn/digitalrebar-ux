@@ -14,7 +14,6 @@ bios settings controller
         api("/api/v2/deployments/system/attribs/bios-set-mapping").
           success(function (obj) {
               var temp = obj.default.value;
-              console.log("GREG2: temp = ", temp);
 
               $scope.settings = []
               temp.forEach(function(tt) {
@@ -44,8 +43,6 @@ bios settings controller
                   $scope.settings.push(newobj);
                 });
               });
-
-              console.log("GREG2: settings = ", $scope.settings);
           }).
           error(function (err) {
             api.toast("Error Bios Setting Data", 'bios_setting', err);
