@@ -122,7 +122,7 @@ provider controller
           targetEvent: ev,
           locals: {
             base_name: 'digital-rebar-node',
-            providers: $scope._providers,
+            _providers: $scope._providers,
             provider: $scope.provider.name,
             add_os: 'default_os',
             number: 1,
