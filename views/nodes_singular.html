@@ -137,6 +137,12 @@
           <a target="_new" ng-href="https://{{node.address.slice(0,-3)}}">{{node.address}}</a>
         </td>
       </tr>
+      <tr ng-if="bmc != null">
+        <td class='label'>BMC</td>
+        <td>
+          <a target="_new" ng-href="https://{{ bmc }}">{{bmc}}</a>
+        </td>
+      </tr>
       <tr>
         <td class='label'>Status</td>
         <td>
