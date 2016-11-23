@@ -60,6 +60,8 @@
       $rootScope.$emit('updateApi');
     };
 
+    $rootScope._pollTimer;
+    $rootScope._pollRate = 15;
     $rootScope._deployments = {};
     $rootScope._deployment_roles = {};
     $rootScope._roles = {};
@@ -276,8 +278,15 @@
         );
       } else { // queue is empty, wait and populate it
         api.queueLen = 0;
-        $timeout(api.getActive, 15 * 1000 /* 15 seconds */ );
+        api.pollRate($rootScope._pollRate);
       }
+    };
+
+    api.pollRate = function(prate) {
+      $timeout.cancel($rootScope.pollTimer);
+      $rootScope.pollTimer = $timeout(api.getActive, prate * 1000);
+      console.log("Polling Rate set to " + prate);
+      $rootScope._pollRate = prate;
     };
 
     api.getActive = function () {
@@ -523,6 +532,11 @@
 
       $rootScope._nodes[id] = node;
       $rootScope.$broadcast("node" + id + "Done");
+      // slow down polling for large systems
+      if (Object.keys($rootScope._nodes).length > 25)
+        api.pollRate(45);
+      else if (Object.keys($rootScope._nodes).length > 50)
+        api.pollRate(30);
     };
 
     // api call for getting all the nodes
