@@ -293,8 +293,8 @@
       if ($rootScope._pollRate != rate) {
         $timeout.cancel($rootScope._pollTimer);
         $rootScope._pollRate = rate;
+        console.debug("Polling Rate set to " + $rootScope._pollRate + " (override " + $rootScope._pollRateOverride + ")");
       }
-      console.debug("Polling Rate set to " + $rootScope._pollRate + " (override " + $rootScope._pollRateOverride + ")");
     };
 
     api.getActive = function () {
