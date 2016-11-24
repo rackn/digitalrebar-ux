@@ -123,11 +123,11 @@ provider view
     <md-card-content>
       <span ng-repeat="node in getNodes() | orderBy: 'name'">
 				<!-- Node button -->
-				<md-button class="md-fab md-primary" md-theme="status_{{node.status}}" ng-href="#/nodes/{{node.id}}">
-					<md-tooltip md-direction="bottom">
-						{{node.name}}
-					</md-tooltip>
-					<md-icon>{{ nodes.getIcon(node) }}</md-icon>
+				<md-button class="md-fab md-primary" md-theme="status_{{ api.getNodeStatus(node)}}" aria-label="{{node.name}}" ng-href="#/nodes/{{node.id}}">
+					<md-icon>{{ api.getNodeIcon(node) }}</md-icon>
+          <md-tooltip md-direction="bottom">
+            {{node.name}}
+          </md-tooltip>
 				</md-button>
 
 			</span>

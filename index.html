@@ -172,7 +172,7 @@
               </md-menu-item>
             </md-menu-content>
           </md-menu>
-          <md-button class="md-icon-button" ng-click='api.reload()'>
+          <md-button class="md-icon-button" ng-click='api.reload()' ng-model-options="{ debounce: 500 }">
             <md-tooltip>
               Refresh Data
             </md-tooltip>
