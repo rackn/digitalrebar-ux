@@ -26,6 +26,11 @@
   </md-content>
 
   <md-dialog-actions style='margin: 0;'>
+    <md-button class='md-icon-button' ng-click='selectFile()'>
+      <md-icon>file_upload</md-icon>
+      <md-tooltip>Upload</md-tooltip>
+    </md-button>
+    <input type="file" id="file" name="file" ng-model="selectedFile" onchange='angular.element(this).scope().updateTemplateContents()' style='opacity: 0;'/>
     <span flex></span>
     <md-button ng-click='dialog.createTemplate()' class='md-primary md-raised' target="_blank" md-autofocus>
       {{locals.editing ? 'Update' : 'Create'}}
