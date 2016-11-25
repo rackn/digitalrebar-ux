@@ -34,6 +34,28 @@ barclamps controller
       return out;
     }
 
+    $scope.upload = function(){
+      console.log(document.getElementById('file').files[0]);
+      var f = document.getElementById('file').files[0],
+          r = new FileReader();
+      r.onloadend = function(e){
+        var data = e.target.result;
+        var payload = { 'value': data };
+        api('/api/v2/barclamps', {
+          method: 'POST',
+          data: payload
+        }).success(function (update) {
+          api('/api/v2/barclamps/' + $scope.id).
+          success(api.addBarclamp);
+          api.toast('Updated barclamp');
+        }).error(function (err) {
+          api.toast('Error Updating barclamp', 'barclamp', err);
+        })
+        //send your binary data via $http or $resource or do anything else with it
+      }
+      r.readAsBinaryString(f);
+    }
+
     this.showUpdateBarclampDialog = function (ev) {
       var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
       $mdDialog.show({

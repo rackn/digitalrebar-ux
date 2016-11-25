@@ -1,35 +1,17 @@
 <md-card>
   <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
-      <span>
-        {{barclamp.name}}
+      <span flex>
+        {{barclamp.name}} ({{barclamp.description}})
+      </span>
+      <span ng-if='barclamp.id != barclamp.barclamp_id'>
+        Parent: 
+          <a ng-href='#/barclamps/{{barclamp.barclamp_id}}' swap-md-pain-fg="foreground">
+          {{ _barclamps[barclamp.barclamp_id].name }}
+        </a>
       </span>
     </div>
   </md-toolbar>
-
-  <md-card-content>
-    <table layout-padding>
-      <tr>
-        <td class='label'>Description</td>
-        <td>
-          {{barclamp.description}}
-        </td>
-      </tr>
-      <tr>
-        <td class='label'>Source Path</td>
-        <td>{{barclamp.source_path}}</td>
-      </tr>
-      <tr>
-        <td class='label'>Configuration</td>
-        <td>
-          <a ng-click='barclamps.showUpdateBarclampDialog()'>
-            Edit
-          </a>
-        </td>
-      </tr>
-    </table>
-  </md-card-content>
-
 </md-card>
 
 <!-- Show node roles -->
@@ -49,4 +31,27 @@
       </md-tooltip>
     </md-button>
   <md-card-content>
+</md-card>
+
+<!-- Show node roles -->
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span flex>Source</span>
+      <input type="file" id="file" name="file"/>
+      <md-button class='md-icon-button' ng-click='upload()'>
+        <md-icon>file_upload</md-icon>
+        <md-tooltip>Upload</md-tooltip>
+      </md-button>
+      <md-button class='md-icon-button' ng-click='barclamps.showUpdateBarclampDialog()'>
+        <md-icon>edit</md-icon>
+        <md-tooltip>Edit</md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <pre>
+      {{ barclamp.cfg_data | json }}
+    </pre>
+  </md-card-content>
 </md-card>
