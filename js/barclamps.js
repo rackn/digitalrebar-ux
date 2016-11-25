@@ -37,10 +37,9 @@ barclamps controller
     $scope.selectedFile = '';
     $scope.selectFile = function() {
       document.getElementById('file').click();
-      console.log('clicked');
     };
 
-    $scope.upload = function(val){
+    $scope.upload = function(){
       var fileElem = document.getElementById('file');
       $scope.selectedFile = ''
       var f = fileElem.files[0],

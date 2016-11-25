@@ -28,6 +28,12 @@ provisioner templates view
           <md-icon>mode_edit</md-icon>
           <md-tooltip>Edit</md-tooltip>
         </md-button>
+        <md-button class='md-icon-button' ng-click='selectFile()'>
+          <md-icon>file_upload</md-icon>
+          <md-tooltip>Upload</md-tooltip>
+        </md-button>
+        <input type="file" id="file" name="file" ng-model="selectedFile" onchange='angular.element(this).scope().upload(angular.element(this).scope().template.UUID)' style='opacity: 0;'/>
+
 
         <!-- Right side of toolbar -->
         <md-card-icon-actions layout-align='end center'>
