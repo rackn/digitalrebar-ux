@@ -38,8 +38,8 @@
   <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
       <span flex>Source</span>
-      <input type="file" id="file" name="file"/>
-      <md-button class='md-icon-button' ng-click='upload()'>
+      <input type="file" id="file" name="file" ng-model="selectedFile" onchange='angular.element(this).scope().upload()' style='opacity: 0;'/>
+      <md-button class='md-icon-button' ng-click='selectFile()'>
         <md-icon>file_upload</md-icon>
         <md-tooltip>Upload</md-tooltip>
       </md-button>
@@ -50,7 +50,7 @@
     </div>
   </md-toolbar>
   <md-card-content>
-    <pre>
+    <pre style='overflow-x: auto;'>
       {{ barclamp.cfg_data | json }}
     </pre>
   </md-card-content>

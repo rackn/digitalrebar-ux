@@ -34,9 +34,16 @@ barclamps controller
       return out;
     }
 
-    $scope.upload = function(){
-      console.log(document.getElementById('file').files[0]);
-      var f = document.getElementById('file').files[0],
+    $scope.selectedFile = '';
+    $scope.selectFile = function() {
+      document.getElementById('file').click();
+      console.log('clicked');
+    };
+
+    $scope.upload = function(val){
+      var fileElem = document.getElementById('file');
+      $scope.selectedFile = ''
+      var f = fileElem.files[0],
           r = new FileReader();
       r.onloadend = function(e){
         var data = e.target.result;
@@ -54,6 +61,7 @@ barclamps controller
         //send your binary data via $http or $resource or do anything else with it
       }
       r.readAsBinaryString(f);
+      fileElem.value = '';
     }
 
     this.showUpdateBarclampDialog = function (ev) {
