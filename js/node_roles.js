@@ -8,6 +8,7 @@ node role controller
 
     var node_roles = this;
 
+    $scope.pollLog = 5;
     $scope.myOrder = 'id';
 
     // used for showing the toolbar when scrolling beyond the runlog
@@ -49,6 +50,7 @@ node role controller
     };
 
     $scope.retry = function () {
+      $scope.runlog = "Retrying..."
       // if we have a valid node selected
       if ($scope.node_role.id) {
         api('/api/v2/node_roles/' + $scope.node_role.id + '/retry', {
@@ -144,6 +146,15 @@ node role controller
     $scope.helplink = "http://digital-rebar.readthedocs.io/en/latest/deployment/troubleshooting/roles";
     var hasCallback = false;
 
+    // since we don't get the runlog, we need to get it special
+    $scope.runlog = "Retrieving...";
+    $scope.getRunlog = function(id) {
+      return api('/api/v2/node_roles/' + id,
+        { 'headers': {'x-return-attributes':'["runlog"]'}}).
+      success(function (data) {$scope.runlog = (data.runlog || "No Log");}).
+      error(function (err) {$scope.runlog = "Error Getting Run Log: " + err;});
+    }
+
     var updateNodeRole = function () {
       if ($scope.editing) return;
 
@@ -185,10 +196,18 @@ node role controller
     $scope.getApiUpdate = function () {
       if ($scope.editing || !$scope.node_role || !$scope.id) return;
 
-      api.fetch('node_role', $scope.id).success(function () {
-        $scope.updateInterval = $timeout($scope.getApiUpdate, 2000);
+      api("/api/v2/node_roles/" + $scope.id).success(function (role) {
+        // keep the runlog here, the addNodeRole will remove it to save RAM
+        $scope.runlog = role.runlog;
+        api.addNodeRole(role);
+        $scope.updateInterval = $timeout($scope.getApiUpdate, $scope.pollLog * 1000);
       });
+    };
 
+    $scope.changeRate = function (rate) {
+      $scope.pollLog = rate;
+      $timeout.cancel($scope.updateInterval);
+      $scope.getApiUpdate();
     };
 
     $scope.getApiUpdate();

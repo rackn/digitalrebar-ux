@@ -62,6 +62,7 @@
 
     $rootScope._pollTimer;
     $rootScope._pollRate = 15;
+    $rootScope._pollRateOverride = false;
     $rootScope._deployments = {};
     $rootScope._deployment_roles = {};
     $rootScope._roles = {};
@@ -239,7 +240,10 @@
     };
 
     api.fetch = function (name, id) {
-      return api("/api/v2/" + name + "s/" + id).
+      headers = {};
+      if (name == 'node_role')
+        headers = { 'headers': {'x-return-attributes':'["id","name","deployment_id","role_id","node_id","state","cohort","run_count","status","available","order","created_at","updated_at","uuid","tenant_id","node_error"]'}};
+      return api("/api/v2/" + name + "s/" + id, headers).
       success(function (obj) {
         api["add" + camelCase(name)](obj);
       }).
@@ -266,6 +270,7 @@
         api.fetch(name, id).
         success(api.nextQueue).
         error(api.nextQueue);
+
       });
     };
 
@@ -278,15 +283,18 @@
         );
       } else { // queue is empty, wait and populate it
         api.queueLen = 0;
-        api.pollRate($rootScope._pollRate);
+        $rootScope._pollTimer = $timeout(api.getActive, $rootScope._pollRate * 1000);
       }
     };
 
-    api.pollRate = function(prate) {
-      $timeout.cancel($rootScope.pollTimer);
-      $rootScope.pollTimer = $timeout(api.getActive, prate * 1000);
-      console.log("Polling Rate set to " + prate);
-      $rootScope._pollRate = prate;
+    api.pollRate = function(rate, override) {
+      if (override && !$rootScope._pollRateOverride)
+        $rootScope._pollRateOverride = true;
+      if ($rootScope._pollRate != rate) {
+        $timeout.cancel($rootScope._pollTimer);
+        $rootScope._pollRate = rate;
+        console.debug("Polling Rate set to " + $rootScope._pollRate + " (override " + $rootScope._pollRateOverride + ")");
+      }
     };
 
     api.getActive = function () {
@@ -533,10 +541,12 @@
       $rootScope._nodes[id] = node;
       $rootScope.$broadcast("node" + id + "Done");
       // slow down polling for large systems
-      if (Object.keys($rootScope._nodes).length > 25)
-        api.pollRate(45);
-      else if (Object.keys($rootScope._nodes).length > 50)
-        api.pollRate(30);
+      if (!$rootScope._pollRateOverride) {
+        if (Object.keys($rootScope._nodes).length > 25)
+          api.pollRate(45, false);
+        else if (Object.keys($rootScope._nodes).length > 50)
+          api.pollRate(30, false);
+      }
     };
 
     // api call for getting all the nodes
@@ -645,7 +655,8 @@
     api.addNodeRole = function (role) {
       var id = role.id;
       role.status = $rootScope.states[role.state];
-
+      // should be missing, but just in case we keep from storing the bulky part of the object
+      delete role['runlog'];
       delete $rootScope._node_roles[id];
       $rootScope._node_roles[id] = role;
       $rootScope.$broadcast("node_role" + id + "Done");
@@ -653,7 +664,9 @@
 
     // api call for getting all the node roles
     api.getNodeRoles = function () {
-      return api('/api/v2/node_roles').
+      // headers does NOT include runlog to improve performance
+      return api('/api/v2/node_roles',
+        { 'headers': {'x-return-attributes':'["id","name","deployment_id","role_id","node_id","state","cohort","run_count","status","available","order","created_at","updated_at","uuid","tenant_id","node_error"]'}}).
       success(function (data) {
         $rootScope._node_roles = {};
         data.map(api.addNodeRole);

@@ -27,9 +27,10 @@
         </md-button>
         <md-menu-content width="4">
           <md-menu-item ng-repeat="role in getRoles() | orderBy:'name'">
-            <md-button aria-label="{{role.name}}" ng-click="bindNodeRole(role.role_id)">
-              <md-tooltip>{{role.name}}</md-tooltip>
-              <md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{role.icon}}</md-icon>
+            <md-button aria-label="{{ _roles[role.id].name }}" ng-click="bindNodeRole(role.role_id)">
+              <md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{_roles[role.id].icon}}</md-icon>
+              <md-title>{{ _roles[role.id].name }}</md-title>
+              <md-tooltip>{{ _roles[role.id].description }}</md-tooltip>
             </md-button>
           </md-menu-item>
           <md-menu-item ng-if='getRoles().length == 0'>

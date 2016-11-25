@@ -60,11 +60,14 @@
 </md-card>
 
 <!-- Run Log -->
-<md-card ng-if='node_role.runlog'>
+<md-card>
   <md-toolbar class="md-table-toolbar md-default" id='runlog'>
     <div class="md-toolbar-tools">
       <h2 flex>Run Log</h2>
-      <md-button clipboard class='md-icon-button' supported='supported' text="node_role.runlog" on-copied='onCopy(true)' on-error='onCopy(false, err)'>
+      <span class='pull-right' ng-if="node_role.state!=0">
+        Refresh <input ng-model='pollLog' min=1 max=30 type='number' ng-change='changeRate(pollLog)'/> seconds
+      </span>
+      <md-button clipboard class='md-icon-button' supported='supported' text="runlog" on-copied='onCopy(true)' on-error='onCopy(false, err)'>
         <md-icon>
           content_paste
         </md-icon>
@@ -75,6 +78,6 @@
     </div>
   </md-toolbar>
   <md-card-content>
-    <pre class='runlog'>{{node_role.runlog}}</pre>
+    <pre class='runlog'>{{runlog}}</pre>
   </md-card-content>
 </md-card>
