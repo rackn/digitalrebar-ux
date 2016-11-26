@@ -527,15 +527,19 @@ var version = '0.1.5';
       path: '/alerts'
     }, {
       title: 'Advanced',
-      icon: 'developer_board',
+      icon: 'build',
       expand: true,
       expanded: function () {
         return $scope.expandAdvanced; },
       toggleExpand: $scope.toggleExpandAdvanced,
       items: [{
         title: 'API Call Helper',
-        icon: 'insert_link',
+        icon: 'cloud_upload',
         path: '/api_helper'
+      }, {
+        title: 'Workloads/Barclamps',
+        icon: 'attach_file',
+        path: '/barclamps'
       }, {
         title: 'Roles',
         icon: 'label_outline',

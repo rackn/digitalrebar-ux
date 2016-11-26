@@ -250,6 +250,25 @@ dialog controller
       $mdDialog.hide();
     };
 
+    $scope.selectedFile = '';
+    $scope.selectFile = function() {
+      document.getElementById('file').click();
+    };
+
+    $scope.updateTemplateContents = function(){
+      var fileElem = document.getElementById('file');
+      $scope.selectedFile = ''
+      var f = fileElem.files[0],
+          r = new FileReader();
+      r.onloadend = function(e){
+        var data = e.target.result;
+        locals.template.Contents = data;
+      }
+      r.readAsBinaryString(f);
+      fileElem.value = '';
+    }
+
+
     this.createTenant = function () {
       var tenant = $scope.locals.tenant;
       var path, method, data;

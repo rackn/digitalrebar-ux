@@ -95,6 +95,37 @@ provisioner controller
         });
       };
 
+      $scope.selectedFile = '';
+      $scope.selectFile = function() {
+        document.getElementById('file').click();
+      };
+
+      // this is only used for updating templates
+      // look at Dialog.js:228 for creating new templates
+      $scope.upload = function(uuid){
+        var fileElem = document.getElementById('file');
+        $scope.selectedFile = ''
+        var f = fileElem.files[0],
+            r = new FileReader();
+        r.onloadend = function(e){
+          var data = e.target.result;
+          api('/provisioner/templates/' + uuid, {
+            method: 'PATCH',
+            data: [{ "op": "replace", "path": "/Contents", "value": data }]
+          }).success(function (update) {
+            api.getHealth();
+            api.toast('Updated template');
+          }).error(function (err) {
+            api.getHealth();
+            api.toast('Error Updating template', 'template', err);
+          })
+          //send your binary data via $http or $resource or do anything else with it
+        }
+        r.readAsBinaryString(f);
+        fileElem.value = '';
+      }
+
+
       $scope.createBootEnvPrompt = function (ev, env) {
         var bootenv = angular.copy(env);
         $mdDialog.show({
