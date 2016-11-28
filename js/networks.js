@@ -59,9 +59,9 @@ network controller
             use_vlan: false,
             use_bridge: false,
             use_team: false,
-            vlan: '',
-            bridge: '',
-            team_mode: '',
+            vlan: null,
+            bridge: null,
+            team_mode: null,
             conduit: "10g1",
             pbr: null
           },
@@ -115,6 +115,10 @@ network controller
         return;
 
       var data = angular.copy($scope.network);
+      // do not send values that are not needed
+      if (!data.use_vlan) delete data["vlan"];
+      if (!data.use_bridge) delete data["bridge"];
+      if (!data.use_team) delete data["team_mode"];
       api("/api/v2/networks/" + $scope.id, {
         method: "PUT",
         data: data
