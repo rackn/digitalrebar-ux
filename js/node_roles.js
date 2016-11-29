@@ -143,6 +143,8 @@ node role controller
     $scope.hasAttrib = -1;
     $scope.attribs = [];
     $scope.editing = false;
+    $scope.service = false;
+    $scope.deployment_role_id = -1;
     $scope.helplink = "http://digital-rebar.readthedocs.io/en/latest/deployment/troubleshooting/roles";
     var hasCallback = false;
 
@@ -162,7 +164,15 @@ node role controller
         $location.path('/node_roles');
       else {
         $scope.node_role = $scope._node_roles[$scope.id];
-        
+        // is this a service role?
+        $scope.service = ($scope._nodes[$scope.node_role.node_id] ? $scope._nodes[$scope.node_role.node_id]["system"] : false);
+        // what is the matching deployment role?
+        for (var id in $scope._deployment_roles) {
+          if($scope._deployment_roles[id].role_id == $scope.node_role.role_id && $scope._deployment_roles[id].deployment_id == $scope.node_role.deployment_id) {
+            $scope.deployment_role_id = id;
+            break;
+          }
+        }
         if ($scope.hasAttrib == -1) {
           api('/api/v2/node_roles/' + $scope.node_role.id + "/attribs").
           success(function (obj) {
