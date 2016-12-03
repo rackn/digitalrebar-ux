@@ -456,13 +456,13 @@ var version = '0.1.5';
             return !$scope.showBiosSettings; }
         }, {
           title: 'BIOS Updates',
-          icon: 'flash_on',
+          icon: 'healing',
           path: '/bios/updates',
           hide: function () {
             return !$scope.showBiosUpdates; }
         }, {
           title: 'IPMI Updates',
-          icon: 'flash_on',
+          icon: 'healing',
           path: '/ipmi/updates',
           hide: function () {
             return !$scope.showIPMIUpdates; }
