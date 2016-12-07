@@ -4,114 +4,106 @@ bios settings view
 <div>
   <md-card ng-repeat='setting in settings' flex='100'>
 
-    <!-- Top bar for each class of settings -->
-    <md-toolbar flex layout='column' md-theme='status_ready' ng-click="biossettings.toggleExpand($index)" md-ink-ripple>
-      <section layout='row'>
-        <div class="md-toolbar-tools">
-          <h2 flex>
-            {{setting.role}} {{setting.name}}
-          </h2>
-        </div>
-        <span flex></span>
-
-        <!-- Expand button -->
-        <span class='inset'>
-          <md-button class="md-icon-button">
-            <md-icon ng-hide="expand[$index]">expand_more</md-icon>
-            <md-icon ng-show="expand[$index]">expand_less</md-icon>
-          </md-button>
-        </span>
-      </section>
-    </md-toolbar>
-
-    <!-- Tabs that appear after the expand button is pressed -->
-    <section ng-slide-down='expand[$index] || false' duration='0.5'>
-      <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
-        <!-- Match tab -->
-        <md-tab label="Match">
-          <md-table-container>
-          <table md-table>
-            <thead md-head>
-              <tr md-row>
-                <th md-column>Attribute Name</th>
-                <th md-column>Action</th>
-                <th md-column>Value</th>
-              </tr>
-            </thead>
-            <tbody md-body>
-              <tr md-row ng-repeat='(id, m) in setting.match'>
-                <td md-cell><input type='text' aria-label='name' class='table-input' ng-change='biossettings.dirtyData(dirty)' ng-model='id'/></td>
-                <td md-cell>
-                  <md-input-contianer ng-change='biossettings.dirtyData(dirty)' class='md-block'>
-                    <md-select ng-model='m.op' aria-label='action'>
-                      <md-option>exact</md-option>
-                      <md-option>regex</md-option>
-                    </md-select>
-                  </md-input-contianer>
-                </td>
-                <td md-cell><input ng-change='biossettings.dirtyData(dirty)' type='text' aria-label='value' class='table-input' ng-model='m.pattern' /></td>
-              </tr>
-            </tbody>
-          </table>
-          </md-table-container>
-        </md-tab>
-
-        <md-tab label="Values">
-          <md-table-container>
-          <table md-table>
-            <tbody md-body>
-              <tr md-row>
-                <td md-cell>Parent</td>
-                <td md-cell>{{setting.parent}}</td>
-              </tr>
-            </tbody>
-          </table>
-          </md-table-container>
-
-          <md-table-container>
-          <table md-table>
-            <thead md-head>
-              <tr md-row>
-                <th md-column>Attribute Name</th>
-                <th md-column>Value</th>
-              </tr>
-            </thead>
-            <tbody md-body>
-              <tr md-row ng-repeat='(id, m) in setting.values'>
-                <td md-cell>
-                  <input type='text' ng-change='biossettings.dirtyData(dirty)' aria-label='name' class='table-input' ng-model='id' />
-                </td>
-                <td md-cell>
-                  <input type='text' ng-change='biossettings.dirtyData(dirty)' aria-label='name' class='table-input' ng-model='m' />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          </md-table-container>
-          
-        </md-tab>
-      </md-tabs>
-
-      <md-divider></md-divider>
-
-      <md-card-icon-actions layout-align='start center'>
-      </md-card-icon-actions>
-      <!-- Right side of toolbar -->
-      <md-card-icon-actions layout-align='center end'>
-        <md-button class='md-icon-button' ng-show="dirty" ng-click='saveSetting($event, $index)'>
-          <md-icon>save</md-icon>
-          <md-tooltip>Save</md-tooltip>
-        </md-button>
-        <md-button class='md-icon-button' ng-click='deleteSetting($event, $index)'>
-          <md-icon>delete</md-icon>
-          <md-tooltip>Destroy</md-tooltip>
-        </md-button>
-          <span flex='10'>
+    <div ng-show='settings[$index]'>
+      <!-- Top bar for each class of settings -->
+      <md-toolbar flex layout='column' md-theme="status_{{(setting.name=='default' ? 'ready' : 'proposed')}}" ng-click="biossettings.toggleExpand($index)" md-ink-ripple>
+        <section layout='row'>
+          <div class="md-toolbar-tools">
+            <h2 flex>
+              {{setting.role}}:
+              <span ng-if='setting.parent'>{{setting.parent}} +</span>
+              {{setting.name}}
+            </h2>
+          </div>
+          <span class='inset'>
+            <md-button class='md-icon-button' ng-show="dirty" ng-click='saveSetting($event, $index)'>
+              <md-icon>save</md-icon>
+              <md-tooltip>Save</md-tooltip>
+            </md-button>
           </span>
-        </md-card-icon-actions>
-      </md-card-actions>
 
-    </section>
+          <!-- Expand button -->
+          <span class='inset'>
+            <md-button class="md-icon-button">
+              <md-icon ng-hide="expand[$index]">expand_more</md-icon>
+              <md-icon ng-show="expand[$index]">expand_less</md-icon>
+            </md-button>
+          </span>
+        </section>
+      </md-toolbar>
+
+      <!-- Tabs that appear after the expand button is pressed -->
+      <section ng-slide-down='expand[$index] || false' duration='0.5'>
+        <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+          <!-- Match tab -->
+          <md-tab label="Match" ng-if="setting.name=='default'">
+            <md-table-container>
+            <table md-table>
+              <thead md-head>
+                <tr md-row>
+                  <th md-column>Attribute Name</th>
+                  <th md-column>Action</th>
+                  <th md-column>Value</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat='m in setting.match'>
+                  <td md-cell><input type='text' aria-label='name' class='table-input' ng-change='biossettings.dirtyData(dirty)' ng-model='m.id'/></td>
+                  <td md-cell>
+                    <md-input-contianer class='md-block'>
+                      <md-select ng-change='biossettings.dirtyData(dirty)' ng-model='m.op' aria-label='action'>
+                        <md-option>exact</md-option>
+                        <md-option>regex</md-option>
+                      </md-select>
+                    </md-input-contianer>
+                  </td>
+                  <td md-cell><input ng-change='biossettings.dirtyData(dirty)' type='text' aria-label='value' class='table-input' ng-model='m.pattern' /></td>
+                </tr>
+              </tbody>
+            </table>
+            </md-table-container>
+          </md-tab>
+
+          <md-tab label="Values">
+            <md-table-container>
+            <table md-table>
+              <thead md-head>
+                <tr md-row>
+                  <th md-column>Attribute Name</th>
+                  <th md-column>Value</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat='v in setting.values'>
+                  <td md-cell>
+                    <input type='text' ng-change='biossettings.dirtyData(dirty)' aria-label='name' class='table-input' ng-model='v.id' />
+                  </td>
+                  <td md-cell>
+                    <input type='text' ng-change='biossettings.dirtyData(dirty)' aria-label='name' class='table-input' ng-model='v.value' />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </md-table-container>
+          </md-tab>
+        </md-tabs>
+
+        <md-divider></md-divider>
+
+        <md-card-actions layout="row" layout-align='start center'>
+          <!-- Right side of toolbar -->
+          <md-card-icon-actions layout-align='end'>
+            <md-button class='md-icon-button' ng-click='deleteSetting($event, $index)'>
+              <md-icon>delete</md-icon>
+              <md-tooltip>Destroy</md-tooltip>
+            </md-button>
+          </md-card-icon-actions>
+        </md-card-actions>
+
+      </section>
+    </div>
+  </md-card>
+
 </div>
 
 <!-- Floating action button at the bottom right of the screen -->
