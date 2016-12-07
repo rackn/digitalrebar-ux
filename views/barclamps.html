@@ -18,6 +18,7 @@
           <th md-column md-order-by='id'>Barclamp</th>
           <th md-column md-order-by='barclamp_id'>Parent</th>
           <th md-column>Description</th>
+          <th md-column>Source</th>
           <th md-column>Roles</th>
         </tr>
       </thead>
@@ -35,6 +36,17 @@
           </td>
           <td md-cell>
             {{barclamp.description}}
+          </td>
+          <td md-cell>
+            <md-icon ng-show='barclamp.source_path=="API_uploaded" || barclamp.source_path==""' title="User Uploaded">
+              face
+            </md-icon>
+            <md-icon ng-show='barclamp.source_path=="/opt/digitalrebar/core"' title="{{barclamp.source_path}}">
+              attachment
+            </md-icon>
+            <md-icon ng-hide='barclamp.source_path=="/opt/digitalrebar/core" || barclamp.source_path=="API_uploaded"' title="{{barclamp.source_path}}">
+              extension
+            </md-icon>
           </td>
           <td md-cell>
             <md-button ng-href='#/roles/{{role.id}}' class='md-fab md-primary md-mini' ng-repeat="role in getRoles(barclamp.cfg_data.roles)">

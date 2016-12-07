@@ -716,6 +716,21 @@
       });
     };
 
+    api.saveBarclamp = function (config) {
+      config.barclamp['source_path'] = "API_uploaded";
+      var payload = { 'value': config };
+      api('/api/v2/barclamps', {
+        method: 'POST',
+        data: payload
+      }).success(function (update) {
+        api('/api/v2/barclamps/' + config.barclamp.name).
+        success(api.addBarclamp);
+        api.toast('Updated barclamp');
+      }).error(function (err) {
+        api.toast('Error Updating barclamp', 'barclamp', err);
+      })
+    };
+
     api.getNodeStatus = function(node) {
       if (node.alive) {
         if (node.available) {

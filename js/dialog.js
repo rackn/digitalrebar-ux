@@ -78,18 +78,7 @@ dialog controller
         api.toast('Name is required', 'barclamp', {message: "dialog.js updateBarclamp"});
         return;
       }
-      var payload = { 'value': config };
-      api('/api/v2/barclamps', {
-        method: 'POST',
-        data: payload
-      }).success(function (update) {
-        api('/api/v2/barclamps/' + $scope.locals.barclamp.id).
-        success(api.addBarclamp);
-        api.toast('Updated barclamp');
-      }).error(function (err) {
-        api.toast('Error Updating barclamp', 'barclamp', err);
-      })
-
+      api.saveBarclamp(config);
       $mdDialog.hide();
     };
 

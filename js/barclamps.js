@@ -46,17 +46,7 @@ barclamps controller
           r = new FileReader();
       r.onloadend = function(e){
         var data = e.target.result;
-        var payload = { 'value': data };
-        api('/api/v2/barclamps', {
-          method: 'POST',
-          data: payload
-        }).success(function (update) {
-          api('/api/v2/barclamps/' + $scope.id).
-          success(api.addBarclamp);
-          api.toast('Updated barclamp');
-        }).error(function (err) {
-          api.toast('Error Updating barclamp', 'barclamp', err);
-        })
+        api.addBarclamp(data);
         //send your binary data via $http or $resource or do anything else with it
       }
       r.readAsBinaryString(f);

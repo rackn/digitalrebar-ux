@@ -24,6 +24,7 @@ role controller
     $scope.target = { obj: 'role_id', id: $routeParams.id }
     $scope.role = {};
     $scope.metadata = {};
+    $scope.scripts = [];
     $scope.editing = false;
     $scope.relations = {"Parents": [], "Children": [], "Provides": [], "Conflicts": []};
     var hasCallback = false;
@@ -64,7 +65,9 @@ role controller
           else if ('conflicts' in $scope.role && $scope.role.conflicts.includes(r.name))
             $scope.relations["Conflicts"].push(r);
         }
-        $scope.metadata = JSON.stringify($scope.role.metadata, null, "  ")
+        $scope.metadata = $scope.role.metadata
+        if ($scope.role.jig_name=='script' && $scope.role.metadata)
+          $scope.scripts = $scope.role.metadata.scripts;
 
         if (!hasCallback) {
           hasCallback = true;
@@ -73,12 +76,30 @@ role controller
       }
     };
 
-    if (Object.keys($scope._roles).length) {
-      updateRole();
-    } else {
-      $scope.$on('rolesDone', updateRole);
-    }
+  if (Object.keys($scope._roles).length) {
+    updateRole();
+  } else {
+    $scope.$on('rolesDone', updateRole);
+  }
+
+  $scope.saveScripts = function(event) {
+    api("/api/v2/barclamps/" + $scope.role.barclamp_id).
+    success(function(bc) {
+      var roles = bc.cfg_data.roles;
+      for (var r in roles) {
+        if (roles[r].name == $scope.role.name) {
+          delete roles[r].metadata.scripts;
+          roles[r].metadata.scripts = [];
+          for (var i in $scope.scripts) {
+            roles[r].metadata.scripts.push($scope.scripts[i]); 
+          }
+          api.saveBarclamp(bc.cfg_data);
+        };
+      };
+    });
+  };
 
   });
+
 
 })();
