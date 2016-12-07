@@ -7,115 +7,129 @@ bios settings controller
 
     var biossettings = this;
 
-    $scope.expand = {};
+    $scope.expand = [];
+    $scope.dirty = false;
+    $scope.settings = [];
+    $scope.role = -1;
+    $scope.deployment_role = -1;
+    $scope.id = -1;
 
-    $scope.settings = {};
     $scope.loadSettings = function () {
-        api("/api/v2/deployments/system/attribs/bios-set-mapping").
+      api.get_id("/api/v2/roles/bios-discover").
+      success(function (robj) {
+        $scope.role = robj.id;
+        api("/api/v2/deployments/system/deployment_roles").
+        success(function (drobj) {
+          for (var id in drobj) {
+            if (drobj[id].role_id == $scope.role) {
+              $scope.deployment_role = drobj[id].id;
+              break;
+            }
+          };
+          api("/api/v2/deployment_roles/"+$scope.deployment_role+"/attribs/bios-set-mapping").
           success(function (obj) {
-              var temp = obj.default.value;
+            $scope.dirty = false;
+            $scope.id = obj.id;
+            $scope.settings = []
+            obj.value.forEach(function(tt) {
+              tt.configs.forEach(function(c) {
+                var newobj = {};
 
-              $scope.settings = []
-              temp.forEach(function(tt) {
-                tt.configs.forEach(function(c) {
-                  var newobj = {};
+                newobj.role = tt.role;
+                newobj.name = c.name;
+                newobj.parent = c.parent;
+                newobj.match = [];
+                newobj.values = [];
 
-                  newobj.role = tt.role;
-                  newobj.name = c.name;
-                  newobj.parent = c.parent;
-                  newobj.match = {};
-                  newobj.values = {};
-  
-                  Object.keys(tt.match).forEach(function(key) {
-                    newobj.match[key] = {};
-                    if (typeof tt.match[key] == 'string') {
-                      newobj.match[key].pattern = tt.match[key];
-                      newobj.match[key].op = 'exact';
-                    } else {
-                      newobj.match[key].pattern = tt.match[key].match;
-                      newobj.match[key].op = tt.match[key].op;
-                    }
-                  });
-                  Object.keys(c.settings).forEach(function(key) {
-                    newobj.values[key] = c.settings[key];
-                  });
-
-                  $scope.settings.push(newobj);
+                Object.keys(tt.match).forEach(function(key) {
+                  var om = { id: key};
+                  if (typeof tt.match[key] == 'string') {
+                    om.pattern = tt.match[key];
+                    om.op = 'exact';
+                  } else {
+                    om.pattern = tt.match[key].match;
+                    om.op = tt.match[key].op;
+                  }
+                  newobj.match.push(om);
                 });
+                Object.keys(c.settings).forEach(function(key) {
+                  var ov = {id: key, value: c.settings[key]};
+                  newobj.values.push(ov);
+                });
+                $scope.settings.push(newobj);
               });
+            });
           }).
           error(function (err) {
             api.toast("Error Bios Setting Data", 'bios_setting', err);
           });
+        });
+      });
     }
+
+    // called when field is changed
+    this.dirtyData = function(dirty) {
+      $scope.dirty = true;
+    };
 
     // called when a deployment is clicked
     this.toggleExpand = function (id) {
-      $scope.expand[id] = !$scope.expand[id];
+       $scope.expand[id] = !$scope.expand[id];
     };
 
-    // creates the node role status data for all the deployments
-    // takes a sum of the all the node roles and all the errors
-    this.createStatusBarData = function () {
-      $scope.$evalAsync(function () {
-        for (var id in $scope._deployments) {
-          if (!$scope.binding[id])
-            $scope.binding = false;
-          deployments.deploymentStatus[id] = { error: 0, total: 0 }
-          for (var roleId in $scope._node_roles) {
-            var node_role = $scope._node_roles[roleId];
-            if (node_role.deployment_id != id)
-              continue;
-
-            var state = node_role.state;
-            if (state == -1)
-              deployments.deploymentStatus[id].error++;
-            deployments.deploymentStatus[id].total++;
-          }
-        }
-      });
-    };
-
-    // creates a confirmation dialog before deleting the deployment
-    $scope.deleteDeployment = function (event, id) {
-      $scope.confirm(event, {
-        title: "Delete Deployment",
-        message: "Are you sure you want to delete deployment " + $scope._deployments[id].name + "?",
-        yesCallback: function () {
-          api("/api/v2/deployments/" + id, { method: "DELETE" }).
-          success(function () {
-            api.remove("deployment", id);
-          }).
-          error(function (err) {
-            api.toast("Error Deleting Deployment", 'deployment', err);
-          })
-        }
-      });
-    };
-
-    $scope.createDeploymentPrompt = function (ev) {
-      var confirm = $mdDialog.prompt()
-        .title('Create Deployment')
-        .textContent('Enter the Name of the New Deployment')
-        .placeholder('Deployment Name')
-        .targetEvent(ev)
-        .ok('Create')
-        .cancel('Cancel');
-      $mdDialog.show(confirm).then(function (name) {
-        api('/api/v2/deployments', {
-          method: "POST",
-          data: {
-            name: name
-          }
-        }).success(api.addDeployment).
-        success(function () {
-          deployments.createPieChartData();
-          deployments.createStatusBarData();
-        }).
-        error(function (err) {
-          api.toast("Couldn't Create Deployment", 'deployment', err);
+    // called when a deployment is clicked
+    $scope.saveSetting = function (event, id) {
+      var roles = {};
+      $scope.settings.forEach(function(block) {
+        if (!roles[block.role])
+          roles[block.role] = {role: block.role, configs: [], match: {}};
+        var c = { name:block.name, settings:{} };
+        if (block.parent)
+          c.parent = block.parent;
+        block.values.forEach(function(s) {
+          c.settings[s.id] = s.value;
         });
-      }, function () {});
+        roles[block.role].configs.push(c);
+        if (block.name=='default') {
+          block.match.forEach(function(m) {
+            if (m.op=='exact') {
+              roles[block.role].match[m.id] = m.pattern;
+            } else {
+              roles[block.role].match[m.id] = {op: m.op, match: m.pattern, __sm_leaf: "true,"};
+            }
+          });
+        }
+      });
+      var data = [];
+      for (var r in roles) {
+        data.push(roles[r]);
+      };
+      var obj = { value: data };
+      obj["deployment_role_id"] = $scope.deployment_role;
+      api('/api/v2/deployment_roles/' + $scope.deployment_role + "/propose", { method: "PUT" }).
+      success(function(data) {
+        api('/api/v2/attribs/' + $scope.id, {
+          method: 'PUT',
+          data: obj
+        }).
+        success(function(data) { 
+          api.toast('Updated Attrib!');
+          api('/api/v2/deployment_roles/' + $scope.deployment_role + "/commit", { method: "PUT" }).
+          success(function() {
+            api.toast('Committed!');
+            $scope.dirty = false;
+          });
+        }).error(function (err) {
+            api.toast('Error updating values', 'attribs', err);
+        });
+      });
+      //console.log(roles);
+    };
+
+    // called when a deployment is clicked
+    $scope.deleteSetting = function (event, id) {
+      $scope.dirty = true;
+      delete $scope.settings[id];
     };
 
     $scope.loadSettings();

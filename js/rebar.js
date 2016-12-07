@@ -239,6 +239,11 @@
       }
     };
 
+    api.get_id = function(url) {
+      var headers = { 'headers': {'x-return-attributes':'["id"]'}};
+      return api(url, headers);
+    };
+
     api.fetch = function (name, id) {
       headers = {};
       if (name == 'node_role')
