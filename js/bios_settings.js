@@ -28,7 +28,7 @@ bios settings controller
           };
           api("/api/v2/deployment_roles/"+$scope.deployment_role+"/attribs/bios-set-mapping").
           success(function (obj) {
-            $scope.dirty = true;
+            $scope.dirty = false;
             $scope.id = obj.id;
             $scope.settings = []
             obj.value.forEach(function(tt) {
@@ -117,6 +117,7 @@ bios settings controller
           api('/api/v2/deployment_roles/' + $scope.deployment_role + "/commit", { method: "PUT" }).
           success(function() {
             api.toast('Committed!');
+            $scope.dirty = false;
           });
         }).error(function (err) {
             api.toast('Error updating values', 'attribs', err);
