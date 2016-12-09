@@ -726,6 +726,7 @@
         api('/api/v2/barclamps/' + config.barclamp.name).
         success(api.addBarclamp);
         api.toast('Updated barclamp');
+        api.getRoles();
       }).error(function (err) {
         api.toast('Error Updating barclamp', 'barclamp', err);
       })

@@ -2,12 +2,6 @@
   <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
       <span flex>Barclamps ({{getBarclamps().length}})</span>
-      <input type="file" id="file" name="file" ng-model="selectedFile" onchange='angular.element(this).scope().upload()' style='opacity: 0;'/>
-      <md-button class='md-icon-button' ng-click='selectFile()'>
-        <md-icon>file_upload</md-icon>
-        <md-tooltip>Upload</md-tooltip>
-      </md-button>
-
     </div>
   </md-toolbar>
 
@@ -63,3 +57,15 @@
     </table>
   </md-table-container>
 </md-card>
+<!-- Floating action button at the bottom right of the screen -->
+<div layout="horizontal" layout-align="center end">
+  <input type="file" id="file" name="file" ng-model="selectedFile" onchange='angular.element(this).scope().upload()' style='opacity: 0;'/>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click='selectFile()' style="transform: translateX(-150%);">
+    <md-icon>file_upload</md-icon>
+    <md-tooltip>Upload</md-tooltip>
+  </md-button>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click='barclamps.showUpdateBarclampDialog()'>
+    <md-icon>add</md-icon>
+    <md-tooltip>Add Workload Roles</md-tooltip>
+  </md-button>
+</div>
