@@ -82,6 +82,16 @@ role controller
     $scope.$on('rolesDone', updateRole);
   }
 
+  $scope.removeSection = function(index) {
+    delete $scope.scripts[index];
+    api.toast('Removed Script', 'role', index);
+  };
+
+  $scope.addSection = function() {
+    s = '#!/bin/bash\necho "hello"\nexit 0\n';
+    $scope.scripts.push(s);
+  };
+
   $scope.saveScripts = function(event) {
     api("/api/v2/barclamps/" + $scope.role.barclamp_id).
     success(function(bc) {
