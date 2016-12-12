@@ -2,12 +2,6 @@
   <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
       <span flex>Barclamps ({{getBarclamps().length}})</span>
-      <input type="file" id="file" name="file" ng-model="selectedFile" onchange='angular.element(this).scope().upload()' style='opacity: 0;'/>
-      <md-button class='md-icon-button' ng-click='selectFile()'>
-        <md-icon>file_upload</md-icon>
-        <md-tooltip>Upload</md-tooltip>
-      </md-button>
-
     </div>
   </md-toolbar>
 
@@ -18,6 +12,7 @@
           <th md-column md-order-by='id'>Barclamp</th>
           <th md-column md-order-by='barclamp_id'>Parent</th>
           <th md-column>Description</th>
+          <th md-column>Source</th>
           <th md-column>Roles</th>
         </tr>
       </thead>
@@ -37,6 +32,17 @@
             {{barclamp.description}}
           </td>
           <td md-cell>
+            <md-icon ng-show='barclamp.source_path=="API_uploaded" || barclamp.source_path==""' title="User Uploaded">
+              face
+            </md-icon>
+            <md-icon ng-show='barclamp.source_path=="/opt/digitalrebar/core"' title="{{barclamp.source_path}}">
+              attachment
+            </md-icon>
+            <md-icon ng-hide='barclamp.source_path=="/opt/digitalrebar/core" || barclamp.source_path=="API_uploaded"' title="{{barclamp.source_path}}">
+              extension
+            </md-icon>
+          </td>
+          <td md-cell>
             <md-button ng-href='#/roles/{{role.id}}' class='md-fab md-primary md-mini' ng-repeat="role in getRoles(barclamp.cfg_data.roles)">
               <md-icon>
                 {{role.icon}}
@@ -51,3 +57,15 @@
     </table>
   </md-table-container>
 </md-card>
+<!-- Floating action button at the bottom right of the screen -->
+<div layout="horizontal" layout-align="center end">
+  <input type="file" id="file" name="file" ng-model="selectedFile" onchange='angular.element(this).scope().upload()' style='opacity: 0;'/>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click='selectFile()' style="transform: translateX(-150%);">
+    <md-icon>file_upload</md-icon>
+    <md-tooltip>Upload</md-tooltip>
+  </md-button>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click='barclamps.showUpdateBarclampDialog()'>
+    <md-icon>add</md-icon>
+    <md-tooltip>Add Workload Roles</md-tooltip>
+  </md-button>
+</div>

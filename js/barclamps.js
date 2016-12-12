@@ -46,17 +46,7 @@ barclamps controller
           r = new FileReader();
       r.onloadend = function(e){
         var data = e.target.result;
-        var payload = { 'value': data };
-        api('/api/v2/barclamps', {
-          method: 'POST',
-          data: payload
-        }).success(function (update) {
-          api('/api/v2/barclamps/' + $scope.id).
-          success(api.addBarclamp);
-          api.toast('Updated barclamp');
-        }).error(function (err) {
-          api.toast('Error Updating barclamp', 'barclamp', err);
-        })
+        api.addBarclamp(data);
         //send your binary data via $http or $resource or do anything else with it
       }
       r.readAsBinaryString(f);
@@ -65,6 +55,31 @@ barclamps controller
 
     this.showUpdateBarclampDialog = function (ev) {
       var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+      var bc = $scope.barclamp;
+      if (!bc) {
+        var date = new Date();
+        var name = "user_workload_"+ Math.round((Math.random() * 10000));
+        // create template barclamp based on script
+        $scope.barclamp = {
+          name: name,
+          cfg_data: {
+            barclamp: {
+              name: name, display: name,
+              description: name,
+              version: "0.0"
+            }, roles: [
+              {
+                name: name,
+                jig: "script",
+                metadata: {
+                  scripts: [ '#!/bin/bash\necho "hello"\nexit 0\n' ]
+                }
+              }
+            ]
+          }
+        };
+       };
+      console.log($scope.barclamp);
       $mdDialog.show({
         controller: 'DialogController',
         controllerAs: 'dialog',
@@ -81,6 +96,7 @@ barclamps controller
 
     $scope.id = $routeParams.id;
     $scope.barclamp = {};
+
     var hasCallback = false;
 
     var updateBarclamp = function () {

@@ -104,9 +104,32 @@
   <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
       <span flex>Metadata</span>
+      <span class='inset' ng-show="scripts.length">
+        <md-button class='md-icon-button' ng-click='addSection($index)'>
+          <md-icon>add_circle_outline</md-icon>
+          <md-tooltip>Add Section {{$index+1}}</md-tooltip>
+        </md-button>
+        <md-button class='md-icon-button' ng-click='saveScripts($event)'>
+          <md-icon>save</md-icon>
+          <md-tooltip>Save</md-tooltip>
+        </md-button>
+      </span>
     </div>
   </md-toolbar>
-  <md-card-content>
+  <md-card-content ng-show="scripts.length">
+    <div ng-repeat="(key, value) in scripts track by key">
+      <md-dialog-content layout='row' id="section_{{key}}" ng-show="scripts[key]">
+        <span>Section {{ $index+1 }}
+          <md-button class='md-icon-button' ng-click='removeSection($index)'>
+            <md-icon>clear</md-icon>
+            <md-tooltip>Remove Section {{$index+1}}</md-tooltip>
+          </md-button>
+        </span>
+        <textarea ng-model='scripts[key]' style='width: 100%; font-family: monospace; min-height: 100px;'></textarea>
+      </md-dialog-content>
+    </div>
+  </md-card-content>
+  <md-card-content ng-hide="scripts.length">
     <pre>
       {{ metadata | json }}
     </pre>
