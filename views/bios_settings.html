@@ -118,6 +118,10 @@ bios settings view
         <md-card-actions layout="row" layout-align='start center'>
           <!-- Right side of toolbar -->
           <md-card-icon-actions layout-align='end'>
+            <md-button class='md-icon-button' ng-click='createHardwareSectionPrompt($event, ind, setting.name)'>
+              <md-icon>add</md-icon>
+              <md-tooltip>Add Hardware Overlay to Class {{setting.role}} Block {{setting.parent ? setting.parent : ''}} {{setting.name}}</md-tooltip>
+            </md-button>
             <md-button class='md-icon-button' ng-click='deleteSetting($event, $index)'>
               <md-icon>delete</md-icon>
               <md-tooltip>Destroy</md-tooltip>

@@ -93,6 +93,42 @@ bios settings controller
       $scope.dirty = true;
     };
 
+    $scope.createHardwareSectionPrompt = function(ev, ind, parent) {
+      // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = $mdDialog.prompt()
+        .title('Creating Section for ' + $scope.settings[ind].name)
+        .textContent('Section Name:')
+        .placeholder('default')
+        .ariaLabel('Section')
+        .targetEvent(ev)
+        .ok('Add')
+        .cancel('Cancel');
+      $mdDialog.show(confirm).then(function(result) {
+        var o = { "role": $scope.settings[ind].role, "name": result, "parent": parent, "match": [], "values": [] };
+        $scope.settings.push(o);
+      }, function() {
+        console.log("did not create");
+      });
+    };
+
+    $scope.createHardwareClassPrompt = function(ev) {
+      // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = $mdDialog.prompt()
+        .title('Creating Hardware Class:')
+        .textContent('Class/Vendor Name.')
+        .placeholder('vendor')
+        .ariaLabel('Class')
+        .targetEvent(ev)
+        .ok('Add')
+        .cancel('Cancel');
+      $mdDialog.show(confirm).then(function(result) {
+        var o = { "role": result, "name": "default", "match": [], "values": [] };
+        $scope.settings.push(o);
+      }, function() {
+        console.log("did not create");
+      });
+    };
+
     // called when a deployment is clicked
     $scope.saveSetting = function (event, id) {
       var roles = {};
