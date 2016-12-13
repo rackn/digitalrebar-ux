@@ -77,6 +77,22 @@ bios settings controller
        $scope.expand[id] = !$scope.expand[id];
     };
 
+    $scope.removeValue = function(index, type, id) {
+      for (var i in $scope.settings[index][type]) {
+        if ($scope.settings[index][type][i].id == id) {
+          $scope.settings[index][type].splice(i,1);
+          api.toast('Removed ' + type + ' ' + id, type, index);
+          break;
+        }
+      }
+    };
+
+    $scope.addValue = function(index, type) {
+      var o = { "id": "not set", "value": "undefined", "op": "exact" };
+      $scope.settings[index][type].push(o);
+      $scope.dirty = true;
+    };
+
     // called when a deployment is clicked
     $scope.saveSetting = function (event, id) {
       var roles = {};
