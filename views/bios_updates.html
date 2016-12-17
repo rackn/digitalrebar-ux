@@ -2,103 +2,130 @@
 bios updates view
 -->
 <div>
-  <md-card ng-repeat='update in updates' flex='100'>
+  <md-card ng-repeat='(ind, update) in updates' flex='100'>
 
-    <!-- Top bar for each class of settings -->
-    <md-toolbar flex layout='column' md-theme='status_ready' ng-click="biosupdates.toggleExpand($index)" md-ink-ripple>
-      <section layout='row'>
-        <div class="md-toolbar-tools">
-          <h2 flex>
-            {{update.package.package}}
-          </h2>
-        </div>
-        <span flex></span>
+    <div ng-show="updates[ind]">
+      <!-- Top bar for each class of settings -->
+      <md-toolbar flex layout='column' md-theme='status_ready' ng-click="biosupdates.toggleExpand(ind)" md-ink-ripple>
+        <section layout='row'>
+          <div class="md-toolbar-tools">
+            <h2 flex>
+              {{updates[ind].package.package}}
+            </h2>
+          </div>
+          <span flex></span>
 
-        <!-- Expand button -->
-        <span class='inset'>
-          <md-button class="md-icon-button">
-            <md-icon ng-hide="expand[$index]">expand_more</md-icon>
-            <md-icon ng-show="expand[$index]">expand_less</md-icon>
-          </md-button>
-        </span>
-      </section>
-    </md-toolbar>
-
-    <!-- Tabs that appear after the expand button is pressed -->
-    <section ng-slide-down='expand[$index]' duration='0.5'>
-      <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
-        <!-- Match tab -->
-        <md-tab label="Match">
-          <md-table-container>
-          <table md-table>
-            <thead md-head>
-              <tr md-row>
-                <th md-column>Attribute Name</th>
-                <th md-column>Value</th>
-              </tr>
-            </thead>
-            <tbody md-body>
-              <tr md-row ng-repeat='(id, m) in update.match'>
-                <td md-cell>{{id}}</td>
-                <td md-cell>{{m}}</td>
-              </tr>
-            </tbody>
-          </table>
-          </md-table-container>
-        </md-tab>
-
-        <!-- Package tab -->
-        <md-tab label="Package">
-          <md-table-container>
-          <table md-table>
-            <thead md-head>
-              <tr md-row>
-                <th md-column>Attribute Name</th>
-                <th md-column>Value</th>
-              </tr>
-            </thead>
-            <tbody md-body>
-              <tr md-row ng-repeat='(id, m) in update.package'>
-                <td md-cell>{{id}}</td>
-                <td md-cell>{{m}}</td>
-              </tr>
-            </tbody>
-          </table>
-          </md-table-container>
-        </md-tab>
-      </md-tabs>
-
-      <md-divider></md-divider>
-
-      <!-- Toolbar with icons -->
-      <md-card-actions layout="row" layout-align="start center">
-        <md-button class='md-icon-button' ng-if='setting.state == 1' ng-click='saveSetting($index)'>
-          <md-icon>save</md-icon>
-          <md-tooltip>Save</md-tooltip>
-        </md-button>
-
-        <md-card-icon-actions layout-align='center center'>
-          <!-- Buttons in center of deployment card -->
-        </md-card-icon-actions>
-
-        <!-- Right side of toolbar -->
-        <md-card-icon-actions layout-align='end center'>
-          <md-button class='md-icon-button' ng-click='deleteSetting($event, $index)'>
-            <md-icon>delete</md-icon>
-            <md-tooltip>Destroy</md-tooltip>
-          </md-button>
-          <span flex='10'>
+          <span class='inset'>
+            <md-button class='md-icon-button' ng-show="dirty" ng-click='saveSetting($event, ind)'>
+              <md-icon>save</md-icon>
+              <md-tooltip>Save</md-tooltip>
+            </md-button>
           </span>
-        </md-card-icon-actions>
-      </md-card-actions>
 
-    </section>
+          <!-- Expand button -->
+          <span class='inset'>
+            <md-button class="md-icon-button">
+              <md-icon ng-hide="expand[ind]">expand_more</md-icon>
+              <md-icon ng-show="expand[ind]">expand_less</md-icon>
+            </md-button>
+          </span>
+        </section>
+      </md-toolbar>
+
+      <!-- Tabs that appear after the expand button is pressed -->
+      <section ng-slide-down='expand[ind]' duration='0.5'>
+        <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+          <!-- Match tab -->
+          <md-tab label="Match">
+            <md-table-container>
+            <table md-table>
+              <thead md-head>
+                <tr md-row>
+                  <th md-column>Attribute Name</th>
+                  <th md-column>Value</th>
+                  <th md-column>
+                    <md-button class='md-icon-button' ng-click='addValue(ind)'>
+                      <md-icon>add_circle_outline</md-icon>
+                      <md-tooltip>Add Match to {{update.package.package}}</md-tooltip>
+                    </md-button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat='(id, m) in update.match track by id'>
+                  <td md-cell>
+                    <input type='text' ng-change='biosupdates.dirtyData(dirty)' aria-label='value' class='table-input' ng-model='m.id'/></td>
+                  <td md-cell>
+                    <input type='text' ng-change='biosupdates.dirtyData(dirty)' aria-label='value' class='table-input' ng-model='m.value'/></td>
+                  <td>
+                    <md-button class='md-icon-button' ng-click='removeValue(ind, id)' ng-show="update.match[id]">
+                      <md-icon>clear</md-icon>
+                      <md-tooltip>Remove Match Line {{id}}</md-tooltip>
+                    </md-button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </md-table-container>
+          </md-tab>
+
+          <!-- Package tab -->
+          <md-tab label="Package">
+            <md-table-container>
+            <table md-table>
+              <thead md-head>
+                <tr md-row>
+                  <th md-column width="25%">Attribute Name</th>
+                  <th md-column>Value</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat='(id, m) in update.package track by id'>
+                  <td md-cell>{{ id }}</td>
+                  <td md-cell>
+                    <textarea ng-show='id=="script"' ng-change='biosupdates.dirtyData(dirty)' rows=5 aria-label='value' class='table-input' ng-model='m'/>
+                    <input ng-hide='id=="script"' type='text' ng-change='biosupdates.dirtyData(dirty)' aria-label='value' class='table-input' ng-model='m'/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </md-table-container>
+          </md-tab>
+        </md-tabs>
+
+        <md-divider></md-divider>
+
+        <!-- Toolbar with icons -->
+        <md-card-actions layout="row" layout-align="start center">
+          <md-button class='md-icon-button' ng-if='setting.state == 1' ng-click='saveSetting(ind)'>
+            <md-icon>save</md-icon>
+            <md-tooltip>Save</md-tooltip>
+          </md-button>
+
+          <md-card-icon-actions layout-align='center center'>
+            <!-- Buttons in center of deployment card -->
+          </md-card-icon-actions>
+
+          <!-- Right side of toolbar -->
+          <md-card-icon-actions layout-align='end center'>
+            <md-button class='md-icon-button' ng-click='deleteSetting($event, ind)'>
+              <md-icon>delete</md-icon>
+              <md-tooltip>Destroy</md-tooltip>
+            </md-button>
+            <span flex='10'>
+            </span>
+          </md-card-icon-actions>
+        </md-card-actions>
+
+      </section>
+    </div>
+  </md-card>
 </div>
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
-  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createHardwareClassPrompt($event)'>
+  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createUpdate($event)'>
     <md-icon>add</md-icon>
-    <md-tooltip>Create Hardware Class</md-tooltip>
+    <md-tooltip>Create Package</md-tooltip>
   </md-button>
 </div>

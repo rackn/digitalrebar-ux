@@ -82,6 +82,7 @@ bios settings controller
         if ($scope.settings[index][type][i].id == id) {
           $scope.settings[index][type].splice(i,1);
           api.toast('Removed ' + type + ' ' + id, type, index);
+          $scope.dirty = true;
           break;
         }
       }
