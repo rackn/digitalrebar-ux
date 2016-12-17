@@ -10,7 +10,7 @@ bios settings view
         <section layout='row'>
           <div class="md-toolbar-tools">
             <h2 flex>
-              {{setting.role}}:
+              <a ng-href='#/roles/{{setting.role_id}}'>{{setting.role}}</a>:
               <span ng-if='setting.parent'>{{setting.parent}} +</span>
               {{setting.name}}
             </h2>

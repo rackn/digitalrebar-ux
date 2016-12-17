@@ -36,6 +36,12 @@ bios settings controller
                 var newobj = {};
 
                 newobj.role = tt.role;
+                for (var i in $scope._roles) {
+                  if ($scope._roles[i].name == tt.role) {
+                    newobj.role_id = $scope._roles[i].id;
+                    break;
+                  }
+                }
                 newobj.name = c.name;
                 newobj.parent = c.parent;
                 newobj.match = [];
@@ -116,9 +122,9 @@ bios settings controller
       // Appending dialog to document.body to cover sidenav in docs app
       var confirm = $mdDialog.prompt()
         .title('Creating Hardware Class:')
-        .textContent('Class:Group Name.')
-        .placeholder('vendor:default')
-        .ariaLabel('Vendor:Class')
+        .textContent('Role:Group Name.')
+        .placeholder('role:default')
+        .ariaLabel('Role:Class')
         .targetEvent(ev)
         .ok('Add')
         .cancel('Cancel');
