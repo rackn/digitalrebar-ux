@@ -24,7 +24,8 @@
     <table md-table>
       <thead md-head md-order="myOrder">
         <tr md-row>
-          <th md-column md-order-by='id'>Role</th>
+          <th md-column>Role</th>
+          <th md-column md-order-by='name'>Name</th>
           <th md-column md-order-by='barclamp_id'>Barclamp</th>
           <th md-column md-order-by='jig_name'>Jig</th>
           <th md-column>Description</th>
@@ -45,6 +46,9 @@
                 {{role.name}}
               </md-tooltip>
             </md-button>
+          </td>
+          <td md-cell>
+            <a ng-href='#/roles/{{role.id}}'>{{role.name}}</a>
           </td>
           <td md-cell>
             <a ng-href='#/barclamps/{{role.barclamp_id}}'>
