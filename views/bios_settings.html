@@ -6,7 +6,7 @@ bios settings view
 
     <div ng-show='settings[ind]'>
       <!-- Top bar for each class of settings -->
-      <md-toolbar flex layout='column' md-theme="status_{{(setting.name=='default' ? 'ready' : 'proposed')}}" ng-click="biossettings.toggleExpand(ind)" md-ink-ripple>
+      <md-toolbar flex layout='column' md-theme="status_{{(setting.parent ? 'proposed' : 'ready')}}" ng-click="biossettings.toggleExpand(ind)" md-ink-ripple>
         <section layout='row'>
           <div class="md-toolbar-tools">
             <h2 flex>

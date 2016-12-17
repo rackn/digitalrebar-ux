@@ -116,14 +116,15 @@ bios settings controller
       // Appending dialog to document.body to cover sidenav in docs app
       var confirm = $mdDialog.prompt()
         .title('Creating Hardware Class:')
-        .textContent('Class/Vendor Name.')
-        .placeholder('vendor')
-        .ariaLabel('Class')
+        .textContent('Class:Group Name.')
+        .placeholder('vendor:default')
+        .ariaLabel('Vendor:Class')
         .targetEvent(ev)
         .ok('Add')
         .cancel('Cancel');
       $mdDialog.show(confirm).then(function(result) {
-        var o = { "role": result, "name": "default", "match": [], "values": [] };
+        var res = result.split(":");
+        var o = { "role": res[0], "name": (res[1] || "default"), "match": [], "values": [] };
         $scope.settings.push(o);
       }, function() {
         console.log("did not create");
