@@ -46,6 +46,21 @@ role controller
       }
     }
 
+    $scope.assignDeployment = function(role_id, deployment_id) {
+      api("/api/v2/deployment_roles/", {
+        method: "POST",
+        data: {
+          deployment_id: deployment_id,
+          add_role: {
+            role_id: role_id
+          }
+        }
+      }).success(api.addDeploymentRole).
+      error(function (err) {
+        api.toast("Error Adding Deployment Role", 'deployment_role', err);
+      });      
+    };
+
     var updateRole = function () {
       if ($scope.editing) return;
 
