@@ -2,21 +2,21 @@
 bios settings view
 -->
 <div>
-  <md-card ng-repeat='setting in settings' flex='100'>
+  <md-card ng-repeat='(ind , setting) in settings' flex='100'>
 
-    <div ng-show='settings[$index]'>
+    <div ng-show='settings[ind]'>
       <!-- Top bar for each class of settings -->
-      <md-toolbar flex layout='column' md-theme="status_{{(setting.name=='default' ? 'ready' : 'proposed')}}" ng-click="biossettings.toggleExpand($index)" md-ink-ripple>
+      <md-toolbar flex layout='column' md-theme="status_{{(setting.parent ? 'proposed' : 'ready')}}" ng-click="biossettings.toggleExpand(ind)" md-ink-ripple>
         <section layout='row'>
           <div class="md-toolbar-tools">
             <h2 flex>
-              {{setting.role}}:
+              <a ng-href='#/roles/{{setting.role_id}}'>{{setting.role}}</a>:
               <span ng-if='setting.parent'>{{setting.parent}} +</span>
               {{setting.name}}
             </h2>
           </div>
           <span class='inset'>
-            <md-button class='md-icon-button' ng-show="dirty" ng-click='saveSetting($event, $index)'>
+            <md-button class='md-icon-button' ng-show="dirty" ng-click='saveSetting($event, ind)'>
               <md-icon>save</md-icon>
               <md-tooltip>Save</md-tooltip>
             </md-button>
@@ -25,15 +25,15 @@ bios settings view
           <!-- Expand button -->
           <span class='inset'>
             <md-button class="md-icon-button">
-              <md-icon ng-hide="expand[$index]">expand_more</md-icon>
-              <md-icon ng-show="expand[$index]">expand_less</md-icon>
+              <md-icon ng-hide="expand[ind]">expand_more</md-icon>
+              <md-icon ng-show="expand[ind]">expand_less</md-icon>
             </md-button>
           </span>
         </section>
       </md-toolbar>
 
       <!-- Tabs that appear after the expand button is pressed -->
-      <section ng-slide-down='expand[$index] || false' duration='0.5'>
+      <section ng-slide-down='expand[ind] || false' duration='0.5'>
         <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
           <!-- Match tab -->
           <md-tab label="Match" ng-if="setting.name=='default'">
@@ -44,10 +44,16 @@ bios settings view
                   <th md-column>Attribute Name</th>
                   <th md-column>Action</th>
                   <th md-column>Value</th>
+                  <th md-column>
+                    <md-button class='md-icon-button' ng-click='addValue(ind, "match")'>
+                      <md-icon>add_circle_outline</md-icon>
+                      <md-tooltip>Add Match Line {{session.role}} in Section {{ind}}</md-tooltip>
+                    </md-button>
+                  </th>
                 </tr>
               </thead>
               <tbody md-body>
-                <tr md-row ng-repeat='m in setting.match'>
+                <tr md-row ng-repeat='(k, m) in setting.match track by k'>
                   <td md-cell><input type='text' aria-label='name' class='table-input' ng-change='biossettings.dirtyData(dirty)' ng-model='m.id'/></td>
                   <td md-cell>
                     <md-input-contianer class='md-block'>
@@ -58,6 +64,12 @@ bios settings view
                     </md-input-contianer>
                   </td>
                   <td md-cell><input ng-change='biossettings.dirtyData(dirty)' type='text' aria-label='value' class='table-input' ng-model='m.pattern' /></td>
+                  <td>
+                    <md-button class='md-icon-button' ng-click='removeValue(ind, "match", m.id)' ng-show="setting.match[k]">
+                      <md-icon>clear</md-icon>
+                      <md-tooltip>Remove Match Line {{v.id}} in Section {{ind}}</md-tooltip>
+                    </md-button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -71,20 +83,33 @@ bios settings view
                 <tr md-row>
                   <th md-column>Attribute Name</th>
                   <th md-column>Value</th>
+                  <th md-column>
+                    <md-button class='md-icon-button' ng-click='addValue(ind, "values")'>
+                      <md-icon>add_circle_outline</md-icon>
+                      <md-tooltip>Add Value Line {{session.role}} in Section {{ind}}</md-tooltip>
+                    </md-button>
+                  </th>
                 </tr>
               </thead>
               <tbody md-body>
-                <tr md-row ng-repeat='v in setting.values'>
+                <tr md-row ng-repeat='(k, v) in setting.values track by k'>
                   <td md-cell>
                     <input type='text' ng-change='biossettings.dirtyData(dirty)' aria-label='name' class='table-input' ng-model='v.id' />
                   </td>
                   <td md-cell>
                     <input type='text' ng-change='biossettings.dirtyData(dirty)' aria-label='name' class='table-input' ng-model='v.value' />
                   </td>
+                  <td>
+                    <md-button class='md-icon-button' ng-click='removeValue(ind, "values", v.id)' ng-show="setting.values[k]">
+                      <md-icon>clear</md-icon>
+                      <md-tooltip>Remove Value {{v.id}} in Section {{ind}}</md-tooltip>
+                    </md-button>
+                  </td>
                 </tr>
               </tbody>
             </table>
             </md-table-container>
+
           </md-tab>
         </md-tabs>
 
@@ -93,6 +118,10 @@ bios settings view
         <md-card-actions layout="row" layout-align='start center'>
           <!-- Right side of toolbar -->
           <md-card-icon-actions layout-align='end'>
+            <md-button class='md-icon-button' ng-click='createHardwareSectionPrompt($event, ind, setting.name)'>
+              <md-icon>add</md-icon>
+              <md-tooltip>Add Hardware Overlay to Class {{setting.role}} Block {{setting.parent ? setting.parent : ''}} {{setting.name}}</md-tooltip>
+            </md-button>
             <md-button class='md-icon-button' ng-click='deleteSetting($event, $index)'>
               <md-icon>delete</md-icon>
               <md-tooltip>Destroy</md-tooltip>

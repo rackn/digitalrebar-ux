@@ -36,6 +36,12 @@ bios settings controller
                 var newobj = {};
 
                 newobj.role = tt.role;
+                for (var i in $scope._roles) {
+                  if ($scope._roles[i].name == tt.role) {
+                    newobj.role_id = $scope._roles[i].id;
+                    break;
+                  }
+                }
                 newobj.name = c.name;
                 newobj.parent = c.parent;
                 newobj.match = [];
@@ -75,6 +81,60 @@ bios settings controller
     // called when a deployment is clicked
     this.toggleExpand = function (id) {
        $scope.expand[id] = !$scope.expand[id];
+    };
+
+    $scope.removeValue = function(index, type, id) {
+      for (var i in $scope.settings[index][type]) {
+        if ($scope.settings[index][type][i].id == id) {
+          $scope.settings[index][type].splice(i,1);
+          api.toast('Removed ' + type + ' ' + id, type, index);
+          $scope.dirty = true;
+          break;
+        }
+      }
+    };
+
+    $scope.addValue = function(index, type) {
+      var o = { "id": "not set", "value": "undefined", "op": "exact" };
+      $scope.settings[index][type].push(o);
+      $scope.dirty = true;
+    };
+
+    $scope.createHardwareSectionPrompt = function(ev, ind, parent) {
+      // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = $mdDialog.prompt()
+        .title('Creating Section for ' + $scope.settings[ind].name)
+        .textContent('Section Name:')
+        .placeholder('default')
+        .ariaLabel('Section')
+        .targetEvent(ev)
+        .ok('Add')
+        .cancel('Cancel');
+      $mdDialog.show(confirm).then(function(result) {
+        var o = { "role": $scope.settings[ind].role, "name": result, "parent": parent, "match": [], "values": [] };
+        $scope.settings.push(o);
+      }, function() {
+        console.log("did not create");
+      });
+    };
+
+    $scope.createHardwareClassPrompt = function(ev) {
+      // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = $mdDialog.prompt()
+        .title('Creating Hardware Class:')
+        .textContent('Role:Group Name.')
+        .placeholder('role:default')
+        .ariaLabel('Role:Class')
+        .targetEvent(ev)
+        .ok('Add')
+        .cancel('Cancel');
+      $mdDialog.show(confirm).then(function(result) {
+        var res = result.split(":");
+        var o = { "role": res[0], "name": (res[1] || "default"), "match": [], "values": [] };
+        $scope.settings.push(o);
+      }, function() {
+        console.log("did not create");
+      });
     };
 
     // called when a deployment is clicked
