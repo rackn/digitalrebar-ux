@@ -3,7 +3,7 @@ bios settings controller
 */
 (function () {
   angular.module('app').controller('BiosSettingsCntrl', function ($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, api, $filter) {
-    $scope.$emit('title', 'Bios Settings'); // shows up on the top toolbar
+    $scope.$emit('title', 'BIOS Settings'); // shows up on the top toolbar
 
     var biossettings = this;
 

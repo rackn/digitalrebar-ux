@@ -75,11 +75,6 @@
     $rootScope._barclamps = {};
     $rootScope.wizardBarclamps = [];
 
-    $rootScope.showBiosSettings= true;
-    $rootScope.showBiosUpdates= true;
-    $rootScope.showIpmiUpdates= true;
-    $rootScope.showRaidUpdates= false;
-
     $rootScope.showDNS = false;
     $rootScope._DNS = { zones: [] };
 
