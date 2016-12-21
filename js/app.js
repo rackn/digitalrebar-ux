@@ -205,18 +205,6 @@ var version = '0.1.5';
       controllerAs: 'biosupdates',
       templateUrl: 'views/bios_updates.html'
     }).
-    when('/ipmi/updates', {
-      controller: 'IPMIUpdatesCntrl',
-      controllerAs: 'ipmiupdates',
-      templateUrl: 'views/ipmi_updates.html'
-    }).
-    /*
-    when('/raid/updates', {
-      controller: 'RaidUpdatesCntrl',
-      controllerAs: 'raidupdates',
-      templateUrl: 'views/raid_updates.html'
-    }).
-    */
     when('/dns', {
       controller: 'DNSCtrl',
       controllerAs: 'dns',
@@ -442,7 +430,7 @@ var version = '0.1.5';
             return !$scope.showDNS; }
         }]
     }, {
-      title: 'Hardware',
+      title: 'Firmware',
       icon: "computer",
       expand: true,
       expanded: function () {
@@ -455,25 +443,11 @@ var version = '0.1.5';
           hide: function () {
             return !$scope.showBiosSettings; }
         }, {
-          title: 'BIOS Updates',
+          title: 'Firmware Updates',
           icon: 'healing',
           path: '/bios/updates',
           hide: function () {
             return !$scope.showBiosUpdates; }
-        }, {
-          title: 'IPMI Updates',
-          icon: 'healing',
-          path: '/ipmi/updates',
-          hide: function () {
-            return !$scope.showIPMIUpdates; }
-/*
-        }, {
-          title: 'Raid Updates',
-          icon: 'flash_on',
-          path: '/raid/updates',
-          hide: function () {
-            return !$scope.showRaidUpdates; }
-*/
         }]
       }, {
         title: 'Provisioner',

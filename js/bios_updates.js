@@ -3,7 +3,7 @@ bios settings controller
 */
 (function () {
   angular.module('app').controller('BiosUpdatesCntrl', function ($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, api, $filter) {
-    $scope.$emit('title', 'Bios Updates'); // shows up on the top toolbar
+    $scope.$emit('title', 'Firmware Updates'); // shows up on the top toolbar
 
     var biosupdates = this;
 
@@ -13,6 +13,8 @@ bios settings controller
     $scope.role = -1;
     $scope.deployment_role = -1;
     $scope.id = -1;
+    $scope.attribute = "bios-firmware-list";
+    $scope.attributes = {"bios-firmware-list": "BIOS", "ipmi-firmware-list": "IPMI"};
 
     $scope.loadUpdates = function () {
       api("/api/v2/roles/bios-flash").success(function (robj) {
@@ -25,7 +27,7 @@ bios settings controller
               break;
             }
           };
-           api("/api/v2/deployment_roles/"+$scope.deployment_role+"/attribs/bios-firmware-list").
+          api("/api/v2/deployment_roles/"+$scope.deployment_role+"/attribs/" + $scope.attribute).
           success(function (obj) {
             var temp = obj.value;
             $scope.updates = [];
@@ -48,7 +50,7 @@ bios settings controller
             });
           }).
           error(function (err) {
-            api.toast("Error Bios Updates Data", 'bios_update', err);
+            api.toast("Error Firmware Updates Data", $scope.attribute, err);
           });
         });
       });
@@ -127,10 +129,10 @@ bios settings controller
         success(function(data) { 
           api('/api/v2/deployment_roles/' + $scope.deployment_role + "/commit", { method: "PUT" }).
           success(function(data) { 
-            api.toast('Updated Attrib!');
+            api.toast('Updated Firemware Attrib!');
           });
         }).error(function (err) {
-            api.toast('Error updating values', 'attribs', err);
+            api.toast('Error updating firmware values', 'attribs', err);
         });
       });
     };
