@@ -1,0 +1,21 @@
+<md-toolbar class="md-table-toolbar md-default">
+  <div class="md-toolbar-tools">
+    <span flex>Ansible Metadata</span>
+    <span class='inset' ng-show="scripts.length">
+      <md-button class='md-icon-button' ng-click='addSection($index)'>
+        <md-icon>add_circle_outline</md-icon>
+        <md-tooltip>Add Section {{$index+1}}</md-tooltip>
+      </md-button>
+      <md-button class='md-icon-button' ng-click='saveAnsible($event)'>
+        <md-icon>save</md-icon>
+        <md-tooltip>Save</md-tooltip>
+      </md-button>
+    </span>
+  </div>
+</md-toolbar>
+
+<md-card-content>
+  <pre>
+    {{ metadata | json }}
+  </pre>
+</md-card-content>
