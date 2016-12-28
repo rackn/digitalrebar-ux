@@ -124,6 +124,29 @@ role controller
     });
   };
 
+  $scope.removeFile = function(index) {
+    $scope.metadata["files"].splice(index, 1);
+    api.toast('Removed Ansible File', 'file', index);
+  };
+
+  $scope.addFile = function() {
+    s = {type: 'tasks', name: 'main.yml', body: '---\n- debug: msg="Ansibile Metadata Role"'};
+    $scope.metadata["files"].push(s);
+  };
+
+  $scope.saveAnsible = function(event) {
+    api("/api/v2/barclamps/" + $scope.role.barclamp_id).
+    success(function(bc) {
+      var roles = bc.cfg_data.roles;
+      for (var r in roles) {
+        if (roles[r].name == $scope.role.name) {
+          roles[r].metadata = $scope.metadata;
+          api.saveBarclamp(bc.cfg_data);
+        };
+      };
+    });
+  };
+
   });
 
 
