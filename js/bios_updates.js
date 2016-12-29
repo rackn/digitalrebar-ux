@@ -106,16 +106,16 @@ bios settings controller
     $scope.saveSetting = function (event, id) {
       var o = []
       for (var i in $scope.updates) {
-        var package = { 
+        var mypackage = {
           "script": $scope.updates[i].package.script,
           "package": $scope.updates[i].package.package,
           "package-source": $scope.updates[i].package["package-source"],
           "package-sha256sum": $scope.updates[i].package["package-sha256sum"]
         };
         Object.keys($scope.updates[i].match).forEach(function(key) {
-          package[$scope.updates[i].match[key].id] = $scope.updates[i].match[key].value;
+          mypackage[$scope.updates[i].match[key].id] = $scope.updates[i].match[key].value;
         });
-        o.push(package);
+        o.push(mypackage);
       };
       var obj = { value: o };
       obj["deployment_role_id"] = $scope.deployment_role;
