@@ -8,19 +8,19 @@
       </md-button>
     </div>
   </md-toolbar>
-  <md-content style='overflow-y: auto;'>
-    <table style='width: 90%; overflow-x: hidden;'>
+  <md-content style="overflow-y: auto;">
+    <table style="width: 90%; overflow-x: hidden;">
       <tr>
-        <td class='label' style='width: 150px;'>Name</td>
+        <td class="label" style="width: 150px;">Name</td>
         <td>
-          <input type='text' class='table-input' ng-model='locals.profile.name' />
+          <input type="text" class="table-input" ng-model="locals.profile.name" />
         </td>
       </tr>
     </table>
     <md-toolbar class="md-table-toolbar md-default">
       <div class="md-toolbar-tools">
         <span flex>Templates</span>
-	<md-button class='md-icon-button' ng-click='dialog.profileNewValue(locals.profile.values)'>
+	<md-button class="md-icon-button" ng-click="dialog.profileNewValue(locals.profile.values)">
           <md-icon>add</md-icon>
           <md-tooltip>
             Add Value
@@ -32,18 +32,18 @@
       <table md-table>
         <thead md-head md-order="valueOrder">
           <tr md-row>
-            <th md-column md-order-by='Name'>Name</th>
-            <th md-column md-order-by='Value'>Value</th>
+            <th md-column md-order-by="Name">Name</th>
+            <th md-column md-order-by="Value">Value</th>
             <th md-column>Delete</th>
           </tr>
         </thead>
         <tbody md-body>
-          <tr md-row ng-repeat='(key, value) in locals.profile.values | orderBy: valueOrder'>
+          <tr md-row ng-repeat="(key, value) in locals.profile.values | orderBy: valueOrder">
             <td md-cell>
               <md-input-container>
                 <label>Name</label>
                 <md-select ng-model="value.name" ng-change="dialog.profileSelectChanged(locals.profile.values, key, value.name)">
-                  <md-optgroup label='attribs'>
+                  <md-optgroup label="attribs">
                     <md-option ng-value="temp.name" ng-repeat="temp in locals.attribs">
                       {{temp.name}}
                     </md-option>
@@ -52,19 +52,19 @@
               </md-input-container>
             </td>
             <td md-cell>
-              <div style='width: calc(100% - 300px - 1em); min-height: 400px; display: inline-block;'>
-                <textarea ng-model='value.value' style='width: 100%; font-family: monospace; min-height: 400px;' ng-class="{'error': !parse(value.value, 1)||!locals.api.testSchema(parse(value.value, 0),locals.attribs[value.name].schema)}"></textarea>
+              <div style="width: calc(100% - 300px - 1em); min-height: 400px; display: inline-block;">
+                <textarea ng-model="value.value" style="width: 100%; font-family: monospace; min-height: 400px;" ng-class="{'error': !parse(value.value, 1)||!locals.api.testSchema(parse(value.value, 0),locals.attribs[value.name].schema)}"></textarea>
               </div>
-              <div style='width: 300px auto; margin-left: 1em; display: inline-block; overflow-x: auto;'>
+              <div style="width: 300px auto; margin-left: 1em; display: inline-block; overflow-x: auto;">
                 <pre>{{locals.attribs[value.name].schema | json}}</pre>
-                <span style='font-size: 1em;'>&quot;*&quot; = Required, &quot;=&quot; = Wildcard</span>
+                <span style="font-size: 1em;">&quot;*&quot; = Required, &quot;=&quot; = Wildcard</span>
 		<pre>{{value.name}} = {{locals.api.exampleFromSchema(locals.attribs[value.name].schema) | json}}</pre>
-                 <span ng-show='!parse(value.value,1)'>JSON Parsing Error</span>
-                 <span ng-show='parse(value.value,1)&&!locals.api.testSchema(parse(value.value,0),locals.attribs[value.name].schema)'>Value does not follow Schema</span>
+                 <span ng-show="!parse(value.value,1)">JSON Parsing Error</span>
+                 <span ng-show="parse(value.value,1)&&!locals.api.testSchema(parse(value.value,0),locals.attribs[value.name].schema)">Value does not follow Schema</span>
               </div>
             </td>
             <td>
-              <md-button class='md-icon-button' ng-click='dialog.profileClearData(locals.profile.values, value.name)'>
+              <md-button class="md-icon-button" ng-click="dialog.profileClearData(locals.profile.values, value.name)">
                 <md-icon>remove</md-icon>
                 <md-tooltip>
                   Remove Value
@@ -76,9 +76,9 @@
       </table>
     </md-table-container>
   </md-content>
-  <md-dialog-actions style='margin: 0;'>
+  <md-dialog-actions style="margin: 0;">
     <span flex></span>
-    <md-button ng-click='dialog.createProfile()' class='md-primary md-raised' target="_blank" md-autofocus>
+    <md-button ng-click="dialog.createProfile()" class="md-primary md-raised" target="_blank" md-autofocus>
       {{locals.editing ? 'Update' : 'Create'}}
     </md-button>
   </md-dialog-actions>

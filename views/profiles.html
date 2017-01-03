@@ -1,4 +1,4 @@
-<md-card ng-repeat='profile in _profiles'>
+<md-card ng-repeat="profile in _profiles">
   <md-toolbar class="md-default" ng-click="expand[profile.name]=!expand[profile.name]">
     <div class="md-toolbar-tools">
       <span flex>
@@ -13,7 +13,7 @@
     </div>
   </md-toolbar>
 
-  <div ng-slide-down='expand[profile.name]' lazy-render duration='0.5'>
+  <div ng-slide-down="expand[profile.name]" lazy-render duration="0.5">
     <md-card-content>
       <md-toolbar class="md-table-toolbar md-default">
         <div class="md-toolbar-tools">
@@ -24,17 +24,16 @@
         <table md-table>
           <thead md-head md-order="valueOrder">
             <tr md-row>
-              <th md-column md-order-by='name'>Name</th>
-              <th md-column md-order-by='value'>Value</th>
+              <th md-column md-order-by="name">Name</th>
+              <th md-column md-order-by="value">Value</th>
             </tr>
           </thead>
           <tbody md-body>
-            <tr md-row ng-repeat='(key, value) in profile.values | orderBy: valueOrder'>
+            <tr md-row ng-repeat="(key, value) in profile.values | orderBy: valueOrder">
               <td md-cell>
                 {{key}}
               </td>
               <td md-cell>{{value}}</td>
-              </td>
             </tr>
           </tbody>
         </table>
@@ -42,14 +41,14 @@
     </md-card-content>
 
     <md-card-actions layout="row" layout-align="start center">
-      <md-button class='md-icon-button' ng-click='createProfilePrompt($event, profile)'>
+      <md-button class="md-icon-button" ng-click="createProfilePrompt($event, profile)">
         <md-icon>mode_edit</md-icon>
         <md-tooltip>Edit</md-tooltip>
       </md-button>
 
       <!-- Right side of toolbar -->
-      <md-card-icon-actions layout-align='end center'>
-        <md-button class='md-icon-button' ng-click='deleteProfile(profile.name)'>
+      <md-card-icon-actions layout-align="end center">
+        <md-button class="md-icon-button" ng-click="deleteProfile(profile.name)">
           <md-icon>delete</md-icon>
           <md-tooltip>Destroy</md-tooltip>
         </md-button>
@@ -61,7 +60,7 @@
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
-  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createProfilePrompt($event)'>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="createProfilePrompt($event)">
     <md-icon>add</md-icon>
     <md-tooltip>Create Profile</md-tooltip>
   </md-button>

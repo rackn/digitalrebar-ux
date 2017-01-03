@@ -2,12 +2,12 @@
 provisioner machines view
 -->
 <div>
-  <md-card ng-repeat='machine in _provisioner.machines' flex='100'>
+  <md-card ng-repeat="machine in _provisioner.machines" flex="100">
 
-    <md-toolbar md-theme='status_{{states[nodeMap[machine.Uuid].state]}}' ng-click="expand[machine.Uuid]=!expand[machine.Uuid]" md-ink-ripple>
-      <div class="md-toolbar-tools" display='row'>
+    <md-toolbar md-theme="status_{{states[nodeMap[machine.Uuid].state]}}" ng-click="expand[machine.Uuid]=!expand[machine.Uuid]" md-ink-ripple>
+      <div class="md-toolbar-tools" display="row">
         <span>
-          <md-icon ng-show='nodeMap[machine.Uuid]'>
+          <md-icon ng-show="nodeMap[machine.Uuid]">
             {{icons[states[nodeMap[machine.Uuid].state]]}}
             <md-tooltip>
               {{states[nodeMap[machine.Uuid].state]}}
@@ -43,25 +43,25 @@ provisioner machines view
     <div ng-slide-down="expand[machine.Uuid]" lazy-render duration="0.25">
       <md-card-content>
         <table layout-padding>
-          <tr ng-if='nodeMap[machine.Uuid]'>
-            <td class='label'>Node</td>
+          <tr ng-if="nodeMap[machine.Uuid]">
+            <td class="label">Node</td>
             <td>
-              <a href='#/deployments/{{nodeMap[machine.Uuid].deployment_id}}'>
+              <a href="#/deployments/{{nodeMap[machine.Uuid].deployment_id}}">
                 {{_deployments[nodeMap[machine.Uuid].deployment_id].name}}
               </a>
-              <a href='#/nodes/{{nodeMap[machine.Uuid].id}}'>
+              <a href="#/nodes/{{nodeMap[machine.Uuid].id}}">
                 {{nodeMap[machine.Uuid].name}}
               </a>
             </td>
           </tr>
           <tr>
-            <td class='label'>Address</td>
+            <td class="label">Address</td>
             <td>
               {{machine.Address}}
             </td>
           </tr>
           <tr>
-            <td class='label'>Boot Environment</td>
+            <td class="label">Boot Environment</td>
             <td>
               <a ng-href="#/provisioner/bootenvs/{{machine.BootEnv}}">
                 {{machine.BootEnv}}
@@ -70,9 +70,10 @@ provisioner machines view
           </tr>
         </table>
         <h3>Params</h3>
-        <section layout-padding style='overflow-x: auto;'>
+        <section layout-padding style="overflow-x: auto;">
           <pre>{{machine.Params | json}}</pre>
         </section>
       </md-card-content>
     </div>
+  </md-card>
 </div>

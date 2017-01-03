@@ -1,4 +1,4 @@
-<md-dialog aria-label="Add Provider" ng-cloak flex-gt-sm='50'>
+<md-dialog aria-label="Add Provider" ng-cloak flex-gt-sm="50">
   <form name="form">
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -15,55 +15,55 @@
       <md-content>
         <table>
           <tr>
-            <td class='label'>
+            <td class="label">
               Provider
             </td>
             <td>
-              <input type='text' id="name" name="name" class='table-input' ng-minlength='1' ng-required=true ng-model='locals.provider.name' />
+              <input type="text" id="name" name="name" class="table-input" ng-minlength="1" ng-required="true" ng-model="locals.provider.name" />
             </td>
           </tr>
           <tr>
-            <td class='label'>
+            <td class="label">
               Description
             </td>
             <td>
-              <input type='text' class='table-input' ng-model='locals.provider.description' />
+              <input type="text" class="table-input" ng-model="locals.provider.description" />
             </td>
           </tr>
-          <tbody ng-repeat='(name,options) in locals.providerTemplates[locals.provider.type]' ng-if='options' ng-switch='options.type'>
-            <tr ng-switch-when='text'>
-              <td class='label'>
+          <tbody ng-repeat="(name,options) in locals.providerTemplates[locals.provider.type]" ng-if="options" ng-switch="options.type">
+            <tr ng-switch-when="text">
+              <td class="label">
                 {{options.name}}
               </td>
               <td>
-                <input type='text' class='table-input' ng-model='locals.provider.auth_details[name]' ng-value='options.default' />
+                <input type="text" class="table-input" ng-model="locals.provider.auth_details[name]" ng-value="options.default" />
               </td>
             </tr>
 
-            <tr ng-switch-when='password'>
-              <td class='label'>
+            <tr ng-switch-when="password">
+              <td class="label">
                 {{options.name}}
               </td>
               <td>
-                <input type='password' id=password class='table-input'ng-model='locals.provider.auth_details[name]' ng-value='options.default' />
+                <input type="password" id="password" class="table-input" ng-model="locals.provider.auth_details[name]" ng-value="options.default" />
               </td>
             </tr>
 
-            <tr ng-switch-when='img'>
+            <tr ng-switch-when="img">
               <td></td>
               <td>
-                <a ng-href='{{options.href}}' target="_blank">
-                  <img ng-src='{{options.src}}' style='height: 100px; width: auto;'></a>
+                <a ng-href="{{options.href}}" target="_blank">
+                  <img ng-src="{{options.src}}" style="height: 100px; width: auto;">
                 </a>
               </td>
             </tr>
 
-            <tr ng-switch-when='json_key'>
-              <td class='label'>
+            <tr ng-switch-when="json_key">
+              <td class="label">
                 {{options.name}}
               </td>
               <td>
-                <textarea json-text class='table-input' style='font-family: monospace;' ng-model='locals.provider.auth_details[name]'>
+                <textarea json-text class="table-input" style="font-family: monospace;" ng-model="locals.provider.auth_details[name]">
                 </textarea>
               </td>
             </tr>
@@ -73,7 +73,7 @@
     </md-dialog-content>
     <md-dialog-actions>
       <span flex></span>
-      <md-button ng-click='dialog.addProvider()' ng-disabled="!form.name.$valid" class='md-primary md-raised' target="_blank" md-autofocus>
+      <md-button ng-click="dialog.addProvider()" ng-disabled="!form.name.$valid" class="md-primary md-raised" target="_blank" md-autofocus>
         Add
       </md-button>
     </md-dialog-actions>

@@ -5,13 +5,13 @@
         <md-icon>label_outline</md-icon>
         Roles ({{getRoles().length}})
       </span>
-      <md-button class='md-icon-button' ng-href='#/node_roles'>
+      <md-button class="md-icon-button" ng-href="#/node_roles">
         <md-icon>dns</md-icon>
         <md-tooltip md-direction="bottom">
           Node Roles
         </md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-href='#/deployment_roles'>
+      <md-button class="md-icon-button" ng-href="#/deployment_roles">
         <md-icon>dashboard</md-icon>
         <md-tooltip md-direction="bottom">
           Deployment Roles
@@ -25,9 +25,9 @@
       <thead md-head md-order="myOrder">
         <tr md-row>
           <th md-column>Role</th>
-          <th md-column md-order-by='name'>Name</th>
-          <th md-column md-order-by='barclamp_id'>Barclamp</th>
-          <th md-column md-order-by='jig_name'>Jig</th>
+          <th md-column md-order-by="name">Name</th>
+          <th md-column md-order-by="barclamp_id">Barclamp</th>
+          <th md-column md-order-by="jig_name">Jig</th>
           <th md-column>Description</th>
           <th md-column>Flags</th>
           <!-- ["library","implicit","bootstrap","discovery","cluster","destructive","abstract"] -->
@@ -38,7 +38,7 @@
       <tbody md-body>
         <tr md-row ng-repeat="role in getRoles() | orderBy: myOrder">
           <td md-cell>
-            <md-button ng-href='#/roles/{{role.id}}' class='md-primary md-fab md-mini'>
+            <md-button ng-href="#/roles/{{role.id}}" class="md-primary md-fab md-mini">
               <md-icon>
                 {{role.icon}}
               </md-icon>
@@ -48,10 +48,10 @@
             </md-button>
           </td>
           <td md-cell>
-            <a ng-href='#/roles/{{role.id}}'>{{role.name}}</a>
+            <a ng-href="#/roles/{{role.id}}">{{role.name}}</a>
           </td>
           <td md-cell>
-            <a ng-href='#/barclamps/{{role.barclamp_id}}'>
+            <a ng-href="#/barclamps/{{role.barclamp_id}}">
             {{_barclamps[role.barclamp_id].name}}
           </a>
           </td>
@@ -62,7 +62,7 @@
             {{role.description}}
           </td>
           <td md-cell>
-            <span ng-repeat="flag in flags" ng-if='role[flag]'>
+            <span ng-repeat="flag in flags" ng-if="role[flag]">
             {{flag}}
             </span>
           </td>

@@ -2,15 +2,15 @@
 Tenants view
 -->
 <div layout-padding>
-  <md-card flex='100' ng-style='{"margin-left": tenant.depth+"em"}' style="padding: 0;" ng-repeat="(tenant_id, tenant) in _tenantsInOrder">
+  <md-card flex="100" ng-style="{'margin-left': tenant.depth+'em'}" style="padding: 0;" ng-repeat="(tenant_id, tenant) in _tenantsInOrder">
     <md-toolbar ng-click="expand[tenant.uuid]=!expand[tenant.uuid]" md-ink-ripple>
-      <div class='md-toolbar-tools'>
+      <div class="md-toolbar-tools">
         <h2 flex>
           <md-icon aria-label="Tenant">group</md-icon>
           {{tenant.name}}
         </h2>
         <span>
-          <md-button class='md-icon-button'>
+          <md-button class="md-icon-button">
             <md-icon ng-hide="expand[tenant.uuid]">expand_more</md-icon>
             <md-icon ng-show="expand[tenant.uuid]">expand_less</md-icon>
           </md-button>
@@ -19,10 +19,10 @@ Tenants view
     </md-toolbar>
 
     <div ng-slide-down="expand[tenant.uuid]" lazy-render duration="0.25">
-      <section layout-padding style='overflow-x: auto;'>
+      <section layout-padding style="overflow-x: auto;">
         <table>
           <tr>
-            <td class='label'>
+            <td class="label">
               Description
             </td>
             <td>
@@ -30,12 +30,12 @@ Tenants view
             </td>
           </tr>
           <tr>
-            <td class='label' valign="top">
+            <td class="label" valign="top">
               Users
             </td>
             <td>
-              <md-chips ng-model='tenant.users' readonly='true'>
-                <md-chip-template style='font-family: monospace;' ng-click='setPath("/users/"+$chip.id)'>
+              <md-chips ng-model="tenant.users" readonly="true">
+                <md-chip-template style="font-family: monospace;" ng-click="setPath('/users/'+$chip.id)">
                   {{$chip.username}}
                 </md-chip-template>
               </md-chips>
@@ -44,18 +44,18 @@ Tenants view
         </table>
       </section>
       <md-card-actions layout="row" layout-align="end center">
-        <md-button class='md-icon-button' ng-click='createTenantPrompt($event, tenant)'>
+        <md-button class="md-icon-button" ng-click="createTenantPrompt($event, tenant)">
           <md-icon>mode_edit</md-icon>
           <md-tooltip>Edit</md-tooltip>
         </md-button>
 
         <!-- Right side of toolbar -->
-        <md-card-icon-actions layout-align='end center'>
-          <md-button class='md-icon-button' ng-click='deleteTenant(tenant.name)'>
+        <md-card-icon-actions layout-align="end center">
+          <md-button class="md-icon-button" ng-click="deleteTenant(tenant.name)">
             <md-icon>delete</md-icon>
             <md-tooltip>Destroy</md-tooltip>
           </md-button>
-          <span flex='10'>
+          <span flex="10">
           </span>
         </md-card-icon-actions>
       </md-card-actions>
@@ -65,7 +65,7 @@ Tenants view
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
-  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createTenantPrompt($event)'>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="createTenantPrompt($event)">
     <md-icon>add</md-icon>
     <md-tooltip>Create Tenant</md-tooltip>
   </md-button>

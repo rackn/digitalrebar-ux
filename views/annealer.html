@@ -1,9 +1,9 @@
 <div class="md-toolbar-tools">
 	<span flex> </span>
-	<span class='pull-right'>
-		Background Poll Rate: <input aria-label='poll rate' ng-model='_pollRate' min=5 max=300 type='number' ng-change='api.pollRate(_pollRate, true)' /> seconds
+	<span class="pull-right">
+		Background Poll Rate: <input aria-label="poll rate" ng-model="_pollRate" min="5" max="300" type="number" ng-change="api.pollRate(_pollRate, true)" /> seconds
 	</span>
-	<md-button class='md-icon-button' ng-click='api.getActive()'>
+	<md-button class="md-icon-button" ng-click="api.getActive()">
 	  <md-icon>autorenew</md-icon>
 	  <md-tooltip>Refresh Annealer Queue</md-tooltip>
 	</md-button>
@@ -16,7 +16,7 @@
 				{{status}}
 			</h2>
       <span flex></span>
-      <md-button class='md-icon-button' ng-if="status=='error'" ng-click='retryAll()'>
+      <md-button class="md-icon-button" ng-if="status=='error'" ng-click="retryAll()">
         <md-icon>redo</md-icon>
         <md-tooltip>Retry All</md-tooltip>
       </md-button>
@@ -30,8 +30,8 @@
 				md-theme="status_{{role.status}}"
 				ng-href="#/node_roles/{{role.id}}"
 				ng-class="{'md-accent': selected==role.node_id}"
-				ng-mouseenter='setNode(role.node_id)'
-				ng-mouseleave='setNode(-1)'
+				ng-mouseenter="setNode(role.node_id)"
+				ng-mouseleave="setNode(-1)"
 				>
 				<md-tooltip md-direction="bottom">
 					{{_roles[role.role_id].name}}
@@ -39,8 +39,8 @@
 				<md-icon ng-class="{pulse: status == 'process'}">{{_roles[role.role_id].icon}}</md-icon>
 			</md-button>
 		</span>
-    <div ng-if='getNodeRoles(status).length == 0'>
+    <div ng-if="getNodeRoles(status).length == 0">
       None
-      <div>
+    </div>
   </md-card-content>
 </md-card>

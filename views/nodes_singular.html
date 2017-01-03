@@ -1,8 +1,8 @@
 <md-card>
-  <md-toolbar class="md-default" md-theme='status_{{ api.getNodeStatus(node) }}'>
+  <md-toolbar class="md-default" md-theme="status_{{ api.getNodeStatus(node) }}">
     <div class="md-toolbar-tools">
       <span>
-        <md-icon class='md-primary'>
+        <md-icon class="md-primary">
           {{api.getNodeIcon(node)}}
           <md-tooltip>
             {{node.available ? '' : 'Reserved'}} {{node.status}}
@@ -12,16 +12,16 @@
       <span flex>
         {{node.name}}
       </span>
-      <md-button ng-repeat="pb in power" aria-label="{{pb}}" class='md-icon-button' ng-click='setPower(pb)'>
+      <md-button ng-repeat="pb in power" aria-label="{{pb}}" class="md-icon-button" ng-click="setPower(pb)">
         <md-icon>{{ powers[pb] || powers["on"] }}</md-icon>
         <md-tooltip>{{ pb }}</md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' aria-label="redeploy" ng-click='redeploy()'>
+      <md-button class="md-icon-button" aria-label="redeploy" ng-click="redeploy()">
         <md-icon>low_priority</md-icon>
         <md-tooltip>Redeploy Node</md-tooltip>
       </md-button>
-      <md-menu md-position-mode="target-right target" style='padding: 0;'>
-        <md-button class='md-icon-button' aria-label="bind" ng-click='$mdOpenMenu($event)'>
+      <md-menu md-position-mode="target-right target" style="padding: 0;">
+        <md-button class="md-icon-button" aria-label="bind" ng-click="$mdOpenMenu($event)">
           <md-icon>link</md-icon>
           <md-tooltip>Bind Node Role</md-tooltip>
         </md-button>
@@ -33,7 +33,7 @@
               <md-tooltip>{{ _roles[role.id].description }}</md-tooltip>
             </md-button>
           </md-menu-item>
-          <md-menu-item ng-if='getRoles().length == 0'>
+          <md-menu-item ng-if="getRoles().length == 0">
             <md-button ng-click="$mdCloseMenu($event)">
               <div layout="row" flex>
                 <p flex>No Deployment Roles</p>
@@ -44,19 +44,19 @@
         </md-menu-content>
       </md-menu>
 
-      <md-button class='md-icon-button' ng-if='node.available' ng-click='reserve(true)'>
+      <md-button class="md-icon-button" ng-if="node.available" ng-click="reserve(true)">
         <md-icon>pause</md-icon>
         <md-tooltip>Reserve Node</md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-if='!node.available' ng-click='reserve(false)'>
+      <md-button class="md-icon-button" ng-if="!node.available" ng-click="reserve(false)">
         <md-icon>play_arrow</md-icon>
         <md-tooltip>Release Node</md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-click='nodes.deleteNode()'>
+      <md-button class="md-icon-button" ng-click="nodes.deleteNode()">
         <md-icon>delete</md-icon>
         <md-tooltip>Delete Node</md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-click='nodes.showEditNodeDialog($event, node)'>
+      <md-button class="md-icon-button" ng-click="nodes.showEditNodeDialog($event, node)">
         <md-icon>mode_edit</md-icon>
         <md-tooltip>Edit Node</md-tooltip>
       </md-button>
@@ -66,18 +66,18 @@
   <md-card-content>
     <table layout-padding>
       <tr>
-        <td class='label'>Description</td>
-        <td>{{ (node.description.length > 0 ? node.description : "[not set]") }}</td>
+        <td class="label">Description</td>
+        <td>{{ node.description.length > 0 ? node.description : "[not set]" }}</td>
       </tr>
       <tr>
-        <td class='label'>Deployment</td>
+        <td class="label">Deployment</td>
         <td>
-          <a ng-href='#/deployments/{{node.deployment_id}}'>
+          <a ng-href="#/deployments/{{node.deployment_id}}">
             {{_deployments[node.deployment_id].name}}
           </a>
           <md-menu md-position-mode="target-right target">
             <span>
-              <md-icon style='width: 6px; height: 6px; position: relative; margin-top: -20px;' ng-click="$mdOpenMenu($event)">build</md-icon>
+              <md-icon style="width: 6px; height: 6px; position: relative; margin-top: -20px;" ng-click="$mdOpenMenu($event)">build</md-icon>
             </span>
             <md-menu-content width="4">
               <md-menu-item ng-repeat="deployment in _deployments">
@@ -93,14 +93,14 @@
         </td>
       </tr>
       <tr>
-        <td class='label'>Tenant</td>
+        <td class="label">Tenant</td>
         <td>
-          <a ng-href='#/tenants/{{_tenants[node.tenant_id].uuid}}'>
+          <a ng-href="#/tenants/{{_tenants[node.tenant_id].uuid}}">
             {{_tenants[node.tenant_id].name}}
           </a>
           <md-menu md-position-mode="target-right target">
             <span>
-              <md-icon style='width: 6px; height: 6px; position: relative; margin-top: -20px;' ng-click="$mdOpenMenu($event)">build</md-icon>
+              <md-icon style="width: 6px; height: 6px; position: relative; margin-top: -20px;" ng-click="$mdOpenMenu($event)">build</md-icon>
             </span>
             <md-menu-content width="4">
               <md-menu-item ng-repeat="tenant in _tenantsInOrder">
@@ -116,7 +116,7 @@
         </td>
       </tr>
       <tr>
-        <td class='label'>Boot Environment</td>
+        <td class="label">Boot Environment</td>
         <td>
           <div ng-if="showProvisioner">
             <a ng-href="#/provisioner/bootenvs/{{node.bootenv}}">{{node.bootenv}}</a>
@@ -126,38 +126,38 @@
           </span>
         </td>
       </tr>
-      <tr ng-if='showProvisioner'>
-        <td class='label'>Machine</td>
+      <tr ng-if="showProvisioner">
+        <td class="label">Machine</td>
         <td>
           <a ng-href="#/provisioner/machines/{{node.uuid}}">{{node.uuid}}</a>
         </td>
       </tr>
       <tr>
-        <td class='label'>Address</td>
+        <td class="label">Address</td>
         <td>
           <a target="_new" ng-href="https://{{node.address.slice(0,-3)}}">{{node.address}}</a>
         </td>
       </tr>
       <tr ng-if="bmc != null">
-        <td class='label'>BMC</td>
+        <td class="label">BMC</td>
         <td>
           <a target="_new" ng-href="https://{{ bmc }}">{{bmc}}</a>
         </td>
       </tr>
       <tr>
-        <td class='label'>Status</td>
+        <td class="label">Status</td>
         <td>
           {{node.reserved ? 'Reserved' : ''}} {{node.alive ? 'On' : 'Off'}} {{states[node.state]}}
         </td>
       </tr>
       <tr>
-        <td class='label'>Provider</td>
+        <td class="label">Provider</td>
         <td>
-          <a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a>
+          <a ng-href="#/providers/{{node.provider_id}}">{{_providers[node.provider_id].name}}</a>
         </td>
       </tr>
       <tr>
-        <td class='label'><a ng-href='#/profiles'>Profile(s)</a></td>
+        <td class="label"><a ng-href="#/profiles">Profile(s)</a></td>
         <td>
           <span ng-repeat="p in node.profiles | orderBy: p">
             {{p}}{{ $last ? '' : ", "}}
@@ -168,13 +168,13 @@
 
     <!-- Show Networks ONLY FOR METAL PROVIDER -->
     <div ng-show="nics != {}">
-      <span class='label'>
+      <span class="label">
         <md-icon>swap_horiz</md-icon>
         Network Interfaces
       </span>
       <ul>
         <li ng-repeat="network in nics | orderBy: _networks[network[0].network_id].name">
-          <a title='{{_networks[network[0].network_id].description}}' href='#/networks/{{network[0].network_id}}'>{{_networks[network[0].network_id].name}}</a>:
+          <a title="{{_networks[network[0].network_id].description}}" href="#/networks/{{network[0].network_id}}">{{_networks[network[0].network_id].name}}</a>:
           <span ng-repeat="nic in network | orderBy: _network_ranges[nic.network_range_id].name">
             {{ _network_ranges[nic.network_range_id].name }}
             <a target="_new" href="https://{{nic.address}}">{{nic.address}}</a>
@@ -196,7 +196,7 @@
   </md-toolbar>
   <md-card-content>
     <span ng-repeat="role in _node_roles | from:'node':node | orderBy: role.cohort()">
-      <md-button class="md-fab md-primary" aria-label="role" md-theme="status_{{role.status}}" ng-href='#/node_roles/{{role.id}}'>
+      <md-button class="md-fab md-primary" aria-label="role" md-theme="status_{{role.status}}" ng-href="#/node_roles/{{role.id}}">
         <md-tooltip md-direction="bottom">{{_roles[role.role_id].name}}</md-tooltip>
         <md-icon>{{_roles[role.role_id].icon}}</md-icon>
       </md-button>

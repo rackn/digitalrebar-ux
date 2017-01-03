@@ -1,4 +1,4 @@
-<md-dialog aria-label="Barclamp ({{locals.barclamp.name}})" flex-gt-sm='40' flex='100' ng-cloak>
+<md-dialog aria-label="Barclamp ({{locals.barclamp.name}})" flex-gt-sm="40" flex="100" ng-cloak>
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h2>Barclamp ({{locals.barclamp.name}})</h2>
@@ -9,11 +9,11 @@
     </div>
   </md-toolbar>
 
-  <textarea json-text style='font-family: monospace;' rows="20" ng-model='locals.barclamp.cfg_data'></textarea>
+  <textarea json-text style="font-family: monospace;" rows="20" ng-model="locals.barclamp.cfg_data"></textarea>
 
   <md-dialog-actions>
     <span flex></span>
-    <md-button ng-click='dialog.updateBarclamp()' class='md-primary md-raised' target="_blank" md-autofocus>
+    <md-button ng-click="dialog.updateBarclamp()" class="md-primary md-raised" target="_blank" md-autofocus>
       Update
     </md-button>
   </md-dialog-actions>

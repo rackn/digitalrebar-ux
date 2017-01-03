@@ -2,13 +2,13 @@
 bios updates view
 -->
 <div>
-  <md-card flex='100'>
-    <md-toolbar flex layout='column' md-theme='status_idle'>
-      <section layout='row'>
+  <md-card flex="100">
+    <md-toolbar flex layout="column" md-theme="status_idle">
+      <section layout="row">
         <div class="md-toolbar-tools">
           <h2>Firmware Type:</h2>
-          <md-input-contianer class='md-block'>
-            <md-select ng-change='loadUpdates()' ng-model='attribute' aria-label='action'>
+          <md-input-contianer class="md-block">
+            <md-select ng-change="loadUpdates()" ng-model="attribute" aria-label="action">
               <md-option ng-repeat="(key, value) in attributes track by key" value="{{key}}">{{ value }}</md-option>
             </md-select>
           </md-input-contianer>
@@ -17,12 +17,12 @@ bios updates view
     </md-toolbar>
   </md-card>
 
-  <md-card ng-repeat='(ind, update) in updates' flex='100'>
+  <md-card ng-repeat="(ind, update) in updates" flex="100">
 
     <div ng-show="updates[ind]">
       <!-- Top bar for each class of settings -->
-      <md-toolbar flex layout='column' md-theme='status_ready' ng-click="biosupdates.toggleExpand(ind)" md-ink-ripple>
-        <section layout='row'>
+      <md-toolbar flex layout="column" md-theme="status_ready" ng-click="biosupdates.toggleExpand(ind)" md-ink-ripple>
+        <section layout="row">
           <div class="md-toolbar-tools">
             <h2 flex>
               {{updates[ind].package.package}}
@@ -30,15 +30,15 @@ bios updates view
           </div>
           <span flex></span>
 
-          <span class='inset'>
-            <md-button class='md-icon-button' ng-show="dirty" ng-click='saveSetting($event, ind)'>
+          <span class="inset">
+            <md-button class="md-icon-button" ng-show="dirty" ng-click="saveSetting($event, ind)">
               <md-icon>save</md-icon>
               <md-tooltip>Save</md-tooltip>
             </md-button>
           </span>
 
           <!-- Expand button -->
-          <span class='inset'>
+          <span class="inset">
             <md-button class="md-icon-button">
               <md-icon ng-hide="expand[ind]">expand_more</md-icon>
               <md-icon ng-show="expand[ind]">expand_less</md-icon>
@@ -48,7 +48,7 @@ bios updates view
       </md-toolbar>
 
       <!-- Tabs that appear after the expand button is pressed -->
-      <section ng-slide-down='expand[ind]' duration='0.5'>
+      <section ng-slide-down="expand[ind]" duration="0.5">
         <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
           <!-- Match tab -->
           <md-tab label="Match">
@@ -59,7 +59,7 @@ bios updates view
                   <th md-column>Attribute Name</th>
                   <th md-column>Value</th>
                   <th md-column>
-                    <md-button class='md-icon-button' ng-click='addValue(ind)'>
+                    <md-button class="md-icon-button" ng-click="addValue(ind)">
                       <md-icon>add_circle_outline</md-icon>
                       <md-tooltip>Add Match to {{update.package.package}}</md-tooltip>
                     </md-button>
@@ -67,13 +67,13 @@ bios updates view
                 </tr>
               </thead>
               <tbody md-body>
-                <tr md-row ng-repeat='(id, m) in update.match track by id'>
+                <tr md-row ng-repeat="(id, m) in update.match track by id">
                   <td md-cell>
-                    <input type='text' ng-change='biosupdates.dirtyData(dirty)' aria-label='value' class='table-input' ng-model='m.id'/></td>
+                    <input type="text" ng-change="biosupdates.dirtyData(dirty)" aria-label="value" class="table-input" ng-model="m.id"/></td>
                   <td md-cell>
-                    <input type='text' ng-change='biosupdates.dirtyData(dirty)' aria-label='value' class='table-input' ng-model='m.value'/></td>
+                    <input type="text" ng-change="biosupdates.dirtyData(dirty)" aria-label="value" class="table-input" ng-model="m.value"/></td>
                   <td>
-                    <md-button class='md-icon-button' ng-click='removeValue(ind, id)' ng-show="update.match[id]">
+                    <md-button class="md-icon-button" ng-click="removeValue(ind, id)" ng-show="update.match[id]">
                       <md-icon>clear</md-icon>
                       <md-tooltip>Remove Match Line {{id}}</md-tooltip>
                     </md-button>
@@ -95,11 +95,11 @@ bios updates view
                 </tr>
               </thead>
               <tbody md-body>
-                <tr md-row ng-repeat='(id, m) in update.package track by id'>
+                <tr md-row ng-repeat="(id, m) in update.package track by id">
                   <td md-cell>{{ id }}</td>
                   <td md-cell>
-                    <textarea ng-show='id=="script"' ng-change='biosupdates.dirtyData(dirty)' rows=5 aria-label='value' class='table-input' ng-model='m'/>
-                    <input ng-hide='id=="script"' type='text' ng-change='biosupdates.dirtyData(dirty)' aria-label='value' class='table-input' ng-model='m'/>
+                    <textarea ng-show="id=='script'" ng-change="biosupdates.dirtyData(dirty)" rows="5" aria-label="value" class="table-input" ng-model="m"/>
+                    <input ng-hide="id=='script'" type="text" ng-change="biosupdates.dirtyData(dirty)" aria-label="value" class="table-input" ng-model="m"/>
                   </td>
                 </tr>
               </tbody>
@@ -112,22 +112,22 @@ bios updates view
 
         <!-- Toolbar with icons -->
         <md-card-actions layout="row" layout-align="start center">
-          <md-button class='md-icon-button' ng-if='setting.state == 1' ng-click='saveSetting(ind)'>
+          <md-button class="md-icon-button" ng-if="setting.state == 1" ng-click="saveSetting(ind)">
             <md-icon>save</md-icon>
             <md-tooltip>Save</md-tooltip>
           </md-button>
 
-          <md-card-icon-actions layout-align='center center'>
+          <md-card-icon-actions layout-align="center center">
             <!-- Buttons in center of deployment card -->
           </md-card-icon-actions>
 
           <!-- Right side of toolbar -->
-          <md-card-icon-actions layout-align='end center'>
-            <md-button class='md-icon-button' ng-click='deleteSetting($event, ind)'>
+          <md-card-icon-actions layout-align="end center">
+            <md-button class="md-icon-button" ng-click="deleteSetting($event, ind)">
               <md-icon>delete</md-icon>
               <md-tooltip>Destroy</md-tooltip>
             </md-button>
-            <span flex='10'>
+            <span flex="10">
             </span>
           </md-card-icon-actions>
         </md-card-actions>
@@ -139,7 +139,7 @@ bios updates view
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
-  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createUpdate($event)'>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="createUpdate($event)">
     <md-icon>add</md-icon>
     <md-tooltip>Create Package</md-tooltip>
   </md-button>

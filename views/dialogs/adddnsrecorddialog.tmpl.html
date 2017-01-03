@@ -1,4 +1,4 @@
-<md-dialog aria-label="Add Record" ng-cloak flex-gt-sm='50'>
+<md-dialog aria-label="Add Record" ng-cloak flex-gt-sm="50">
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -12,16 +12,15 @@
 
     <md-dialog-content layout-padding>
       <md-content>
-        <md-input-container class='md-block'>
+        <md-input-container class="md-block">
           <label>Name</label>
-          <input type='text' class='table-input' ng-model='locals.record.name' />
+          <input type="text" class="table-input" ng-model="locals.record.name" />
         </md-input-container>
-        <md-input-container class='md-block'>
+        <md-input-container class="md-block">
           <label>
             Address
           </label>
-          <input type='text' class='table-input' ng-model='locals.record.content' />
-          </label>
+          <input type="text" class="table-input" ng-model="locals.record.content" />
         </md-input-container>
         <md-input-container>
           <label>Type</label>
@@ -38,7 +37,7 @@
     </md-dialog-content>
     <md-dialog-actions>
       <span flex></span>
-      <md-button ng-click='dialog.addDNSRecord()' class='md-primary md-raised' target="_blank" md-autofocus>
+      <md-button ng-click="dialog.addDNSRecord()" class="md-primary md-raised" target="_blank" md-autofocus>
         Add
       </md-button>
     </md-dialog-actions>

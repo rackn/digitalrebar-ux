@@ -2,7 +2,7 @@
 provisioner templates view
 -->
 <div>
-  <md-card ng-repeat='template in _provisioner.templates' flex='100'>
+  <md-card ng-repeat="template in _provisioner.templates" flex="100">
 
     <md-toolbar ng-click="expand[template.UUID]=!expand[template.UUID]" md-ink-ripple>
       <div class="md-toolbar-tools">
@@ -18,38 +18,38 @@ provisioner templates view
       </div>
     </md-toolbar>
     <div ng-slide-down="expand[template.UUID]" lazy-render duration="0.25">
-      <section layout-padding style='overflow-x: auto;'>
+      <section layout-padding style="overflow-x: auto;">
         <pre>{{template.Contents}}</pre>
       </section>
 
       <!-- Toolbar with icons -->
       <md-card-actions layout="row" layout-align="start center">
-        <md-button class='md-icon-button' ng-click='createTemplatePrompt($event, template)'>
+        <md-button class="md-icon-button" ng-click="createTemplatePrompt($event, template)">
           <md-icon>mode_edit</md-icon>
           <md-tooltip>Edit</md-tooltip>
         </md-button>
-        <md-button class='md-icon-button' ng-click='selectFile()'>
+        <md-button class="md-icon-button" ng-click="selectFile()">
           <md-icon>file_upload</md-icon>
           <md-tooltip>Upload</md-tooltip>
         </md-button>
-        <input type="file" id="file" name="file" ng-model="selectedFile" onchange='angular.element(this).scope().upload(angular.element(this).scope().template.UUID)' style='opacity: 0;'/>
+        <input type="file" id="file" name="file" ng-model="selectedFile" onchange="angular.element(this).scope().upload(angular.element(this).scope().template.UUID)" style="opacity: 0;"/>
 
 
         <!-- Right side of toolbar -->
-        <md-card-icon-actions layout-align='end center'>
-          <md-button class='md-icon-button' ng-click='deleteTemplate(template.UUID)'>
+        <md-card-icon-actions layout-align="end center">
+          <md-button class="md-icon-button" ng-click="deleteTemplate(template.UUID)">
             <md-icon>delete</md-icon>
             <md-tooltip>Destroy</md-tooltip>
           </md-button>
         </md-card-icon-actions>
       </md-card-actions>
     </div>
-
+  </md-card>
 </div>
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
-  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createTemplatePrompt($event)'>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="createTemplatePrompt($event)">
     <md-icon>add</md-icon>
     <md-tooltip>Create Template</md-tooltip>
   </md-button>

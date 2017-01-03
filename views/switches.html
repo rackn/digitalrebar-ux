@@ -7,7 +7,7 @@
     </h1>
     <span>{{ sw.switch.description }}</span>
 
-    <table layout-padding border=1>
+    <table layout-padding border="1">
       <tbody>
         <tr align="center">
           <td width="4%" ng-repeat="p in layout">{{p}}</td></tr>
@@ -17,7 +17,7 @@
               <md-tooltip md-direction="bottom">
                 {{node.name}}: {{node.nic}}
               </md-tooltip>
-              <md-icon aria-label='{{ api.getNodeStatus(_nodes[node.id]) }}'>
+              <md-icon aria-label="{{ api.getNodeStatus(_nodes[node.id]) }}">
                 {{ api.getNodeIcon(_nodes[node.id]) }}
               </md-icon>
             </md-button>
@@ -31,7 +31,7 @@
               <md-tooltip md-direction="bottom">
                 {{node.name}}: {{node.nic}}
               </md-tooltip>
-              <md-icon aria-label='{{ api.getNodeStatus(_nodes[node.id]) }}'>
+              <md-icon aria-label="{{ api.getNodeStatus(_nodes[node.id]) }}">
                 {{ api.getNodeIcon(_nodes[node.id]) }}
               </md-icon>
             </md-button>

@@ -4,9 +4,9 @@
       <span flex>
         {{barclamp.name}} ({{barclamp.description}})
       </span>
-      <span ng-if='barclamp.id != barclamp.barclamp_id'>
+      <span ng-if="barclamp.id != barclamp.barclamp_id">
         Parent: 
-          <a ng-href='#/barclamps/{{barclamp.barclamp_id}}' swap-md-pain-fg="foreground">
+          <a ng-href="#/barclamps/{{barclamp.barclamp_id}}" swap-md-pain-fg="foreground">
           {{ _barclamps[barclamp.barclamp_id].name }}
         </a>
       </span>
@@ -15,13 +15,13 @@
   <md-card-content>
     <apan flex="5" />
     <span>
-      <md-icon ng-show='barclamp.source_path=="API_uploaded" || barclamp.source_path==""' title="User Uploaded">
+      <md-icon ng-show="barclamp.source_path=='API_uploaded' || barclamp.source_path==''" title="User Uploaded">
         face
       </md-icon>
-      <md-icon ng-show='barclamp.source_path=="/opt/digitalrebar/core"' title="source path">
+      <md-icon ng-show="barclamp.source_path=='/opt/digitalrebar/core'" title="source path">
         attachment
       </md-icon>
-      <md-icon ng-hide='barclamp.source_path=="/opt/digitalrebar/core" || barclamp.source_path=="API_uploaded"' title="source path">
+      <md-icon ng-hide="barclamp.source_path=='/opt/digitalrebar/core' || barclamp.source_path=='API_uploaded'" title="source path">
         extension
       </md-icon>
       {{ barclamp.source_path }}
@@ -37,7 +37,7 @@
     </div>
   </md-toolbar>
   <md-card-content>
-    <md-button ng-href='#/roles/{{role.id}}' class='md-fab md-primary' ng-repeat="role in getRoles(barclamp.cfg_data.roles)">
+    <md-button ng-href="#/roles/{{role.id}}" class="md-fab md-primary" ng-repeat="role in getRoles(barclamp.cfg_data.roles)">
       <md-icon>
         {{role.icon}}
       </md-icon>
@@ -45,7 +45,7 @@
         {{role.name}}
       </md-tooltip>
     </md-button>
-  <md-card-content>
+  </md-card-content>
 </md-card>
 
 <!-- Show node roles -->
@@ -53,19 +53,19 @@
   <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
       <span flex>Source</span>
-      <input type="file" id="file" name="file" ng-model="selectedFile" onchange='angular.element(this).scope().upload()' style='opacity: 0;'/>
-      <md-button class='md-icon-button' ng-click='selectFile()'>
+      <input type="file" id="file" name="file" ng-model="selectedFile" onchange="angular.element(this).scope().upload()" style="opacity: 0;"/>
+      <md-button class="md-icon-button" ng-click="selectFile()">
         <md-icon>file_upload</md-icon>
         <md-tooltip>Upload</md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-click='barclamps.showUpdateBarclampDialog()'>
+      <md-button class="md-icon-button" ng-click="barclamps.showUpdateBarclampDialog()">
         <md-icon>edit</md-icon>
         <md-tooltip>Edit</md-tooltip>
       </md-button>
     </div>
   </md-toolbar>
   <md-card-content>
-    <pre style='overflow-x: auto;'>
+    <pre style="overflow-x: auto;">
       {{ barclamp.cfg_data | json }}
     </pre>
   </md-card-content>
