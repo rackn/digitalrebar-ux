@@ -77,12 +77,12 @@ deployments view
         <md-tab label="Matrix" layout-padding layout="row">
           <div style="text-align: right; width: 100%;">
             <h3 style="margin-right: 1em">Services</h3>
-            <span ng-repeat="role in _node_roles | from:'node':phantoms[deployment.id] | orderBy:_roles[role.role_id].cohort">
-              <md-button class="md-primary md-raised square-button" md-theme="status_{{role.status}}" ng-href="#/node_roles/{{role.id}}">
+            <span ng-repeat="role_id in getNodeRoleIds(id)">
+              <md-button class="md-primary md-raised square-button" md-theme="status_{{_node_roles[role_id].status}}" ng-href="#/node_roles/{{role_id}}">
                 <md-tooltip md-direction="bottom">
-                  {{_roles[role.role_id].name}}
+                  {{_roles[_node_roles[role_id].role_id].name}}
                 </md-tooltip>
-                <md-icon aria-label="role icon">{{_roles[role.role_id].icon}}</md-icon>
+                <md-icon aria-label="role icon">{{_roles[_node_roles[role_id].role_id].icon}}</md-icon>
               </md-button>
             </span>
           </div>
@@ -101,27 +101,27 @@ deployments view
                 </th>
               </thead>
               <tbody>
-                <tr ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy:'name'">
+                <tr ng-repeat="node_id in getNodeIds(deployment.id)">
                   <td>
                     <span>
-                      <md-icon class="status" swap-md-paint-bg="status_{{ api.getNodeStatus(node) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(node) }} foreground">
-                        {{ api.getNodeIcon(node) }}
+                      <md-icon class="status" swap-md-paint-bg="status_{{ api.getNodeStatus(_nodes[node_id]) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(_nodes[node_id]) }} foreground">
+                        {{ api.getNodeIcon(_nodes[node_id]) }}
                       </md-icon>
                       <md-tooltip>
-                        {{!node.alive ? 'off' : node.status}}
+                        {{!_nodes[node_id].alive ? 'off' : _nodes[node_id].status}}
                       </md-tooltip>
                     </span>
                   </td>
                   <td class="label">
-                    <a ng-href="#/nodes/{{node.id}}" title="{{node.name}}">{{api.truncName(node.name)}}</a>
+                    <a ng-href="#/nodes/{{node_id}}" title="{{_nodes[node_id].name}}">{{api.truncName(_nodes[node_id].name)}}</a>
                   </td>
                   <td ng-repeat="id in matrix_order[deployment.id]">
-                    <span ng-if="matrix[deployment.id][id][node.id]">
-                      <md-icon class="status" swap-md-paint-bg="status_{{_node_roles[matrix[deployment.id][id][node.id]].status}} primary" swap-md-paint-fg="status_{{_node_roles[matrix[deployment.id][id][node.id]].status}} foreground" ng-click="setPath('/node_roles/'+matrix[deployment.id][id][node.id])">
-                        {{icons[_node_roles[matrix[deployment.id][id][node.id]].status]}}
+                    <span ng-if="matrix[deployment.id][id][node_id]">
+                      <md-icon class="status" swap-md-paint-bg="status_{{_node_roles[matrix[deployment.id][id][node_id]].status}} primary" swap-md-paint-fg="status_{{_node_roles[matrix[deployment.id][id][node_id]].status}} foreground" ng-click="setPath('/node_roles/'+matrix[deployment.id][id][node_id])">
+                        {{icons[_node_roles[matrix[deployment.id][id][node_id]].status]}}
                       </md-icon>
                       <md-tooltip>
-                        {{_node_roles[matrix[deployment.id][id][node.id]].status}}
+                        {{_node_roles[matrix[deployment.id][id][node_id]].status}}
                       </md-tooltip>
                     </span>
                   </td>
@@ -178,29 +178,29 @@ deployments view
           </md-list>
           <md-divider></md-divider>
           <md-list style="overflow-y: auto;" flex="66">
-            <md-list-item ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy: 'name'">
+            <md-list-item ng-repeat="node_id in getNodeIds(deployment.id)">
               <md-divider></md-divider>
 
               <!-- Node button -->
-              <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(node) }}" ng-href="#/nodes/{{node.id}}">
+              <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(_nodes[node_id]) }}" ng-href="#/nodes/{{node_id}}">
                 <md-tooltip md-direction="bottom">
-                  {{node.status}}
+                  {{_nodes[node_id].status}}
                 </md-tooltip>
-                <md-icon aria-label="{{ api.getNodeStatus(node) }}">{{ api.getNodeIcon(node) }}</md-icon>
+                <md-icon aria-label="{{ api.getNodeStatus(_nodes[node_id]) }}">{{ api.getNodeIcon(_nodes[node_id]) }}</md-icon>
               </md-button>
               <span flex>
-                {{node.name}}
+                {{_nodes[node_id].name}}
               </span>
-              <span ng-show="bindRoles[id].roles[node.id]">
-                <md-button class="md-fab md-primary md-mini" md-theme="status_{{bindRoles[id].roles[node.id].status}}" ng-href="#/node_roles/{{bindRoles[id].roles[node.id].id}}">
-                  <md-icon aria-label="{{bindRoles[id].roles[node.id].status}}">
-                    {{icons[bindRoles[id].roles[node.id].status]}}
+              <span ng-show="bindRoles[id].roles[node_id]">
+                <md-button class="md-fab md-primary md-mini" md-theme="status_{{bindRoles[id].roles[node_id].status}}" ng-href="#/node_roles/{{bindRoles[id].roles[node_id].id}}">
+                  <md-icon aria-label="{{bindRoles[id].roles[node_id].status}}">
+                    {{icons[bindRoles[id].roles[node_id].status]}}
                   </md-icon>
                   <md-tooltip>
-                    {{bindRoles[id].roles[node.id].status}}
+                    {{bindRoles[id].roles[node_id].status}}
                   </md-tooltip>
                 </md-button>
-                <md-button class="md-icon-button" ng-click="destroyNodeRole(bindRoles[id].roles[node.id].id)">
+                <md-button class="md-icon-button" ng-click="destroyNodeRole(bindRoles[id].roles[node_id].id)">
                   <md-icon>delete</md-icon>
                   <md-tooltip>
                     Destroy Node Role
@@ -208,7 +208,7 @@ deployments view
                 </md-button>
               </span>
               <span ng-hide="!bindRoles[id] || bindRoles[id].roles[node.id]">
-                <md-button class="md-icon-button" ng-click="bindNodeRole(id, bindRoles[id].role_id, node.id)">
+                <md-button class="md-icon-button" ng-click="bindNodeRole(id, bindRoles[id].role_id, node_id)">
                   <md-icon>add</md-icon>
                   <md-tooltip>
                     Bind Node Role
