@@ -211,7 +211,7 @@
         }
         return map;
       }
-    }
+    };
 
 
     api.lastUpdate = new Date().getTime();
@@ -258,7 +258,7 @@
     };
 
     api.reload = function () {
-      $rootScope.$emit('updateApi')
+      $rootScope.$emit('updateApi');
       api.lastUpdate = new Date().getTime();
       debounce(api.reload, 3 * 60 * 1000, false)();
     };
@@ -534,7 +534,7 @@
         node.simpleState = 2; // todo
         if (node.state == -1)
           node.simpleState = 1; // error
-        if (node.state == 0)
+        if (node.state === 0)
           node.simpleState = 0; // ready
       }
 
