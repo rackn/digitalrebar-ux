@@ -52,7 +52,7 @@ var version = '0.1.5';
     $mdThemingProvider.theme('status_off').
     primaryPalette('grey', {
       'default': '900'
-    }).accentPalette('grey', { 'default': '900' });
+    }).accentPalette('red', { 'default': '900' });
 
     $mdThemingProvider.theme('status_queue').
     primaryPalette('yellow', {
