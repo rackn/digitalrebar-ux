@@ -17,11 +17,11 @@ angular.module('sparkline', ['debounce'])
                  //TODO: Use $eval to get the object
                 opts.type = attrs.type || 'line';
 
-                scope.$watch(attrs.ngModel, function () {
+                scope.$watchCollection(attrs.ngModel, function () {
                     render();
                 });
                 
-                scope.$watch(attrs.opts,function () {
+                scope.$watchCollection(attrs.opts,function () {
                     render();
                 });
 

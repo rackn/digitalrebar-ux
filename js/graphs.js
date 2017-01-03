@@ -66,7 +66,7 @@ graphs controller
         });
     }
 
-    $scope.$watch('graphHLayout', function (val) {
+    $scope.$watchCollection('graphHLayout', function (val) {
       if(val) {
         $scope.graphOptions["layout"] = $scope.graphLayoutOptions;
       } else {
