@@ -85,6 +85,36 @@ deployments controller
       }
     };
 
+    // used to prevent lots of watchers from being called when creating a list of nodes
+    $scope.getNodeIds = function (deployment_id) {
+      var nodes = [];
+
+      for (var i in $scope._nodes) {
+        var node = $scope._nodes[i];
+        if (node.deployment_id == deployment_id && !node.system)
+          nodes.push(i);
+      }
+      nodes.sort(function(a, b){
+        return $scope._nodes[a].name.localeCompare($scope._nodes[b].name);
+      });
+      return nodes;
+    };
+
+    // used to prevent lots of watchers from being called when creating a list of nodes
+    $scope.getDeploymentRoleIds = function (deployment_id) {
+      var roles = [];
+
+      for (var i in $scope._deployment_roles) {
+        var role = $scope._deployment_roles[i];
+        if (role.deployment_id == deployment_id)
+          roles.push(i);
+      }
+      roles.sort(function(a, b){
+        return $scope._deployment_roles[a].cohort - $scope._deployment_roles[b].cohort;
+      });
+      return roles;
+    };
+
     // makes a map of node simpleState => number of nodes with that simpleState
     this.getNodeCounts = function (deployment, override) {
       var result = [0, 0, 0, 0];

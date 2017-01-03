@@ -47,13 +47,13 @@ deployments view
         <!-- Nodes tab -->
         <md-tab label="Nodes">
           <!-- Add all the nodes as list items -->
-          <span ng-repeat="node in _nodes | from:'deployment':deployment | filter:{system: false} | orderBy: 'name'">
+          <span ng-repeat="node_id in getNodeIds(id)">
               <!-- Node button -->
-              <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(node) }}" ng-href="#/nodes/{{node.id}}">
+              <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(_nodes[node_id]) }}" ng-href="#/nodes/{{node_id}}">
                 <md-tooltip md-direction="bottom">
-                  {{node.name}}
+                  {{_nodes[node_id].name}}
                 </md-tooltip>
-                <md-icon aria-label="{{ api.getNodeStatus(node) }}">{{ api.getNodeIcon(node) }}</md-icon>
+                <md-icon aria-label="{{ api.getNodeStatus(_nodes[node_id]) }}">{{ api.getNodeIcon(_nodes[node_id]) }}</md-icon>
               </md-button>
             </span>
 
@@ -63,12 +63,12 @@ deployments view
         <md-tab label="Roles">
 
           <!-- Add all the Deployment Roles-->
-          <span ng-repeat="role in _deployment_roles | from:'deployment':deployment | orderBy:_roles[role.role_id].cohort">
-            <md-button class="md-fab md-primary md-mini" ng-href="#/deployment_roles/{{role.id}}">
+          <span ng-repeat="role_id in getDeploymentRoleIds(id)">
+            <md-button class="md-fab md-primary md-mini" ng-href="#/deployment_roles/{{role_id}}">
               <md-tooltip md-direction="bottom">
-                {{_roles[role.role_id].name}}
+                {{_roles[_deployment_roles[role_id].role_id].name}}
               </md-tooltip>
-              <md-icon aria-label="{{_roles[role.role_id].icon}}">{{_roles[role.role_id].icon}}</md-icon>
+              <md-icon aria-label="{{_roles[_deployment_roles[role_id].role_id].icon}}">{{_roles[_deployment_roles[role_id].role_id].icon}}</md-icon>
             </md-button>
           </span>
         </md-tab>
