@@ -1,8 +1,8 @@
-<md-card ng-repeat='ruleset in _engine'>
+<md-card ng-repeat="ruleset in _engine">
   <md-toolbar class="md-default">
     <div class="md-toolbar-tools">
       <span flex>
-        <md-button class='md-icon-button' ng-click=''>
+        <md-button class="md-icon-button" ng-click="">
           <md-icon>{{ ruleset.Active ? "visibility" : "visibility_off"}}</md-icon>
           <md-tooltip>{{ ruleset.Active ? "Active" : "Inactive"}}</md-tooltip>
         </md-button>
@@ -38,16 +38,16 @@
           </td>
           <td md-cell>
             <span flex ng-repeat="match in rule.Matchers">
-              <div flex ng-if='match.JSON'><strong>JSON:</strong> {{match.JSON}}</div>
-              <div flex ng-if='match.Eq'><strong>Equals:</strong> {{match.Eq}}</div>
-              <div flex ng-if='!match.Eq || !match.JSON'>{{match.Eq}}</div>
+              <div flex ng-if="match.JSON"><strong>JSON:</strong> {{match.JSON}}</div>
+              <div flex ng-if="match.Eq"><strong>Equals:</strong> {{match.Eq}}</div>
+              <div flex ng-if="!match.Eq || !match.JSON">{{match.Eq}}</div>
             </span>
           </td>
           <td md-cell>
             <span flex ng-repeat="action in rule.Actions">
-              <div flex ng-if='action.Bind'><strong>Bind:</strong>{{action.Bind}}</div>
-              <div flex ng-if='action.Node'><strong>Node:</strong>{{action.Node}}</div>
-              <div flex ng-if='!action.Node || !action.Bind'>{{action}}</div>
+              <div flex ng-if="action.Bind"><strong>Bind:</strong>{{action.Bind}}</div>
+              <div flex ng-if="action.Node"><strong>Node:</strong>{{action.Node}}</div>
+              <div flex ng-if="!action.Node || !action.Bind">{{action}}</div>
             </span>
           </td>
         </tbody>

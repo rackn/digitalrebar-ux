@@ -11,40 +11,40 @@
     <table layout-padding flex>
       <tbody>
         <tr ng-repeat="attrib in attribs | orderBy:'name'">
-          <td class='label' valign="top">
-            <a ng-click='alert(attrib.id)' title='{{attrib.description}}'>
+          <td class="label" valign="top">
+            <a ng-click="alert(attrib.id)" title="{{attrib.description}}">
               {{attrib.name}}
             </a>
           </td>
-          <td ng-switch='attrib.schema.type'>
+          <td ng-switch="attrib.schema.type">
             <div data-ng-switch-when="map">
               <div ng-click="visible=!visible">
                 <div>
-                  <span style='font-family: monospace;'>{{visible ? "Collapse &uarr;" : attrib.preview + " &darr;"}}</span>
+                  <span style="font-family: monospace;">{{visible ? "Collapse &uarr;" : attrib.preview + " &darr;"}}</span>
                 </div>
               </div>
-              <div ng-show='visible || editing'>
-                <textarea json-text class='table-input' ng-readonly="!attrib.writable || attrib.writable && !editing" style='height: 300px; font-size: inherit; font-family: monospace;' ng-model='attrib.value'>
+              <div ng-show="visible || editing">
+                <textarea json-text class="table-input" ng-readonly="!attrib.writable || attrib.writable && !editing" style="height: 300px; font-size: inherit; font-family: monospace;" ng-model="attrib.value">
                 </textarea>
               </div>
             </div>
             <div data-ng-switch-when="seq">
               <div ng-click="visible=!visible">
                 <div>
-                  <span style='font-family: monospace;'>{{visible ? "Collapse &uarr;" : attrib.preview + " &darr;"}}</span>
+                  <span style="font-family: monospace;">{{visible ? "Collapse &uarr;" : attrib.preview + " &darr;"}}</span>
                 </div>
               </div>
-              <div ng-show='visible || editing'>
-                <textarea json-text class='table-input' ng-readonly="!attrib.writable || attrib.writable && !editing" style='height: 300px; font-size: inherit; font-family: monospace;' ng-model='attrib.value'>
+              <div ng-show="visible || editing">
+                <textarea json-text class="table-input" ng-readonly="!attrib.writable || attrib.writable && !editing" style="height: 300px; font-size: inherit; font-family: monospace;" ng-model="attrib.value">
                 </textarea>
               </div>
             </div>
             <div data-ng-switch-default>
-              <input type='text' class='table-input' ng-readonly="!attrib.writable || attrib.writable && !editing" style='font-family: monospace;' ng-model='attrib.value' />
+              <input type="text" class="table-input" ng-readonly="!attrib.writable || attrib.writable && !editing" style="font-family: monospace;" ng-model="attrib.value" />
             </div>
           </td>
-          <td ng-if='attrib.writable'>
-            <md-button class='md-icon-button' ng-click='showEditAttribDialog($event, attrib, target)'>
+          <td ng-if="attrib.writable">
+            <md-button class="md-icon-button" ng-click="showEditAttribDialog($event, attrib, target)">
               <md-icon>
                 edit
               </md-icon>

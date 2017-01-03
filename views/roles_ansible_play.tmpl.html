@@ -1,8 +1,8 @@
 <md-toolbar class="md-table-toolbar md-default">
   <div class="md-toolbar-tools">
     <span flex>Ansible Metadata</span>
-    <span class='inset'>
-      <md-button class='md-icon-button' ng-click='saveAnsible($event)'>
+    <span class="inset">
+      <md-button class="md-icon-button" ng-click="saveAnsible($event)">
         <md-icon>save</md-icon>
         <md-tooltip>Save</md-tooltip>
       </md-button>
@@ -12,59 +12,59 @@
 
 <md-card-content>
 
-  <div ng-if='metadata["playbook_src_paths"][role.name] == "metadata"'>
+  <div ng-if="metadata['playbook_src_paths'][role.name] == 'metadata'">
     <table layout-padding>
       <tr>
-        <td class='label'>Playbook File</td>
-        <td><input ng-type='text' ng-model='metadata["playbook_file"]'/></td>
+        <td class="label">Playbook File</td>
+        <td><input ng-type="text" ng-model="metadata['playbook_file']"/></td>
       </tr>
       <tr>
-        <td class='label'>Playbook Path</td>
-        <td><input ng-type='text' ng-model='metadata["playbook_path"]'/></td>
+        <td class="label">Playbook Path</td>
+        <td><input ng-type="text" ng-model="metadata['playbook_path']"/></td>
       </tr>
       <tr>
-        <td class='label'>Playbook Scope</td>
-        <td><input ng-type='text' ng-model='metadata["playbook_scope"]'/></td>
+        <td class="label">Playbook Scope</td>
+        <td><input ng-type="text" ng-model="metadata['playbook_scope']"/></td>
       </tr>
       <tr>
-        <td class='label'>Role Map</td>
+        <td class="label">Role Map</td>
         <td>
-          <span ng-repeat='(key, value) in metadata["role_role_map"] track by key'>
-            <input ng-type='text' ng-model='key'/>
-            <input ng-type='text' ng-model='value'/>
+          <span ng-repeat="(key, value) in metadata['role_role_map'] track by key">
+            <input ng-type="text" ng-model="key"/>
+            <input ng-type="text" ng-model="value"/>
           </span>
         </td>
       </tr>
       <tr>
-        <td class='label'>Playbook Source Paths</td>
+        <td class="label">Playbook Source Paths</td>
         <td>
-          <span ng-repeat='(key, value) in metadata["playbook_src_paths"] track by key'>
-            <input ng-type='text' ng-model='key'/>
-            <input ng-type='text' ng-model='value'/>
+          <span ng-repeat="(key, value) in metadata['playbook_src_paths'] track by key">
+            <input ng-type="text" ng-model="key"/>
+            <input ng-type="text" ng-model="value"/>
           </span>
         </td>
       </tr>
     </table>
 
-    <table layout-padding width='100%'>
+    <table layout-padding width="100%">
       <tr>
-        <th width='15%'>File</th>
+        <th width="15%">File</th>
         <th>File Body</th>
         <td>
-          <md-button class='md-icon-button' ng-click='addFile($index)'>
+          <md-button class="md-icon-button" ng-click="addFile($index)">
             <md-icon>add_circle_outline</md-icon>
             <md-tooltip>Add File {{$index+1}}</md-tooltip>
           </md-button>
         </td>
       </tr >
-      <tr ng-repeat='file in metadata["files"]'>
+      <tr ng-repeat="file in metadata['files']">
         <td>
-          Path: <input ng-type='text' ng-model='file["type"]'/>
-          Name: <input ng-type='text' ng-model='file["name"]'/>
+          Path: <input ng-type="text" ng-model="file['type']"/>
+          Name: <input ng-type="text" ng-model="file['name']"/>
         </td>
-        <td><textarea ng-model='file["body"]' style='width: 100%; font-family: monospace; min-height: 100px;'></textarea></td>
+        <td><textarea ng-model="file['body']" style="width: 100%; font-family: monospace; min-height: 100px;"></textarea></td>
         <td>
-          <md-button class='md-icon-button' ng-click='removeFile($index)'>
+          <md-button class="md-icon-button" ng-click="removeFile($index)">
             <md-icon>clear</md-icon>
             <md-tooltip>Remove File {{$index+1}}</md-tooltip>
           </md-button>
@@ -77,9 +77,9 @@
     <pre> {{ metadata | json }} </pre>
   </div>
 
-  <div ng-if='metadata["playbook_src_paths"][role.name] != "metadata"'>
+  <div ng-if="metadata['playbook_src_paths'][role.name] != 'metadata'">
     <span flex>Ansible Metadata Editor</span>
-    <textarea json-text ng-model='metadata' style='width: 100%; font-family: monospace; min-height: 200px;'></textarea>
+    <textarea json-text ng-model="metadata" style="width: 100%; font-family: monospace; min-height: 200px;"></textarea>
   </div>
 
 </md-card-content>

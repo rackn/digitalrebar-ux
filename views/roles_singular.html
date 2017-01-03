@@ -8,7 +8,7 @@
         {{role.name}}
       </span>
       <md-menu md-position-mode="target-right target">
-        <md-button class='md-icon-button' ng-click="$mdOpenMenu($event)">
+        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
           <md-icon>dashboard</md-icon>
           <md-tooltip>Add to Deployment</md-tooltip>
         </md-button>
@@ -23,11 +23,11 @@
           </md-menu-item>
         </md-menu-content>
       </md-menu>
-      <md-button class='md-icon-button' ng-click='retry()'>
+      <md-button class="md-icon-button" ng-click="retry()">
         <md-icon>redo</md-icon>
         <md-tooltip>Retry All Node Roles</md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-href='#/roles'>
+      <md-button class="md-icon-button" ng-href="#/roles">
         <md-icon>label_outline</md-icon>
         <md-tooltip md-direction="bottom">
           Roles
@@ -39,27 +39,27 @@
   <md-card-content>
     <table layout-padding>
       <tr>
-        <td class='label'>Description</td>
+        <td class="label">Description</td>
         <td>
           {{role.description}}
         </td>
       </tr>
       <tr>
-        <td class='label'>Jig</td>
+        <td class="label">Jig</td>
         <td>{{role.jig_name}}</td>
       </tr>
       <tr>
-        <td class='label'>Barclamp</td>
+        <td class="label">Barclamp</td>
         <td>
-          <a ng-href='#/barclamps/{{role.barclamp_id}}'>
+          <a ng-href="#/barclamps/{{role.barclamp_id}}">
             {{_barclamps[role.barclamp_id].name}}
           </a>
         </td>
       </tr>
       <tr>
-        <td class='label'>Flags</td>
+        <td class="label">Flags</td>
         <td>
-          <span ng-repeat="flag in flags" ng-if='role[flag]'>
+          <span ng-repeat="flag in flags" ng-if="role[flag]">
             {{flag}}
           </span>
         </td>
@@ -87,7 +87,7 @@
         <tr>
           <td ng-repeat="(name, group) in relations" ng-show="group.length>0">
             <span ng-repeat="r in group | orderBy: r.cohort">
-              <md-button class="md-fab md-primary" ng-href='#/roles/{{r.id}}'>
+              <md-button class="md-fab md-primary" ng-href="#/roles/{{r.id}}">
                 <md-icon>{{r.icon}}</md-icon>
                 <md-tooltip md-direction="bottom">
                   {{r.name}}: {{r.description}}
@@ -110,7 +110,7 @@
   </md-toolbar>
   <md-card-content>
     <span ng-repeat="node_role in _node_roles | from:'role':role | orderBy: node_role.cohort()">
-      <md-button class="md-fab md-primary" md-theme="status_{{node_role.status}}" ng-href='#/node_roles/{{node_role.id}}'>
+      <md-button class="md-fab md-primary" md-theme="status_{{node_role.status}}" ng-href="#/node_roles/{{node_role.id}}">
         <md-icon>{{icons[node_role.status]}}</md-icon>
         <md-tooltip md-direction="bottom">
           {{_nodes[node_role.node_id].name}}

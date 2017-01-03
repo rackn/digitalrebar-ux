@@ -2,33 +2,33 @@
   <section>
     <table>
       <tr>
-        <td style='font-weight: bold; text-align: right; width: 100px;'>Route</td>
-        <td layout='row'>
-          <select ng-model='method' class='table-input'>
-            <option value='get'>GET</option>
-            <option value='head'>HEAD</option>
-            <option value='post'>POST</option>
-            <option value='put'>PUT</option>
-            <option value='delete'>DELETE</option>
-            <option value='trace'>TRACE</option>
-            <option value='options'>OPTIONS</option>
-            <option value='connect'>CONNECT</option>
-            <option value='path'>PATH</option>
-            <option value='patch'>PATCH</option>
+        <td style="font-weight: bold; text-align: right; width: 100px;">Route</td>
+        <td layout="row">
+          <select ng-model="method" class="table-input">
+            <option value="get">GET</option>
+            <option value="head">HEAD</option>
+            <option value="post">POST</option>
+            <option value="put">PUT</option>
+            <option value="delete">DELETE</option>
+            <option value="trace">TRACE</option>
+            <option value="options">OPTIONS</option>
+            <option value="connect">CONNECT</option>
+            <option value="path">PATH</option>
+            <option value="patch">PATCH</option>
           </select>
-          <input type='text' class='table-input' ng-model='route' placeholder="/api/v2/" />
+          <input type="text" class="table-input" ng-model="route" placeholder="/api/v2/" />
         </td>
       </tr>
       <tr>
-        <td valign='top' style='font-weight: bold; text-align: right;'>Payload</td>
+        <td valign="top" style="font-weight: bold; text-align: right;">Payload</td>
         <td>
-          <textarea ng-model='payload' style='width: 600px; height: 100px; font-family: monospace' ng-class="{'error': !parse(payload)}"></textarea>
+          <textarea ng-model="payload" style="width: 600px; height: 100px; font-family: monospace" ng-class="{'error': !parse(payload)}"></textarea>
         </td>
       </tr>
       <tr>
         <td></td>
-        <td layout='column'>
-          <md-button class='md-raised md-primary' ng-click='testApi()'> 
+        <td layout="column">
+          <md-button class="md-raised md-primary" ng-click="testApi()"> 
             Run API
           </md-button>
         </td>
@@ -38,15 +38,15 @@
   <section>
     <table>
       <tr>
-        <td valign='top' style='font-weight: bold; text-align: right; width: 100px;'>Output</td>
+        <td valign="top" style="font-weight: bold; text-align: right; width: 100px;">Output</td>
         <td>
-          <textarea ng-model='output' ng-class="class" readonly style='width: 600px; height: 300px; font-family: monospace'></textarea>
+          <textarea ng-model="output" ng-class="class" readonly style="width: 600px; height: 300px; font-family: monospace"></textarea>
         </td>
       </tr>
       <tr>
         <td></td>
-        <td layout='column'>
-          <md-button ng-click="clearOutput()" class='md-raised md-primary'>Clear</md-button>
+        <td layout="column">
+          <md-button ng-click="clearOutput()" class="md-raised md-primary">Clear</md-button>
         </td>
       </tr>
     </table>

@@ -11,21 +11,21 @@
     </md-toolbar>
 
     <!-- Network data -->
-    <md-dialog-content layout='row' style='min-width: 800px; overflow-x: hidden;'>
-      <div style='width: calc(100% - 300px - 1em); min-height: 400px; display: inline-block;'>
-        <textarea ng-model='locals.value' style='width: 100%; font-family: monospace; min-height: 400px;' ng-class="{'error': !parse(locals.value, 1) || !locals.api.testSchema(parse(locals.value), locals.attrib.schema)}"></textarea>
+    <md-dialog-content layout="row" style="min-width: 800px; overflow-x: hidden;">
+      <div style="width: calc(100% - 300px - 1em); min-height: 400px; display: inline-block;">
+        <textarea ng-model="locals.value" style="width: 100%; font-family: monospace; min-height: 400px;" ng-class="{'error': !parse(locals.value, 1) || !locals.api.testSchema(parse(locals.value), locals.attrib.schema)}"></textarea>
       </div>
-      <div style='width: 800px auto; margin-left: 1em; display: inline-block; overflow-x: auto;'>
-       <span style='font-size: 1em;'>&quot;*&quot; = Required, &quot;=&quot; = Wildcard</span>
+      <div style="width: 800px auto; margin-left: 1em; display: inline-block; overflow-x: auto;">
+       <span style="font-size: 1em;">&quot;*&quot; = Required, &quot;=&quot; = Wildcard</span>
         <pre>{{locals.api.exampleFromSchema(locals.attrib.schema) | json}}</pre>
       </div>
     </md-dialog-content>
     <md-dialog-actions>
-      <span ng-show='!parse(locals.value,1)'>JSON Parsing Error</span>
-      <span ng-show='parse(locals.value,1) && !locals.api.testSchema(parse(locals.value), locals.attrib.schema)'>Value does not follow Schema</span>
+      <span ng-show="!parse(locals.value,1)">JSON Parsing Error</span>
+      <span ng-show="parse(locals.value,1) && !locals.api.testSchema(parse(locals.value), locals.attrib.schema)">Value does not follow Schema</span>
       <span flex></span>
-      <md-button ng-click='dialog.editAttrib(locals.target)' class='md-primary md-raised' target="_blank" md-autofocus ng-disabled="!parse(locals.value,1)">
-        <span ng-show='!locals.api.testSchema(parse(locals.value), locals.attrib.schema)'>Force</span>
+      <md-button ng-click="dialog.editAttrib(locals.target)" class="md-primary md-raised" target="_blank" md-autofocus ng-disabled="!parse(locals.value,1)">
+        <span ng-show="!locals.api.testSchema(parse(locals.value), locals.attrib.schema)">Force</span>
         Update
       </md-button>
     </md-dialog-actions>

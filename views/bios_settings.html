@@ -2,28 +2,28 @@
 bios settings view
 -->
 <div>
-  <md-card ng-repeat='(ind , setting) in settings' flex='100'>
+  <md-card ng-repeat="(ind , setting) in settings" flex="100">
 
-    <div ng-show='settings[ind]'>
+    <div ng-show="settings[ind]">
       <!-- Top bar for each class of settings -->
-      <md-toolbar flex layout='column' md-theme="status_{{(setting.parent ? 'proposed' : 'ready')}}" ng-click="biossettings.toggleExpand(ind)" md-ink-ripple>
-        <section layout='row'>
+      <md-toolbar flex layout="column" md-theme="status_{{(setting.parent ? 'proposed' : 'ready')}}" ng-click="biossettings.toggleExpand(ind)" md-ink-ripple>
+        <section layout="row">
           <div class="md-toolbar-tools">
             <h2 flex>
-              <a ng-href='#/roles/{{setting.role_id}}'>{{setting.role}}</a>:
-              <span ng-if='setting.parent'>{{setting.parent}} +</span>
+              <a ng-href="#/roles/{{setting.role_id}}">{{setting.role}}</a>:
+              <span ng-if="setting.parent">{{setting.parent}} +</span>
               {{setting.name}}
             </h2>
           </div>
-          <span class='inset'>
-            <md-button class='md-icon-button' ng-show="dirty" ng-click='saveSetting($event, ind)'>
+          <span class="inset">
+            <md-button class="md-icon-button" ng-show="dirty" ng-click="saveSetting($event, ind)">
               <md-icon>save</md-icon>
               <md-tooltip>Save</md-tooltip>
             </md-button>
           </span>
 
           <!-- Expand button -->
-          <span class='inset'>
+          <span class="inset">
             <md-button class="md-icon-button">
               <md-icon ng-hide="expand[ind]">expand_more</md-icon>
               <md-icon ng-show="expand[ind]">expand_less</md-icon>
@@ -33,7 +33,7 @@ bios settings view
       </md-toolbar>
 
       <!-- Tabs that appear after the expand button is pressed -->
-      <section ng-slide-down='expand[ind] || false' duration='0.5'>
+      <section ng-slide-down="expand[ind] || false" duration="0.5">
         <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
           <!-- Match tab -->
           <md-tab label="Match" ng-if="setting.name=='default'">
@@ -45,7 +45,7 @@ bios settings view
                   <th md-column>Action</th>
                   <th md-column>Value</th>
                   <th md-column>
-                    <md-button class='md-icon-button' ng-click='addValue(ind, "match")'>
+                    <md-button class="md-icon-button" ng-click="addValue(ind, 'match')">
                       <md-icon>add_circle_outline</md-icon>
                       <md-tooltip>Add Match Line {{session.role}} in Section {{ind}}</md-tooltip>
                     </md-button>
@@ -53,19 +53,19 @@ bios settings view
                 </tr>
               </thead>
               <tbody md-body>
-                <tr md-row ng-repeat='(k, m) in setting.match track by k'>
-                  <td md-cell><input type='text' aria-label='name' class='table-input' ng-change='biossettings.dirtyData(dirty)' ng-model='m.id'/></td>
+                <tr md-row ng-repeat="(k, m) in setting.match track by k">
+                  <td md-cell><input type="text" aria-label="name" class="table-input" ng-change="biossettings.dirtyData(dirty)" ng-model="m.id"/></td>
                   <td md-cell>
-                    <md-input-contianer class='md-block'>
-                      <md-select ng-change='biossettings.dirtyData(dirty)' ng-model='m.op' aria-label='action'>
+                    <md-input-contianer class="md-block">
+                      <md-select ng-change="biossettings.dirtyData(dirty)" ng-model="m.op" aria-label="action">
                         <md-option>exact</md-option>
                         <md-option>regex</md-option>
                       </md-select>
                     </md-input-contianer>
                   </td>
-                  <td md-cell><input ng-change='biossettings.dirtyData(dirty)' type='text' aria-label='value' class='table-input' ng-model='m.pattern' /></td>
+                  <td md-cell><input ng-change="biossettings.dirtyData(dirty)" type="text" aria-label="value" class="table-input" ng-model="m.pattern" /></td>
                   <td>
-                    <md-button class='md-icon-button' ng-click='removeValue(ind, "match", m.id)' ng-show="setting.match[k]">
+                    <md-button class="md-icon-button" ng-click="removeValue(ind, 'match', m.id)" ng-show="setting.match[k]">
                       <md-icon>clear</md-icon>
                       <md-tooltip>Remove Match Line {{v.id}} in Section {{ind}}</md-tooltip>
                     </md-button>
@@ -84,7 +84,7 @@ bios settings view
                   <th md-column>Attribute Name</th>
                   <th md-column>Value</th>
                   <th md-column>
-                    <md-button class='md-icon-button' ng-click='addValue(ind, "values")'>
+                    <md-button class="md-icon-button" ng-click="addValue(ind, 'values')">
                       <md-icon>add_circle_outline</md-icon>
                       <md-tooltip>Add Value Line {{session.role}} in Section {{ind}}</md-tooltip>
                     </md-button>
@@ -92,15 +92,15 @@ bios settings view
                 </tr>
               </thead>
               <tbody md-body>
-                <tr md-row ng-repeat='(k, v) in setting.values track by k'>
+                <tr md-row ng-repeat="(k, v) in setting.values track by k">
                   <td md-cell>
-                    <input type='text' ng-change='biossettings.dirtyData(dirty)' aria-label='name' class='table-input' ng-model='v.id' />
+                    <input type="text" ng-change="biossettings.dirtyData(dirty)" aria-label="name" class="table-input" ng-model="v.id" />
                   </td>
                   <td md-cell>
-                    <input type='text' ng-change='biossettings.dirtyData(dirty)' aria-label='name' class='table-input' ng-model='v.value' />
+                    <input type="text" ng-change="biossettings.dirtyData(dirty)" aria-label="name" class="table-input" ng-model="v.value" />
                   </td>
                   <td>
-                    <md-button class='md-icon-button' ng-click='removeValue(ind, "values", v.id)' ng-show="setting.values[k]">
+                    <md-button class="md-icon-button" ng-click="removeValue(ind, 'values', v.id)" ng-show="setting.values[k]">
                       <md-icon>clear</md-icon>
                       <md-tooltip>Remove Value {{v.id}} in Section {{ind}}</md-tooltip>
                     </md-button>
@@ -115,14 +115,14 @@ bios settings view
 
         <md-divider></md-divider>
 
-        <md-card-actions layout="row" layout-align='start center'>
+        <md-card-actions layout="row" layout-align="start center">
           <!-- Right side of toolbar -->
-          <md-card-icon-actions layout-align='end'>
-            <md-button class='md-icon-button' ng-click='createHardwareSectionPrompt($event, ind, setting.name)'>
+          <md-card-icon-actions layout-align="end">
+            <md-button class="md-icon-button" ng-click="createHardwareSectionPrompt($event, ind, setting.name)">
               <md-icon>add</md-icon>
               <md-tooltip>Add Hardware Overlay to Class {{setting.role}} Block {{setting.parent ? setting.parent : ''}} {{setting.name}}</md-tooltip>
             </md-button>
-            <md-button class='md-icon-button' ng-click='deleteSetting($event, $index)'>
+            <md-button class="md-icon-button" ng-click="deleteSetting($event, $index)">
               <md-icon>delete</md-icon>
               <md-tooltip>Destroy</md-tooltip>
             </md-button>
@@ -137,7 +137,7 @@ bios settings view
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
-  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='createHardwareClassPrompt($event)'>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="createHardwareClassPrompt($event)">
     <md-icon>add</md-icon>
     <md-tooltip>Create Hardware Class</md-tooltip>
   </md-button>

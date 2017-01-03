@@ -1,25 +1,25 @@
 <md-card>
-  <md-toolbar class="md-table-toolbar md-default" ng-hide='nodes.selected.length'>
+  <md-toolbar class="md-table-toolbar md-default" ng-hide="nodes.selected.length">
     <div class="md-toolbar-tools">
       <span>Nodes ({{nodes.getNodes().length}})</span>
       <span flex></span>
     </div>
   </md-toolbar>
-  <md-toolbar class="md-table-toolbar alternate" ng-show='nodes.selected.length'>
+  <md-toolbar class="md-table-toolbar alternate" ng-show="nodes.selected.length">
     <div class="md-toolbar-tools">
       <span>{{nodes.selected.length}} node{{nodes.selected.length != 1 && 's' || ''}} selected</span>
       <span flex></span>
-      <md-button class='md-icon-button' ng-click='redeploySelected()'>
+      <md-button class="md-icon-button" ng-click="redeploySelected()">
         <md-icon>low_priority</md-icon>
         <md-tooltip>Redeploy Nodes</md-tooltip>
       </md-button>
       <md-menu md-position-mode="target-right target">
-        <md-button class='md-icon-button' ng-click="$mdOpenMenu($event)">
+        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
           <md-icon>swap_horiz</md-icon>
           <md-tooltip>Move Nodes</md-tooltip>
         </md-button>
         <md-menu-content width="4">
-          <md-switch ng-model='move_tenant'>
+          <md-switch ng-model="move_tenant">
             Move Reassigns Tenant?
           </md-switch>
           <md-menu-item ng-repeat="deployment in _deployments">
@@ -33,7 +33,7 @@
         </md-menu-content>
       </md-menu>
       <md-menu md-position-mode="target-right target">
-        <md-button class='md-icon-button' ng-click="$mdOpenMenu($event)">
+        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
           <md-icon>group</md-icon>
           <md-tooltip>Change Node Tenant</md-tooltip>
         </md-button>
@@ -49,7 +49,7 @@
         </md-menu-content>
       </md-menu>
 
-      <md-button class='md-icon-button' ng-click='nodes.deleteSelected()'>
+      <md-button class="md-icon-button" ng-click="nodes.deleteSelected()">
         <md-icon>delete</md-icon>
         <md-tooltip>Delete Nodes</md-tooltip>
       </md-button>
@@ -60,13 +60,13 @@
     <table md-table md-row-select ng-model="nodes.selected">
       <thead md-head md-order="myOrder">
         <tr md-row>
-          <th md-column md-order-by='state'>State</th>
-          <th md-column md-order-by='name'>Name</th>
-          <th md-column md-order-by='address'>Address</th>
+          <th md-column md-order-by="state">State</th>
+          <th md-column md-order-by="name">Name</th>
+          <th md-column md-order-by="address">Address</th>
           <th md-column>Description</th>
-          <th md-column md-order-by='provider_id'>Provider</th>
-          <th md-column md-order-by='deployment_id'>Deployment</th>
-          <th md-column md-order-by='tenant_id'>Tenant</th>
+          <th md-column md-order-by="provider_id">Provider</th>
+          <th md-column md-order-by="deployment_id">Deployment</th>
+          <th md-column md-order-by="tenant_id">Tenant</th>
         </tr>
       </thead>
       <tbody md-body swap-md-paint-bg="status_{{ api.getNodeStatus(node) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(node) }} foreground" ng-repeat="node in nodes.getNodes() | orderBy: myOrder">
@@ -80,19 +80,19 @@
             </md-tooltip>
           </td>
 
-          <td md-cell><a ng-href='#/nodes/{{node.id}}'>{{node.name}}</a></td>
+          <td md-cell><a ng-href="#/nodes/{{node.id}}">{{node.name}}</a></td>
           <td md-cell>
             <a target="_new" ng-href="https://{{node.address.slice(0,-3)}}">{{node.address}}</a>
           </td>
           <td md-cell>{{node.description}}</td>
-          <td md-cell><a ng-href='#/providers/{{node.provider_id}}'>{{_providers[node.provider_id].name}}</a></td>
+          <td md-cell><a ng-href="#/providers/{{node.provider_id}}">{{_providers[node.provider_id].name}}</a></td>
           <td md-cell>
-            <a ng-href='#/deployments/{{node.deployment_id}}'>
+            <a ng-href="#/deployments/{{node.deployment_id}}">
               {{_deployments[node.deployment_id].name}}
             </a>
           </td>
           <td md-cell>
-            <a ng-href='#/tenants/{{_tenants[node.tenant_id].uuid}}'>
+            <a ng-href="#/tenants/{{_tenants[node.tenant_id].uuid}}">
               {{_tenants[node.tenant_id].name}}
             </a>
           </td>
@@ -104,7 +104,7 @@
 
 <!-- Floating action button at the bottom right of the screen -->
 <div>
-  <md-button class='md-fab md-accent md-fab-bottom-right' ng-click='nodes.showAddNodeDialog()'>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="nodes.showAddNodeDialog()">
     <md-icon>add</md-icon>
     <md-tooltip>Add Nodes</md-tooltip>
   </md-button>

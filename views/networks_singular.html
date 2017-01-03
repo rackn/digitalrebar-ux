@@ -5,25 +5,25 @@
         {{network.name}}
       </span>
       <span flex></span>
-      <md-button class='md-icon-button' ng-click='startEditing()' ng-hide='editing'>
+      <md-button class="md-icon-button" ng-click="startEditing()" ng-hide="editing">
         <md-icon>edit</md-icon>
         <md-tooltip>
           Edit
         </md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-click='saveNetwork()' ng-show='editing'>
+      <md-button class="md-icon-button" ng-click="saveNetwork()" ng-show="editing">
         <md-icon>save</md-icon>
         <md-tooltip>
           Save
         </md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-click='stopEditing()' ng-show='editing'>
+      <md-button class="md-icon-button" ng-click="stopEditing()" ng-show="editing">
         <md-icon>close</md-icon>
         <md-tooltip>
           Stop Editing
         </md-tooltip>
       </md-button>
-      <md-button class='md-icon-button' ng-click='delete()'>
+      <md-button class="md-icon-button" ng-click="delete()">
         <md-icon>delete</md-icon>
         <md-tooltip>Delete</md-tooltip>
       </md-button>
@@ -33,7 +33,7 @@
   <md-card-content>
     <table layout-padding>
       <tr>
-        <td class='label'>
+        <td class="label">
           Name
         </td>
         <td>
@@ -41,48 +41,48 @@
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           Description
         </td>
         <td>
-          <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.description' />
+          <input type="text" class="table-input" ng-readonly="!editing" ng-model="network.description" />
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           Category
         </td>
         <td>
-          <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.category' />
+          <input type="text" class="table-input" ng-readonly="!editing" ng-model="network.category" />
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           Group
         </td>
         <td>
-          <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.group' />
+          <input type="text" class="table-input" ng-readonly="!editing" ng-model="network.group" />
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           PBR
         </td>
         <td>
-          <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.pbr' />
+          <input type="text" class="table-input" ng-readonly="!editing" ng-model="network.pbr" />
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           Deployment
         </td>
         <td>
-          <a ng-href='#/deployments/{{network.deployment_id}}'>
+          <a ng-href="#/deployments/{{network.deployment_id}}">
             {{_deployments[network.deployment_id].name}}
           </a>
           <md-menu md-position-mode="target-right target">
             <span>
-              <md-icon style='width: 6px; height: 6px; position: relative; margin-top: -20px;' ng-click="$mdOpenMenu($event)">build</md-icon>
+              <md-icon style="width: 6px; height: 6px; position: relative; margin-top: -20px;" ng-click="$mdOpenMenu($event)">build</md-icon>
             </span>
             <md-menu-content width="4">
               <md-menu-item ng-repeat="deployment in _deployments">
@@ -106,16 +106,16 @@
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           Tenant
         </td>
         <td>
-          <a ng-href='#/tenants/{{_tenants[network.tenant_id].uuid}}'>
+          <a ng-href="#/tenants/{{_tenants[network.tenant_id].uuid}}">
             {{_tenants[network.tenant_id].name}}
           </a>
           <md-menu md-position-mode="target-right target">
             <span>
-              <md-icon style='width: 6px; height: 6px; position: relative; margin-top: -20px;' ng-click="$mdOpenMenu($event)">build</md-icon>
+              <md-icon style="width: 6px; height: 6px; position: relative; margin-top: -20px;" ng-click="$mdOpenMenu($event)">build</md-icon>
             </span>
             <md-menu-content width="4">
               <md-menu-item ng-repeat="tenant in _tenantsInOrder">
@@ -131,53 +131,53 @@
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           Conduits
         </td>
         <td>
-          <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.conduit' />
+          <input type="text" class="table-input" ng-readonly="!editing" ng-model="network.conduit" />
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           VLAN
         </td>
-        <td layout='row'>
-          <md-switch ng-model="network.use_vlan" aria-label="Switch" ng-disabled='!editing' style='margin: 0;'>
+        <td layout="row">
+          <md-switch ng-model="network.use_vlan" aria-label="Switch" ng-disabled="!editing" style="margin: 0;">
             <md-tooltip>
               Enable/Disable VLAN
             </md-tooltip>
           </md-switch>
-          <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.vlan' />
+          <input type="text" class="table-input" ng-readonly="!editing" ng-model="network.vlan" />
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           IPv6 Prefix
         </td>
         <td>
-          <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.v6prefix' />
+          <input type="text" class="table-input" ng-readonly="!editing" ng-model="network.v6prefix" />
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           Team
         </td>
-        <td layout='row'>
-          <md-switch ng-model="network.use_team" aria-label="Switch" ng-disabled='!editing' style='margin: 0;'>
+        <td layout="row">
+          <md-switch ng-model="network.use_team" aria-label="Switch" ng-disabled="!editing" style="margin: 0;">
             <md-tooltip>
               Enable/Disable Team
             </md-tooltip>
           </md-switch>
-          <input type='text' class='table-input' ng-readonly="!editing" ng-model='network.team_mode' />
+          <input type="text" class="table-input" ng-readonly="!editing" ng-model="network.team_mode" />
         </td>
       </tr>
       <tr>
-        <td class='label'>
+        <td class="label">
           Bridge
         </td>
-        <td layout='row'>
-          <md-switch ng-model="network.use_bridge" aria-label="Switch" ng-disabled='!editing' style='margin: 0;'>
+        <td layout="row">
+          <md-switch ng-model="network.use_bridge" aria-label="Switch" ng-disabled="!editing" style="margin: 0;">
             <md-tooltip>
               Enable/Disable Bridge
             </md-tooltip>
@@ -193,37 +193,37 @@
     <div class="md-toolbar-tools">
       <span>Ranges</span>
       <span flex></span>
-      <span ng-if='hasRanges == 1'>
+      <span ng-if="hasRanges == 1">
         <md-button
-          class='md-icon-button'
-          ng-click='startEditingRanges()'
-          ng-hide='editingRanges'>
+          class="md-icon-button"
+          ng-click="startEditingRanges()"
+          ng-hide="editingRanges">
           <md-icon>edit</md-icon>
           <md-tooltip>
             Edit
           </md-tooltip>
         </md-button>
         <md-button
-          class='md-icon-button'
-          ng-click='saveNetworkRanges()'
-          ng-show='editingRanges'>
+          class="md-icon-button"
+          ng-click="saveNetworkRanges()"
+          ng-show="editingRanges">
           <md-icon>save</md-icon>
           <md-tooltip>
             Save
           </md-tooltip>
         </md-button>
         <md-button
-          class='md-icon-button'
-          ng-click='stopEditingRanges()'
-          ng-show='editingRanges'>
+          class="md-icon-button"
+          ng-click="stopEditingRanges()"
+          ng-show="editingRanges">
           <md-icon>close</md-icon>
           <md-tooltip>
             Stop Editing
           </md-tooltip>
         </md-button>
         <md-button
-          class='md-icon-button'
-          ng-click='addRange()'>
+          class="md-icon-button"
+          ng-click="addRange()">
           <md-icon>add</md-icon>
           <md-tooltip>
             Add Range
@@ -252,16 +252,16 @@
           <tbody>
             <tr ng-repeat="(id, range) in ranges">
               <td>
-                <input type='text' class='table-input' ng-readonly="!editingRanges" ng-model='range.name' />
+                <input type="text" class="table-input" ng-readonly="!editingRanges" ng-model="range.name" />
               </td>
               <td>
-                <input type='text' class='table-input' ng-readonly="!editingRanges" ng-model='range.first' />
+                <input type="text" class="table-input" ng-readonly="!editingRanges" ng-model="range.first" />
               </td>
               <td>
-                <input type='text' class='table-input' ng-readonly="!editingRanges" ng-model='range.last' />
+                <input type="text" class="table-input" ng-readonly="!editingRanges" ng-model="range.last" />
               </td>
               <td>
-                <md-button class='md-icon-button' ng-click='deleteRange(range.id)'>
+                <md-button class="md-icon-button" ng-click="deleteRange(range.id)">
                   <md-icon>delete</md-icon>
                   <md-tooltip>Delete Range</md-tooltip>
                 </md-button>
@@ -271,7 +271,7 @@
         </table>
       </md-card-content>
     </div>
-    <md-card-content>
+  </md-card-content>
 </md-card>
 
 <md-card>
@@ -279,29 +279,29 @@
     <div class="md-toolbar-tools">
       <span>Router</span>
       <span flex></span>
-      <span ng-if='hasRouter == 1'>
+      <span ng-if="hasRouter == 1">
         <md-button
-          class='md-icon-button'
-          ng-click='startEditingRouter()'
-          ng-hide='editingRouter'>
+          class="md-icon-button"
+          ng-click="startEditingRouter()"
+          ng-hide="editingRouter">
           <md-icon>edit</md-icon>
           <md-tooltip>
             Edit
           </md-tooltip>
         </md-button>
         <md-button
-          class='md-icon-button'
-          ng-click='saveNetworkRouter()'
-          ng-show='editingRouter'>
+          class="md-icon-button"
+          ng-click="saveNetworkRouter()"
+          ng-show="editingRouter">
           <md-icon>save</md-icon>
           <md-tooltip>
             Save
           </md-tooltip>
         </md-button>
         <md-button
-          class='md-icon-button'
-          ng-click='stopEditingRouter()'
-          ng-show='editingRouter'>
+          class="md-icon-button"
+          ng-click="stopEditingRouter()"
+          ng-show="editingRouter">
           <md-icon>close</md-icon>
           <md-tooltip>
             Stop Editing
@@ -323,23 +323,23 @@
       <md-card-content ng-switch-when="1">
         <table layout-padding>
           <tr>
-            <td class='label'>
+            <td class="label">
               Address
             </td>
             <td>
-              <input type='text' class='table-input' ng-readonly="!editingRouter" ng-model='router.address' />
+              <input type="text" class="table-input" ng-readonly="!editingRouter" ng-model="router.address" />
             </td>
           </tr>
           <tr>
-            <td class='label'>
+            <td class="label">
               Pref
             </td>
             <td>
-              <input type='text' class='table-input' ng-readonly="!editingRouter" ng-model='router.pref' />
+              <input type="text" class="table-input" ng-readonly="!editingRouter" ng-model="router.pref" />
             </td>
           </tr>
         </table>
       </md-card-content>
     </div>
-    <md-card-content>
+  </md-card-content>
 </md-card>

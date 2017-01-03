@@ -1,14 +1,14 @@
-<div layout='column' layout-gt-xs='row' class='wizard-pane'>
-  <div class='wizard-icon'>
+<div layout="column" layout-gt-xs="row" class="wizard-pane">
+  <div class="wizard-icon">
     <md-icon>directions_bike</md-icon>
   </div>
-  <div class='wizard-content' flex layout='column'>
+  <div class="wizard-content" flex layout="column">
     <h1>Select Metal OS or Provider</h1>
     <div>
-      <md-switch ng-model='workloads.use_system' ng-if='wizard.system_nodes' ng-disabled="workloads.use_system ? onTrue : onFalse">
+      <md-switch ng-model="workloads.use_system" ng-if="wizard.system_nodes" ng-disabled="workloads.use_system ? onTrue : onFalse">
         Use Existing Nodes?
       </md-switch>
-      <div ng-if='wizard.system_nodes && workloads.use_system'>
+      <div ng-if="wizard.system_nodes && workloads.use_system">
         <md-icon title="Deployment">dashboard</md-icon>
         <md-input-container flex>
           <label>Pool</label>
@@ -28,12 +28,12 @@
           </md-select>
         </md-input-container>
       </div>
-      <div ng-if='wizard.create_nodes && !workloads.use_system'>
+      <div ng-if="wizard.create_nodes && !workloads.use_system">
         <md-icon>cloud</md-icon>
         <md-input-container flex>
           <label>Cloud Provider</label>
           <md-select aria-label="provider select" ng-model="workloads.provider" ng-change="createNodes()" >
-            <md-option ng-repeat="provider in _providers" value="{{provider.name}}" ng-if='provider.type != "MetalProvider" && provider.type != ""'>
+            <md-option ng-repeat="provider in _providers" value="{{provider.name}}" ng-if="provider.type != 'MetalProvider' && provider.type != ''">
               {{provider.name}}
             </md-option>
           </md-select>
@@ -42,11 +42,11 @@
     </div>
 
     <h1>Add Public SSH Key (optional)</h1>
-      <span id="$index" ng-repeat='key in workloads.keys'>
-        <md-input-container class='md-block'>
+      <span id="$index" ng-repeat="key in workloads.keys">
+        <md-input-container class="md-block">
           <input type="text" aria-label="keys name" placeholder="Key Name" width="10" ng-model="workloads.keys[$index][0]">
         </md-input-container>
-        <md-input-container class='md-block'>
+        <md-input-container class="md-block">
           <input type="textarea" placeholder="Key Value" aria-label="key value" ng-model="workloads.keys[$index][1]">
         </md-input-container>
       </span>
