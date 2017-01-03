@@ -115,6 +115,22 @@ deployments controller
       return roles;
     };
 
+    $scope.getNodeRoleIds = function (deployment_id) {
+      var roles = [];
+
+      for(var i in $scope._node_roles) {
+        var role = $scope._node_roles[i];
+        if(role.node_id == phantoms[deployment_id].id)
+          roles.push(i);
+      }
+      roles.sort(function(a, b){
+        return $scope._roles[$scope._node_roles[a].role_id].cohort -
+          $scope._roles[$scope._node_roles[b].role_id].cohort;
+      });
+      return roles;
+
+    };
+
     // makes a map of node simpleState => number of nodes with that simpleState
     this.getNodeCounts = function (deployment, override) {
       var result = [0, 0, 0, 0];
