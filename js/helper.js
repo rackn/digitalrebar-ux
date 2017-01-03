@@ -23,7 +23,7 @@ api helper controller
         }
       };
 
-      $scope.$watch('method', function (method) {
+      $scope.$watchCollection('method', function (method) {
         if(method === 'patch' && $scope.payload == '{}')
           $scope.payload = '[\n  { "op": "replace/add/remove", "path": "/attrName", "value": "foo" }\n]'
       })

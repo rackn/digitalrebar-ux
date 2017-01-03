@@ -113,7 +113,7 @@ login controller
       };
 
       // make the loading icon appear immediately
-      $scope.$watch('login.host', function () {
+      $scope.$watchCollection('login.host', function () {
         $scope.delayTest();
       });
 

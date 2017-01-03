@@ -34,7 +34,7 @@ node role controller
       }
     }
 
-    $scope.$watch('scroll', $scope.updateScroll)
+    $scope.$watchCollection('scroll', $scope.updateScroll)
 
     this.selected = [];
 

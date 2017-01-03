@@ -24,7 +24,7 @@ angular.module('jsontext', []).directive('jsonText', function() {
 
       // $watch(attrs.ngModel) wouldn't work if this directive created a new scope;
       // see http://stackoverflow.com/questions/14693052/watch-ngmodel-from-inside-directive-using-isolate-scope how to do it then
-      scope.$watch(attrs.ngModel, function(newValue, oldValue) {
+      scope.$watchCollection(attrs.ngModel, function(newValue, oldValue) {
         lastValid = lastValid || newValue;
 
         if (newValue != oldValue) {
