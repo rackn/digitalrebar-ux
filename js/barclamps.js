@@ -79,7 +79,7 @@ barclamps controller
           }
         };
        };
-      console.log($scope.barclamp);
+      //console.log($scope.barclamp);
       $mdDialog.show({
         controller: 'DialogController',
         controllerAs: 'dialog',
