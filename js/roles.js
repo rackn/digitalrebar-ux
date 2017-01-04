@@ -83,7 +83,14 @@ role controller
         $scope.metadata = $scope.role.metadata
         if ($scope.role.jig_name=='script' && $scope.role.metadata)
           $scope.scripts = $scope.role.metadata.scripts;
-
+        if ($scope.role.jig_name=='ansible-playbook' && $scope.role.metadata.files) {
+          for (var i in $scope.metadata.files) {
+            if (typeof $scope.metadata.files[i].body === 'string')
+              $scope.metadata.files[i].temp = $scope.metadata.files[i].body;
+            else
+              $scope.metadata.files[i].temp = $scope.metadata.files[i].body.join("\n");
+          };
+        };
         if (!hasCallback) {
           hasCallback = true;
           $scope.$on('role' + $scope.role.id + "Done", updateRole);
@@ -130,17 +137,29 @@ role controller
   };
 
   $scope.addFile = function() {
-    s = {type: 'tasks', name: 'main.yml', body: '---\n- debug: msg="Ansibile Metadata Role"'};
+    s = {type: 'tasks', name: 'main.yml', body:
+          ['---',
+          '- debug: msg="Ansibile Metadata Role"',
+          '- debug: var="hints"',
+          '- debug: var="rebar_wall"']};
     $scope.metadata["files"].push(s);
   };
 
   $scope.saveAnsible = function(event) {
+    if ($scope.role.jig_name =='ansible-playbook' && $scope.metadata.files) {
+      for (var i in $scope.metadata.files) {
+        $scope.metadata.files[i].body = $scope.metadata.files[i].temp.split("\n")
+      };
+    };
     api("/api/v2/barclamps/" + $scope.role.barclamp_id).
     success(function(bc) {
       var roles = bc.cfg_data.roles;
       for (var r in roles) {
         if (roles[r].name == $scope.role.name) {
           roles[r].metadata = $scope.metadata;
+          for (var i in roles[r].metadata.files) {
+            delete roles[r].metadata.files[i].temp
+          };
           api.saveBarclamp(bc.cfg_data);
         };
       };

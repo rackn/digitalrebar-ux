@@ -680,8 +680,9 @@
 
       if (barclamp.cfg_data && typeof barclamp.cfg_data.wizard !== 'undefined') {
 
-        if (barclamp.cfg_data.wizard.version != 2)
-          return;
+        if (!barclamp.cfg_data.wizard) return;
+        if (!barclamp.cfg_data.wizard.version) return;
+        if (barclamp.cfg_data.wizard.version != 2) return;
 
         var exists = false;
         for (var i in $rootScope.wizardBarclamps) {

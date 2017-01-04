@@ -72,7 +72,7 @@ barclamps controller
                 name: "user_role" + name,
                 jig: "script",
                 metadata: {
-                  scripts: [ '#!/bin/bash\necho "hello"\nexit 0\n' ]
+                  scripts: [ '#!/bin/bash\necho "Show Available Attributes"\ncat $TMPDIR/attrs.json | jq .\nexit 0\n' ]
                 }
               }
             ]
