@@ -103,7 +103,6 @@ deployments controller
     // used to prevent lots of watchers from being called when creating a list of nodes
     $scope.getDeploymentRoleIds = function (deployment_id) {
       var roles = [];
-
       for (var i in $scope._deployment_roles) {
         var role = $scope._deployment_roles[i];
         if (role.deployment_id == deployment_id)
@@ -116,11 +115,12 @@ deployments controller
     };
 
     $scope.getNodeRoleIds = function (deployment_id) {
+      if(typeof $scope.phantoms[deployment_id] === "undefined")
+        return [];
       var roles = [];
-
       for(var i in $scope._node_roles) {
         var role = $scope._node_roles[i];
-        if(role.node_id == phantoms[deployment_id].id)
+        if(role.node_id == $scope.phantoms[deployment_id].id)
           roles.push(i);
       }
       roles.sort(function(a, b){
