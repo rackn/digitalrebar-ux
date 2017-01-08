@@ -58,7 +58,7 @@ barclamps controller
       var bc = $scope.barclamp;
       if (!bc) {
         var date = new Date();
-        var name = "_id"+ Math.round((Math.random() * 10000));
+        var name = "id"+ Math.round((Math.random() * 10000));
         // create template barclamp based on script
         $scope.barclamp = {
           name: name,
