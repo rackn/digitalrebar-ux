@@ -65,6 +65,10 @@
 
   <md-card-content>
     <table layout-padding>
+      <tr ng-if="serial">
+        <td class="label">Serial Number</td>
+        <td>{{ serial }}</td>
+      </tr>
       <tr>
         <td class="label">Description</td>
         <td>{{ node.description.length > 0 ? node.description : "[not set]" }}</td>
