@@ -189,6 +189,7 @@ dialog controller
 
     this.addNetwork = function () {
       locals.network.name = locals.network.category + "-" + locals.network.group;
+      //locals.network.allow_anon_leases
       api("/api/v2/networks", {
         method: "POST",
         data: locals.network

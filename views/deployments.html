@@ -274,6 +274,26 @@ deployments view
 
         <!-- Right side of toolbar -->
         <md-card-icon-actions layout-align="end center">
+          <md-menu md-position-mode="target-right target" ng-if="!deployment.system">
+            <span>
+              <md-icon ng-click="$mdOpenMenu($event)">group</md-icon>
+              <md-tooltip>
+                Edit Tenant
+              </md-tooltip>
+            </span>
+            <md-menu-content width="4">
+              <md-menu-item ng-repeat="tenant in _tenantsInOrder">
+                <md-button ng-click="assignDeploymentToTenant(deployment.id, tenant.id)">
+                  <div layout="row" flex>
+                    <p flex>{{tenant.name}}</p>
+                    <md-icon md-menu-align-target style="margin: auto 3px auto 0;">arrow_forward</md-icon>
+                  </div>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+
+
           <md-button class="md-icon-button" ng-if="!deployment.system" ng-click="redeployDeployment($event, id)">
             <md-icon>low_priority</md-icon>
             <md-tooltip>Redeploy All Nodes</md-tooltip>

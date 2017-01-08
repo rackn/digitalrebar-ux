@@ -58,16 +58,16 @@ deployments controller
       $scope.expand[deployment.id] = !$scope.expand[deployment.id];
 
       if ($scope.expand[deployment.id]) {
-        api("/api/v2/node_roles/graph?deployment_id="+deployment.id).
+        /*api("/api/v2/node_roles/graph?deployment_id="+deployment.id).
           success(function (obj) {
             var parsedData = vis.network.convertDot(obj["string"]);
             $scope.graphData[deployment.id] = {
               nodes: parsedData.nodes,
               edges: parsedData.edges
-            }
+            };
             $scope.graphOptions[deployment.id] = parsedData.options;
             $scope.graphOptions[deployment.id] = {
-/*
+
               layout: {
                 hierarchical: {
                   enabled:true,
@@ -76,12 +76,12 @@ deployments controller
                   sortMethod: 'directed'   // hubsize, directed
                 }
               }
-*/
-            }
+
+            };
           }).
           error(function (err) {
             api.toast("Error Getting Graph Data", 'node_role', err);
-          });
+          });*/
       }
     };
 
@@ -98,6 +98,15 @@ deployments controller
         return $scope._nodes[a].name.localeCompare($scope._nodes[b].name);
       });
       return nodes;
+    };
+
+    $scope.assignDeploymentToTenant = function (deployment_id, tenant_id) {
+      api("/api/v2/deployments/" + deployment_id, {
+        method: "PUT",
+        data: {
+          tenant_id: tenant_id
+        }
+      }).success(api.addDeployment);
     };
 
     // used to prevent lots of watchers from being called when creating a list of nodes
