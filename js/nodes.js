@@ -168,7 +168,7 @@ node controller
         }
       }
       return roles;
-    }
+    };
 
     // binds a node role to the deployment, role, and node
     $scope.bindNodeRole = function (role_id) {
@@ -247,12 +247,12 @@ node controller
                 api.toast('Error Redeploying Node', 'node', err);
               }).success(function () {
                 api.toast('Redeployed ' + nodes.selected.length + ' node' + (nodes.selected.length == 1 ? '' : 's'));
-              })
+              });
             }
-          })
+          });
         }
-      })
-    }
+      });
+    };
 
     $scope.saveAttrib = function () {
       if (!$scope.editing)
@@ -292,7 +292,7 @@ node controller
     };
 
     $scope.id = $routeParams.id;
-    $scope.target = { obj: 'node_id', id: $routeParams.id }
+    $scope.target = { obj: 'node_id', id: $routeParams.id };
     $scope.node = {};
     $scope.hasAttrib = -1;
     $scope.attribs = [];
@@ -339,7 +339,7 @@ node controller
             if (!$scope.nics[obj[i].network_id])
               $scope.nics[obj[i].network_id] = [];
             $scope.nics[obj[i].network_id].push(obj[i]);
-          };
+          }
         });
 
         if ($scope.hasAttrib == -1) {
@@ -347,9 +347,9 @@ node controller
           success(function (obj) {
             $scope.attribs = obj;
             obj.forEach(function (attrib) {
-              attrib.len = JSON.stringify(attrib.value).length
-              attrib.preview = JSON.stringify(attrib.value, null, '  ').trim().replace(/[\s\n]/g, '')
-              if (attrib.value == null)
+              attrib.len = JSON.stringify(attrib.value).length;
+              attrib.preview = JSON.stringify(attrib.value, null, '  ').trim().replace(/[\s\n]/g, '');
+              if (attrib.value === null)
                 attrib.value = 'Not Set';
               if (attrib.preview.length > 73)
                 attrib.preview = attrib.preview.substr(0, 67) + "...";
