@@ -24,7 +24,7 @@
             </a>
           </td>
           <td md-cell>
-            <a ng-href="#/barclamps/{{barclamp.barclamp_id}}">
+            <a ng-href="#/barclamps/{{barclamp.barclamp_id}}" ng-show='barclamp.name != _barclamps[barclamp.barclamp_id].name'>
               {{_barclamps[barclamp.barclamp_id].name}}
             </a>
           </td>

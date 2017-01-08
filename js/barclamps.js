@@ -58,18 +58,19 @@ barclamps controller
       var bc = $scope.barclamp;
       if (!bc) {
         var date = new Date();
-        var name = "_id"+ Math.round((Math.random() * 10000));
+        var name = "id"+ Math.round((Math.random() * 10000));
         // create template barclamp based on script
         $scope.barclamp = {
           name: name,
           cfg_data: {
             barclamp: {
-              name: name, display: name,
-              description: "user_workload" + name,
+              name: "workload_" + name,
+              description: "User Created Workload " + name,
               version: "0.0"
             }, roles: [
               {
-                name: "user_role" + name,
+                name: "user_role_" + name,
+                description: "User Created Role " + name,
                 jig: "script",
                 metadata: {
                   scripts: [ '#!/bin/bash\necho "Show Available Attributes"\ncat $TMPDIR/attrs.json | jq .\nexit 0\n' ]
