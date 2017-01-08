@@ -250,6 +250,17 @@ deployments controller
 
     // puts deployment into proposed status
     $scope.proposeDeployment = function (id) {
+      if ($scope._deployments[id].name === 'system')
+        $scope.confirm(event, {
+          title: "WARNING: Proposing System Deployment",
+          message: "Proposing the System Deployment may pause core functions. Continue?",
+          yesCallback: function() { $scope.proposeDeploymentNoCheck(id) }
+        });
+      else $scope.proposeDeploymentNoCheck(id);
+    };
+
+    // puts deployment into proposed status
+    $scope.proposeDeploymentNoCheck = function (id) {
       api("/api/v2/deployments/" + id + "/propose", { method: "PUT" }).
       success(api.addDeployment).
       error(function (err) {
