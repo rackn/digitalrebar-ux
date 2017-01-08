@@ -296,7 +296,8 @@ node controller
     $scope.node = {};
     $scope.hasAttrib = -1;
     $scope.attribs = [];
-    $scope.bmc = null;
+    $scope.serial = undefined;
+    $scope.bmc = undefined;
     $scope.power = [];
     $scope.nics = {};
     // icons used by nodes for power values
@@ -347,14 +348,17 @@ node controller
           success(function (obj) {
             $scope.attribs = obj;
             obj.forEach(function (attrib) {
-              attrib.len = JSON.stringify(attrib.value).length;
+              var blob = JSON.stringify(attrib.value);
+              attrib.len = blob.length;
               attrib.preview = JSON.stringify(attrib.value, null, '  ').trim().replace(/[\s\n]/g, '');
-              if (attrib.value === null)
+              if (typeof attrib.value === 'undefined')
                 attrib.value = 'Not Set';
               if (attrib.preview.length > 73)
                 attrib.preview = attrib.preview.substr(0, 67) + "...";
               if (attrib.name == 'ipmi-address')
                 $scope.bmc = attrib.value;
+              if (attrib.name == 'chassis_serial_number')
+                $scope.serial = attrib.value;
             });
             $scope.hasAttrib = 1;
           }).
