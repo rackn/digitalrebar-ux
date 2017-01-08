@@ -43,7 +43,7 @@
               Deployment
             </td>
             <td>
-              <md-select ng-model="locals.network.deployment_id">
+              <md-select ng-model="locals.network.deployment_id" style="margin: 0;">
                 <md-option ng-repeat="(id, deployment) in locals._deployments" value="{{id}}">{{deployment.name}}</md-option>
               </md-select>
             </td>
@@ -112,6 +112,48 @@
               <input type="text" class="table-input" ng-model="locals.network.pbr" />
             </td>
           </tr>
+          <tr>
+            <td class="label">
+              Allow Anon Leases
+            </td>
+            <td>
+              <md-switch ng-model="locals.network.allow_anon_leases" aria-label="Switch" style="margin: 0;">
+                <md-tooltip>
+                  Allow Anon Leases
+                </md-tooltip>
+              </md-switch>
+            </td>
+          </tr>
+          <tr ng-show="locals.network.allow_anon_leases">
+            <td class="label">
+              Anon Lease Time
+            </td>
+            <td>
+              <input type="number" min="15" class="table-input" ng-model="locals.network.anon_lease_time" placeholder="Seconds" />
+            </td>
+          </tr>
+          <tr>
+            <td class="label">
+              Allow Bound Leases
+            </td>
+            <td>
+              <md-switch ng-model="locals.network.allow_bound_leases" aria-label="Switch" style="margin: 0;">
+                <md-tooltip>
+                  Allow Bound Leases
+                </md-tooltip>
+              </md-switch>
+            </td>
+          </tr>
+          <tr ng-show="locals.network.allow_bound_leases">
+            <td class="label">
+              Bound Lease Time
+            </td>
+            <td>
+              <input type="number" min="15" class="table-input" ng-model="locals.network.bound_lease_time" placeholder="Seconds" />
+            </td>
+          </tr>
+
+
 
         </table>
 

@@ -63,7 +63,11 @@ network controller
             bridge: null,
             team_mode: null,
             conduit: "10g1",
-            pbr: null
+            pbr: null,
+            allow_anon_leases: true,
+            allow_bound_leases: false,
+            anon_lease_time: 60,
+            bound_lease_time: 2.592e+06
           },
           _deployments: $scope._deployments
         },
