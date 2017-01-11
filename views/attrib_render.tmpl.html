@@ -11,8 +11,8 @@
     <table layout-padding flex>
       <tbody>
         <tr ng-repeat="attrib in attribs | orderBy:'name'">
-          <td class="label" valign="top">
-            <a ng-click="alert(attrib.id)" title="{{attrib.description}}">
+          <td class="label" valign="top" >
+            <a ng-click="editAttribInHelper(attrib.id)" title="{{attrib.description}}">
               {{attrib.name}}
             </a>
           </td>
