@@ -2,7 +2,7 @@
 node role controller
 */
 (function () {
-  angular.module('app').controller('NodeRolesCtrl', function ($scope, $location, debounce, $routeParams, $mdMedia, $mdDialog, $timeout, api) {
+  angular.module('app').controller('NodeRolesCtrl', function ($scope, $location, debounce, $routeParams, $mdMedia, $mdDialog, $timeout, localStorageService, api) {
 
     $scope.$emit('title', 'Node Roles'); // shows up on the top toolbar
 
@@ -37,6 +37,12 @@ node role controller
     $scope.$watchCollection('scroll', $scope.updateScroll)
 
     this.selected = [];
+
+    $scope.editAttribInHelper = function (id) {
+      localStorageService.add('api_helper_method', 'get');
+      localStorageService.add('api_helper_route', '/api/v2/attribs/' + id);
+      $location.path("/api_helper");
+    };
 
     // converts the _node_roles object that rootScope has into an array
     $scope.getNodeRoles = function () {
