@@ -157,8 +157,7 @@ network controller
         var original = $scope._ranges[id];
         if (JSON.stringify(range) === JSON.stringify(original))
           return;
-        console.log(range);
-        api("/api/v2/network_ranges/" + id, {
+        api("/api/v2/network_ranges/" + range.id, {
           method: "PUT",
           data: range
         }).
