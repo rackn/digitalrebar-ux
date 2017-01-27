@@ -269,18 +269,20 @@
               </td>
               <td>
                 <input ng-show='range.allow_anon_leases' type="number" class="table-input" ng-readonly="!editingRanges" ng-model="range.anon_lease_time" />
+                <span ng-show='range.name=="dhcp" && !range.allow_anon_leases'>tip: set Anon Lease</span>
               </td>
               <td>
                 <input type="checkbox" ng-readonly="!editingRanges" ng-model="range.allow_bound_leases" />
               </td>
               <td>
                 <input ng-show='range.allow_bound_leases' type="number" class="table-input" ng-readonly="!editingRanges" ng-model="range.bound_lease_time" />
+                <span ng-show='range.name=="host" && !range.allow_bound_leases'>tip: set Bound Lease</span>
               </td>
               <td>
                 <md-button class="md-icon-button" ng-click="deleteRange(range.id)">
                   <md-icon>delete</md-icon>
                   <md-tooltip>Delete Range</md-tooltip>
-                </md-button>
+                </md-button>                
               </td>
             </tr>
           </tbody>
