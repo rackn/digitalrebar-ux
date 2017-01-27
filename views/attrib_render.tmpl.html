@@ -43,8 +43,8 @@
               <input type="text" class="table-input" ng-readonly="!attrib.writable || attrib.writable && !editing" style="font-family: monospace;" ng-model="attrib.value" />
             </div>
           </td>
-          <td ng-if="attrib.writable">
-            <md-button class="md-icon-button" ng-click="showEditAttribDialog($event, attrib, target)">
+          <td>
+            <md-button class="md-icon-button" ng-click="showEditAttribDialog($event, attrib, target)" ng-if="attrib.writable">
               <md-icon>
                 edit
               </md-icon>
@@ -53,7 +53,17 @@
               </md-tooltip>
             </md-button>
           </td>
-          <td><pre>(type: {{ attrib.schema.type }}, default: {{ (attrib.default.value || "not set") | json }})</pre></td>
+          <td ng-switch="attrib.schema.type">
+            <div data-ng-switch-when="map">
+              <div ng-click="visible=!visible">Type: {{ attrib.schema.type || "not set"}}. Default...</div>
+              <pre ng-show="visible">{{ (attrib.default.value || "not set") | json }}</pre>
+            </div>
+            <div data-ng-switch-when="seq">
+              <div ng-click="visible=!visible">Type: {{ attrib.schema.type || "not set"}}. Default...</div>
+              <pre ng-show="visible">{{ (attrib.default.value || "not set") | json }}</pre>
+            </div>
+            <div data-ng-switch-default>Type: {{ attrib.schema.type || "not set"}}, Default: {{ (attrib.default.value || "not set") }}</div>
+          </td>
         </tr>
       </tbody>
     </table>
