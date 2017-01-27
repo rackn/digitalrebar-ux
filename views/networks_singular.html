@@ -185,6 +185,7 @@
         </td>
       </tr>
     </table>
+  Questions? See the <a href="http://digital-rebar.readthedocs.io/en/latest/deployment/networks/README.html">Networking Specific Help</a>.
   </md-card-content>
 </md-card>
 
@@ -248,6 +249,9 @@
             <th>Name</th>
             <th>First IP</th>
             <th>Last IP</th>
+            <th colspan="2">Anon Lease</th>
+            <th colspan="2">Bound Lease</th>
+            <th></th>
           </thead>
           <tbody>
             <tr ng-repeat="(id, range) in ranges">
@@ -259,6 +263,18 @@
               </td>
               <td>
                 <input type="text" class="table-input" ng-readonly="!editingRanges" ng-model="range.last" />
+              </td>
+              <td>
+                <input type="checkbox" ng-readonly="!editingRanges" ng-model="range.allow_anon_leases" />
+              </td>
+              <td>
+                <input ng-show='range.allow_anon_leases' type="number" class="table-input" ng-readonly="!editingRanges" ng-model="range.anon_lease_time" />
+              </td>
+              <td>
+                <input type="checkbox" ng-readonly="!editingRanges" ng-model="range.allow_bound_leases" />
+              </td>
+              <td>
+                <input ng-show='range.allow_bound_leases' type="number" class="table-input" ng-readonly="!editingRanges" ng-model="range.bound_lease_time" />
               </td>
               <td>
                 <md-button class="md-icon-button" ng-click="deleteRange(range.id)">
