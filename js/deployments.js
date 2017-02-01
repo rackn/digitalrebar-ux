@@ -118,7 +118,30 @@ deployments controller
           roles.push(i);
       }
       roles.sort(function(a, b){
-        return $scope._deployment_roles[a].cohort - $scope._deployment_roles[b].cohort;
+        var rac = 0;
+        var rbc = 0;
+
+        if (typeof a != 'undefined') {
+          var dra = $scope._deployment_roles[a];
+          if (typeof dra != 'undefined') {
+            var ra = $scope._roles[dra.role_id];
+            if (typeof ra != 'undefined') {
+              rac = ra.cohort
+            }
+          }
+        }
+
+        if (typeof b != 'undefined') {
+          var drb = $scope._deployment_roles[b];
+            if (typeof drb != 'undefined') {
+              var rb = $scope._roles[drb.role_id];
+              if (typeof rb != 'undefined') {
+                rbc = rb.cohort
+              }
+            }
+          }
+
+        return rac - rbc;
       });
       return roles;
     };
@@ -133,8 +156,30 @@ deployments controller
           roles.push(i);
       }
       roles.sort(function(a, b){
-        return $scope._roles[$scope._node_roles[a].role_id].cohort -
-          $scope._roles[$scope._node_roles[b].role_id].cohort;
+        var rac = 0;
+        var rbc = 0;
+
+        if (typeof a != 'undefined') {
+          var dra = $scope._node_roles[a];
+          if (typeof dra != 'undefined') {
+            var ra = $scope._roles[dra.role_id];
+            if (typeof ra != 'undefined') {
+              rac = ra.cohort
+            }
+          }
+        }
+
+        if (typeof b != 'undefined') {
+          var drb = $scope._node_roles[b];
+            if (typeof drb != 'undefined') {
+              var rb = $scope._roles[drb.role_id];
+              if (typeof rb != 'undefined') {
+                rbc = rb.cohort
+              }
+            }
+          }
+
+        return rac - rbc;
       });
       return roles;
 
