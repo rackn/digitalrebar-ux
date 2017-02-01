@@ -25,17 +25,20 @@
 
         <md-input-container class="md-block">
           <label>Description</label>
-          <input required type="text" name="description1" md-required="false" md-maxlength="80" ng-model="locals.description1" />
+          <input type="text" name="description1" md-maxlength="80" ng-model="locals.description1" />
           <div ng-messages="nodeForm.name.$error">
             <div ng-message="md-maxlength">Entered name is too long (80 char max)</div>
           </div>
         </md-input-container>
 
         <md-input-container class="md-block" style="padding-bottom: 16px;">
-          <section layout-padding ng-hide="locals._profiles.length > 0">
+          <section layout-padding style="overflow-x: auto;" ng-if="locals._profiles.length == 0">
             No Profiles Available
           </section>
-          <section layout-padding style="overflow-x: auto;" ng-if="locals._profiles.length > 0">
+        </md-input-container>
+
+        <md-input-container class="md-block" style="padding-bottom: 16px;">
+          <section layout-padding style="overflow-x: auto;" ng-if="locals.profiles1.length > 0 || locals._profiles.length > 0">
             <md-chips ng-model="locals.profiles1" placeholder="Profiles (optional)" md-require-match="true">
               <md-chip-template style="font-family: monospace;">
                 {{ $chip }}
