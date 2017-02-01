@@ -240,7 +240,7 @@
     };
 
     api.fetch = function (name, id) {
-      headers = {};
+      var headers = {};
       if (name == 'node_role')
         headers = { 'headers': {'x-return-attributes':'["id","name","deployment_id","role_id","node_id","state","cohort","run_count","status","available","order","created_at","updated_at","uuid","tenant_id","node_error"]'}};
       return api("/api/v2/" + name + "s/" + id, headers).
