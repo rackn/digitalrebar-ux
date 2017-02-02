@@ -73,8 +73,13 @@ workloads controller
           if (workloads.selected.length == 0)
             return output ? [false, 'You must select at least one node'] : false;
 
-          var control = 0;
-          var hasControl = false;
+          var control = {};
+          var hasControl = {};
+          for (var j in wizard.services) {
+            var service = wizard.services[j];
+            control[service.name] = 0;
+            hasControl[service.name] = false;
+          }
           for (var i in workloads.selected) {
             var canHaveRequired = false;
             var hasRequired = false;
@@ -83,7 +88,7 @@ workloads controller
               var service = wizard.services[j];
               var hasService = serviceMap[node.id][service.name];
               if (service.type == 'control')
-                hasControl = true;
+                hasControl[service.name] = true;
 
               if (service.type == 'required')
                 canHaveRequired = true;
@@ -92,14 +97,17 @@ workloads controller
                 hasRequired = true;
 
               if (hasService && service.type == 'control') {
-                control++;
+                control[service.name]++;
               }
             }
             if (!hasRequired && canHaveRequired)
               return output ? [false, 'Every node must have a Required Service'] : false;
           }
-          if (control % 2 != 1 && hasControl)
-            return output ? [false, 'An Odd Number of Control Services is Required'] : false;
+          for (var j in wizard.services) {
+            var name = wizard.services[j].name;
+            if (control[name] % 2 != 1 && hasControl[name])
+              return output ? [false, "An Odd Number of " + wizard.services[j].description + " Control Services is Required"] : false;
+          }
 
           return output ? [true, ''] : true;
         }
