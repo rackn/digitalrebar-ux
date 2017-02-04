@@ -37,10 +37,6 @@ workloads controller
             // no deployment selected
             if (!deployment)
               return false;
-
-            // deployment isn't proposed
-            if (deployment.state != 0)
-              return false;            
           }
           // set use system based on wizard
           workloads.use_system = !wizard.create_nodes;
