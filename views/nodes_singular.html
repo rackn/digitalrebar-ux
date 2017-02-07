@@ -16,21 +16,34 @@
         <md-icon>{{ powers[pb] || powers["on"] }}</md-icon>
         <md-tooltip>{{ pb }}</md-tooltip>
       </md-button>
-      <md-button class="md-icon-button" aria-label="redeploy" ng-click="redeploy()">
-        <md-icon>low_priority</md-icon>
-        <md-tooltip>Redeploy Node</md-tooltip>
-      </md-button>
-      <md-menu md-position-mode="target-right target" style="padding: 0;">
-        <md-button class="md-icon-button" aria-label="bind" ng-click="$mdOpenMenu($event)">
+      <md-menu md-position-mode="target-right target">
+        <md-button class="md-icon-button" aria-label="redeploy" ng-click="$mdOpenMenu($event)">
+          <md-icon>low_priority</md-icon>
+          <md-tooltip>Redeploy Node</md-tooltip>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item ng-click="redeploy()">
+            <md-button aria-lanel="current OS">Keep Current O/S</md-button>
+          </md-menu-item>
+          <md-menu-item ng-repeat="env in _provisioner.bootenvs | filter:{Available:true} | orderBy:'OS.name'">
+            <md-button aria-label="{{ env.OS.Name }}" ng-click="redeploy(env.OS.Name)">
+              {{env.OS.Name }}
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      <md-menu md-position-mode="target-right target">
+        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
           <md-icon>link</md-icon>
           <md-tooltip>Bind Node Role</md-tooltip>
         </md-button>
         <md-menu-content width="4">
           <md-menu-item ng-repeat="role in getRoles() | orderBy:'name'">
             <md-button aria-label="{{ _roles[role.id].name }}" ng-click="bindNodeRole(role.role_id)">
-              <md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{_roles[role.id].icon}}</md-icon>
-              <md-title>{{ _roles[role.id].name }}</md-title>
-              <md-tooltip>{{ _roles[role.id].description }}</md-tooltip>
+              <div layout="row" flex>
+                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">{{_roles[role.id].icon}}</md-icon>
+                <p flex>{{ _roles[role.id].name }}</p>
+              </div>
             </md-button>
           </md-menu-item>
           <md-menu-item ng-if="getRoles().length == 0">
