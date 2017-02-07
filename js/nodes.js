@@ -205,19 +205,44 @@ node controller
       });
     };
 
-    $scope.redeploy = function () {
+    $scope.redeploy = function (target) {
       $scope.confirm(event, {
         title: "Redeploy Node",
         message: "Are you sure you want to redeploy this node?",
         yesCallback: function () {
-          // if we have a valid node selected
-          if ($scope.node.id) {
-            api('/api/v2/nodes/' + $scope.node.id + '/redeploy', {
+          $scope.redeploy_target($scope.node.id, target);
+        }
+      });
+    };
+
+    $scope.redeploy_target = function (node_id, target) {
+      api('/api/v2/nodes/' + node_id + '/propose', {
+        method: 'PUT'})
+      .success(function () {
+        if (target) {
+          api('/api/v2/nodes/' + node_id + '/attribs/provisioner-target_os', {
+            method: 'GET'}).success(function (a) {
+              api('/api/v2/attribs/' + a.id, {
+                method: 'PUT',
+                data: { "node_id": a.node_id, "role_id": a.role_id, "value": target }
+            }).success(
+              api('/api/v2/nodes/' + node_id + '/redeploy', {
+                method: 'PUT'
+              }).error(function (err) {
+                api.toast('Error Redeploying Node', 'node', err);
+              }).success(function () {
+                api.toast('Redeployed node ' + node_id);
+              })
+            );
+          });
+        } else {
+          api('/api/v2/nodes/' + node_id + '/redeploy', {
               method: 'PUT'
-            }).success(api.addNode).error(function (err) {
+            }).error(function (err) {
               api.toast('Error Redeploying Node', 'node', err);
+            }).success(function () {
+              api.toast('Redeployed node ' + node_id);
             });
-          }
         }
       });
     };
