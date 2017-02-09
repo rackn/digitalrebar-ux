@@ -31,7 +31,7 @@ workloads controller
             // no deployment selected
             var deployment = workloads.name;
             if (!deployment)
-              return false;            
+              return false;
           } else {
             var deployment = $scope._deployments[workloads.deployment_id];
             // no deployment selected
@@ -291,6 +291,7 @@ workloads controller
         if (wizard.create_nodes){
           // create nodes from service list
           for (var i = 0; i < wizard.services.length; i++) {
+            var name = wizard.services[i].name;
             var type = wizard.services[i].type;
             var count = wizard.services[i].count;
             if (count > 0 && (type === "control" || type === "worker")) {
@@ -299,7 +300,7 @@ workloads controller
                 var nid = $scope.newId--;
                 var node = {
                   id: nid,
-                  name: -nid + "-create-" + type + "-" + (j+1),
+                  name: -nid + "-create-" + name + "-" + (j+1),
                   order: nid
                 };
                 // service map nodes
@@ -478,13 +479,13 @@ workloads controller
         console.log("JSON generating nodes in " + data);
 
         var virtualNodes = 0;
+        var gcount = 0;
         data.nodes = [];
 
         for (var i in workloads.selected) {
           var node = workloads.selected[i];
           var id = node.id;
           var roles = [];
-          var label = "node";
 
           console.log("JSON generate adding roles to node " + node);
           for (var j in wizard.services) {
@@ -497,9 +498,6 @@ workloads controller
                   var reqs = serviceRoles[l];
                   if (serviceMap[node.id][k] && roles.indexOf(reqs) < 0) {
                     roles.push(reqs);
-                    // figure out name for label (assume not BOTH cluster and worker)
-                    if (label === "node" && (k === "control" || k === "worker"))
-                      label = k;
                   }
                 }
               }
@@ -529,9 +527,10 @@ workloads controller
             }
 
             if (!existing) {
+              gcount += 1;
               data.nodes.push({
                 id: -(++virtualNodes),
-                prefix: workloads.name + "-" + label,
+                prefix: workloads.name + "-group-" + gcount,
                 roles: roles,
                 count: 1,
               });
