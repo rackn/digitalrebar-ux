@@ -18,6 +18,11 @@
       <div style="width: 800px auto; margin-left: 1em; display: inline-block; overflow-x: auto;">
        <span style="font-size: 1em;">&quot;*&quot; = Required, &quot;=&quot; = Wildcard</span>
         <pre>{{locals.api.exampleFromSchema(locals.attrib.schema) | json}}</pre>
+        <br>
+        <div ng-show="locals.attrib.schema.enum">
+          Enum:
+          <pre>{{locals.attrib.schema.enum | json}}</pre>
+        </div>
       </div>
     </md-dialog-content>
     <md-dialog-actions>
