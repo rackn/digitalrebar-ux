@@ -2,7 +2,7 @@
 provisioner machines view
 -->
 <div>
-  <md-card ng-repeat="machine in _provisioner.machines" flex="100">
+  <md-card ng-repeat="machine in _provisioner.machines | orderBy:Name " flex="100">
 
     <md-toolbar md-theme="status_{{states[nodeMap[machine.Uuid].state]}}" ng-click="expand[machine.Uuid]=!expand[machine.Uuid]" md-ink-ripple>
       <div class="md-toolbar-tools" display="row">
@@ -17,7 +17,7 @@ provisioner machines view
         <h2 flex>
           &nbsp;
           <span>
-            {{machine.Name}}
+            {{machine.Name}} [{{_deployments[nodeMap[machine.Uuid].deployment_id].name}}]
             <md-tooltip>
               {{machine.Uuid}}
             </md-tooltip>
