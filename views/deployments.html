@@ -47,98 +47,61 @@ deployments view
     <!-- Tabs that appear after the expand button is pressed -->
     <section ng-slide-down="expand[id]" duration="0.5">
 
-      <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
-
-        <!-- Nodes tab -->
-        <md-tab label="Nodes">
-          <!-- Add all the nodes as list items -->
-          <span ng-repeat="node_id in getNodeIds(id)">
-              <!-- Node button -->
-              <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(_nodes[node_id]) }}" ng-href="#/nodes/{{node_id}}">
-                <md-tooltip md-direction="bottom">
-                  {{_nodes[node_id].name}}
-                </md-tooltip>
-                <md-icon aria-label="{{ api.getNodeStatus(_nodes[node_id]) }}">{{ api.getNodeIcon(_nodes[node_id]) }}</md-icon>
-              </md-button>
-            </span>
-
-        </md-tab>
-
-        <!-- Roles tab -->
-        <md-tab label="Roles">
-
-          <!-- Add all the Deployment Roles-->
-          <span ng-repeat="role_id in getDeploymentRoleIds(id)">
-            <md-button class="md-fab md-primary md-mini" ng-href="#/deployment_roles/{{role_id}}">
-              <md-tooltip md-direction="bottom">
-                {{_roles[_deployment_roles[role_id].role_id].name}}
-              </md-tooltip>
-              <md-icon aria-label="{{_roles[_deployment_roles[role_id].role_id].icon}}">{{_roles[_deployment_roles[role_id].role_id].icon}}</md-icon>
-            </md-button>
-          </span>
-        </md-tab>
-
-        <!-- Node/Roles Matrix tab -->
-        <md-tab label="Matrix" layout-padding layout="row">
-          <div style="text-align: right; width: 100%;">
-            <h3 style="margin-right: 1em">Services</h3>
-            <span ng-repeat="role_id in getNodeRoleIds(id)">
-              <md-button class="md-primary md-raised square-button" md-theme="status_{{_node_roles[role_id].status}}" ng-href="#/node_roles/{{role_id}}">
-                <md-tooltip md-direction="bottom">
-                  {{_roles[_node_roles[role_id].role_id].name}}
-                </md-tooltip>
-                <md-icon aria-label="role icon">{{_roles[_node_roles[role_id].role_id].icon}}</md-icon>
-              </md-button>
-            </span>
-          </div>
-          <div style="overflow-x: auto">
-            <table>
-              <thead>
-                <th></th>
-                <th valign="bottom">Nodes</th>
-                <th ng-repeat="id in matrix_order[deployment.id]" class="angled">
-                  <div>
-                    <a ng-href="#/deployment_roles/{{id}}">
-                      <md-icon style="transform: rotateZ(45deg)">{{_roles[_deployment_roles[id].role_id].icon}}</md-icon>
-                      {{_roles[_deployment_roles[id].role_id].name}}
-                    </a>
-                  </div>
-                </th>
-              </thead>
-              <tbody>
-                <tr ng-repeat="node_id in getNodeIds(deployment.id)">
-                  <td>
-                    <span>
-                      <md-icon class="status" swap-md-paint-bg="status_{{ api.getNodeStatus(_nodes[node_id]) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(_nodes[node_id]) }} foreground">
-                        {{ api.getNodeIcon(_nodes[node_id]) }}
-                      </md-icon>
-                      <md-tooltip>
-                        {{!_nodes[node_id].alive ? 'off' : _nodes[node_id].status}}
-                      </md-tooltip>
-                    </span>
-                  </td>
-                  <td class="label">
-                    <a ng-href="#/nodes/{{node_id}}" title="{{_nodes[node_id].name}}">{{api.truncName(_nodes[node_id].name)}}</a>
-                  </td>
-                  <td ng-repeat="id in matrix_order[deployment.id]">
-                    <span ng-if="matrix[deployment.id][id][node_id]">
-                      <md-icon class="status" swap-md-paint-bg="status_{{_node_roles[matrix[deployment.id][id][node_id]].status}} primary" swap-md-paint-fg="status_{{_node_roles[matrix[deployment.id][id][node_id]].status}} foreground" ng-click="setPath('/node_roles/'+matrix[deployment.id][id][node_id])">
-                        {{icons[_node_roles[matrix[deployment.id][id][node_id]].status]}}
-                      </md-icon>
-                      <md-tooltip>
-                        {{_node_roles[matrix[deployment.id][id][node_id]].status}}
-                      </md-tooltip>
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </md-tab>
-
-      </md-tabs>
-
-      <md-divider></md-divider>
+      <!-- Node/Roles Matrix tab -->
+      <div style="text-align: right; width: 100%; padding-right: 1em">
+        <strong style="font-size: 120%">Services:</strong>
+        <span ng-repeat="role_id in getNodeRoleIds(id)">
+          <md-button class="md-primary md-raised square-button" md-theme="status_{{_node_roles[role_id].status}}" ng-href="#/node_roles/{{role_id}}">
+            <md-tooltip md-direction="bottom">
+              {{_roles[_node_roles[role_id].role_id].name}}
+            </md-tooltip>
+            <md-icon aria-label="role icon">{{_roles[_node_roles[role_id].role_id].icon}}</md-icon>
+          </md-button>
+        </span>
+      </div>
+      <div flex style="overflow-x: auto; padding-left: 1em">
+        <table>
+          <thead>
+            <th></th>
+            <th valign="bottom">Nodes</th>
+            <th ng-repeat="id in matrix_order[deployment.id]" class="angled">
+              <div>
+                <a ng-href="#/deployment_roles/{{id}}">
+                  <md-icon style="transform: rotateZ(45deg)">{{_roles[_deployment_roles[id].role_id].icon}}</md-icon>
+                  {{_roles[_deployment_roles[id].role_id].name}}
+                </a>
+              </div>
+            </th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="node_id in getNodeIds(deployment.id)">
+              <td>
+                <span>
+                  <md-icon class="status" swap-md-paint-bg="status_{{ api.getNodeStatus(_nodes[node_id]) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(_nodes[node_id]) }} foreground">
+                    {{ api.getNodeIcon(_nodes[node_id]) }}
+                  </md-icon>
+                  <md-tooltip>
+                    {{!_nodes[node_id].alive ? 'off' : _nodes[node_id].status}}
+                  </md-tooltip>
+                </span>
+              </td>
+              <td class="label">
+                <a ng-href="#/nodes/{{node_id}}" title="{{_nodes[node_id].name}}">{{api.truncName(_nodes[node_id].name)}}</a>
+              </td>
+              <td ng-repeat="id in matrix_order[deployment.id]">
+                <span ng-if="matrix[deployment.id][id][node_id]">
+                  <md-icon class="status" swap-md-paint-bg="status_{{_node_roles[matrix[deployment.id][id][node_id]].status}} primary" swap-md-paint-fg="status_{{_node_roles[matrix[deployment.id][id][node_id]].status}} foreground" ng-click="setPath('/node_roles/'+matrix[deployment.id][id][node_id])">
+                    {{icons[_node_roles[matrix[deployment.id][id][node_id]].status]}}
+                  </md-icon>
+                  <md-tooltip>
+                    {{_node_roles[matrix[deployment.id][id][node_id]].status}}
+                  </md-tooltip>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <!-- Bind Section -->
       <md-card ng-slide-down="binding[id]" lazy-render layout="column">
