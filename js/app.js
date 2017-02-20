@@ -497,10 +497,6 @@ var version = '0.1.5';
         path: '/capabilities'
       }]
     }, {
-      title: 'Settings',
-      icon: 'settings',
-      path: '/settings'
-    }, {
       title: 'Alerts',
       icon: 'error',
       path: '/alerts'
