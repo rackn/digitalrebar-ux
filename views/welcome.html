@@ -3,33 +3,94 @@ welcome view
 -->
 <div style="padding: 1em">
 
-  <md-card flex="100" style="padding: 1em">
-    <h3>Welcome</h3>
-    <div>
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Welcome</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
       The <a href="http://rebar.digital">Digital Rebar Project</a> by <a href="http://rackn.com">RackN</a> is a container-ready, infrastructure-as-code provisioning platform that delivers the best of software deployment automation and orchestration without locking you into a single hardware platform or operating system. Our mission is to embrace the heterogenous nature of data center operations.
-    </div>
+    </md-card-content>
   </md-card>
 
 
-  <md-card flex="100" style="padding: 1em">
-    <h3>Help Resources</h3>
-    <a target="_new" ng-href="http://digital-rebar.readthedocs.io/en/latest/BOOK.html">
-      <md-button class="md-icon-button">
-        <md-tooltip>
-          Documentation
-        </md-tooltip>
-        <md-icon>help</md-icon>
-      </md-button>
-      Digital Rebar Documentation
-    </a>
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Help Resources</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <a target="_new" ng-href="http://digital-rebar.readthedocs.io/en/latest/BOOK.html">
+        <md-button class="md-icon-button">
+          <md-tooltip>
+            Documentation
+          </md-tooltip>
+          <md-icon>help</md-icon>
+        </md-button>
+        Digital Rebar Documentation
+      </a>
+    </md-card-content>
   </md-card>
 
-  <md-card flex="100" style="padding: 1em">
-    <h3>Video Tour</h3>
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Video Guided Tour</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content layout="column" style="column-count: 2;">
+
+      <md-card layout="row">
+        <iframe width="400" height="240" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+        <div>
+          <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline">Rick Rolling</span>
+              <span class="md-subhead">Rolling Rick with Astley</span>
+            </md-card-title-text>
+          </md-card-title>
+          <md-card-content>
+            Learn how to meme with the king of memes himself. This tutorial covers deploying and scaling memes with the Digital Rebar Interface.
+          </md-card-content>
+          <md-card-actions layout="row" layout-align="end center">
+            <md-button></md-button>
+            <md-button></md-button>
+          </md-card-actions>
+        </div>
+      </md-card>
+
+      <md-card layout="row">
+        <iframe width="400" height="240" src="https://www.youtube.com/embed/EMBEDCODE" frameborder="0" allowfullscreen></iframe>
+        <div>
+          <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline">Name of Video</span>
+              <span class="md-subhead">You could remove this subheader</span>
+            </md-card-title-text>
+          </md-card-title>
+          <md-card-content>
+            Sh
+          </md-card-content>
+          <md-card-actions layout="row" layout-align="end center">
+            <md-button></md-button>
+            <md-button></md-button>
+          </md-card-actions>
+        </div>
+      </md-card>
+
+    </md-card-content>
   </md-card>
 
-  <md-card flex="100" style="padding: 1em">
-    <h3>Getting Started</h3>
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Getting Started</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+    </md-card-content>
   </md-card>
 
 </div>
