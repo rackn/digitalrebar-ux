@@ -65,10 +65,17 @@ welcome view
       </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        The simplest way to start using Digital Rebar is to use the Workloads wizards to deploy pre-built applications or operating systems; however, before you can take those actions you must either have discovered servers provisioner or created a provider using cloud credentials.  Generally, it's easier to start by adding a provider.
+      The simplest way to start using Digital Rebar is to use the Workloads (<md-icon>work</md-icon>) wizards to deploy pre-built applications or operating systems; however, before you can take those actions you must either have discovered Nodes (<md-icon>dns</md-icon>) via the Provisioner (<md-icon>local_shipping</md-icon>) or created a Provider (<md-icon>filter_drama</md-icon>) using cloud credentials.  Generally, it's easier to start by adding a Provider.
     </md-card-content>
     <md-card-content>
-        Adding a provider requires that you have an account and access key for one of the supported clouds.
+      Adding a Provider (<md-icon>filter_drama</md-icon>) requires that you have an account and access key for one of the supported clouds.  When adding a Provider, you will want to test creating a Node (<md-icon>dns</md-icon>) using that provider and checking that it got created on the target cloud.  You can monitor the process using "docker logs -f compose_cloudwrap_1" from the Digital Rebar host system.
+    </md-card-content>
+    <md-card-content>
+      Workloads (<md-icon>work</md-icon>) wizard will create Nodes (<md-icon>dns</md-icon>) and put them in a Deployment (<md-icon>dashboard</md-icon>).  Each deployment is shown as a matrix with rows of nodes and columns of Roles (<md-icon>label_outline</md-icon>).  Roles determine the functions that have been assigned to each node.  Each assignment, known as a node-role, has a state.  The node-role states are updated dynamically while Digital Rebar completes the deployment.  You can use top-right corner buttons to Refresh (<md-icon>refresh</md-icon>) for latest state or review the queue (<md-icon>track_changes</md-icon>) of all pending work.
+    </md-card-content>
+    <md-card-content>
+      Node and Node-Role status indicators are common throughout the Digital Rebar UX.  Completed actions are considered Ready (<md-icon>check_circle</md-icon>) or Error (<md-icon>warning</md-icon>) if something went wrong.  Actions that are in Process (<md-icon>autorenew</md-icon>) have live log updates while pending action is shown as Todo (<md-icon>play_circle_outline</md-icon>) or Queued (<md-icon>update</md-icon>).  Digital Rebar cannot act if a node-role is waiting for user input as Proposed (<md-icon>add_circle_outline</md-icon>) or Reserved 
+      (<md-icon>pause_circle_outline</md-icon>).  It also cannot act on nodes that are off (<md-icon>power_settings_new</md-icon>).
     </md-card-content>
   </md-card>
 
