@@ -3,93 +3,72 @@ welcome view
 -->
 <div style="padding: 1em">
 
-  <md-card flex>
+  <md-card layout="column">
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">Welcome</span>
+        <span class="md-headline"><md-icon title="welcome">face</md-icon> Welcome</span>
       </md-card-title-text>
+      <span>
+        <a href="http://rebar.digital">Digital Rebar Project</a> by <a href="http://rackn.com">RackN</a>
+      </span>
     </md-card-title>
-    <md-card-content>
-      The <a href="http://rebar.digital">Digital Rebar Project</a> by <a href="http://rackn.com">RackN</a> is a container-ready, infrastructure-as-code provisioning platform that delivers the best of software deployment automation and orchestration without locking you into a single hardware platform or operating system. Our mission is to embrace the heterogenous nature of data center operations.
+    <md-card-content flex>
+      We believe that great applications start with a solid automation foundation. We've created Digital Rebar to unify management of heterogeneous physical and cloud infrastructure in an open, scalable way.
+      <md-card-actions layout="row" layout-align="left">
+        <md-button href="http://rebar.digital" target="_new"><md-icon>home</md-icon> Home</md-button>
+        <md-button href="http://digital-rebar.readthedocs.io/en/latest/BOOK.html" target="_new"><md-icon>help</md-icon> Documenation</md-button>
+        <md-button href="https://gitter.im/digitalrebar/core" target="_new"><md-icon>chat</md-icon> Chat</md-button>
+        <md-button href="https://github.com/digitalrebar/digitalrebar/issues" target="_new"><md-icon>bug_report</md-icon> Issues</md-button>
+        <md-button href="https://github.com/digitalrebar/digitalrebar" target="_new"><md-icon>code</md-icon> Source Code</md-button>
+        <md-button href="https://twitter.com/digitalrebar" target="_new"><md-icon>sentiment_satisfied</md-icon> Social</md-button>
+        <md-button href="https://github.com/rackn/digitalrebar-ux/blob/master/LICENSE.rst" target="_new"><md-icon>account_balance</md-icon> License</md-button>
+      </md-card-actions>
     </md-card-content>
+
   </md-card>
 
 
   <md-card flex>
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline">Help Resources</span>
-      </md-card-title-text>
-    </md-card-title>
-    <md-card-content>
-      <a target="_new" ng-href="http://digital-rebar.readthedocs.io/en/latest/BOOK.html">
-        <md-button class="md-icon-button">
-          <md-tooltip>
-            Documentation
-          </md-tooltip>
-          <md-icon>help</md-icon>
-        </md-button>
-        Digital Rebar Documentation
-      </a>
-    </md-card-content>
-  </md-card>
-
-  <md-card flex>
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline">Video Guided Tour</span>
-      </md-card-title-text>
-    </md-card-title>
     <md-card-content layout="column" style="column-count: 2;">
 
       <md-card layout="row">
-        <iframe width="400" height="240" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+        <iframe width="400" height="240" src="https://www.youtube.com/embed/5mpY8Oaec2M" frameborder="0" allowfullscreen></iframe>
         <div>
           <md-card-title>
             <md-card-title-text>
-              <span class="md-headline">Rick Rolling</span>
-              <span class="md-subhead">Rolling Rick with Astley</span>
+              <span class="md-headline">
+                <a href="https://youtu.be/5mpY8Oaec2M" target="_new">
+                  <md-icon>video_library</md-icon> Digital Rebar Five Minute Tour</span>
+                </a>
+              <span class="md-subhead">Basic Navigation and Layout</span>
             </md-card-title-text>
           </md-card-title>
           <md-card-content>
-            Learn how to meme with the king of memes himself. This tutorial covers deploying and scaling memes with the Digital Rebar Interface.
+            This short tutorial shows you the basics of the Digital Rebar using both the RackN UX and some command line tasks.
+            After this video, you will understand the various options available in the system and be ready to perform basic deployment and troubleshooting tasks.
           </md-card-content>
-          <md-card-actions layout="row" layout-align="end center">
-            <md-button></md-button>
-            <md-button></md-button>
+          <md-card-actions layout="row" layout-align="left center">
+            <md-button href="https://www.youtube.com/playlist?list=PLXPBeIrpXjfgurJuwVjZkcfmatCoXYM_v" target="_new">Training</md-button>
+            <md-button href="https://www.youtube.com/playlist?list=PLXPBeIrpXjfh2lXdXkNnzAuc7_SUtYJR-" target="_new">Hybrid DevOps</md-button>
+            <md-button href="https://www.youtube.com/playlist?list=PLXPBeIrpXjfjabMbwYyDULOX3kZmlxEXK" target="_new">Kubernetes</md-button>
+            <md-button href="https://www.youtube.com/channel/UCr3bBtP-pMsDQ5c0IDjt_LQ/playlists" target="_new">All Content</md-button>
           </md-card-actions>
         </div>
       </md-card>
-
-      <md-card layout="row">
-        <iframe width="400" height="240" src="https://www.youtube.com/embed/EMBEDCODE" frameborder="0" allowfullscreen></iframe>
-        <div>
-          <md-card-title>
-            <md-card-title-text>
-              <span class="md-headline">Name of Video</span>
-              <span class="md-subhead">You could remove this subheader</span>
-            </md-card-title-text>
-          </md-card-title>
-          <md-card-content>
-            Sh
-          </md-card-content>
-          <md-card-actions layout="row" layout-align="end center">
-            <md-button></md-button>
-            <md-button></md-button>
-          </md-card-actions>
-        </div>
-      </md-card>
-
     </md-card-content>
   </md-card>
 
   <md-card flex>
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">Getting Started</span>
+        <span class="md-headline"><md-icon title="Getting Started">child_friendly</md-icon> Getting Started</span>
       </md-card-title-text>
     </md-card-title>
     <md-card-content>
+        The simplest way to start using Digital Rebar is to use the Workloads wizards to deploy pre-built applications or operating systems; however, before you can take those actions you must either have discovered servers provisioner or created a provider using cloud credentials.  Generally, it's easier to start by adding a provider.
+    </md-card-content>
+    <md-card-content>
+        Adding a provider requires that you have an account and access key for one of the supported clouds.
     </md-card-content>
   </md-card>
 
