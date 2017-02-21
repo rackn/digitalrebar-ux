@@ -1,0 +1,83 @@
+<!--
+welcome view
+-->
+<div style="padding: 1em">
+
+  <md-card layout="column">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline"><md-icon title="welcome">face</md-icon> Welcome</span>
+      </md-card-title-text>
+      <span>
+        <a href="http://rebar.digital">Digital Rebar Project</a> by <a href="http://rackn.com">RackN</a>
+      </span>
+    </md-card-title>
+    <md-card-content flex>
+      We believe that great applications start with a solid automation foundation. We've created Digital Rebar to unify management of heterogeneous physical and cloud infrastructure in an open, scalable way.
+      <md-card-actions layout="row" layout-align="left">
+        <md-button href="http://rebar.digital" target="_new1"><md-icon>home</md-icon> Home</md-button>
+        <md-button href="http://digital-rebar.readthedocs.io/en/latest/BOOK.html" target="_new2"><md-icon>help</md-icon> Documenation</md-button>
+        <md-button href="https://gitter.im/digitalrebar/core" target="_new3"><md-icon>chat</md-icon> Chat</md-button>
+        <md-button href="https://github.com/digitalrebar/digitalrebar/issues" target="_new4"><md-icon>bug_report</md-icon> Issues</md-button>
+        <md-button href="https://github.com/digitalrebar/digitalrebar" target="_new5"><md-icon>code</md-icon> Source Code</md-button>
+        <md-button href="https://twitter.com/digitalrebar" target="_new6"><md-icon>sentiment_satisfied</md-icon> Social</md-button>
+        <md-button href="https://github.com/rackn/digitalrebar-ux/blob/master/LICENSE.rst" target="_new7"><md-icon>account_balance</md-icon> License</md-button>
+      </md-card-actions>
+    </md-card-content>
+
+  </md-card>
+
+
+  <md-card flex>
+    <md-card-content layout="column" style="column-count: 2;">
+
+      <md-card layout="row">
+        <iframe width="400" height="240" src="https://www.youtube.com/embed/V6v-qEjVgX4" frameborder="0" allowfullscreen></iframe>
+        <div>
+          <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline">
+                <a href="https://youtu.be/V6v-qEjVgX4" target="_new8">
+                  <md-icon>video_library</md-icon> Digital Rebar Five Minute Tour</span>
+                </a>
+              <span class="md-subhead">Basic Navigation and Layout</span>
+            </md-card-title-text>
+          </md-card-title>
+          <md-card-content>
+            This short tutorial shows you the basics of the Digital Rebar using both the RackN UX and some command line tasks.
+            After this video, you will understand the various options available in the system and be ready to perform basic deployment and troubleshooting tasks.
+          </md-card-content>
+          <md-card-actions layout="row" layout-align="left center">
+            <md-button href="https://www.youtube.com/playlist?list=PLXPBeIrpXjfgurJuwVjZkcfmatCoXYM_v" target="_new8">Training</md-button>
+            <md-button href="https://www.youtube.com/playlist?list=PLXPBeIrpXjfh2lXdXkNnzAuc7_SUtYJR-" target="_new8">Hybrid DevOps</md-button>
+            <md-button href="https://www.youtube.com/playlist?list=PLXPBeIrpXjfjabMbwYyDULOX3kZmlxEXK" target="_new8">Kubernetes</md-button>
+            <md-button href="https://www.youtube.com/channel/UCr3bBtP-pMsDQ5c0IDjt_LQ/playlists" target="_new8">All Content</md-button>
+          </md-card-actions>
+        </div>
+      </md-card>
+    </md-card-content>
+  </md-card>
+
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline"><md-icon title="Getting Started">child_friendly</md-icon> Getting Started</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      The simplest way to start using Digital Rebar is to use the Workloads (<md-icon>work</md-icon>) wizards to deploy pre-built applications or operating systems; however, before you can take those actions you must either have discovered Nodes (<md-icon>dns</md-icon>) via the Provisioner (<md-icon>local_shipping</md-icon>) or created a Provider (<md-icon>filter_drama</md-icon>) using cloud credentials.  Generally, it's easier to start by adding a Provider.
+    </md-card-content>
+    <md-card-content>
+      Adding a Provider (<md-icon>filter_drama</md-icon>) requires that you have an account and access key for one of the supported clouds.  When adding a Provider, you will want to test creating a Node (<md-icon>dns</md-icon>) using that provider and checking that it got created on the target cloud.  You can monitor the process using "docker logs -f compose_cloudwrap_1" from the Digital Rebar host system.
+    </md-card-content>
+    <md-card-content>
+      Workloads (<md-icon>work</md-icon>) wizard will create Nodes (<md-icon>dns</md-icon>) and put them in a Deployment (<md-icon>dashboard</md-icon>).  Each deployment is shown as a matrix with rows of nodes and columns of Roles (<md-icon>label_outline</md-icon>).  Roles determine the functions that have been assigned to each node.  Each assignment, known as a node-role, has a state.  The node-role states are updated dynamically while Digital Rebar completes the deployment.  You can use top-right corner buttons to Refresh (<md-icon>refresh</md-icon>) for latest state or review the queue (<md-icon>track_changes</md-icon>) of all pending work.
+    </md-card-content>
+    <md-card-content>
+      Node and Node-Role status indicators are common throughout the Digital Rebar UX.  Completed actions are considered Ready (<md-icon>check_circle</md-icon>) or Error (<md-icon>warning</md-icon>) if something went wrong.  Actions that are in Process (<md-icon>autorenew</md-icon>) have live log updates while pending action is shown as Todo (<md-icon>play_circle_outline</md-icon>) or Queued (<md-icon>update</md-icon>).  Digital Rebar cannot act if a node-role is waiting for user input as Proposed (<md-icon>add_circle_outline</md-icon>) or Reserved 
+      (<md-icon>pause_circle_outline</md-icon>).  It also cannot act on nodes that are off (<md-icon>power_settings_new</md-icon>).
+    </md-card-content>
+  </md-card>
+
+</div>
+

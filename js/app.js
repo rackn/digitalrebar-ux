@@ -73,7 +73,12 @@ var version = '0.1.5';
 
     $routeProvider.
     when('/', {
-      redirectTo: '/deployments'
+      redirectTo: '/welcome'
+    }).
+    when('/welcome', {
+      controller: 'WelcomeCtrl',
+      controllerAs: 'welcome',
+      templateUrl: 'views/welcome.html'
     }).
     when('/deployments', {
       controller: 'DeploymentsCtrl',
@@ -291,7 +296,7 @@ var version = '0.1.5';
     }).
 
     otherwise({
-      redirectTo: '/login'
+      redirectTo: '/welcome'
     });
   });
 
@@ -491,10 +496,6 @@ var version = '0.1.5';
         icon: 'traffic',
         path: '/capabilities'
       }]
-    }, {
-      title: 'Settings',
-      icon: 'settings',
-      path: '/settings'
     }, {
       title: 'Alerts',
       icon: 'error',

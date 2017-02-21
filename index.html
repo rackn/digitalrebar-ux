@@ -87,6 +87,7 @@
     <script src="js/graphs.js"></script>
     <script src="js/bios_settings.js"></script>
     <script src="js/bios_updates.js"></script>
+    <script src="js/welcome.js"></script>
 
     <!-- Side Nav -->
     <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-show="isAuth()">
@@ -138,7 +139,7 @@
         </div>
 
         <!-- Logout list item -->
-        <md-list-item ng-click="logout()">
+        <md-list-item ng-show=false ng-click="logout()">
           <md-icon>exit_to_app</md-icon>
           <p>Logout</p>
         </md-list-item>
@@ -186,7 +187,7 @@
             </md-tooltip>
             <md-icon>track_changes</md-icon>
           </md-button>
-          <md-button target="_new" class="md-icon-button" ng-href="http://digital-rebar.readthedocs.io/en/latest/">
+          <md-button class="md-icon-button" ng-href="#/welcome">
             <md-tooltip>
               Documentation
             </md-tooltip>
