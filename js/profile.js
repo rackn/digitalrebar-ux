@@ -9,6 +9,7 @@ provisioner controller
 
       $scope.attribs = {}
       $scope.expand = {};
+      $scope.profile_count = -1;
 
       api("/api/v2/attribs").success(function (attribs) {
         $scope.attribs = attribs.reduce(function(map, obj) {
@@ -17,6 +18,7 @@ provisioner controller
           }
           return map;
         }, $scope.attribs);
+        $scope.profile_count = Object.keys($scope._profiles).length;
       });
       $scope.$emit('title', title);
 
@@ -26,12 +28,17 @@ provisioner controller
       $scope.deleteProfile = function (name) {
         $scope.confirm(event, {
           title: "Remove Profile",
-          message: "Are you sure you want to remove this profile?",
+          message: "Are you sure you want to remove '" + name + "' profile?",
           yesCallback: function () {
             api('/api/v2/profiles/' + name, {
               method: 'DELETE'
             }).success(function (data) {
               api.getHealth();
+              for (var id in $scope._profiles) {
+                if ($scope._profiles[id].name==name)
+                  delete $scope._profiles[id];
+              }
+              $scope.profile_count = Object.keys($scope._profiles).length;
             }).error(function () {
               api.getHealth();
             });
@@ -43,13 +50,14 @@ provisioner controller
         var profile = angular.copy(prof);
 
         var values = {};
-	var name = "";
+	      var name = "";
         if (typeof profile !== 'undefined') {
           name = profile.name
           for(var key in profile.values) {
             values[key] = { "name": key, "value": JSON.stringify(profile.values[key]) }
           }
         }
+        $scope.profile_count = 1;
 
         $mdDialog.show({
           controller: 'DialogController',

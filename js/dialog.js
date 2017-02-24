@@ -458,6 +458,7 @@ dialog controller
         method: method,
         data: data
       }).success(function (update) {
+        api.addProfile(update);
         api.getHealth();
       }).error(function (err) {
         api.getHealth();
