@@ -383,7 +383,7 @@ var version = '0.1.5';
       icon: 'dashboard',
       path: '/deployments'
     }, {
-      title: 'Workloads',
+      title: 'App Catalog',
       icon: 'work',
       expand: true,
       expanded: function () {
