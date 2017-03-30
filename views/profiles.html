@@ -1,4 +1,10 @@
-<md-card ng-repeat="profile in _profiles">
+<md-card ng-if='profile_count<0' style="padding: 2em">
+  Retrieving...
+</md-card>
+<md-card ng-if='profile_count==0' style="padding: 2em">
+  No Profiles
+</md-card>
+<md-card ng-repeat="profile in _profiles | orderBy: name">
   <md-toolbar class="md-default" ng-click="expand[profile.name]=!expand[profile.name]">
     <div class="md-toolbar-tools">
       <span flex>
@@ -15,11 +21,6 @@
 
   <div ng-slide-down="expand[profile.name]" lazy-render duration="0.5">
     <md-card-content>
-      <md-toolbar class="md-table-toolbar md-default">
-        <div class="md-toolbar-tools">
-          <span>Values</span>
-        </div>
-      </md-toolbar>
       <md-table-container>
         <table md-table>
           <thead md-head md-order="valueOrder">

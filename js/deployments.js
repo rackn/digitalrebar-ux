@@ -25,6 +25,15 @@ deployments controller
       });
     };
 
+    $scope.rawProfiles = function(current) {
+      raw = [];
+      for (var i in $scope._profiles) {
+        if (!current.includes($scope._profiles[i].name))
+          raw.push($scope._profiles[i].name);
+      }
+      return raw;
+    };
+
     $scope.showAddNodeDialog = function (ev, id) {
       var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
       $mdDialog.show({
@@ -35,7 +44,9 @@ deployments controller
         targetEvent: ev,
         locals: {
           base_name: 'digital-rebar-node',
-          providers: $scope._providers,
+          _providers: $scope._providers,
+          _profiles: $scope.rawProfiles([]),
+          profiles: [],
           add_os: 'default_os',
           number: 1,
           _deployments: $scope._deployments,
