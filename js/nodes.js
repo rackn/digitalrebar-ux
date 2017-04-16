@@ -77,15 +77,18 @@ node controller
     };
 
     $scope.rawProfiles = function(current) {
-      raw = [];
+      console.debug("issue #246: top of rawProfiles");
+      var raw = [];
       for (var i in $scope._profiles) {
         if (!current.includes($scope._profiles[i].name))
           raw.push($scope._profiles[i].name);
       }
+      console.debug("issue #246: bottom of rawProfiles");
       return raw;
     };
 
     this.showAddNodeDialog = function (ev) {
+      console.debug("issue #246: add node start");
       var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
       $mdDialog.show({
         controller: 'DialogController',
@@ -105,6 +108,7 @@ node controller
         clickOutsideToClose: true,
         fullscreen: useFullScreen
       });
+      console.debug("issue #246: add node end");
     };
 
     this.showEditNodeDialog = function (ev, node) {
