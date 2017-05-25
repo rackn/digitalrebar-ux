@@ -20,38 +20,7 @@
 
     <script src="vendor.js"></script>
     <script src="build.js"></script>
-    <script>
-      require('js/app.js');
-require('js/annealer.js');
-require('js/attribs.js');
-require('js/barclamps.js');
-require('js/bios_settings.js');
-require('js/bios_updates.js');
-require('js/capabilities.js');
-require('js/deployment_roles.js');
-require('js/deployments.js');
-require('js/dhcp.js');
-require('js/dialog.js');
-require('js/dns.js');
-require('js/engine.js');
-require('js/graphs.js');
-require('js/helper.js');
-require('js/logging.js');
-require('js/login.js');
-require('js/networks.js');
-require('js/node_roles.js');
-require('js/nodes.js');
-require('js/profile.js');
-require('js/provider.js');
-require('js/provisioner.js');
-require('js/rebar.js');
-require('js/roles.js');
-require('js/switches.js');
-require('js/tenants.js');
-require('js/users.js');
-require('js/welcome.js');
-require('js/workloads.js');
-    </script>
+    <script>require.list().map(require);</script>
 
     <!-- Side Nav -->
     <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-show="isAuth()">
