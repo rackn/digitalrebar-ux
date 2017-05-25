@@ -7,4 +7,4 @@ server.key
 server-key.pem
 server.pem
 web*.log
-_build
+public
