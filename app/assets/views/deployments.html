@@ -6,9 +6,9 @@ deployments view
 
     <!-- Top bar for each deployment -->
     <md-toolbar flex layout="column" md-theme="status_{{deploymentStates[deployment.state]}}" ng-class="{'md-warn': deployments.deploymentStatus[id].error > 0}" ng-click="deployments.toggleExpand(deployment)" md-ink-ripple>
-      <section layout="row">
+      <section layout="row" layout-align="start center">
         <div class="md-toolbar-tools">
-          <h2 flex layout="row">
+          <h2 flex layout="row" layout-align="start center">
             <span>
               <md-icon>
                 {{deploymentIcons[deploymentStates[deployment.state]]}}
@@ -17,7 +17,7 @@ deployments view
                 {{deploymentStateNames[deployment.state]}}
               </md-tooltip>
             </span>
-            <div layout="column">
+            <div layout="column" layout-align="center">
               <div>
                 {{deployment.name}}
               </div>
@@ -48,10 +48,10 @@ deployments view
     <section ng-slide-down="expand[id]" duration="0.5">
 
       <!-- Node/Roles Matrix tab -->
-      <div style="text-align: right; width: 100%; padding-right: 1em">
+      <div style="text-align: right; padding-right: 3px;">
         <strong style="font-size: 120%">Services:</strong>
         <span ng-repeat="role_id in getNodeRoleIds(id)">
-          <md-button class="md-primary md-raised square-button" md-theme="status_{{_node_roles[role_id].status}}" ng-href="#/node_roles/{{role_id}}">
+          <md-button class="md-primary md-raised square-button" md-theme="status_{{_node_roles[role_id].status}}" ng-href="#/node_roles/{{role_id}}" style="margin: 6px 3px 3px 0;">
             <md-tooltip md-direction="bottom">
               {{_roles[_node_roles[role_id].role_id].name}}
             </md-tooltip>
