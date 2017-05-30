@@ -51,7 +51,7 @@ deployments view
       <div style="text-align: right; padding-right: 3px;">
         <strong style="font-size: 120%">Services:</strong>
         <span ng-repeat="role_id in getNodeRoleIds(id)">
-          <md-button class="md-primary md-raised square-button" md-theme="status_{{_node_roles[role_id].status}}" ng-href="#/node_roles/{{role_id}}" style="margin: 6px 3px 3px 0;">
+          <md-button class="md-primary md-raised square-button" md-theme="status_{{_node_roles[role_id].status}}" ng-href="#!/node_roles/{{role_id}}" style="margin: 6px 3px 3px 0;">
             <md-tooltip md-direction="bottom">
               {{_roles[_node_roles[role_id].role_id].name}}
             </md-tooltip>
@@ -66,7 +66,7 @@ deployments view
             <th valign="bottom">Nodes</th>
             <th ng-repeat="id in matrix_order[deployment.id]" class="angled">
               <div>
-                <a ng-href="#/deployment_roles/{{id}}">
+                <a ng-href="#!/deployment_roles/{{id}}">
                   <md-icon style="transform: rotateZ(45deg)">{{_roles[_deployment_roles[id].role_id].icon}}</md-icon>
                   {{_roles[_deployment_roles[id].role_id].name}}
                 </a>
@@ -86,7 +86,7 @@ deployments view
                 </span>
               </td>
               <td class="label">
-                <a ng-href="#/nodes/{{node_id}}" title="{{_nodes[node_id].name}}">{{api.truncName(_nodes[node_id].name)}}</a>
+                <a ng-href="#!/nodes/{{node_id}}" title="{{_nodes[node_id].name}}">{{api.truncName(_nodes[node_id].name)}}</a>
               </td>
               <td ng-repeat="id in matrix_order[deployment.id]">
                 <span ng-if="matrix[deployment.id][id][node_id]">
@@ -143,7 +143,7 @@ deployments view
               <md-divider></md-divider>
 
               <!-- Node button -->
-              <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(_nodes[node_id]) }}" ng-href="#/nodes/{{node_id}}">
+              <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(_nodes[node_id]) }}" ng-href="#!/nodes/{{node_id}}">
                 <md-tooltip md-direction="bottom">
                   {{_nodes[node_id].status}}
                 </md-tooltip>
@@ -153,7 +153,7 @@ deployments view
                 {{_nodes[node_id].name}}
               </span>
               <span ng-show="bindRoles[id].roles[node_id]">
-                <md-button class="md-fab md-primary md-mini" md-theme="status_{{bindRoles[id].roles[node_id].status}}" ng-href="#/node_roles/{{bindRoles[id].roles[node_id].id}}">
+                <md-button class="md-fab md-primary md-mini" md-theme="status_{{bindRoles[id].roles[node_id].status}}" ng-href="#!/node_roles/{{bindRoles[id].roles[node_id].id}}">
                   <md-icon aria-label="{{bindRoles[id].roles[node_id].status}}">
                     {{icons[bindRoles[id].roles[node_id].status]}}
                   </md-icon>

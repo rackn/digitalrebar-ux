@@ -29,7 +29,7 @@
       <md-toolbar class="md-tall md-hue-2">
         <span flex></span>
         <div layout="column" class="md-toolbar-tools-bottom inset">
-          <div><a ng-href="#/users/{{user.id}}" style="color: #f5f5f5;">
+          <div><a ng-href="#!/users/{{user.id}}" style="color: #f5f5f5;">
           <md-icon>person</md-icon> {{user.username}}</a></div>
           <div><a target="_blank" ng-href="{{host}}" style="color: #f5f5f5;">{{host}}</a></div>
         </div>
@@ -114,13 +114,13 @@
             </md-tooltip>
             <md-icon ng-class="{pulse: api.reloading}">refresh</md-icon>
           </md-button>
-          <md-button class="md-icon-button" ng-href="#/annealer">
+          <md-button class="md-icon-button" ng-href="#!/annealer">
             <md-tooltip>
               Annealer (updates every {{ _pollRate }} seconds)
             </md-tooltip>
             <md-icon>track_changes</md-icon>
           </md-button>
-          <md-button class="md-icon-button" ng-href="#/welcome">
+          <md-button class="md-icon-button" ng-href="#!/welcome">
             <md-tooltip>
               Documentation
             </md-tooltip>

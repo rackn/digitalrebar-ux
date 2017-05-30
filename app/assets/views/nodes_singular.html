@@ -89,7 +89,7 @@
       <tr>
         <td class="label">Deployment</td>
         <td>
-          <a ng-href="#/deployments/{{node.deployment_id}}">
+          <a ng-href="#!/deployments/{{node.deployment_id}}">
             {{_deployments[node.deployment_id].name}}
           </a>
           <md-menu md-position-mode="target-right target">
@@ -112,7 +112,7 @@
       <tr>
         <td class="label">Tenant</td>
         <td>
-          <a ng-href="#/tenants/{{_tenants[node.tenant_id].uuid}}">
+          <a ng-href="#!/tenants/{{_tenants[node.tenant_id].uuid}}">
             {{_tenants[node.tenant_id].name}}
           </a>
           <md-menu md-position-mode="target-right target">
@@ -136,7 +136,7 @@
         <td class="label">Boot Environment</td>
         <td>
           <div ng-if="showProvisioner">
-            <a ng-href="#/provisioner/bootenvs/{{node.bootenv}}">{{node.bootenv}}</a>
+            <a ng-href="#!/provisioner/bootenvs/{{node.bootenv}}">{{node.bootenv}}</a>
           </div>
           <span ng-if="!showProvisioner">
             {{node.bootenv}}
@@ -146,7 +146,7 @@
       <tr ng-if="showProvisioner">
         <td class="label">Machine</td>
         <td>
-          <a ng-href="#/provisioner/machines/{{node.uuid}}">{{node.uuid}}</a>
+          <a ng-href="#!/provisioner/machines/{{node.uuid}}">{{node.uuid}}</a>
         </td>
       </tr>
       <tr>
@@ -170,11 +170,11 @@
       <tr>
         <td class="label">Provider</td>
         <td>
-          <a ng-href="#/providers/{{node.provider_id}}">{{_providers[node.provider_id].name}}</a>
+          <a ng-href="#!/providers/{{node.provider_id}}">{{_providers[node.provider_id].name}}</a>
         </td>
       </tr>
       <tr>
-        <td class="label"><a ng-href="#/profiles">Profile(s)</a></td>
+        <td class="label"><a ng-href="#!/profiles">Profile(s)</a></td>
         <td>
           <span ng-repeat="p in node.profiles | orderBy: p">
             {{p}}{{ $last ? '' : ", "}}
@@ -191,7 +191,7 @@
       </span>
       <ul>
         <li ng-repeat="network in nics | orderBy: _networks[network[0].network_id].name">
-          <a title="{{_networks[network[0].network_id].description}}" href="#/networks/{{network[0].network_id}}">{{_networks[network[0].network_id].name}}</a>:
+          <a title="{{_networks[network[0].network_id].description}}" href="#!/networks/{{network[0].network_id}}">{{_networks[network[0].network_id].name}}</a>:
           <span ng-repeat="nic in network | orderBy: _network_ranges[nic.network_range_id].name">
             {{ _network_ranges[nic.network_range_id].name }}
             <a target="_new" href="https://{{nic.address}}">{{nic.address}}</a>
@@ -213,7 +213,7 @@
   </md-toolbar>
   <md-card-content>
     <span ng-repeat="role in _node_roles | from:'node':node | orderBy: role.cohort()" aria-label="{{_roles[role.role_id].name}}" >
-      <md-button class="md-fab md-primary" area-label="{{_roles[role.role_id].name}}" md-theme="status_{{role.status}}" ng-href="#/node_roles/{{role.id}}">
+      <md-button class="md-fab md-primary" area-label="{{_roles[role.role_id].name}}" md-theme="status_{{role.status}}" ng-href="#!/node_roles/{{role.id}}">
         <md-tooltip md-direction="bottom">{{_roles[role.role_id].name}}</md-tooltip>
         <md-icon>{{_roles[role.role_id].icon}}</md-icon>
       </md-button>

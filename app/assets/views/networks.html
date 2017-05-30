@@ -66,12 +66,12 @@
       </thead>
       <tbody md-body>
         <tr md-row md-select="network" md-select-id="{{network.id}}" md-auto-select ng-repeat="network in networks.getNetworks() | orderBy: myOrder">
-          <td md-cell><a ng-href="#/networks/{{network.id}}">{{network.name}}</a></td>
+          <td md-cell><a ng-href="#!/networks/{{network.id}}">{{network.name}}</a></td>
           <td md-cell>{{network.description}}</td>
           <td md-cell>{{network.category}}</td>
           <td md-cell>{{network.group}}</td>
-          <td md-cell><a ng-href="#/deployments/{{network.deployment_id}}">{{_deployments[network.deployment_id].name}}</a></td>
-          <td md-cell><a ng-href="#/tenants/{{_tenants[network.tenant_id].uuid}}">{{_tenants[network.tenant_id].name}}</a></td>
+          <td md-cell><a ng-href="#!/deployments/{{network.deployment_id}}">{{_deployments[network.deployment_id].name}}</a></td>
+          <td md-cell><a ng-href="#!/tenants/{{_tenants[network.tenant_id].uuid}}">{{_tenants[network.tenant_id].name}}</a></td>
           <td md-cell>{{network.conduit}}</td>
         </tr>
       </tbody>

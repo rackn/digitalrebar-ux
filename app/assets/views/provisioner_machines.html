@@ -46,10 +46,10 @@ provisioner machines view
           <tr ng-if="nodeMap[machine.Uuid]">
             <td class="label">Node</td>
             <td>
-              <a href="#/deployments/{{nodeMap[machine.Uuid].deployment_id}}">
+              <a href="#!/deployments/{{nodeMap[machine.Uuid].deployment_id}}">
                 {{_deployments[nodeMap[machine.Uuid].deployment_id].name}}
               </a>
-              <a href="#/nodes/{{nodeMap[machine.Uuid].id}}">
+              <a href="#!/nodes/{{nodeMap[machine.Uuid].id}}">
                 {{nodeMap[machine.Uuid].name}}
               </a>
             </td>
@@ -63,7 +63,7 @@ provisioner machines view
           <tr>
             <td class="label">Boot Environment</td>
             <td>
-              <a ng-href="#/provisioner/bootenvs/{{machine.BootEnv}}">
+              <a ng-href="#!/provisioner/bootenvs/{{machine.BootEnv}}">
                 {{machine.BootEnv}}
               </a>
             </td>
