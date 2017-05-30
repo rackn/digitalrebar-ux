@@ -174,7 +174,7 @@ provider view
   <md-menu md-position-mode="target-right target" style="padding: 0;" ng-if="!provider">
     <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="$mdOpenMenu($event)">
       <md-icon>add</md-icon>
-      <md-tooltip>
+      <md-tooltip md-direction="top">
         Add Provider
       </md-tooltip>
     </md-button>
@@ -201,7 +201,7 @@ provider view
   <!-- Add Node FAB -->
   <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="showAddNodeDialog()" ng-if="provider && !(provider.name == 'metal' || provider.name == 'phantom')">
     <md-icon>add</md-icon>
-    <md-tooltip>
+    <md-tooltip md-direction="top">
       Add Node
     </md-tooltip>
   </md-button>
