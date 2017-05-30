@@ -331,6 +331,10 @@ table.md-table td.md-cell md-icon {
   max-height: 240px;
 }
 
+md-content {
+  background-color: #fff;
+}
+
 .md-button.md-icon-button.toggled {
   background: rgb(46,125,50) !important;
   color: #f5f5f5 !important;
