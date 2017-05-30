@@ -126,17 +126,9 @@ function DigestAuthInterceptor(initialUsername, initialPassword, maximumRetries,
 			transformRequest: rejection.config.transformRequest,
 			transformResponse: rejection.config.transformResponse
 		})
-		.success(function(data, status, headers, config) {
-			deferredResponse.resolve(
-				{
-					data: data,
-					status: status,
-					headers: headers,
-					config: config
-				}
-			);
-		})
-		.error(function(httpReject) {
+		.then(function(resp) {
+			deferredResponse.resolve(resp);
+		}, function(httpReject) {
 			HA1 = null;
 			if(typeof httpReject !== 'undefined') {
 				deferredResponse.reject(httpReject);
