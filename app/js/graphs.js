@@ -48,7 +48,8 @@ graphs controller
       api("/api/v2/"+$scope.graphType+"/graph", {
         data: payload,
       }).
-        success(function (obj) {
+        then(function (resp) {
+          var obj = resp.data
           var parsedData = vis.network.convertDot(obj["string"]);
           $scope.graphData = {
             nodes: parsedData.nodes,
@@ -59,10 +60,9 @@ graphs controller
             $scope.graphOptions["layout"] = $scope.graphLayoutOptions;
           }
           $scope.hasGraph = 1;
-        }).
-        error(function (err) {
+        }, function (err) {
           $scope.hasGraph = 0;
-          api.toast("Error Getting Graph Data", 'node_role', err);
+          api.toast("Error Getting Graph Data", 'node_role', err.data);
         });
     }
 

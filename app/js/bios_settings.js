@@ -16,18 +16,20 @@ bios settings controller
 
     $scope.loadSettings = function () {
       api.get_id("/api/v2/roles/bios-discover").
-      success(function (robj) {
-        $scope.role = robj.id;
+      then(function (resp) {
+        $scope.role = resp.data.id;
         api("/api/v2/deployments/system/deployment_roles").
-        success(function (drobj) {
-          for (var id in drobj) {
-            if (drobj[id].role_id == $scope.role) {
-              $scope.deployment_role = drobj[id].id;
+        then(function (resp) {
+          var deploymentRoles = resp.data;
+          for (var id in deploymentRoles) {
+            if (deploymentRoles[id].role_id == $scope.role) {
+              $scope.deployment_role = deploymentRoles[id].id;
               break;
             }
           };
-          api("/api/v2/deployment_roles/"+$scope.deployment_role+"/attribs/bios-set-mapping").
-          success(function (obj) {
+          api("/api/v2/deployment_roles/" + $scope.deployment_role + "/attribs/bios-set-mapping").
+          then(function (resp) {
+            var obj = resp.data;
             $scope.dirty = false;
             $scope.id = obj.id;
             $scope.settings = []
@@ -65,9 +67,8 @@ bios settings controller
                 $scope.settings.push(newobj);
               });
             });
-          }).
-          error(function (err) {
-            api.toast("Error Bios Setting Data", 'bios_setting', err);
+          }, function (err) {
+            api.toast("Error Bios Setting Data", 'bios_setting', err.data);
           });
         });
       });
@@ -95,7 +96,7 @@ bios settings controller
     };
 
     $scope.addValue = function(index, type) {
-      var o = { "id": "not set", "value": "undefined", "op": "exact" };
+      var o = {id: "not set", value: "undefined", op: "exact"};
       $scope.settings[index][type].push(o);
       $scope.dirty = true;
     };
@@ -110,7 +111,9 @@ bios settings controller
         .targetEvent(ev)
         .ok('Add')
         .cancel('Cancel');
-      $mdDialog.show(confirm).then(function(result) {
+
+      $mdDialog.show(confirm).then(function(resp) {
+        var result = resp.data;
         var o = { "role": $scope.settings[ind].role, "name": result, "parent": parent, "match": [], "values": [] };
         $scope.settings.push(o);
       }, function() {
@@ -128,7 +131,8 @@ bios settings controller
         .targetEvent(ev)
         .ok('Add')
         .cancel('Cancel');
-      $mdDialog.show(confirm).then(function(result) {
+      $mdDialog.show(confirm).then(function(resp) {
+        var result = resp.data;
         var res = result.split(":");
         var o = { "role": res[0], "name": (res[1] || "default"), "match": [], "values": [] };
         $scope.settings.push(o);
@@ -167,23 +171,22 @@ bios settings controller
       var obj = { value: data };
       obj["deployment_role_id"] = $scope.deployment_role;
       api('/api/v2/deployment_roles/' + $scope.deployment_role + "/propose", { method: "PUT" }).
-      success(function(data) {
+      then(function() {
         api('/api/v2/attribs/' + $scope.id, {
           method: 'PUT',
           data: obj
         }).
-        success(function(data) { 
+        then(function() { 
           api.toast('Updated Attrib!');
           api('/api/v2/deployment_roles/' + $scope.deployment_role + "/commit", { method: "PUT" }).
-          success(function() {
+          then(function() {
             api.toast('Committed!');
             $scope.dirty = false;
           });
-        }).error(function (err) {
-            api.toast('Error updating values', 'attribs', err);
+        }, function (err) {
+            api.toast('Error updating values', 'attribs', err.data);
         });
       });
-      //console.log(roles);
     };
 
     // called when a deployment is clicked

@@ -26,11 +26,7 @@ users controller
           yesCallback: function () {
             api('/api/v2/users/' + uuid, {
               method: 'DELETE'
-            }).success(function (data) {
-              api.getUsers();
-            }).error(function () {
-              api.getUsers();
-            });
+            }).then(api.getUsers, api.getUsers);
           }
         });
       };
@@ -51,11 +47,7 @@ users controller
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen
-        }).then(function () {
-          api.getUsers();
-        }, function () {
-          api.getUsers();
-        });
+        }).then(api.getUsers, api.getUsers);
       };
 
       $scope.editCapsPrompt = function (ev, temp) {
@@ -91,10 +83,7 @@ users controller
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen
-        }).then(function () {
-          api.getUsers();
-        }, function () {
-        });
+        }).then(api.getUsers);
       };
 
     });

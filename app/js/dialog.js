@@ -91,12 +91,12 @@ dialog controller
       api('/api/v2/nodes/' + locals.id, {
         method: 'PUT',
         data: payload
-      }).success(function (update) {
+      }).then(function () {
         api.toast('Updated Node ' + locals.node.name);
         api.addNode;
         $mdDialog.hide();
-      }).error(function (err) {
-        api.toast('Error Updating Node', 'node', err);
+      }, function (err) {
+        api.toast('Error Updating Node', 'node', err.data);
       });
     };
 
@@ -165,9 +165,8 @@ dialog controller
         api('/api/v2/nodes', {
           method: "POST",
           data: payload,
-        }).success(api.addNode).
-        error(function (err) {
-          api.toast('Error updating node', 'node', err);
+        }).then(function(resp){api.addNode(resp.data)}, function (err) {
+          api.toast('Error updating node', 'node', err.data);
         });
       });
 
@@ -180,9 +179,8 @@ dialog controller
       api("/api/v2/providers", {
         method: "POST",
         data: locals.provider
-      }).success(api.addProvider).
-      error(function (err) {
-        api.toast("Error Adding Provider", 'provider', err);
+      }).then(function(resp){api.addProvider(resp.data)}, function (err) {
+        api.toast("Error Adding Provider", 'provider', err.data);
       });
       $mdDialog.hide();
     };
@@ -193,9 +191,8 @@ dialog controller
       api("/api/v2/networks", {
         method: "POST",
         data: locals.network
-      }).success(api.addNetwork).
-      error(function (err) {
-        api.toast("Error Adding Network", 'network', err);
+      }).then(function(resp){api.addNetwork(resp.data)}, function (err) {
+        api.toast("Error Adding Network", 'network', err.data);
       });
       $mdDialog.hide();
     };
@@ -205,12 +202,7 @@ dialog controller
       api("/dns/zones/" + zone.name, {
         method: 'PATCH',
         data: locals.record
-      }).success(function (data) {
-        api.getHealth();
-      }).
-      error(function (err) {
-        api.getHealth();
-      });
+      }).then(api.getHealth, api.getHealth);
       $mdDialog.hide();
     };
 
@@ -231,11 +223,7 @@ dialog controller
       api(path, {
         method: method,
         data: data
-      }).success(function (update) {
-        api.getHealth();
-      }).error(function (err) {
-        api.getHealth();
-      });
+      }).then(api.getHealth, api.getHealth);
 
       $mdDialog.hide();
     };
@@ -278,9 +266,9 @@ dialog controller
       api(path, {
         method: method,
         data: data
-      }).success(function (update) {
-      }).error(function (err) {
-        api.toast("Error creating tenant", "tenants", err)
+      }).then(function () {
+      }, function (err) {
+        api.toast("Error creating tenant", "tenants", err.data);
       });
 
 
@@ -306,13 +294,13 @@ dialog controller
       api(path, {
         method: method,
         data: data
-      }).success(function (update) {
+      }).then(function () {
         if (!locals.editing) {
           api.toast("Added capability " + capability.name);
           api.getHealth();
         }
-      }).error(function (err) {
-        api.toast("Error creating capability", "capabilities", err)
+      }, function (err) {
+        api.toast("Error creating capability", "capabilities", err.data);
       });
 
       $mdDialog.hide();
@@ -358,11 +346,7 @@ dialog controller
       api(path, {
         method: method,
         data: data
-      }).success(function (update) {
-        api.getUsers();
-      }).error(function (err) {
-        api.getUsers();
-      });
+      }).then(api.getUsers, api.getUsers);
 
       $mdDialog.hide();
     };
@@ -393,11 +377,7 @@ dialog controller
       api(path, {
         method: method,
         data: data
-      }).success(function (update) {
-        api.getHealth();
-      }).error(function (err) {
-        api.getHealth();
-      });
+      }).then(api.getHealth, api.getHealth);
 
       $mdDialog.hide();
     };
@@ -457,12 +437,10 @@ dialog controller
       api(path, {
         method: method,
         data: data
-      }).success(function (update) {
-        api.addProfile(update);
+      }).then(function (resp) {
+        api.addProfile(resp.data);
         api.getHealth();
-      }).error(function (err) {
-        api.getHealth();
-      });
+      }, api.getHealth);
 
       $mdDialog.hide();
     };
@@ -500,9 +478,7 @@ dialog controller
       }
       for(var i in diff) {
         var config = diff[i];
-        api("/api/v2/user_tenant_capabilities", config).success(function(data) {
-          debounce(locals.update, 500, true)();
-        });
+        api("/api/v2/user_tenant_capabilities", config).then(debounce(locals.update, 500, true));
       }
 
       $mdDialog.hide();
@@ -531,11 +507,12 @@ dialog controller
       }
       // put attrib in proposed mode
       api(propose_url, { method: 'PUT'
-      }).success(function (data) {
+      }).then(function () {
         api("/api/v2/attribs/" + id, {
           method: 'PUT',
           data: obj
-        }).success(function (data) {
+        }).then(function (resp) {
+          var data = resp.data;
           api.toast('Updated Attrib!');
           // update the on screen value (no auto refresh on attribs)
           locals.attrib.value = data.value;
@@ -543,12 +520,11 @@ dialog controller
           if (target["obj"] == "deployment_role_id") {
             $rootScope._deployment_roles[target["id"]].proposed = true;
           }
-        }).
-        error(function (err) {
-          api.toast('Error updating attrib','attrib',err);
+        }, function (err) {
+          api.toast('Error updating attrib', 'attrib', err.data);
         });
-      }).error(function (err) {
-        api.toast('Error proposing target object',target["obj"],err);
+      }, function (err) {
+        api.toast('Error proposing target object', target["obj"], err.data);
       });
       $mdDialog.hide();
     };

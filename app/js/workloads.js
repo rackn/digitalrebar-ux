@@ -119,11 +119,10 @@ workloads controller
           api("/api/v2/deployments" + (workloads.createDeployment ? "" : "/" + workloads.deployment_id + "/batch"), {
             method: workloads.createDeployment ? "POST" : "PUT",
             data: $scope.generateBlob()
-          }).
-          success(function () {
+          }).then(function () {
             $scope.submitStatus = 1;
-          }).error(function (err) {
-            api.toast("Error Running Wizard", "deployments", err)
+          }, function (err) {
+            api.toast("Error Running Wizard", "deployments", err.data)
             $scope.submitStatus = -1;
           })
         },
@@ -221,7 +220,8 @@ workloads controller
 
       if (wizard.system_nodes)
         api('/api/v2/nodes/system-phantom.internal.local/attribs/provisioner-available-oses').
-      success(function (data) {
+      then(function (resp) {
+        var data = resp.data;
         if (data.value) {
           $scope.osList = Object.keys(data.value);
           // remove available OSes that are not in the barclamp supported OS list (skip if there are no supported in the list)
@@ -237,7 +237,8 @@ workloads controller
 
       $scope.attribMap = {};
       api('/api/v2/attribs').
-      success(function (data) {
+      then(function (resp) {
+        var data = resp.data;
         for (var i in data) {
           var attrib = data[i];
           $scope.attribMap[attrib.name] = attrib;
@@ -256,8 +257,8 @@ workloads controller
             workloads.attribs[attrib] = $scope.attribMap[attrib].default.value;
           }
         }
-      }).error(function (err) {
-        api.toast('Error fetching Attribs', 'attribs', err);
+      }, function (err) {
+        api.toast('Error fetching Attribs', 'attribs', err.data);
       });
 
       $scope.roles = [];

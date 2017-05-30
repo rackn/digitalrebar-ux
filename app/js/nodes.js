@@ -36,9 +36,9 @@ node controller
 
             // the api call uses REST DELETE on /nodes/id to remove a node 
             api('/api/v2/nodes/' + node.id, { method: 'DELETE' }).
-            success(function () {
+            then(function () {
               console.log("Node deleted");
-            }).success(function () {
+            }).then(function () {
               api.remove('node', node.id);
             });
           });
@@ -65,9 +65,8 @@ node controller
 
           // the api call uses REST DELETE on /nodes/id to remove a node 
           api('/api/v2/nodes/' + $scope.node.id, { method: 'DELETE' }).
-          success(function () {
+          then(function () {
             console.log("Node deleted");
-          }).success(function () {
             api.remove('node', $scope.node.id);
             $location.path("/nodes");
           });
@@ -146,7 +145,7 @@ node controller
         api("/api/v2/nodes/" + node.id, {
           method: "PUT",
           data: d
-        }).success(api.addNode);
+        }).then(function(resp){api.addNode(resp.data)});
       });
     };
 
@@ -157,7 +156,7 @@ node controller
           data: {
             tenant_id: tenant_id
           }
-        }).success(api.addNode);
+        }).then(function(resp){api.addNode(resp.data)});
       });
     };
 
@@ -185,9 +184,8 @@ node controller
           deployment_id: deployment_id,
           role_id: role_id
         }
-      }).success(api.addNodeRole).
-      error(function (err) {
-        api.toast("Error Adding Node Role", 'node_role', err);
+      }).then(function(resp){api.addNodeRole(resp.data)}, function (err) {
+        api.toast("Error Adding Node Role", 'node_role', err.data);
       });
     };
 
@@ -201,8 +199,8 @@ node controller
             api('/api/v2/nodes/' + $scope.node.id + '/power', {
               data: { poweraction: action},
               method: 'PUT'
-            }).success(api.addNode).error(function (err) {
-              api.toast('Error Powering Node', 'node', err);
+            }).then(function(resp){api.addNode(resp.data)}, function (err) {
+              api.toast('Error Powering Node', 'node', err.data);
             });
           }
         }
@@ -222,31 +220,33 @@ node controller
     $scope.redeploy_target = function (node_id, target) {
       api('/api/v2/nodes/' + node_id + '/propose', {
         method: 'PUT'})
-      .success(function () {
+      .then(function () {
         if (target) {
           api('/api/v2/nodes/' + node_id + '/attribs/provisioner-target_os', {
-            method: 'GET'}).success(function (a) {
-              api('/api/v2/attribs/' + a.id, {
+            method: 'GET'})
+          .then(function (resp) {
+            var a = resp.data;
+            api('/api/v2/attribs/' + a.id, {
                 method: 'PUT',
-                data: { "node_id": a.node_id, "role_id": a.role_id, "value": target }
-            }).success(
+                data: {node_id: a.node_id, role_id: a.role_id, value: target}
+            }).then(function () {
               api('/api/v2/nodes/' + node_id + '/redeploy', {
                 method: 'PUT'
-              }).error(function (err) {
-                api.toast('Error Redeploying Node', 'node', err);
-              }).success(function () {
+              }).then(function () {
                 api.toast('Redeployed node ' + node_id);
-              })
-            );
+              }, function (err) {
+                api.toast('Error Redeploying Node', 'node', err.data);
+              });
+            });
           });
         } else {
           api('/api/v2/nodes/' + node_id + '/redeploy', {
-              method: 'PUT'
-            }).error(function (err) {
-              api.toast('Error Redeploying Node', 'node', err);
-            }).success(function () {
-              api.toast('Redeployed node ' + node_id);
-            });
+            method: 'PUT'
+          }).then(function () {
+            api.toast('Redeployed node ' + node_id);
+          }, function (err) {
+            api.toast('Error Redeploying Node', 'node', err.data);
+          });
         }
       });
     };
@@ -257,8 +257,8 @@ node controller
         api('/api/v2/nodes/' + $scope.node.id, {
           method: 'PUT',
           data: { 'available': !reserve }
-        }).success(api.addNode).error(function (err) {
-          api.toast('Error Reserving', 'node', err);
+        }).then(function(resp){api.addNode(resp.data)}, function (err) {
+          api.toast('Error Reserving', 'node', err.data);
         });
       }
     };
@@ -272,10 +272,10 @@ node controller
             if (node.id) {
               api('/api/v2/nodes/' + node.id + '/redeploy', {
                 method: 'PUT'
-              }).error(function (err) {
-                api.toast('Error Redeploying Node', 'node', err);
-              }).success(function () {
+              }).then(function () {
                 api.toast('Redeployed ' + nodes.selected.length + ' node' + (nodes.selected.length == 1 ? '' : 's'));
+              }, function (err) {
+                api.toast('Error Redeploying Node', 'node', err.data);
               });
             }
           });
@@ -294,8 +294,7 @@ node controller
         api("/api/v2/providers/" + $scope.id, {
           method: "POST",
           data: data
-        });
-        error(function (e) {
+        }, function (e) {
           api.toast("Couldn't Save Attrib", 'attrib', e);
         });
 
@@ -352,7 +351,8 @@ node controller
       else {
 
         api("/api/v2/nodes/" + $scope.node.id + "/power").
-        success(function (obj) {
+        then(function (resp) {
+          var obj = resp.data;
           // remove non-action power options
           for (var i in obj) {
             if (["status", "on?"].includes(obj[i]))
@@ -362,7 +362,7 @@ node controller
         });
 
         api("/api/v2/nodes/" + $scope.node.id + "/network_allocations").
-        success(function (obj) {
+        then(function (obj) {
           $scope.nics = {};
           //$scope.nics = obj;
           for (var i in obj) {
@@ -374,7 +374,8 @@ node controller
 
         if ($scope.hasAttrib == -1) {
           api('/api/v2/nodes/' + $scope.node.id + "/attribs").
-          success(function (obj) {
+          then(function (resp) {
+            var obj = resp.data;
             $scope.attribs = obj;
             obj.forEach(function (attrib) {
               var blob = JSON.stringify(attrib.value);
@@ -390,8 +391,7 @@ node controller
                 $scope.serial = attrib.value;
             });
             $scope.hasAttrib = 1;
-          }).
-          error(function () {
+          }, function () {
             $scope.hasAttrib = 0;
           });
         }
