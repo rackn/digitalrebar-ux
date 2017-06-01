@@ -1,0 +1,18 @@
+{
+  "env": {
+    "es6": true,
+    "browser": true,
+  },
+  "ecmaVersion": 6,
+  "parser": "eslint",
+  "extends": "eslint:recommended",
+  "rules": {
+    "quotes": ["error", "single"],
+    "no-var": "warn",
+    "semi": ["error", "always"],
+    "indent": ["error", 2],
+    "eqeqeq": "warn",
+    "no-unused-vars": "warn",
+    "no-console": "off"
+  }
+}

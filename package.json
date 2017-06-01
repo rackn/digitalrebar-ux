@@ -1,0 +1,45 @@
+{
+  "name": "digitalrebar-ux",
+  "version": "1.0.0",
+  "description": "Digital Rebar Angular Interface",
+  "main": "index.html",
+  "scripts": {
+    "test": "brunch build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rackn/digitalrebar-ux.git"
+  },
+  "keywords": [
+    "DigitalRebar",
+    "Rackn",
+    "Rebar"
+  ],
+  "author": "zehicle <rob@rackn.com>, meshiest<meek.mesh@gmail.com>",
+  "license": "SEE LICENSE IN LISENSE.rst",
+  "bugs": {
+    "url": "https://github.com/rackn/digitalrebar-ux/issues"
+  },
+  "homepage": "https://github.com/rackn/digitalrebar-ux#readme",
+  "dependencies": {
+    "angular": "~1.4.8",
+    "angular-animate": "~1.4.8",
+    "angular-aria": "~1.4.8",
+    "angular-cookies": "~1.4.8",
+    "angular-local-storage": "^0.6.0",
+    "angular-material": "^1.1.4",
+    "angular-material-data-table": "^0.10.10",
+    "angular-md5": "^0.1.10",
+    "angular-messages": "~1.4.8",
+    "angular-route": "~1.4.8",
+    "angular-visjs": "^4.16.0",
+    "jquery": "^3.2.1",
+    "ng-debounce": "^1.0.1",
+    "vis": "^4.20.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.1",
+    "postcss-brunch": "^2.0.5",
+    "uglify-js-brunch": "^2.10.0"
+  }
+}

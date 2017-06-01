@@ -2,12 +2,12 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: url(css/font/MaterialIcons-Regular.eot); /* For IE6-8 */
   src: local('Material Icons'),
        local('MaterialIcons-Regular'),
-       url(MaterialIcons-Regular.woff2) format('woff2'),
-       url(MaterialIcons-Regular.woff) format('woff'),
-       url(MaterialIcons-Regular.ttf) format('truetype');
+       url(css/font/MaterialIcons-Regular.woff2) format('woff2'),
+       url(css/font/MaterialIcons-Regular.woff) format('woff'),
+       url(css/font/MaterialIcons-Regular.ttf) format('truetype');
 }
 
 .material-icons {
@@ -125,10 +125,10 @@ md-toolbar.md-tall.md-hue-2 {
     ), url('logo.jpg') cover;*/
     background-image: -webkit-linear-gradient(
       rgba(16, 47, 100, 0.8), 
-      rgba(8, 24, 50, 1) 90%), url('logo.jpg');
+      rgba(8, 24, 50, 1) 90%), url(css/img/logo.jpg);
     background-image: linear-gradient(
       rgba(16, 47, 100, 0.8), 
-      rgba(8, 24, 50, 1) 90%), url('logo.jpg');
+      rgba(8, 24, 50, 1) 90%), url(css/img/logo.jpg);
     background-size: contain;
     background-position: 50% 50%;
     background-repeat: no-repeat;

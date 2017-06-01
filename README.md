@@ -2,13 +2,11 @@
 
 1. `sudo apt-get install npm`
 
-2. `npm install -g bower`
+2. `npm install -g brunch`
 
-3. `sudo apt-get install nodejs nodejs-legacy`
+3. `npm install --dev`
 
-4. `cd /path/to/dir/`
-
-5. `bower install`
+4. `brunch build` or `brunch watch`
 
 ### Create a certificate
 
@@ -22,12 +20,6 @@
 
 1. `cd /path/to/dir/`
 
-2. `python simple-https.py [port]`
+2. `python2 simple-https.py [port]`
 
-3. Open `https://localhost` in any browser (reminder: add [port] if given)
-
-### Minify
-
-1. `npm install cssnano-cli html-minifier uglify-js`
-
-2. `./build.sh`
+3. Open `https://localhost/public` in any browser (reminder: add [port] if given)
