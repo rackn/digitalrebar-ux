@@ -381,6 +381,16 @@ window.version = '0.1.5';
     }
   });
 
+  app.filter('map', function () {
+    return function (items, mapping) {
+      return items.map(function (value, i) {
+        var obj = angular.copy(value);
+        console.log(mapping);
+        return obj;
+      });
+    };
+  });
+
   app.controller('AppCtrl', function ($scope, $location, localStorageService, $mdSidenav, api) {
     $scope.toggleSideNav = function (menuId) {
       $mdSidenav(menuId).toggle();

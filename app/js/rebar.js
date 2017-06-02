@@ -26,6 +26,7 @@
       return result;
     };
   });
+  
   app.run(function ($rootScope, $cookies, api, $interval, debounce) {
     // use regex to get the current location
     var currentLocation = "https://" + location.hostname;
