@@ -257,7 +257,9 @@ node controller
         api('/api/v2/nodes/' + $scope.node.id, {
           method: 'PUT',
           data: { 'available': !reserve }
-        }).then(function(resp){api.addNode(resp.data)}, function (err) {
+        }).then(function(resp){
+          api.addNode(resp.data);
+        }, function (err) {
           api.toast('Error Reserving', 'node', err.data);
         });
       }
@@ -362,7 +364,8 @@ node controller
         });
 
         api("/api/v2/nodes/" + $scope.node.id + "/network_allocations").
-        then(function (obj) {
+        then(function (resp) {
+          var obj = resp.data;
           $scope.nics = {};
           //$scope.nics = obj;
           for (var i in obj) {

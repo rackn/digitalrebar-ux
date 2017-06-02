@@ -190,7 +190,7 @@
         Network Interfaces
       </span>
       <ul>
-        <li ng-repeat="network in nics | orderBy: _networks[network[0].network_id].name">
+        <li ng-repeat="network in nics | orderObjectBy: _networks[network[0].network_id].name">
           <a title="{{_networks[network[0].network_id].description}}" href="#!/networks/{{network[0].network_id}}">{{_networks[network[0].network_id].name}}</a>:
           <span ng-repeat="nic in network | orderBy: _network_ranges[nic.network_range_id].name">
             {{ _network_ranges[nic.network_range_id].name }}
