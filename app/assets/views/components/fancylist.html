@@ -1,0 +1,28 @@
+<!--
+  Fancy List Component
+  <fancylist title="Title" items="items" initial="list/table" table="">
+  items: [{
+    order: 0,
+    name: "Hello",
+    status: "off",
+    path: "node_roles",
+    id: 1
+    icon: "ready",
+    {other attributes the table might need}
+  }]
+-->
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <h2>{{$ctrl.title}}</h2>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <span ng-repeat="item in $ctrl.items | orderBy: item.order" aria-label="{{item.name}}" >
+      <md-button class="md-fab md-primary" aria-label="{{item.name}}" md-theme="status_{{item.status}}" ng-href="#!/{{item.path}}/{{item.id}}">
+        <md-tooltip md-direction="bottom">{{item.name}}</md-tooltip>
+        <md-icon>{{item.icon}}</md-icon>
+      </md-button>
+    </span>
+  </md-card-content>
+</md-card>

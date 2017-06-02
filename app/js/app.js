@@ -355,20 +355,31 @@ window.version = '0.1.5';
   ]);
 
   app.directive('scrollPosition', function($window) {
-  return {
-    scope: {
-      scroll: '=scrollPosition'
-    },
-    link: function(scope, element, attrs) {
-      //var windowEl = angular.element($window);
-      var handler = function() {
-        scope.scroll = $(element).scrollTop();
+    return {
+      scope: {
+        scroll: '=scrollPosition'
+      },
+      link: function(scope, element, attrs) {
+        //var windowEl = angular.element($window);
+        var handler = function() {
+          scope.scroll = $(element).scrollTop();
+        }
+        element.on('scroll', scope.$apply.bind(scope, handler));
+        handler();
       }
-      element.on('scroll', scope.$apply.bind(scope, handler));
-      handler();
+    };
+  });
+
+  // allow things to be listed or put in a table with less code
+  app.component('fancylist', {
+    templateUrl: 'views/components/fancylist.html',
+    bindings: {
+      initial: '@',
+      items: '<',
+      table: '<',
+      title: '@',
     }
-  };
-});
+  });
 
   app.controller('AppCtrl', function ($scope, $location, localStorageService, $mdSidenav, api) {
     $scope.toggleSideNav = function (menuId) {
