@@ -102,23 +102,12 @@
 </md-card>
 
 <!-- Show node roles -->
-<md-card>
-  <md-toolbar class="md-table-toolbar md-default">
-    <div class="md-toolbar-tools">
-      <span flex>Node Roles</span>
-    </div>
-  </md-toolbar>
-  <md-card-content>
-    <span ng-repeat="node_role in _node_roles | from:'role':role | orderBy: node_role.cohort()">
-      <md-button class="md-fab md-primary" md-theme="status_{{node_role.status}}" ng-href="#!/node_roles/{{node_role.id}}">
-        <md-icon>{{icons[node_role.status]}}</md-icon>
-        <md-tooltip md-direction="bottom">
-          {{_nodes[node_role.node_id].name}}
-        </md-tooltip>
-      </md-button>
-    </span>
-  </md-card-content>
-</md-card>
+<fancylist
+  title="Node Roles"
+  items="_node_roles | from:'role':role"
+  mapping="restructureRoles"
+  path="node_roles"
+  />
 
 <!-- Show Meta Data -->
 <md-card ng-switch="role.jig_name">
