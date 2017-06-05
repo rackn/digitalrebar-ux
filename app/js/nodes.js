@@ -10,6 +10,16 @@ node controller
     this.selected = [];
     $scope.move_tenant = true;
 
+    $scope.restructureRoles = function(role) {
+      return {
+        order: role.cohort,
+        status: role.status,
+        name: $scope._roles[role.role_id].name,
+        icon: $scope._roles[role.role_id].icon,
+        id: role.id,
+      };
+    };
+
     // converts the _nodes object that rootScope has into an array
     this.getNodes = function () {
       var nodes = [];

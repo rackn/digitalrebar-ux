@@ -112,27 +112,12 @@ provider view
 
     </md-content>
   </md-card>
-  <md-card>
-    <md-toolbar class="md-table-toolbar md-default">
-      <div class="md-toolbar-tools">
-        <span>Nodes</span>
-        <span flex></span>
-      </div>
-    </md-toolbar>
-
-    <md-card-content>
-      <span ng-repeat="node in getNodes() | orderBy: 'name'">
-				<!-- Node button -->
-				<md-button class="md-fab md-primary" md-theme="status_{{ api.getNodeStatus(node)}}" aria-label="{{node.name}}" ng-href="#!/nodes/{{node.id}}">
-					<md-icon>{{ api.getNodeIcon(node) }}</md-icon>
-          <md-tooltip md-direction="bottom">
-            {{node.name}}
-          </md-tooltip>
-				</md-button>
-
-			</span>
-    </md-card-content>
-  </md-card>
+  <fancylist
+    title="Nodes"
+    items="_nodes | from:'provider':provider"
+    mapping="restructureNodes"
+    path="nodes"
+    />
 </div>
 <!-- Providers list view -->
 <md-card ng-if="!provider" layout="column">

@@ -14,6 +14,16 @@ provider controller
         return providers;
       };
 
+      $scope.restructureNodes = function(node) {
+        return {
+          order: node.name,
+          status: api.getNodeStatus(node),
+          name: node.name,
+          icon: api.getNodeIcon(node),
+          id: node.id,
+        };
+      };
+
       $scope.$on("keyDown", function (action, e) {
         if (e.key == 13) { // enter
           $scope.startEditing();
@@ -71,16 +81,6 @@ provider controller
 
         $scope.editing = true;
         $scope.provider = angular.copy($scope._providers[$scope.id]);
-      };
-
-      $scope.getNodes = function () {
-        var nodes = [];
-        for (var id in $scope._nodes) {
-          if ($scope._nodes[id].provider_id == $scope.provider.id) {
-            nodes.push($scope._nodes[id]);
-          }
-        }
-        return nodes;
       };
 
       $scope.showAddProviderDialog = function (ev, type) {

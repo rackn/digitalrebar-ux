@@ -26,6 +26,7 @@
       return result;
     };
   });
+  
   app.run(function ($rootScope, $cookies, api, $interval, debounce) {
     // use regex to get the current location
     var currentLocation = "https://" + location.hostname;
@@ -44,9 +45,22 @@
       // loops through 'fetch', calling api.getDeployments 
       //      and emitting the proper callback (deploymentsDone)
       app.types.forEach(function (name) {
-        api["get" + camelCase(name)]().then(function () {
-          $rootScope.$broadcast(name + 'Done');
-          debounce(finishReloading, 2000)();
+        api.queue.push(function(){
+          api["get" + camelCase(name)]().then(function () {
+            // we finished this guy :)
+            $rootScope.$broadcast(name + 'Done');
+            
+            // nothing left to get, we're done!
+            if(api.queue.length === 0)
+              finishReloading();
+
+            api.nextQueue();
+          }, function(){
+            if(api.queue.length === 0)
+
+              finishReloading();
+            api.nextQueue();
+          });
         });
       });
     });

@@ -11,6 +11,16 @@ role controller
       "discovery", "cluster", "destructive", "abstract", "powersave"
     ];
 
+    $scope.restructureRoles = function(node_role) {
+      return {
+        order: node_role.cohort,
+        status: node_role.status,
+        name: $scope._nodes[node_role.node_id].name,
+        icon: $scope.icons[node_role.status],
+        id: node_role.id,
+      };
+    };
+
     // converts the _roles object that rootScope has into an array
     $scope.getRoles = function () {
       var roles = [];
