@@ -19,12 +19,12 @@
       <tbody md-body>
         <tr md-row ng-repeat="barclamp in getBarclamps() | orderBy: myOrder">
           <td md-cell>
-            <a ng-href="#/barclamps/{{barclamp.id}}">
+            <a ng-href="#!/barclamps/{{barclamp.id}}">
               {{barclamp.name}}
             </a>
           </td>
           <td md-cell>
-            <a ng-href="#/barclamps/{{barclamp.barclamp_id}}" ng-show='barclamp.name != _barclamps[barclamp.barclamp_id].name'>
+            <a ng-href="#!/barclamps/{{barclamp.barclamp_id}}" ng-show='barclamp.name != _barclamps[barclamp.barclamp_id].name'>
               {{_barclamps[barclamp.barclamp_id].name}}
             </a>
           </td>
@@ -43,7 +43,7 @@
             </md-icon>
           </td>
           <td md-cell>
-            <md-button ng-href="#/roles/{{role.id}}" class="md-fab md-primary md-mini" ng-repeat="role in getRoles(barclamp.cfg_data.roles)">
+            <md-button ng-href="#!/roles/{{role.id}}" class="md-fab md-primary md-mini" ng-repeat="role in getRoles(barclamp.cfg_data.roles)">
               <md-icon>
                 {{role.icon}}
               </md-icon>

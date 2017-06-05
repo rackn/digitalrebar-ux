@@ -25,8 +25,8 @@ login controller
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: false
-          }).then(function(accepted){
-            localStorageService.add('accept_eula', accepted);
+          }).then(function(resp){
+            localStorageService.add('accept_eula', resp.data);
             $scope.acceptedEula = localStorageService.get('accept_eula');
           }, function(){
 
@@ -57,7 +57,8 @@ login controller
           return;
         }
         $scope.$emit('host', host);
-        api('/api/license').success(function (data) {
+        api('/api/license').then(function (resp) {
+          var data = resp.data;
           login.state = 1; // valid state
           $scope.eula = data.eula;
           $cookies.put('host', login.host);
@@ -71,14 +72,14 @@ login controller
           var token = $cookies.get('DrAuthToken');
           if (typeof token !== 'undefined') {
             var success = false;
-            api('/api/v2/users/').success(function () {
+            api('/api/v2/users/').then(function () {
               var username = $cookies.get('DrAuthUser');
               localStorageService.add('username', username);
               $scope.$emit('login', { username: username }); //store the user in rootScope so the isAuth function can use it!
               $scope.$emit('startUpdating'); // start auto-updating the api data
               $location.path($scope.lastPath);
               success = true;
-            }).error(function () {
+            }, function () {
               $cookies.remove('DrAuthUser');
               $cookies.remove('DrAuthToken');
               $cookies.remove('_rebar_session');
@@ -89,7 +90,7 @@ login controller
 
           else if(localStorageService.get('username') && localStorageService.get('password'))
             login.signIn();
-        }).error(function () {
+        }, function () {
           login.state = -1; // error state
         });
       };
@@ -129,7 +130,8 @@ login controller
           api.toast("Please Accept the Eula")
           return;
         }
-        console.log('attempting to sign in')
+        
+        console.log('attempting to sign in');
         localStorageService.add('username', login.credentials.username);
         localStorageService.add('password', login.credentials.password);
 
@@ -141,9 +143,8 @@ login controller
           params: {
             'rackn': 'ux v' + version // let the logs know it's the ux
           }
-        }).then(function (response) {
+        }).then(function () {
           login.getUser();
-
         }, function (response) {
           console.log('error', response);
           $mdToast.show(

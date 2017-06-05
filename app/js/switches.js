@@ -21,7 +21,8 @@ switch controller
       }
       for (var nid in nodes) {
         api("/api/v2/nodes/" + nodes[nid] + "/attribs/ports").
-        success(function (value) {
+        then(function (resp) {
+          var value = resp.data;
           // remove non-action power options
           var node = $scope._nodes[value.node_id];
           if (typeof value.value.lldp === "undefined" ) {

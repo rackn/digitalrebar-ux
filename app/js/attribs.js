@@ -13,11 +13,10 @@ attribs controller
 
     if ($scope.hasAttrib == -1) {
       api('/api/v2/attribs').
-      success(function (obj) {
-        $scope.attribs = obj;
+      then(function (resp) {
+        $scope.attribs = resp.data;
         $scope.hasAttrib = 1;
-      }).
-      error(function () {
+      }, function () {
         $scope.hasAttrib = 0;
       });
     }

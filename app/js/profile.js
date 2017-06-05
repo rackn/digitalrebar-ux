@@ -11,7 +11,8 @@ provisioner controller
       $scope.expand = {};
       $scope.profile_count = -1;
 
-      api("/api/v2/attribs").success(function (attribs) {
+      api("/api/v2/attribs").then(function (resp) {
+        var attribs = resp.data;
         $scope.attribs = attribs.reduce(function(map, obj) {
           if (obj.writable && (obj.schema != null && obj.schema != "")) {
             map[obj.name] = obj;
@@ -32,14 +33,14 @@ provisioner controller
           yesCallback: function () {
             api('/api/v2/profiles/' + name, {
               method: 'DELETE'
-            }).success(function (data) {
+            }).then(function () {
               api.getHealth();
               for (var id in $scope._profiles) {
                 if ($scope._profiles[id].name==name)
                   delete $scope._profiles[id];
               }
               $scope.profile_count = Object.keys($scope._profiles).length;
-            }).error(function () {
+            }, function () {
               api.getHealth();
             });
           }

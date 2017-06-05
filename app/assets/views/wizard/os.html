@@ -5,7 +5,7 @@
   <div class="wizard-content" flex layout="column">
     <h1>Select Metal OS or Provider</h1>
     <div>
-      <md-switch ng-model="workloads.use_system" ng-if="wizard.system_nodes" ng-disabled="workloads.use_system ? onTrue : onFalse">
+      <md-switch ng-model="workloads.use_system" ng-if="wizard.system_nodes" ng-disabled="(workloads.use_system ? onTrue : onFalse) || !showProvisioner">
         Use Existing Nodes?
       </md-switch>
       <div ng-if="wizard.system_nodes && workloads.use_system">

@@ -30,14 +30,14 @@ provider controller
           yesCallback: function () {
             api('/api/v2/providers/' + provider.id, {
               method: 'DELETE'
-            }).error(function (err) {
-              api.toast('Error Deleted Provider', 'capability', err);
-            }).success(function () {
+            }).then(function () {
               $scope._providers[provider.id].name = "DELETED-" + $scope._providers[provider.id].name
               api.toast('Deleted ' + provider.name + ' capability');
               api.getHealth();
               $location.path('/providers');
-            })
+            }, function (err) {
+              api.toast('Error Deleted Provider', 'capability', err.data);
+            });
           }
         });
       };
@@ -51,9 +51,8 @@ provider controller
           method: "PUT",
           data: data
         }).
-        success(api.addProvider).
-        error(function (e) {
-          api.toast("Couldn't Save Provider", 'provider', e);
+        then(function(resp){api.addProvider(resp.data)}, function (err) {
+          api.toast("Couldn't Save Provider", 'provider', err.data);
         });
         $scope.stopEditing();
       };

@@ -13,7 +13,7 @@
           <td width="4%" ng-repeat="p in layout">{{p}}</td></tr>
         <tr><td ng-repeat="p in layout">
           <div ng-repeat="node in sw.ports[p]">
-            <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(_nodes[node.id]) }}" ng-href="#/nodes/{{node.id}}">
+            <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(_nodes[node.id]) }}" ng-href="#!/nodes/{{node.id}}">
               <md-tooltip md-direction="bottom">
                 {{node.name}}: {{node.nic}}
               </md-tooltip>
@@ -27,7 +27,7 @@
           <td ng-repeat="p in layout">{{p+1}}</td></tr>
         <tr><td ng-repeat="p in layout">
           <div ng-repeat="node in sw.ports[p+1]">
-            <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(_nodes[node.id]) }}" ng-href="#/nodes/{{node.id}}">
+            <md-button class="md-fab md-primary md-mini" md-theme="status_{{ api.getNodeStatus(_nodes[node.id]) }}" ng-href="#!/nodes/{{node.id}}">
               <md-tooltip md-direction="bottom">
                 {{node.name}}: {{node.nic}}
               </md-tooltip>

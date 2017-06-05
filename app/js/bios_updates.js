@@ -17,18 +17,21 @@ bios settings controller
     $scope.attributes = {"bios-firmware-list": "BIOS", "ipmi-firmware-list": "IPMI"};
 
     $scope.loadUpdates = function () {
-      api("/api/v2/roles/bios-flash").success(function (robj) {
+      api("/api/v2/roles/bios-flash").then(function (resp) {
+        var robj = resp.data;
         $scope.role = robj.id;
         api("/api/v2/deployments/system/deployment_roles").
-        success(function (drobj) {
+        then(function (resp) {
+          var drobj = resp.data;
           for (var id in drobj) {
             if (drobj[id].role_id == $scope.role) {
               $scope.deployment_role = drobj[id].id;
               break;
             }
           };
-          api("/api/v2/deployment_roles/"+$scope.deployment_role+"/attribs/" + $scope.attribute).
-          success(function (obj) {
+          api("/api/v2/deployment_roles/" + $scope.deployment_role + "/attribs/" + $scope.attribute).
+          then(function (resp) {
+            var obj = resp.data;
             var temp = obj.value;
             $scope.updates = [];
             $scope.dirty = false;
@@ -48,9 +51,8 @@ bios settings controller
               });
               $scope.updates.push(newobj)
             });
-          }).
-          error(function (err) {
-            api.toast("Error Firmware Updates Data", $scope.attribute, err);
+          }, function (err) {
+            api.toast("Error Firmware Updates Data", $scope.attribute, err.data);
           });
         });
       });
@@ -88,7 +90,8 @@ bios settings controller
         .targetEvent(ev)
         .ok('Add')
         .cancel('Cancel');
-      $mdDialog.show(confirm).then(function(result) {
+      $mdDialog.show(confirm).then(function(resp) {
+        var result = resp.data;
         var o = { "match": {
             "bios-version":{ "id": "bios-version", "value": "0.0.0"},
             "system_product":{ "id": "system_product", "value": "model"},
@@ -121,18 +124,18 @@ bios settings controller
       obj["deployment_role_id"] = $scope.deployment_role;
       //console.log(obj);
       api('/api/v2/deployment_roles/' + $scope.deployment_role + "/propose", { method: "PUT" }).
-      success(function(data) {
+      then(function() {
         api('/api/v2/attribs/' + $scope.id, {
           method: 'PUT',
           data: obj
         }).
-        success(function(data) { 
+        then(function() { 
           api('/api/v2/deployment_roles/' + $scope.deployment_role + "/commit", { method: "PUT" }).
-          success(function(data) { 
-            api.toast('Updated Firemware Attrib!');
+          then(function() { 
+            api.toast('Updated Firmware Attrib!');
           });
-        }).error(function (err) {
-            api.toast('Error updating firmware values', 'attribs', err);
+        }, function (err) {
+            api.toast('Error updating firmware values', 'attribs', err.data);
         });
       });
     };

@@ -6,7 +6,7 @@
       </span>
       <span ng-if="barclamp.id != barclamp.barclamp_id">
         Parent: 
-          <a ng-href="#/barclamps/{{barclamp.barclamp_id}}" swap-md-pain-fg="foreground">
+          <a ng-href="#!/barclamps/{{barclamp.barclamp_id}}" swap-md-pain-fg="foreground">
           {{ _barclamps[barclamp.barclamp_id].name }}
         </a>
       </span>
@@ -37,7 +37,7 @@
     </div>
   </md-toolbar>
   <md-card-content>
-    <md-button ng-href="#/roles/{{role.id}}" class="md-fab md-primary" ng-repeat="role in getRoles(barclamp.cfg_data.roles)">
+    <md-button ng-href="#!/roles/{{role.id}}" class="md-fab md-primary" ng-repeat="role in getRoles(barclamp.cfg_data.roles)">
       <md-icon>
         {{role.icon}}
       </md-icon>

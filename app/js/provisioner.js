@@ -11,8 +11,8 @@ provisioner controller
       switch (route) {
       case 'bootenvs':
         title += 'Boot Environments';
-        api("/api/v2/attribs").success(function (attribs) {
-          $scope.attribs = attribs.map(function (a) {
+        api("/api/v2/attribs").then(function (resp) {
+          $scope.attribs = resp.data.map(function (a) {
             return a.name;
           })
         });
@@ -52,11 +52,7 @@ provisioner controller
           yesCallback: function () {
             api('/provisioner/templates/' + uuid, {
               method: 'DELETE'
-            }).success(function (data) {
-              api.getHealth();
-            }).error(function () {
-              api.getHealth();
-            });
+            }).then(api.getHealth, api.getHealth);
           }
         });
       };
@@ -86,11 +82,7 @@ provisioner controller
           yesCallback: function () {
             api('/provisioner/bootenvs/' + name, {
               method: 'DELETE'
-            }).success(function (data) {
-              api.getHealth();
-            }).error(function () {
-              api.getHealth();
-            });
+            }).then(api.getHealth, api.getHealth);
           }
         });
       };
@@ -112,12 +104,12 @@ provisioner controller
           api('/provisioner/templates/' + uuid, {
             method: 'PATCH',
             data: [{ "op": "replace", "path": "/Contents", "value": data }]
-          }).success(function (update) {
+          }).then(function () {
             api.getHealth();
             api.toast('Updated template');
-          }).error(function (err) {
+          }, function (err) {
             api.getHealth();
-            api.toast('Error Updating template', 'template', err);
+            api.toast('Error Updating template', 'template', err.data);
           })
           //send your binary data via $http or $resource or do anything else with it
         }
