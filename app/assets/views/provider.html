@@ -76,7 +76,7 @@ provider view
               {{options.name}}
             </td>
             <td>
-              <input type="text" class="table-input" ng-readonly="!editing" ng-model="provider.auth_details[name]" ng-value="options.default" />
+              <input type="text" class="table-input" ng-readonly="!editing" ng-model="provider.auth_details[name]" ng-value="provider.auth_details[name] || options.default" />
             </td>
           </tr>
 
@@ -85,7 +85,7 @@ provider view
               {{options.name}}
             </td>
             <td>
-              <input type="password" class="table-input" ng-readonly="!editing" ng-model="provider.auth_details[name]" ng-value="options.default" />
+              <input type="password" class="table-input" ng-readonly="!editing" ng-model="provider.auth_details[name]" ng-value="provider.auth_details[name] || options.default" />
             </td>
           </tr>
 
