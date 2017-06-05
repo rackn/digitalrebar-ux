@@ -208,13 +208,15 @@
 <fancylist
   title="Node Roles"
   items="_node_roles | from:'node':node"
-  initial="list"
+  mapping="restructureRoles"
+  initial="list",
+  path="node_roles"
   table=""
   />
 <md-card>
   <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
-      <span>Node Roles</span>
+      <h2>Node Roles</h2>
     </div>
   </md-toolbar>
   <md-card-content>
