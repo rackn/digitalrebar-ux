@@ -61,8 +61,11 @@ node role controller
       if ($scope.node_role.id) {
         api('/api/v2/node_roles/' + $scope.node_role.id + '/retry', {
           method: 'PUT'
-        }).success(api.addNodeRole).success($scope.updateScroll).error(function (err) {
-          api.toast('Error retrying node role', 'node_role', err);
+        }).then(function(resp){
+          api.addNodeRole(resp.data)
+          $scope.updateScroll();
+        }, function (err) {
+          api.toast('Error retrying node role', 'node_role', err.data);
         });
       }
     };
@@ -72,11 +75,12 @@ node role controller
       if ($scope.node_role.id) {
         api('/api/v2/node_roles/' + $scope.node_role.id + '/commit', {
           method: 'PUT'
-        }).success(api.addNodeRole)
-            .success($scope.updateScroll)
-            .error(function (err) {
-              api.toast('Error committing node role', 'node_role', err);
-            });
+        }).then(function(resp){
+          api.addNodeRole(resp.data);
+          $scope.updateScroll();
+        }, function (err) {
+            api.toast('Error committing node role', 'node_role', err.data);
+          });
       }
     };
 
@@ -89,7 +93,7 @@ node role controller
             if (node_role.id) {
               api('/api/v2/node_roles/' + node_role.id, {
                 method: 'DELETE'
-              }).success(function () {
+              }).then(function () {
                 api.remove('node_role', node_role.id);
               });
             }
@@ -109,7 +113,7 @@ node role controller
         if (node_role.id) {
           api('/api/v2/node_roles/' + node_role.id + '/retry', {
             method: 'PUT'
-          }).success(function () {
+          }).then(function () { /* ??? was something supposed to happen here? */
           });
         }
 
@@ -126,7 +130,7 @@ node role controller
           if ($scope.node_role.id) {
             api('/api/v2/node_roles/' + $scope.node_role.id, {
               method: 'DELETE'
-            }).success(function () {
+            }).then(function () {
               api.remove('node_role', $scope.node_role.id);
               $location.path('/node_roles');
             });
@@ -159,8 +163,11 @@ node role controller
     $scope.getRunlog = function(id) {
       return api('/api/v2/node_roles/' + id,
         { 'headers': {'x-return-attributes':'["runlog"]'}}).
-      success(function (data) {$scope.runlog = (data.runlog || "No Log");}).
-      error(function (err) {$scope.runlog = "Error Getting Run Log: " + err;});
+      then(function (resp) {
+        $scope.runlog = (resp.data.runlog || "No Log");
+      }, function (err) {
+        $scope.runlog = "Error Getting Run Log: " + err.data;
+      });
     }
 
     var updateNodeRole = function () {
@@ -181,7 +188,8 @@ node role controller
         }
         if ($scope.hasAttrib == -1) {
           api('/api/v2/node_roles/' + $scope.node_role.id + "/attribs").
-          success(function (obj) {
+          then(function (resp) {
+            var obj = resp.data;
             $scope.attribs = obj;
             obj.forEach(function (attrib) {
               attrib.len = JSON.stringify(attrib.value).length;
@@ -190,8 +198,7 @@ node role controller
                 attrib.preview = attrib.preview.substr(0, 67) + "...";
             })
             $scope.hasAttrib = 1;
-          }).
-          error(function () {
+          }, function () {
             $scope.hasAttrib = 0;
           });
         }
@@ -212,10 +219,10 @@ node role controller
     $scope.getApiUpdate = function () {
       if ($scope.editing || !$scope.node_role || !$scope.id) return;
 
-      api("/api/v2/node_roles/" + $scope.id).success(function (role) {
+      api("/api/v2/node_roles/" + $scope.id).then(function (resp) {
         // keep the runlog here, the addNodeRole will remove it to save RAM
-        $scope.runlog = role.runlog;
-        api.addNodeRole(role);
+        $scope.runlog = resp.data.runlog;
+        api.addNodeRole(resp.data);
         $scope.updateInterval = $timeout($scope.getApiUpdate, $scope.pollLog * 1000);
       });
     };

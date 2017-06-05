@@ -70,7 +70,7 @@ deployments controller
 
       if ($scope.expand[deployment.id]) {
         /*api("/api/v2/node_roles/graph?deployment_id="+deployment.id).
-          success(function (obj) {
+          then(function (obj) {
             var parsedData = vis.network.convertDot(obj["string"]);
             $scope.graphData[deployment.id] = {
               nodes: parsedData.nodes,
@@ -89,8 +89,7 @@ deployments controller
               }
 
             };
-          }).
-          error(function (err) {
+          }, function (err) {
             api.toast("Error Getting Graph Data", 'node_role', err);
           });*/
       }
@@ -117,7 +116,9 @@ deployments controller
         data: {
           tenant_id: tenant_id
         }
-      }).success(api.addDeployment);
+      }).then(function(resp){
+        api.addDeployment(resp.data);
+      });
     };
 
     // used to prevent lots of watchers from being called when creating a list of nodes
@@ -286,11 +287,10 @@ deployments controller
         message: "Are you sure you want to redeploy " + $scope._deployments[id].name + "?",
         yesCallback: function () {
           api("/api/v2/deployments/" + id + "/redeploy", { method: "PUT" }).
-          success(function () {
+          then(function () {
             $scope.updateMatrix($scope._deployments[id]);
-          }).
-          error(function (err) {
-            api.toast("Error Redeploying Deployment", 'deployment', err);
+          }, function (err) {
+            api.toast("Error Redeploying Deployment", 'deployment', err.data);
           })
         }
       });
@@ -303,11 +303,10 @@ deployments controller
         message: "Are you sure you want to delete deployment " + $scope._deployments[id].name + "?",
         yesCallback: function () {
           api("/api/v2/deployments/" + id, { method: "DELETE" }).
-          success(function () {
+          then(function () {
             api.remove("deployment", id);
-          }).
-          error(function (err) {
-            api.toast("Error Deleting Deployment", 'deployment', err);
+          }, function (err) {
+            api.toast("Error Deleting Deployment", 'deployment', err.data);
           })
         }
       });
@@ -327,18 +326,20 @@ deployments controller
     // puts deployment into proposed status
     $scope.proposeDeploymentNoCheck = function (id) {
       api("/api/v2/deployments/" + id + "/propose", { method: "PUT" }).
-      success(api.addDeployment).
-      error(function (err) {
-        api.toast("Error Proposing Deployment " + $scope._deployments[id].name, 'deployment', err);
+      then(function(resp) {
+        api.addDeployment(resp.data);
+      }, function (err) {
+        api.toast("Error Proposing Deployment " + $scope._deployments[id].name, 'deployment', err.data);
       });
     };
 
     // puts deployment into committed status
     $scope.commitDeployment = function (id) {
       api("/api/v2/deployments/" + id + "/commit", { method: "PUT" }).
-      success(api.addDeployment).
-      error(function () {
-        api.toast("Error Committing Deployment " + $scope._deployments[id].name, 'deployment', err);
+      then(function(resp) {
+        api.addDeployment(resp.data);
+      }, function () {
+        api.toast("Error Committing Deployment " + $scope._deployments[id].name, 'deployment', err.data);
       });
     };
 
@@ -370,9 +371,8 @@ deployments controller
             role_id: role_id
           }
         }
-      }).success(api.addDeploymentRole).
-      error(function (err) {
-        api.toast("Error Adding Deployment Role", 'deployment_role', err);
+      }).then(function(resp){api.addDeploymentRole(resp.data)}, function (err) {
+        api.toast("Error Adding Deployment Role", 'deployment_role', err.data);
       });
     };
 
@@ -385,21 +385,20 @@ deployments controller
         .targetEvent(ev)
         .ok('Create')
         .cancel('Cancel');
-      $mdDialog.show(confirm).then(function (name) {
+      $mdDialog.show(confirm).then(function (resp) {
         api('/api/v2/deployments', {
           method: "POST",
           data: {
-            name: name
+            name: resp.data
           }
-        }).success(api.addDeployment).
-        success(function () {
+        }).then(function(resp) {
+          api.addDeployment(resp.data)
           deployments.createPieChartData();
           deployments.createStatusBarData();
-        }).
-        error(function (err) {
-          api.toast("Couldn't Create Deployment", 'deployment', err);
+        }, function (err) {
+          api.toast("Couldn't Create Deployment", 'deployment', err.data);
         });
-      }, function () {});
+      }, function (){});
     };
 
     $scope.matrix = {};
@@ -502,11 +501,11 @@ deployments controller
           deployment_id: deployment_id,
           role_id: role_id
         }
-      }).success(api.addNodeRole).
-      error(function (err) {
-        api.toast("Error Adding Node Role", 'node_role', err);
-      }).success(function () {
+      }).then(function(resp){
+        api.addNodeRole(resp.data)
         $scope.setBindRole(deployment_id, role_id);
+      }, function (err) {
+        api.toast("Error Adding Node Role", 'node_role', err.data);
       });
     };
 
@@ -521,7 +520,7 @@ deployments controller
         yesCallback: function () {
           api('/api/v2/node_roles/' + node_role_id, {
             method: 'DELETE'
-          }).success(function () {
+          }).then(function () {
             api.remove('node_role', node_role_id);
             $scope.setBindRole(deployment_id, role_id);
           });

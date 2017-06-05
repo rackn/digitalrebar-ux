@@ -19,11 +19,7 @@ dns controller
               api('/dns/zones/' + zone.name, {
                 method: 'PATCH',
                 data: record
-              }).success(function (data) {
-                api.getHealth();
-              }).error(function () {
-                api.getHealth();
-              });
+              }).then(api.getHealth, api.getHealth);
             });
 
             dns.selected = [];

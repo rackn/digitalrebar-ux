@@ -18,11 +18,9 @@ tenants controller
           yesCallback: function () {
             api('/tenants/' + uuid, {
               method: 'DELETE'
-            }).success(function (data) {
+            }).then(api.getUsers, function (err) {
               api.getUsers();
-            }).error(function (err) {
-              api.getUsers();
-              api.toast("Error deleting tenants - "+err.message, "tenants", err);
+              api.toast("Error deleting tenants - "+err.data.message, "tenants", err.data);
             });
           }
         });
@@ -44,11 +42,7 @@ tenants controller
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen
-        }).then(function () {
-          api.getUsers();
-        }, function () {
-          api.getUsers();
-        });
+        }).then(api.getUsers, api.getUsers);
       }
     });
 })();

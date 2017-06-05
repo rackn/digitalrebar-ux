@@ -11,11 +11,7 @@ capabilities controller
         api('/api/v2/capabilities/'+ cap.id, {
           method: 'PUT',
           data: { 'includes': cap.includes }
-        }).success(function (update) {
-          api.getHealth();
-        }).error(function (err) {
-          api.getHealth();
-        });
+        }).then(api.getHealth, api.getHealth);
       };
 
       $scope.deleteCapability = function(cap) {
@@ -25,11 +21,11 @@ capabilities controller
           yesCallback: function () {
             api('/api/v2/capabilities/' + cap.id, {
               method: 'DELETE'
-            }).error(function (err) {
-              api.toast('Error Deleted Capability', 'capability', err);
-            }).success(function () {
+            }).then(function () {
               api.toast('Deleted ' + cap.name + ' capability');
               api.getHealth();
+            }, function (err) {
+              api.toast('Error Deleted Capability', 'capability', err.data);
             })
           }
         });

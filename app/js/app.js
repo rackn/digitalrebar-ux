@@ -5,7 +5,7 @@ window.version = '0.1.5';
     'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
     'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table',
     'debounce', 'jsontext', 'ng-slide-down', 'swapMdPaint', 'angular-clipboard',
-    'ngMessages', 'ngVis'
+    'ngMessages', 'ngVis', 'ngOrderObjectBy'
   ]);
 
   app.config(function ($httpProvider, $routeProvider, $mdThemingProvider, apiProvider) {
@@ -587,14 +587,14 @@ window.version = '0.1.5';
         data: {
           current_tenant_id: tenant_id
         }
-      }).success(function (user) {
-        $rootScope.user = user;
+      }).then(function (resp) {
+        $rootScope.user = resp.data;
         api.reload();
       });
     };
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
-      var path = next.split('/#/')[1];
+      var path = next.split('/#!/')[1];
       if (path) // if it's a valid path
         path = path.toLowerCase();
       else // default to Deployments
@@ -624,13 +624,13 @@ window.version = '0.1.5';
     $rootScope.$on('login', function (event, data) {
       $rootScope.user = data;
       // get the current user data
-      api('/api/v2/users/'+data.username).success(function (data) {
-        $rootScope.user = data;
+      api('/api/v2/users/' + data.username).then(function (resp) {
+        $rootScope.user = resp.data;
       });
 
       api('/api/v2/providers/templates').
-      success(function (data) {
-        $rootScope.providerTemplates = data;
+      then(function (resp) {
+        $rootScope.providerTemplates = resp.data;
       });
     });
 

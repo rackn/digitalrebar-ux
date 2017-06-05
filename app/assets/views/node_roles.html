@@ -6,13 +6,13 @@
         <md-icon>redo</md-icon>
         <md-tooltip>Retry All</md-tooltip>
       </md-button>
-      <md-button class="md-icon-button" ng-href="#/roles">
+      <md-button class="md-icon-button" ng-href="#!/roles">
         <md-icon>label_outline</md-icon>
         <md-tooltip md-direction="bottom">
           Roles
         </md-tooltip>
       </md-button>
-      <md-button class="md-icon-button" ng-href="#/deployment_roles">
+      <md-button class="md-icon-button" ng-href="#!/deployment_roles">
         <md-icon>dashboard</md-icon>
         <md-tooltip md-direction="bottom">
           Deployment Roles
@@ -50,7 +50,7 @@
       <tbody md-body swap-md-paint-bg="status_{{role.status}} primary" swap-md-paint-fg="status_{{role.status}} foreground" ng-repeat="role in getNodeRoles() | orderBy: myOrder">
         <tr md-row md-select="role" md-select-id="{{role.id}}" md-auto-select>
           <td md-cell>
-            <md-icon ng-href="#/node_roles/{{role.id}}">
+            <md-icon ng-href="#!/node_roles/{{role.id}}">
               {{icons[role.status]}}
               <md-tooltip>
                 {{role.status}}
@@ -58,22 +58,22 @@
             </md-icon>
           </td>
           <td md-cell>
-            <a ng-href="#/dash/{{role.deployment_id}}">
+            <a ng-href="#!/dash/{{role.deployment_id}}">
               {{_deployments[role.deployment_id].name}}
             </a>
           </td>
           <td md-cell>
-            <a ng-href="#/nodes/{{role.node_id}}">
+            <a ng-href="#!/nodes/{{role.node_id}}">
               {{_nodes[role.node_id].name}}
             </a>
           </td>
           <td md-cell>
-            <a ng-href="#/roles/{{role.role_id}}">
+            <a ng-href="#!/roles/{{role.role_id}}">
               {{_roles[role.role_id].name}}
             </a>
           </td>
           <td md-cell>
-            <a ng-href="#/node_roles/{{role.id}}">
+            <a ng-href="#!/node_roles/{{role.id}}">
               <md-icon>
                 {{_roles[role.role_id].icon}}
               </md-icon>

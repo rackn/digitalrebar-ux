@@ -25,11 +25,11 @@ deployment role controller
       if ($scope.deployment_role.id) {
         api('/api/v2/deployment_roles/' + $scope.deployment_role.id + '/propose', {
           method: 'PUT'
-        }).success(function () {
+        }).then(function () {
           $scope.deployment_role.proposed = true;
           api.addDeploymentRole;
-        }).error(function (err) {
-          api.toast('Error Proposing Deployment Role', 'deployment_role', err);
+        }, function (err) {
+          api.toast('Error Proposing Deployment Role', 'deployment_role', err.data);
         });
       }
     };
@@ -39,11 +39,11 @@ deployment role controller
       if ($scope.deployment_role.id) {
         api('/api/v2/deployment_roles/' + $scope.deployment_role.id + '/commit', {
           method: 'PUT'
-        }).success(function () {
+        }).then(function () {
           $scope.deployment_role.proposed = false;
           api.addDeploymentRole;
-        }).error(function (err) {
-          api.toast('Error Committing Deployment Role' , 'deployment_role', err);
+        }, function (err) {
+          api.toast('Error Committing Deployment Role' , 'deployment_role', err.data);
         });
       }
     };
@@ -57,7 +57,7 @@ deployment role controller
             if (deployment_role.id) {
               api('/api/v2/deployment_roles/' + deployment_role.id, {
                 method: 'DELETE'
-              }).success(function () {
+              }).then(function () {
                 api.remove('deployment_role', deployment_role.id);
               });
             }
@@ -77,7 +77,7 @@ deployment role controller
           if ($scope.deployment_role.id) {
             api('/api/v2/deployment_roles/' + $scope.deployment_role.id, {
               method: 'DELETE'
-            }).success(function () {
+            }).then(function () {
               api.remove('deployment_role', $scope.deployment_role.id);
               $location.path('/deployment_roles');
             });
@@ -103,7 +103,8 @@ deployment role controller
       else {
         if ($scope.hasAttrib == -1) {
           api('/api/v2/deployment_roles/' + $scope.deployment_role.id + "/attribs").
-          success(function (obj) {
+          then(function (resp) {
+            var obj = resp.data;
             $scope.attribs = obj;
             obj.forEach(function (attrib) {
               attrib.len = JSON.stringify(attrib.value).length;
@@ -112,8 +113,7 @@ deployment role controller
                 attrib.preview = attrib.preview.substr(0, 67) + "...";
             });
             $scope.hasAttrib = 1;
-          }).
-          error(function () {
+          }, function () {
             $scope.hasAttrib = 0;
           })
         }
@@ -134,7 +134,7 @@ deployment role controller
     $scope.getApiUpdate = function () {
       if ($scope.editing || !$scope.node_role) return;
 
-      api.fetch('node_role', $scope.id).success(function () {
+      api.fetch('node_role', $scope.id).then(function () {
         $scope.updateInterval = $timeout($scope.getApiUpdate, 2000);
       });
     };

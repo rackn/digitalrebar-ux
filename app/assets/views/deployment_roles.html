@@ -2,13 +2,13 @@
   <md-toolbar class="md-table-toolbar md-default" ng-hide="deployment_roles.selected.length">
     <div class="md-toolbar-tools">
       <span flex>Deployment Roles ({{getDeploymentRoles().length}})</span>
-      <md-button class="md-icon-button" ng-href="#/roles">
+      <md-button class="md-icon-button" ng-href="#!/roles">
         <md-icon>label_outline</md-icon>
         <md-tooltip md-direction="bottom">
           Roles
         </md-tooltip>
       </md-button>
-      <md-button class="md-icon-button" ng-href="#/node_roles">
+      <md-button class="md-icon-button" ng-href="#!/node_roles">
         <md-icon>dns</md-icon>
         <md-tooltip md-direction="bottom">
           Node Roles
@@ -39,17 +39,17 @@
       <tbody md-body>
         <tr md-row md-select="role" md-select-id="{{role.id}}" md-auto-select ng-repeat="role in getDeploymentRoles() | orderBy: myOrder">
           <td md-cell>
-            <a ng-href="#/dash/{{role.deployment_id}}">
+            <a ng-href="#!/dash/{{role.deployment_id}}">
             {{_deployments[role.deployment_id].name}}
           </a>
           </td>
           <td md-cell>
-            <a ng-href="#/roles/{{role.role_id}}">
+            <a ng-href="#!/roles/{{role.role_id}}">
             {{_roles[role.role_id].name}}
           </a>
           </td>
           <td md-cell>
-            <md-button ng-href="#/deployment_roles/{{role.id}}" class="md-primary md-fab md-mini">
+            <md-button ng-href="#!/deployment_roles/{{role.id}}" class="md-primary md-fab md-mini">
               <md-icon aria-label="{{_roles[role.role_id].icon}}">
                 {{_roles[role.role_id].icon}}
               </md-icon>

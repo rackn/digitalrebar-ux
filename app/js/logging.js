@@ -56,12 +56,12 @@ logging controller
 
       $scope.testApi = function () {
         api($scope.route, {method: $scope.method, data: JSON.parse($scope.payload)}).
-        success(function (data) {
+        then(function (resp) {
           $scope.class = {success: true};
-          $scope.output = JSON.stringify(data, null, "  ");
-        }).error(function (err) {
+          $scope.output = JSON.stringify(resp.data, null, "  ");
+        }, function (err) {
           $scope.class = {error: true};
-          $scope.output = JSON.stringify(err, null, "  ") || err;
+          $scope.output = JSON.stringify(err && err.data || err, null, "  ") || err.data;
         });
       };
 

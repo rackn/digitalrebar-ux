@@ -30,20 +30,19 @@ role controller
     var hasCallback = false;
 
     $scope.retry = function () {
-      for (var id in $scope._node_roles) {
+      Object.keys($scope._node_roles).forEach(function(id) {
         var nr = $scope._node_roles[id];
         if (nr.role_id == $scope.id) {
           api('/api/v2/node_roles/' + id + '/retry', {
             method: 'PUT'
-          })
-          .success(api.addNodeRole).success( function () {
-            api.toast('Retried Role ' + $scope.role.name + " on Node ID " + nr.node_id);
-          })
-          .error(function (err) {
-            api.toast('Error retrying node role', 'node_role', err);
+          }).then(function (resp) {
+            api.addNodeRole(resp.data);
+            api.toast('Retried Role ' + $scope.role.name + ' on Node ID ' + nr.node_id);
+          }, function (err) {
+            api.toast('Error retrying node role', 'node_role', err.data);
           });
         }
-      }
+      });
     }
 
     $scope.assignDeployment = function(role_id, deployment_id) {
@@ -55,9 +54,8 @@ role controller
             role_id: role_id
           }
         }
-      }).success(api.addDeploymentRole).
-      error(function (err) {
-        api.toast("Error Adding Deployment Role", 'deployment_role', err);
+      }).then(function(resp){api.addDeploymentRole(resp.data)}, function (err) {
+        api.toast("Error Adding Deployment Role", 'deployment_role', err.data);
       });      
     };
 
@@ -116,7 +114,8 @@ role controller
 
   $scope.saveScripts = function(event) {
     api("/api/v2/barclamps/" + $scope.role.barclamp_id).
-    success(function(bc) {
+    then(function(resp) {
+      var bc = resp.data;
       var roles = bc.cfg_data.roles;
       for (var r in roles) {
         if (roles[r].name == $scope.role.name) {
@@ -152,7 +151,8 @@ role controller
       };
     };
     api("/api/v2/barclamps/" + $scope.role.barclamp_id).
-    success(function(bc) {
+    then(function(resp) {
+      var bc = resp.data;
       var roles = bc.cfg_data.roles;
       for (var r in roles) {
         if (roles[r].name == $scope.role.name) {

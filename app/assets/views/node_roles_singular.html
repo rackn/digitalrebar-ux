@@ -8,17 +8,17 @@
             {{node_role.status}}
           </md-tooltip>
         </md-icon>
-        <a ng-href="#/deployments/{{node_role.deployment_id}}" swap-md-paint-fg="status_{{node_role.status}} foreground">
+        <a ng-href="#!/deployments/{{node_role.deployment_id}}" swap-md-paint-fg="status_{{node_role.status}} foreground">
           {{_deployments[node_role.deployment_id].name}}
         </a>
-        <a ng-hide="service" ng-href="#/nodes/{{node_role.node_id}}" swap-md-paint-fg="status_{{node_role.status}} foreground">
+        <a ng-hide="service" ng-href="#!/nodes/{{node_role.node_id}}" swap-md-paint-fg="status_{{node_role.status}} foreground">
           {{_nodes[node_role.node_id].name}}
         </a>
         <em ng-show="service">Service Role</em>
         <md-icon class="md-primary">
           {{_roles[node_role.role_id].icon}}
         </md-icon>
-        <a ng-href="#/roles/{{node_role.role_id}}" swap-md-paint-fg="status_{{node_role.status}} foreground">
+        <a ng-href="#!/roles/{{node_role.role_id}}" swap-md-paint-fg="status_{{node_role.status}} foreground">
           {{_roles[node_role.role_id].name}}
         </a>
       </span>
@@ -60,7 +60,7 @@
         Node Local Attributes
     </span>
     <span>
-      <a ng-if="deployment_role_id>0" ng-href="#/deployment_roles/{{deployment_role_id}}">Deployment Scope Attributes
+      <a ng-if="deployment_role_id>0" ng-href="#!/deployment_roles/{{deployment_role_id}}">Deployment Scope Attributes
         <md-icon class="md-icon-button">dashboard
           <md-tooltip>Deployment Role</md-tooltip>
         </md-icon>

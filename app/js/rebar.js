@@ -44,7 +44,7 @@
       // loops through 'fetch', calling api.getDeployments 
       //      and emitting the proper callback (deploymentsDone)
       app.types.forEach(function (name) {
-        api["get" + camelCase(name)]().success(function () {
+        api["get" + camelCase(name)]().then(function () {
           $rootScope.$broadcast(name + 'Done');
           debounce(finishReloading, 2000)();
         });
@@ -95,7 +95,7 @@
 
     // function for calling api functions ( eg. /api/v2/nodes )
     // to use:
-    // api('/path/to/api', {data: {asdf}, method: 'GET'}).success(function(data){}).error(function(data){})
+    // api('/path/to/api', {data: {asdf}, method: 'GET'}).then(function(data){}, function(data){})
     var api = function (path, args) {
       args = args || {};
       args.method = args.method || 'GET';
@@ -244,16 +244,15 @@
       if (name == 'node_role')
         headers = { 'headers': {'x-return-attributes':'["id","name","deployment_id","role_id","node_id","state","cohort","run_count","status","available","order","created_at","updated_at","uuid","tenant_id","node_error"]'}};
       return api("/api/v2/" + name + "s/" + id, headers).
-      success(function (obj) {
-        api["add" + camelCase(name)](obj);
-      }).
-      error(function (err) {
-        if(err === "Unauthorized\n") {
-          $rootScope.$broadcast(name+id+'Done');
+      then(function (resp) {
+        api["add" + camelCase(name)](resp.data);
+      }, function (err) {
+        if(err.data === "Unauthorized\n") {
+          $rootScope.$broadcast(name + id + 'Done');
           return;
         }
         api.remove(name, id);
-        $rootScope.$broadcast(name+id+'Done');
+        $rootScope.$broadcast(name + id + 'Done');
       });
     };
 
@@ -268,8 +267,7 @@
     api.addQueue = function (name, id) {
       api.queue.push(function () {
         api.fetch(name, id).
-        success(api.nextQueue).
-        error(api.nextQueue);
+        then(api.nextQueue, api.nextQueue);
 
       });
     };
@@ -310,7 +308,8 @@
           "nodes": Object.keys($rootScope._nodes).map(Number),
           "deployments": Object.keys($rootScope._deployments).map(Number)
         }
-      }).success(function (data) {
+      }).then(function (resp) {
+        var data = resp.data;
         api.lastUpdate = new Date().getTime();
         for (var type in data.changed) {
           // using forEach for asynchronous api calls
@@ -336,51 +335,51 @@
         api.queueLen = api.queue.length;
         // start the queue
         api.nextQueue();
-      }).error(function (resp) {
+      }, function (resp) {
         console.warn(resp);
         api.nextQueue();
       });
     };
 
     api.getHealth = function () {
-      api('/health').success(function (data) {
-        var map = data.Map;
+      api('/health').then(function (resp) {
+        var map = resp.data.Map;
         $rootScope.showDNS = typeof map['dns-mgmt-service'] !== 'undefined';
         $rootScope.showDHCP = typeof map['dhcp-mgmt-service'] !== 'undefined';
         $rootScope.showProvisioner = typeof map['provisioner-mgmt-service'] !== 'undefined';
         $rootScope.showEngine = typeof map['rule-engine-service'] !== 'undefined';
 
         if ($rootScope.showEngine) {
-          api('/rule-engine/api/v0/rulesets/').success(function (data) {
-            $rootScope._engine = data;
+          api('/rule-engine/api/v0/rulesets/').then(function (resp) {
+            $rootScope._engine = resp.data;
           });
         }
 
         if ($rootScope.showDNS) {
-          api('/dns/zones').success(function (data) {
-            $rootScope._DNS.zones = data;
+          api('/dns/zones').then(function (resp) {
+            $rootScope._DNS.zones = resp.data;
           });
         }
 
         if ($rootScope.showDHCP) {
-          api('/dhcp/subnets').success(function (data) {
-            $rootScope._DHCP.subnets = data;
+          api('/dhcp/subnets').then(function (resp) {
+            $rootScope._DHCP.subnets = resp.data;
           });
         }
 
         if ($rootScope.showProvisioner) {
-          api('/provisioner/machines').success(function (data) {
-            $rootScope._provisioner.machines = data;
+          api('/provisioner/machines').then(function (resp) {
+            $rootScope._provisioner.machines = resp.data;
           });
-          api('/provisioner/templates').success(function (data) {
-            $rootScope._provisioner.templates = data;
+          api('/provisioner/templates').then(function (resp) {
+            $rootScope._provisioner.templates = resp.data;
           });
-          api('/provisioner/bootenvs').success(function (data) {
-            $rootScope._provisioner.bootenvs = data;
+          api('/provisioner/bootenvs').then(function (resp) {
+            $rootScope._provisioner.bootenvs = resp.data;
           });
         }
 
-      }).error(function () {
+      }, function () {
         $rootScope.showDNS = false;
         $rootScope.showDHCP = false;
         $rootScope.showProvisioner = false;
@@ -399,7 +398,8 @@
 
     api.getUsers = function () {
       api("/api/v2/users").
-      success(function (users) {
+      then(function (resp) {
+        var users = resp.data;
         $rootScope._users = {};
         for (var i in users) {
           users[i].caps = {};
@@ -408,7 +408,8 @@
 
         // get capabilities for all users after getting users
         api("/api/v2/user_tenant_capabilities").
-        success(function (caps) {
+        then(function (resp) {
+          var caps = resp.data;
           for (var i in caps) {
             var cap = caps[i];
             if (!$rootScope._users[cap.user_id].caps[cap.tenant_id]) {
@@ -424,7 +425,8 @@
 
         // get a list of tenants
         api("/api/v2/tenants").
-        success(function (arr) {
+        then(function (resp) {
+          var arr = resp.data;
           $rootScope._tenants = {};
           for (var i in arr) {
             arr[i].children = [];
@@ -467,7 +469,8 @@
 
       // get a list of capabilities
       api("/api/v2/capabilities").
-      success(function (arr) {
+      then(function (resp) {
+        var arr = resp.data;
         $rootScope._capabilities = {};
         for (var i in arr)
           $rootScope._capabilities[arr[i].id] = arr[i];
@@ -508,9 +511,9 @@
 
     api.getDeployments = function () {
       return api('/api/v2/deployments').
-      success(function (data) {
+      then(function (resp) {
         $rootScope._deployments = {};
-        data.map(api.addDeployment);
+        resp.data.map(api.addDeployment);
       });
     };
 
@@ -552,9 +555,9 @@
     // api call for getting all the nodes
     api.getNodes = function () {
       return api('/api/v2/nodes').
-      success(function (data) {
+      then(function (resp) {
         $rootScope._nodes = {};
-        data.map(api.addNode);
+        resp.data.map(api.addNode);
       });
     };
 
@@ -567,9 +570,9 @@
     // api call for getting all the nodes
     api.getProfiles = function () {
       return api('/api/v2/profiles').
-      success(function (data) {
+      then(function (resp) {
         $rootScope._profiles = {};
-        data.map(api.addProfile);
+        resp.data.map(api.addProfile);
       });
     };
 
@@ -582,9 +585,9 @@
     // api call for getting all the roles
     api.getRoles = function () {
       return api('/api/v2/roles').
-      success(function (data) {
+      then(function (resp) {
         $rootScope._roles = {};
-        data.map(api.addRole);
+        resp.data.map(api.addRole);
       });
     };
 
@@ -601,9 +604,9 @@
     // api call for getting all the deployment roles
     api.getDeploymentRoles = function () {
       return api('/api/v2/deployment_roles').
-      success(function (data) {
+      then(function (resp) {
         $rootScope._deployment_roles = {};
-        data.map(api.addDeploymentRole);
+        resp.data.map(api.addDeploymentRole);
       });
     };
 
@@ -616,9 +619,9 @@
     // api call for getting all the providers
     api.getProviders = function () {
       return api('/api/v2/providers').
-      success(function (data) {
+      then(function (resp) {
         $rootScope._providers = {};
-        data.map(api.addProvider);
+        resp.data.map(api.addProvider);
       });
     };
 
@@ -637,18 +640,18 @@
     // api call for getting all the network ranges
     api.getNetworkRanges = function () {
       return api('/api/v2/network_ranges').
-      success(function (data) {
+      then(function (resp) {
         $rootScope._network_ranges = {};
-        data.map(api.addRange);
+        resp.data.map(api.addRange);
       });
     };
 
     // api call for getting all the networks
     api.getNetworks = function () {
       return api('/api/v2/networks').
-      success(function (data) {
+      then(function (resp) {
         $rootScope._networks = {};
-        data.map(api.addNetwork);
+        resp.data.map(api.addNetwork);
       });
     };
 
@@ -667,9 +670,9 @@
       // headers does NOT include runlog to improve performance
       return api('/api/v2/node_roles',
         { 'headers': {'x-return-attributes':'["id","name","deployment_id","role_id","node_id","state","cohort","run_count","status","available","order","created_at","updated_at","uuid","tenant_id","node_error"]'}}).
-      success(function (data) {
+      then(function (resp) {
         $rootScope._node_roles = {};
-        data.map(api.addNodeRole);
+        resp.data.map(api.addNodeRole);
       });
     };
 
@@ -706,9 +709,9 @@
     // api call for getting all the barclamps
     api.getBarclamps = function () {
       return api('/api/v2/barclamps').
-      success(function (data) {
+      then(function (resp) {
         $rootScope._barclamps = {};
-        data.map(api.addBarclamp);
+        resp.data.map(api.addBarclamp);
       });
     };
 
@@ -718,14 +721,16 @@
       api('/api/v2/barclamps', {
         method: 'POST',
         data: payload
-      }).success(function (update) {
+      }).then(function () {
         api('/api/v2/barclamps/' + config.barclamp.name).
-        success(api.addBarclamp);
+        then(function(resp) {
+          api.addBarclamp(resp.data);
+        });
         api.toast('Updated barclamp');
         api.getRoles();
-      }).error(function (err) {
-        api.toast('Error Updating barclamp', 'barclamp', err);
-      })
+      }, function (err) {
+        api.toast('Error Updating barclamp', 'barclamp', err.data);
+      });
     };
 
     api.getNodeStatus = function(node) {

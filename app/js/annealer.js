@@ -28,7 +28,7 @@ annealer controller
       $scope.getNodeRoles('error').forEach(function (role) {
         api('/api/v2/node_roles/' + role.id + '/retry', {
           method: 'PUT'
-        }).success(api.addNodeRole);
+        }).then(function(resp){api.addNodeRole(resp.data)});
       });
     };
 
