@@ -311,6 +311,7 @@ workloads controller
                   serviceMap[nid][workloads.required_service] = true
                 // collect nodes
                 $scope.createdNodes.push(node);
+                workloads.selected.push(node);
               }
             }
           }
@@ -333,6 +334,7 @@ workloads controller
         serviceMap[nid]['worker'] = true;
         // add nodes
         $scope.createdNodes.push(node);
+        workloads.selected.push(node);
       }
 
 
@@ -378,6 +380,7 @@ workloads controller
               // collect nodes
               console.log("adding node " + node.name + " from deployment id " + source_id);
               $scope.systemNodes.push(node);
+              workloads.selected.push(node);
             }
           });
         }
@@ -450,12 +453,10 @@ workloads controller
 
       $scope.getNodes = function () {
         if (workloads.use_system) {
-          workloads.selected = $scope.systemNodes;
+          return $scope.systemNodes;
         } else {
-
-          workloads.selected = $scope.createdNodes;
+          return $scope.createdNodes;
         }
-        return workloads.selected;
       };
 
       $scope.generateBlob = function () {
