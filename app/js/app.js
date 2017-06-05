@@ -354,7 +354,7 @@ window.version = '0.1.5';
     }
   ]);
 
-/*  app.directive('scrollPosition', function($window) {
+  app.directive('scrollPosition', function($window) {
     return {
       scope: {
         scroll: '=scrollPosition'
@@ -368,24 +368,26 @@ window.version = '0.1.5';
         handler();
       }
     };
-  });*/
+  });
 
   // allow things to be listed or put in a table with less code
   app.component('fancylist', {
     templateUrl: 'views/components/fancylist.html',
     bindings: {
       initial: '@',
-      table: '<',
       title: '@',
       path: '@',
     },
     controller: function($scope, $attrs, $parse, debounce) {
       var ctrl = this;
-      var dataExpr = $parse($attrs.items);
       var mapping = $scope.$parent[$attrs.mapping];
-      var deregister = $scope.$parent.$watchCollection(dataExpr, function(val) {
-        ctrl.items = val.map(mapping);
-      });
+      
+      function updateItems(val) {
+        if(val) ctrl.items = val.map(mapping);
+      }
+
+      var deregister = $scope.$parent.$watchCollection($parse($attrs.items), updateItems);
+      
       $scope.$on('$destroy', deregister);
     }
   });

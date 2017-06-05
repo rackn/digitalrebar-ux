@@ -209,25 +209,8 @@
   title="Node Roles"
   items="_node_roles | from:'node':node"
   mapping="restructureRoles"
-  initial="list",
   path="node_roles"
-  table=""
   />
-<md-card>
-  <md-toolbar class="md-table-toolbar md-default">
-    <div class="md-toolbar-tools">
-      <h2>Node Roles</h2>
-    </div>
-  </md-toolbar>
-  <md-card-content>
-    <span ng-repeat="role in _node_roles | from:'node':node | orderBy: role.cohort()" aria-label="{{_roles[role.role_id].name}}" >
-      <md-button class="md-fab md-primary" aria-label="{{_roles[role.role_id].name}}" md-theme="status_{{role.status}}" ng-href="#!/node_roles/{{role.id}}">
-        <md-tooltip md-direction="bottom">{{_roles[role.role_id].name}}</md-tooltip>
-        <md-icon>{{_roles[role.role_id].icon}}</md-icon>
-      </md-button>
-    </span>
-  </md-card-content>
-</md-card>
 
 <!-- Show node attributes -->
 <md-card>

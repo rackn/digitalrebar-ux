@@ -11,21 +11,14 @@ node controller
     $scope.move_tenant = true;
 
     $scope.restructureRoles = function(role) {
-      if(!$scope._roles[role.role_id])
-        return {
-          id: role.id,
-          name: '',
-          order: 0,
-          status: role.status,
-        };
       return {
         order: role.cohort,
         status: role.status,
         name: $scope._roles[role.role_id].name,
         icon: $scope._roles[role.role_id].icon,
-        id: role.id
+        id: role.id,
       };
-    }
+    };
 
     // converts the _nodes object that rootScope has into an array
     this.getNodes = function () {
