@@ -450,8 +450,11 @@ workloads controller
 
       $scope.getNodes = function () {
         if (workloads.use_system) {
+          console.log('system now?')
           workloads.selected = $scope.systemNodes;
         } else {
+          console.log('new nodes');
+
           workloads.selected = $scope.createdNodes;
         }
         return workloads.selected;
