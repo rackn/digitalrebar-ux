@@ -402,8 +402,8 @@ deployments controller
           data: {
             name: result
           },
-        }).then(function(result) {
-          api.addDeployment(result)
+        }).then(function(resp) {
+          api.addDeployment(resp.data);
           deployments.createPieChartData();
           deployments.createStatusBarData();
         }, function (err) {
