@@ -258,12 +258,12 @@ window.version = '0.1.5';
 
     when('/profiles', {
       controller: 'ProfileCtrl',
-      controllerAs: 'profile',
+      controllerAs: 'profiles',
       templateUrl: 'views/profiles.html'
     }).
     when('/profiles/:id', {
       controller: 'ProfileCtrl',
-      controllerAs: 'profile',
+      controllerAs: 'profiles',
       templateUrl: 'views/profiles.html'
     }).
 

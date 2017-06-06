@@ -4,7 +4,7 @@
 <md-card ng-if='profile_count==0' style="padding: 2em">
   No Profiles
 </md-card>
-<md-card ng-repeat="profile in _profiles | orderObjectBy: name">
+<md-card ng-repeat="profile in _profiles">
   <md-toolbar class="md-default" ng-click="expand[profile.name]=!expand[profile.name]">
     <div class="md-toolbar-tools">
       <span flex>
@@ -25,16 +25,19 @@
         <table md-table>
           <thead md-head md-order="valueOrder">
             <tr md-row>
-              <th md-column md-order-by="name">Name</th>
+              <th md-column md-order-by="key">Name</th>
               <th md-column md-order-by="value">Value</th>
             </tr>
           </thead>
+
           <tbody md-body>
-            <tr md-row ng-repeat="(key, value) in profile.values | orderObjectBy: valueOrder">
+            <tr md-row ng-repeat="obj in values[profile.id] | orderBy: valueOrder">
               <td md-cell>
-                {{key}}
+                {{obj.key}}
               </td>
-              <td md-cell>{{value}}</td>
+              <td md-cell>
+                {{obj.value}}
+              </td>
             </tr>
           </tbody>
         </table>
