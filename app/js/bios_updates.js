@@ -90,8 +90,7 @@ bios settings controller
         .targetEvent(ev)
         .ok('Add')
         .cancel('Cancel');
-      $mdDialog.show(confirm).then(function(resp) {
-        var result = resp.data;
+      $mdDialog.show(confirm).then(function(result) {
         var o = { "match": {
             "bios-version":{ "id": "bios-version", "value": "0.0.0"},
             "system_product":{ "id": "system_product", "value": "model"},

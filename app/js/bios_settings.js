@@ -112,8 +112,7 @@ bios settings controller
         .ok('Add')
         .cancel('Cancel');
 
-      $mdDialog.show(confirm).then(function(resp) {
-        var result = resp.data;
+      $mdDialog.show(confirm).then(function(result) {
         var o = { "role": $scope.settings[ind].role, "name": result, "parent": parent, "match": [], "values": [] };
         $scope.settings.push(o);
       }, function() {
@@ -131,8 +130,7 @@ bios settings controller
         .targetEvent(ev)
         .ok('Add')
         .cancel('Cancel');
-      $mdDialog.show(confirm).then(function(resp) {
-        var result = resp.data;
+      $mdDialog.show(confirm).then(function(result) {
         var res = result.split(":");
         var o = { "role": res[0], "name": (res[1] || "default"), "match": [], "values": [] };
         $scope.settings.push(o);
