@@ -639,7 +639,7 @@ window.version = '0.1.5';
       }
 
       if (path === 'login' && $rootScope.isAuth()) {
-        $location.path('/deployments');
+        $location.path('/');
       }
     });
 
