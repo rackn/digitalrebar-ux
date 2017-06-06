@@ -23,10 +23,12 @@ api helper controller
         }
       };
 
-      $scope.$watchCollection('method', function (method) {
+      var deregister = $scope.$watchCollection('method', function (method) {
         if(method === 'patch' && $scope.payload == '{}')
           $scope.payload = '[\n  { "op": "replace/add/remove", "path": "/attrName", "value": "foo" }\n]'
-      })
+      });
+
+      $scope.$on('$destroy', deregister);
 
       $scope.testApi = function () {
         api($scope.route, {method: $scope.method, data: JSON.parse($scope.payload)}).

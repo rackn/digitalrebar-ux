@@ -34,7 +34,8 @@ node role controller
       }
     }
 
-    $scope.$watchCollection('scroll', $scope.updateScroll)
+    var deregister = $scope.$watchCollection('scroll', $scope.updateScroll)
+    $scope.$on('$destroy', deregister);
 
     this.selected = [];
 

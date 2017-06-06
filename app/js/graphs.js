@@ -66,7 +66,7 @@ graphs controller
         });
     }
 
-    $scope.$watchCollection('graphHLayout', function (val) {
+    var deregister = $scope.$watchCollection('graphHLayout', function (val) {
       if(val) {
         $scope.graphOptions["layout"] = $scope.graphLayoutOptions;
       } else {
@@ -76,7 +76,9 @@ graphs controller
           }
         };
       }
-    })
+    });
+
+    $scope.$on('$destroy', deregister);
 
     $scope.getGraph();
   });

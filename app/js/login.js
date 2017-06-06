@@ -113,16 +113,16 @@ login controller
         });
       };
 
-      // make the loading icon appear immediately
-      $scope.$watchCollection('login.host', function () {
-        $scope.delayTest();
-      });
 
       $scope.delayTest = function () {
         login.state = 0;
         $scope.eula = undefined;
         login.testHost(login.host);
       };
+      
+      // make the loading icon appear immediately
+      var deregister = $scope.$watchCollection('login.host', $scope.delayTest);
+      $scope.$on('$destroy', deregister);
 
       // function for the login button
       this.signIn = function () {
