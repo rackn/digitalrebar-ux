@@ -396,20 +396,20 @@ deployments controller
         .targetEvent(ev)
         .ok('Create')
         .cancel('Cancel');
-      $mdDialog.show(confirm).then(function (resp) {
+      $mdDialog.show(confirm).then(function (result) {
         api('/api/v2/deployments', {
           method: "POST",
           data: {
-            name: resp.data
-          }
-        }).then(function(resp) {
-          api.addDeployment(resp.data)
+            name: result
+          },
+        }).then(function(result) {
+          api.addDeployment(result)
           deployments.createPieChartData();
           deployments.createStatusBarData();
         }, function (err) {
           api.toast("Couldn't Create Deployment", 'deployment', err.data);
         });
-      }, function (){});
+      });
     };
 
     $scope.matrix = {};
