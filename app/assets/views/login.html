@@ -91,9 +91,9 @@ login view
         </md-button>
         <span flex></span>
         <div style="padding: 8px;">
-          <md-switch ng-model="acceptedEula" ng-disabled="!acceptedEula" aria-label="eula switch" ng-click="acceptEula($event)" style="margin: 0;">
+          <md-checkbox ng-checked="acceptedEula" aria-label="eula switch" ng-click="acceptEula($event)" style="margin: 0;">
             License
-          </md-switch>
+          </md-checkbox>
         </div>
         <span flex></span>
         <md-button class="md-primary md-raised" type="submit" ng-disabled="!eula || !acceptedEula">
