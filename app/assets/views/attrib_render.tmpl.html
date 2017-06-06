@@ -16,8 +16,8 @@
               {{attrib.name}}
             </a>
           </td>
-          <td ng-switch="attrib.schema.type">
-            <div data-ng-switch-when="map">
+          <td ng-switch="attrib.schema.type" flex layout="row" layout-align="start center">
+            <div data-ng-switch-when="map" flex>
               <div ng-click="visible=!visible">
                 <div>
                   <span style="font-family: monospace;">{{visible ? "Collapse &uarr;" : attrib.preview + " &darr;"}}</span>
@@ -28,7 +28,7 @@
                 </textarea>
               </div>
             </div>
-            <div data-ng-switch-when="seq">
+            <div data-ng-switch-when="seq" flex>
               <div ng-click="visible=!visible">
                 <div>
                   <span style="font-family: monospace;">{{visible ? "Collapse &uarr;" : attrib.preview + " &darr;"}}</span>
@@ -39,7 +39,7 @@
                 </textarea>
               </div>
             </div>
-            <div data-ng-switch-default>
+            <div data-ng-switch-default flex>
               <input type="text" class="table-input" ng-readonly="!attrib.writable || attrib.writable && !editing" style="font-family: monospace;" ng-model="attrib.value" />
             </div>
           </td>
