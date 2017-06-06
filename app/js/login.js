@@ -25,8 +25,8 @@ login controller
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: false
-          }).then(function(resp){
-            localStorageService.add('accept_eula', resp.data);
+          }).then(function(res){
+            localStorageService.add('accept_eula', res);
             $scope.acceptedEula = localStorageService.get('accept_eula');
           }, function(){
 
