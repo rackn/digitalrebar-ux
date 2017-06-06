@@ -387,8 +387,15 @@ window.version = '0.1.5';
       }
 
       var deregister = $scope.$parent.$watchCollection($parse($attrs.items), updateItems);
-      
       $scope.$on('$destroy', deregister);
+
+      $scope.list = true;
+      $scope.myOrder = "order";
+
+      $scope.toggleList = function() {
+        $scope.list = !$scope.list;
+        $scope.myOrder = "order";
+      }
     }
   });
 
