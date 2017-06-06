@@ -38,7 +38,7 @@
           </tr>
         </thead>
         <tbody md-body>
-          <tr md-row ng-repeat="(key, value) in locals.profile.values | orderBy: valueOrder">
+          <tr md-row ng-repeat="(key, value) in locals.profile.values | orderObjectBy: valueOrder">
             <td md-cell>
               <md-input-container>
                 <label>Name</label>
