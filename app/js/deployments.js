@@ -291,6 +291,40 @@ deployments controller
       });
     };
 
+    $scope.renameDeployment = function (event, id) {
+      $mdDialog.show({
+        templateUrl: 'views/dialogs/editdeploymentdialog.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: event,
+        controller: ['locals','$mdDialog', '$scope', function(locals, $mdDialog, $scope){
+          $scope.id = locals.id;
+          $scope.name = locals.name;
+          $scope.description = locals.description;
+          $scope.cancel = $mdDialog.cancel;
+          $scope.hide = $mdDialog.hide;
+        }],
+        locals: {
+          id: id,
+          name: $scope._deployments[id].name,
+          description: $scope._deployments[id].description,
+        },
+        clickOutsideToClose: true,
+        fullscreen: false
+      }).then(function (result) {
+        api('/api/v2/deployments/' + result.id, {
+          method: 'PUT',
+          data: {
+            name: result.name,
+            description: result.description,
+          },
+        }).then(function(resp) {
+          api.addDeployment(resp.data);
+        }, function (err) {
+          api.toast("Couldn't Create Deployment", 'deployment', err.data);
+        });
+      });
+    };
+
     // creates a confirmation dialog before redeploying the deployment
     $scope.redeployDeployment = function (event, id) {
       $scope.confirm(event, {
