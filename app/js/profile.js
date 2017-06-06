@@ -9,7 +9,22 @@ provisioner controller
 
       $scope.attribs = {}
       $scope.expand = {};
+      $scope.values = {};
       $scope.profile_count = -1;
+      $scope.valueOrder = "key";
+
+      var deregister = $scope.$watchCollection("_profiles", function(profiles){
+        $scope.profile_count = Object.keys(profiles).length;
+        $scope.values = {};
+        Object.keys(profiles).forEach(function(id) {
+          var profile = profiles[id];
+          $scope.values[id] = Object.keys(profile.values).map(function(key) {
+            return {key: key, value: profile.values[key]};
+          });
+        });
+      });
+
+      $scope.$on('$destroy', deregister);
 
       api("/api/v2/attribs").then(function (resp) {
         var attribs = resp.data;
