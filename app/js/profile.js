@@ -1,19 +1,21 @@
 /*
-provisioner controller
+  Copyright 2017, RackN
+  Provisioner Controller
 */
 (function () {
   angular.module('app')
-    .controller('ProfileCtrl', function ($scope, api, $location, $mdDialog, $mdMedia, $routeParams) {
-
+  .controller('ProfileCtrl', [
+    '$scope', 'api', '$location', '$mdDialog', '$mdMedia', '$routeParams',
+    function ($scope, api, $location, $mdDialog, $mdMedia, $routeParams) {
       var title = 'Profiles';
 
       $scope.attribs = {}
       $scope.expand = {};
       $scope.values = {};
       $scope.profile_count = -1;
-      $scope.valueOrder = "key";
+      $scope.valueOrder = 'key';
 
-      var deregister = $scope.$watchCollection("_profiles", function(profiles){
+      var deregister = $scope.$watchCollection('_profiles', function(profiles){
         $scope.profile_count = Object.keys(profiles).length;
         $scope.values = {};
         Object.keys(profiles).forEach(function(id) {
@@ -26,10 +28,10 @@ provisioner controller
 
       $scope.$on('$destroy', deregister);
 
-      api("/api/v2/attribs").then(function (resp) {
+      api('/api/v2/attribs').then(function (resp) {
         var attribs = resp.data;
         $scope.attribs = attribs.reduce(function(map, obj) {
-          if (obj.writable && (obj.schema != null && obj.schema != "")) {
+          if (obj.writable && (obj.schema != null && obj.schema != '')) {
             map[obj.name] = obj;
           }
           return map;
@@ -43,8 +45,8 @@ provisioner controller
 
       $scope.deleteProfile = function (name) {
         $scope.confirm(event, {
-          title: "Remove Profile",
-          message: "Are you sure you want to remove '" + name + "' profile?",
+          title: 'Remove Profile',
+          message: 'Are you sure you want to remove "' + name + '" profile?',
           yesCallback: function () {
             api('/api/v2/profiles/' + name, {
               method: 'DELETE'
@@ -66,11 +68,11 @@ provisioner controller
         var profile = angular.copy(prof);
 
         var values = {};
-	      var name = "";
+	      var name = '';
         if (typeof profile !== 'undefined') {
-          name = profile.name
+          name = profile.name;
           for(var key in profile.values) {
-            values[key] = { "name": key, "value": JSON.stringify(profile.values[key]) }
+            values[key] = {name: key, value: JSON.stringify(profile.values[key])};
           }
         }
         $scope.profile_count = 1;
@@ -94,6 +96,6 @@ provisioner controller
           fullscreen: true
         });
       };
-
-    });
+    }
+  ]);
 })();
