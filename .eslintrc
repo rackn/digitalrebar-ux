@@ -1,7 +1,10 @@
 {
   "env": {
     "es6": true,
-    "browser": true,
+    "browser": true
+  },
+  "globals": {
+    "angular": true
   },
   "ecmaVersion": 6,
   "parser": "esprima",

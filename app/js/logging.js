@@ -15,7 +15,7 @@
         };
 
         $scope.showInfo = function (ev, err) {
-           $mdDialog.show({
+          $mdDialog.show({
             template: '' +
               '<md-dialog aria-label="Error">' +
               '  <md-toolbar>' +
@@ -50,8 +50,7 @@
 
         $scope.parse = function (data) {
           try {
-            var a = JSON.parse(data);
-            return a;
+            return JSON.parse(data);
           } catch (e) {
             return false;
           }
@@ -71,7 +70,7 @@
         $scope.clearOutput = function () {
           $scope.output = '';
           $scope.class = {};
-        }
+        };
       }
     ]);
 })();
