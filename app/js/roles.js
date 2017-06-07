@@ -121,7 +121,7 @@
     };
 
     $scope.addSection = function() {
-      s = '#!/bin/bash\necho 'hello'\nexit 0\n';
+      s = '#!/bin/bash\necho "hello"\nexit 0\n';
       $scope.scripts.push(s);
     };
 
