@@ -84,8 +84,9 @@ module.exports = {
   },
   plugins: {
     postcss: {processors: [require('autoprefixer')]},
-/*    eslint: {
-      pattern: /^app/,
-    }*/
+    eslint: {
+      pattern: /^app\/.*\.js/,
+      warnOnly: true,
+    }
   }
 };

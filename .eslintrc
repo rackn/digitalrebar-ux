@@ -4,7 +4,7 @@
     "browser": true,
   },
   "ecmaVersion": 6,
-  "parser": "eslint",
+  "parser": "esprima",
   "extends": "eslint:recommended",
   "rules": {
     "quotes": ["error", "single"],
