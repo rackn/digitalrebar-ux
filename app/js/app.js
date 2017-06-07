@@ -2,8 +2,6 @@
   Copyright 2017, RackN
   Core App Controller
 */
-window.version = '0.1.5';
-
 (function () {
   var app = angular.module('app', [
     'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
