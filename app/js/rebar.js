@@ -1,3 +1,7 @@
+/*
+  Copyright 2017, RackN
+  Rebar UX API Core
+*/
 (function () {
 
   // capitalize function
