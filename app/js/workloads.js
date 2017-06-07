@@ -76,10 +76,10 @@ workloads controller
             control[service.name] = 0;
             hasControl[service.name] = false;
           }
-          for (var i in workloads.selected) {
+
+          workloads.selected.forEach(function(node, i) {
             var canHaveRequired = false;
             var hasRequired = false;
-            var node = workloads.selected[i];
             for (var j in wizard.services) {
               var service = wizard.services[j];
               var hasService = serviceMap[node.id][service.name];
@@ -98,7 +98,8 @@ workloads controller
             }
             if (!hasRequired && canHaveRequired)
               return output ? [false, 'Every node must have a Required Service'] : false;
-          }
+          });
+
           for (var j in wizard.services) {
             var name = wizard.services[j].name;
             if (control[name] % 2 != 1 && hasControl[name])
@@ -311,7 +312,7 @@ workloads controller
                   serviceMap[nid][workloads.required_service] = true
                 // collect nodes
                 $scope.createdNodes.push(node);
-                workloads.selected.push(node);
+                workloads.selected = $scope.createdNodes;
               }
             }
           }
@@ -334,7 +335,7 @@ workloads controller
         serviceMap[nid]['worker'] = true;
         // add nodes
         $scope.createdNodes.push(node);
-        workloads.selected.push(node);
+        workloads.selected = $scope.createdNodes;
       }
 
 
@@ -380,7 +381,7 @@ workloads controller
               // collect nodes
               console.log("adding node " + node.name + " from deployment id " + source_id);
               $scope.systemNodes.push(node);
-              workloads.selected.push(node);
+              workloads.selected = $scope.systemNodes;
             }
           });
         }
@@ -455,7 +456,7 @@ workloads controller
         if (workloads.use_system) {
           return $scope.systemNodes;
         } else {
-          return $scope.createdNodes;
+          return workloads.selected=$scope.createdNodes;
         }
       };
 
@@ -485,8 +486,7 @@ workloads controller
         var gcount = 0;
         data.nodes = [];
 
-        for (var i in workloads.selected) {
-          var node = workloads.selected[i];
+        workloads.selected.forEach(function(node, i){
           var id = node.id;
           var roles = [];
 
@@ -539,7 +539,7 @@ workloads controller
               });
             }
           }
-        }
+        });
 
         // If we have keys, add them here
         console.log("JSON generate adding keys");
