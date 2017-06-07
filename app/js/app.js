@@ -352,9 +352,9 @@ window.version = '0.1.5';
           $scope.initialHeight = $scope.initialHeight || element[0].style.height;
           var resize = function () {
             element[0].style.height = $scope.initialHeight;
-            element[0].style.height = "" + element[0].scrollHeight + "px";
+            element[0].style.height = '' + element[0].scrollHeight + 'px';
           };
-          element.on("input change", resize);
+          element.on('input change', resize);
           $timeout(resize, 0);
         }
       };
@@ -454,7 +454,7 @@ window.version = '0.1.5';
 
       $scope.managementMenu = [{
         title: 'Services',
-        icon: "tune",
+        icon: 'tune',
         expand: true,
         expanded: function () {
           return $scope.expandServices; },
@@ -480,7 +480,7 @@ window.version = '0.1.5';
           }]
       }, {
         title: 'Firmware',
-        icon: "computer",
+        icon: 'computer',
         expand: true,
         expanded: function () {
           return $scope.expandHardware; },
@@ -584,8 +584,8 @@ window.version = '0.1.5';
         localStorageService.add('username', '');
         localStorageService.add('password', '');
         $scope.confirm(event, {
-          title: "Cannot Loggout",
-          message: "At this time, you must close the browser to change user sessions"
+          title: 'Cannot Loggout',
+          message: 'At this time, you must close the browser to change user sessions'
         });
       };
     }
@@ -713,9 +713,9 @@ window.version = '0.1.5';
       // a confirm dialog
       /*
         {
-          title: "Confirm", // title of dialog
-          yes: "Yes", // yes button text
-          no: "No", // no button text
+          title: 'Confirm', // title of dialog
+          yes: 'Yes', // yes button text
+          no: 'No', // no button text
           yesCallback: function(){}, // function called when yes is pressed
           noCallback: function(){} // function called when no is pressed
         } 
