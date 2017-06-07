@@ -109,76 +109,75 @@
         }
       };
 
-    if (Object.keys($scope._roles).length) {
-      updateRole();
-    } else {
-      $scope.$on('rolesDone', updateRole);
-    }
+      if (Object.keys($scope._roles).length) {
+        updateRole();
+      } else {
+        $scope.$on('rolesDone', updateRole);
+      }
 
-    $scope.removeSection = function(index) {
-      delete $scope.scripts[index];
-      api.toast('Removed Script', 'role', index);
-    };
-
-    $scope.addSection = function() {
-      s = '#!/bin/bash\necho "hello"\nexit 0\n';
-      $scope.scripts.push(s);
-    };
-
-    $scope.saveScripts = function(event) {
-      api('/api/v2/barclamps/' + $scope.role.barclamp_id).
-      then(function(resp) {
-        var bc = resp.data;
-        var roles = bc.cfg_data.roles;
-        for (var r in roles) {
-          if (roles[r].name == $scope.role.name) {
-            delete roles[r].metadata.scripts;
-            roles[r].metadata.scripts = [];
-            for (var i in $scope.scripts) {
-              roles[r].metadata.scripts.push($scope.scripts[i]); 
-            }
-            api.saveBarclamp(bc.cfg_data);
-          };
-        };
-      });
-    };
-
-    $scope.removeFile = function(index) {
-      $scope.metadata['files'].splice(index, 1);
-      api.toast('Removed Ansible File', 'file', index);
-    };
-
-    $scope.addFile = function() {
-      s = {type: 'tasks', name: 'main.yml', body:
-            ['---',
-            '- debug: msg="Ansibile Metadata Role"',
-            '- debug: var="hints"',
-            '- debug: var="rebar_wall"']};
-      $scope.metadata['files'].push(s);
-    };
-
-    $scope.saveAnsible = function(event) {
-      if ($scope.role.jig_name =='ansible-playbook' && $scope.metadata.files) {
-        for (var i in $scope.metadata.files) {
-          $scope.metadata.files[i].body = $scope.metadata.files[i].temp.split('\n')
-        ;
+      $scope.removeSection = function(index) {
+        delete $scope.scripts[index];
+        api.toast('Removed Script', 'role', index);
       };
-      api('/api/v2/barclamps/' + $scope.role.barclamp_id).
-      then(function(resp) {
-        var bc = resp.data;
-        var roles = bc.cfg_data.roles;
-        for (var r in roles) {
-          if (roles[r].name == $scope.role.name) {
-            roles[r].metadata = $scope.metadata;
-            for (var i in roles[r].metadata.files) {
-              delete roles[r].metadata.files[i].temp
-            };
-            api.saveBarclamp(bc.cfg_data);
-          };
-        };
-      });
-    };
 
+      $scope.addSection = function() {
+        s = '#!/bin/bash\necho "hello"\nexit 0\n';
+        $scope.scripts.push(s);
+      };
+
+      $scope.saveScripts = function(event) {
+        api('/api/v2/barclamps/' + $scope.role.barclamp_id).
+        then(function(resp) {
+          var bc = resp.data;
+          var roles = bc.cfg_data.roles;
+          for (var r in roles) {
+            if (roles[r].name == $scope.role.name) {
+              delete roles[r].metadata.scripts;
+              roles[r].metadata.scripts = [];
+              for (var i in $scope.scripts) {
+                roles[r].metadata.scripts.push($scope.scripts[i]); 
+              }
+              api.saveBarclamp(bc.cfg_data);
+            };
+          };
+        });
+      };
+
+      $scope.removeFile = function(index) {
+        $scope.metadata['files'].splice(index, 1);
+        api.toast('Removed Ansible File', 'file', index);
+      };
+
+      $scope.addFile = function() {
+        s = {type: 'tasks', name: 'main.yml', body:
+              ['---',
+              '- debug: msg="Ansibile Metadata Role"',
+              '- debug: var="hints"',
+              '- debug: var="rebar_wall"']};
+        $scope.metadata['files'].push(s);
+      };
+
+      $scope.saveAnsible = function(event) {
+        if ($scope.role.jig_name =='ansible-playbook' && $scope.metadata.files) {
+          for (var i in $scope.metadata.files) {
+            $scope.metadata.files[i].body = $scope.metadata.files[i].temp.split('\n')
+          }
+        }
+        api('/api/v2/barclamps/' + $scope.role.barclamp_id).
+        then(function(resp) {
+          var bc = resp.data;
+          var roles = bc.cfg_data.roles;
+          for (var r in roles) {
+            if (roles[r].name == $scope.role.name) {
+              roles[r].metadata = $scope.metadata;
+              for (var i in roles[r].metadata.files) {
+                delete roles[r].metadata.files[i].temp;
+              }
+              api.saveBarclamp(bc.cfg_data);
+            }
+          }
+        });
+      }
     }
   ]);
 })();
