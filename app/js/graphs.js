@@ -29,9 +29,9 @@
         }
       };
 
-      $scope.getGraph = function() { 
+      $scope.getGraph = function() {
         $scope.hasGraph = -1;
-        var payload = {};
+        let payload = {};
         switch($scope.graphType) {
         case 'node_roles':
           if ($scope.graphDeployment)
@@ -49,16 +49,16 @@
           break;
         }
         if ($scope.graphDeployment)
-        api('/api/v2/' + $scope.graphType + '/graph', {
-          data: payload,
-        }).
-          then(function (resp) {
-            var obj = resp.data
-            var parsedData = vis.network.convertDot(obj['string']);
+          api('/api/v2/' + $scope.graphType + '/graph', {
+            data: payload,
+          })
+          .then(function (resp) {
+            let obj = resp.data;
+            let parsedData = vis.network.convertDot(obj['string']);
             $scope.graphData = {
               nodes: parsedData.nodes,
               edges: parsedData.edges
-            }
+            };
             $scope.graphOptions = parsedData.options;
             if ($scope.graphHLayout) {
               $scope.graphOptions['layout'] = $scope.graphLayoutOptions;
@@ -68,9 +68,9 @@
             $scope.hasGraph = 0;
             api.toast('Error Getting Graph Data', 'node_role', err.data);
           });
-      }
+      };
 
-      var deregister = $scope.$watchCollection('graphHLayout', function (val) {
+      let deregister = $scope.$watchCollection('graphHLayout', function (val) {
         if(val) {
           $scope.graphOptions['layout'] = $scope.graphLayoutOptions;
         } else {

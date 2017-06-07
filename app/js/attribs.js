@@ -14,9 +14,9 @@
       $scope.attribs = [];
       $scope.editing = false;
 
-      if ($scope.hasAttrib == -1) {
-        api('/api/v2/attribs').
-        then(function (resp) {
+      if ($scope.hasAttrib === -1) {
+        api('/api/v2/attribs')
+        .then(function (resp) {
           $scope.attribs = resp.data;
           $scope.hasAttrib = 1;
         }, function () {

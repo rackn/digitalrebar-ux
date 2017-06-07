@@ -7,19 +7,19 @@
   .controller('ProfileCtrl', [
     '$scope', 'api', '$location', '$mdDialog', '$mdMedia', '$routeParams',
     function ($scope, api, $location, $mdDialog, $mdMedia, $routeParams) {
-      var title = 'Profiles';
+      let title = 'Profiles';
 
-      $scope.attribs = {}
+      $scope.attribs = {};
       $scope.expand = {};
       $scope.values = {};
       $scope.profile_count = -1;
       $scope.valueOrder = 'key';
 
-      var deregister = $scope.$watchCollection('_profiles', function(profiles){
+      let deregister = $scope.$watchCollection('_profiles', function(profiles){
         $scope.profile_count = Object.keys(profiles).length;
         $scope.values = {};
         Object.keys(profiles).forEach(function(id) {
-          var profile = profiles[id];
+          let profile = profiles[id];
           $scope.values[id] = Object.keys(profile.values).map(function(key) {
             return {key: key, value: profile.values[key]};
           });
@@ -29,9 +29,10 @@
       $scope.$on('$destroy', deregister);
 
       api('/api/v2/attribs').then(function (resp) {
-        var attribs = resp.data;
+        let attribs = resp.data;
         $scope.attribs = attribs.reduce(function(map, obj) {
-          if (obj.writable && (obj.schema != null && obj.schema != '')) {
+          if (obj.writable && typeof obj.schema !== 'undefined' &&
+              obj.schema !== '') {
             map[obj.name] = obj;
           }
           return map;
@@ -52,8 +53,8 @@
               method: 'DELETE'
             }).then(function () {
               api.getHealth();
-              for (var id in $scope._profiles) {
-                if ($scope._profiles[id].name==name)
+              for (let id in $scope._profiles) {
+                if ($scope._profiles[id].name === name)
                   delete $scope._profiles[id];
               }
               $scope.profile_count = Object.keys($scope._profiles).length;
@@ -65,14 +66,17 @@
       };
 
       $scope.createProfilePrompt = function (ev, prof) {
-        var profile = angular.copy(prof);
+        let profile = angular.copy(prof);
 
-        var values = {};
-	      var name = '';
+        let values = {};
+        let name = '';
         if (typeof profile !== 'undefined') {
           name = profile.name;
-          for(var key in profile.values) {
-            values[key] = {name: key, value: JSON.stringify(profile.values[key])};
+          for(let key in profile.values) {
+            values[key] = {
+              name: key,
+              value: JSON.stringify(profile.values[key])
+            };
           }
         }
         $scope.profile_count = 1;

@@ -9,7 +9,7 @@
       function ($scope, api, $mdDialog, $mdMedia) {
         $scope.$emit('title', 'DNS Zones'); // shows up on the top toolbar
 
-        var dns = this;
+        let dns = this;
         this.selected = [];
 
         $scope.deleteRecords = function (zone) {
@@ -31,7 +31,7 @@
         };
 
         $scope.add = function (ev, zone) {
-          var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+          let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
           $mdDialog.show({
             controller: 'DialogController',
             controllerAs: 'dialog',
@@ -41,7 +41,7 @@
             locals: {
               zone: zone,
               record: {
-                changetype: "ADD",
+                changetype: 'ADD',
                 name: '',
                 content: '',
                 type: ''

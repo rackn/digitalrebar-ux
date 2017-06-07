@@ -7,16 +7,18 @@
   .controller('ProvisionerCtrl', [
     '$scope', 'api', '$location', '$mdDialog', '$mdMedia', '$routeParams',
     function ($scope, api, $location, $mdDialog, $mdMedia, $routeParams) {
-      // use the same controller for 3 pages, so handle the title for each location
-      var route = $location.path().split('/')[2];
-      var title = 'Provisioner ';
+      // we are using the same controller for 3 pages
+      // (machines ,templates, bootenvs)
+      // so handle the title for each location
+      let route = $location.path().split('/')[2];
+      let title = 'Provisioner ';
       switch (route) {
       case 'bootenvs':
         title += 'Boot Environments';
         api('/api/v2/attribs').then(function (resp) {
           $scope.attribs = resp.data.map(function (a) {
             return a.name;
-          })
+          });
         });
         break;
       case 'templates':
@@ -31,11 +33,11 @@
       $scope.expand = {};
       $scope.attribs = [];
 
-      var mapNodes = function () {
+      let mapNodes = function () {
         $scope.nodeMap = {};
 
-        for (var id in $scope._nodes) {
-          var node = $scope._nodes[id];
+        for (let id in $scope._nodes) {
+          let node = $scope._nodes[id];
           $scope.nodeMap[node.uuid] = node;
         }
 
@@ -60,8 +62,8 @@
       };
 
       $scope.createTemplatePrompt = function (ev, temp) {
-        var template = angular.copy(temp);
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let template = angular.copy(temp);
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -74,8 +76,8 @@
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen
-        })
-      }
+        });
+      };
 
       $scope.deleteBootEnv = function (name) {
         $scope.confirm(event, {
@@ -97,12 +99,12 @@
       // this is only used for updating templates
       // look at Dialog.js:228 for creating new templates
       $scope.upload = function(uuid){
-        var fileElem = document.getElementById('file');
-        $scope.selectedFile = ''
-        var f = fileElem.files[0],
-            r = new FileReader();
+        let fileElem = document.getElementById('file');
+        $scope.selectedFile = '';
+        let f = fileElem.files[0],
+          r = new FileReader();
         r.onloadend = function(e){
-          var data = e.target.result;
+          let data = e.target.result;
           api('/provisioner/templates/' + uuid, {
             method: 'PATCH',
             data: [{op: 'replace', path: '/Contents', value: data}]
@@ -112,16 +114,17 @@
           }, function (err) {
             api.getHealth();
             api.toast('Error Updating template', 'template', err.data);
-          })
-          //send your binary data via $http or $resource or do anything else with it
-        }
+          });
+          // send your binary data via $http or
+          //  $resource or do anything else with it
+        };
         r.readAsBinaryString(f);
         fileElem.value = '';
-      }
+      };
 
 
       $scope.createBootEnvPrompt = function (ev, env) {
-        var bootenv = angular.copy(env);
+        let bootenv = angular.copy(env);
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',

@@ -15,29 +15,29 @@
     return name.split('_').map(capitalize).join('');
   }
 
-  var app = angular.module('app');
+  let app = angular.module('app');
 
   app.filter('from', function () {
     return function (items, type, obj) {
       // _node | from:'deployment':deployment
       // gets all nodes with deployment_id == deployment.id
-      var id = obj && obj.id || 0;
-      var result = [];
-      angular.forEach(items, function (value, key) {
-        if (value[type + '_id'] == id)
+      let id = obj && obj.id || 0;
+      let result = [];
+      angular.forEach(items, function (value) {
+        if (value[type + '_id'] === id)
           result.push(value);
       });
       return result;
     };
   });
-  
-  app.run(['$rootScope', '$cookies', 'api', '$interval', 'debounce',
-    function ($rootScope, $cookies, api, $interval, debounce) {
+
+  app.run(['$rootScope', '$cookies', 'api',
+    function ($rootScope, $cookies, api) {
       // use regex to get the current location
-      var currentLocation = 'https://' + location.hostname;
+      let currentLocation = 'https://' + location.hostname;
       $rootScope.host = $cookies.get('host') || currentLocation;
 
-      $rootScope.$on('updateApi', function (event) {
+      $rootScope.$on('updateApi', function () {
         api.reloading = true;
         api.getHealth();
         api.getUsers();
@@ -47,14 +47,14 @@
           api.reloading = false;
         }
 
-        // loops through 'fetch', calling api.getDeployments 
+        // loops through 'fetch', calling api.getDeployments
         //      and emitting the proper callback (deploymentsDone)
         app.types.forEach(function (name) {
           api.queue.push(function(){
             api['get' + camelCase(name)]().then(function () {
               // we finished this guy :)
               $rootScope.$broadcast(name + 'Done');
-              
+
               // nothing left to get, we're done!
               if(api.queue.length === 0)
                 finishReloading();
@@ -70,7 +70,7 @@
         });
       });
 
-      $rootScope.$on('startUpdating', function (event) {
+      $rootScope.$on('startUpdating', function () {
         api.reload();
         api.getActive();
       });
@@ -116,11 +116,11 @@
     function ($http, $rootScope, $timeout, $mdToast, debounce,
       localStorageService) {
 
-
       // function for calling api functions ( eg. /api/v2/nodes )
       // to use:
-      // api('/path/to/api', {data: {asdf}, method: 'GET'}).then(function(data){}, function(data){})
-      var api = function (path, args) {
+      // api('/path/to/api', {data: {asdf}, method: 'GET'})
+      // .then(function(data){}, function(data){})
+      let api = function (path, args) {
         args = args || {};
         args.method = args.method || 'GET';
         args.headers = args.headers || {};
@@ -131,7 +131,8 @@
       api.reloading = false;
 
       app.types = ['deployments', 'roles', 'nodes', 'profiles', 'node_roles',
-        'deployment_roles', 'networks', 'network_ranges', 'providers', 'barclamps'
+        'deployment_roles', 'networks', 'network_ranges', 'providers',
+        'barclamps'
       ];
 
       api.testSchema = function (data, schema) {
@@ -145,65 +146,66 @@
           return true;
 
         case 'str': // data is a string
-          if  (typeof data != 'string')
+          if  (typeof data !== 'string')
             return false;
 
           if (!schema.pattern)
             return true;
 
-          var regex = new RegExp(schema.pattern.substr(1, schema.pattern.length - 2));
+          let regex = new RegExp(
+            schema.pattern.substr(1, schema.pattern.length - 2));
           return !!data.match(regex);
 
         case 'bool': // data is a boolean
-          return typeof data == 'boolean';
+          return typeof data === 'boolean';
 
         case 'int': // data is a number
-          return typeof data == 'number';
+          return typeof data === 'number';
 
         case 'seq': // data is an array
-          if (typeof data != 'object' || !Array.isArray(data))
+          if (typeof data !== 'object' || !Array.isArray(data))
             return false;
 
-          var newSchema = schema.sequence[0];
+          let newSchema = schema.sequence[0];
           // test all items in data against the schema's sequence
-          for (var i in data) {
+          for (let i in data) {
             if (!api.testSchema(data[i], newSchema))
               return false;
           }
 
           return true;
         case 'map': // data is a hash table
-          if (typeof data != 'object' || Array.isArray(data))
+          if (typeof data !== 'object' || Array.isArray(data))
             return false;
 
           // handle cases where '=' is the only thing passed in mapping
           if(typeof schema.mapping['='] !== 'undefined') {
-            var newSchema = schema.mapping['='];
-            for (var key in data) {
+            let newSchema = schema.mapping['='];
+            for (let key in data) {
               if (!api.testSchema(data[key], newSchema))
                 return false;
             }
           } else {
             // check if data's children are valid
-            for (var key in schema.mapping) {
-              var newSchema = schema.mapping[key];
+            for (let key in schema.mapping) {
+              let newSchema = schema.mapping[key];
               if (!api.testSchema(data[key], newSchema))
                 return false;
             }
 
             // check if data has extra keys
-            for (var key in data) {
+            for (let key in data) {
               if (typeof schema.mapping[key] === 'undefined')
                 return false;
             }
-            
+
           }
 
 
           return true;
         }
         return false;
-      }
+      };
 
       api.exampleFromSchema = function (schema) {
         if (typeof schema === 'undefined')
@@ -211,9 +213,10 @@
         switch (schema.type) {
         case 'any':
           return '=' + (schema.required ? '*' : '');
-          
+
         case 'str':
-          return 'string' + (schema.required ? '*' : '') + (schema.pattern ? ' ' + schema.pattern : '');
+          return 'string' + (schema.required ? '*' : '') +
+            (schema.pattern ? ' ' + schema.pattern : '');
 
         case 'bool':
           return 'boolean' + (schema.required ? '*' : '');
@@ -222,15 +225,14 @@
           return 'number' + (schema.required ? '*' : '');
 
         case 'seq':
-          var newSchema = schema.sequence[0];
+          let newSchema = schema.sequence[0];
           newSchema.required = schema.required;
-          var arr = [api.exampleFromSchema(newSchema)];
-          return arr;
+          return [api.exampleFromSchema(newSchema)];
 
-        case 'map': 
-          var map = {};
-          for (var key in schema.mapping) {
-            var newSchema = schema.mapping[key];
+        case 'map':
+          let map = {};
+          for (let key in schema.mapping) {
+            let newSchema = schema.mapping[key];
             map[key] = api.exampleFromSchema(newSchema);
           }
           return map;
@@ -253,22 +255,35 @@
           .hideDelay(3000)
         );
         if (error) {
-          api.errors.push({ type: error, message: message, err: err, stack: new Error().stack, date: Date.now() });
+          api.errors.push({
+            type: error,
+            message: message,
+            err: err,
+            stack: new Error().stack,
+            date: Date.now()
+          });
           localStorageService.add('errors', api.errors);
         }
       };
 
       api.get_id = function(url) {
-        var headers = { 'headers': {'x-return-attributes':'["id"]'}};
+        let headers = { 'headers': {'x-return-attributes':'["id"]'}};
         return api(url, headers);
       };
 
       api.fetch = function (name, id) {
-        var headers = {};
-        if (name == 'node_role')
-          headers = { 'headers': {'x-return-attributes':'["id","name","deployment_id","role_id","node_id","state","cohort","run_count","status","available","order","created_at","updated_at","uuid","tenant_id","node_error"]'}};
-        return api('/api/v2/' + name + 's/' + id, headers).
-        then(function (resp) {
+        let headers = {};
+        if (name === 'node_role')
+          headers = {
+            'headers': {
+              'x-return-attributes':'["id","name","deployment_id",' +
+              '"role_id","node_id","state","cohort","run_count","status",' +
+              '"available","order","created_at","updated_at","uuid",' +
+              '"tenant_id","node_error"]'
+            }
+          };
+        return api('/api/v2/' + name + 's/' + id, headers)
+        .then(function (resp) {
           api['add' + camelCase(name)](resp.data);
         }, function (err) {
           if(err.data === 'Unauthorized\n') {
@@ -290,8 +305,8 @@
       // add an api call to the queue
       api.addQueue = function (name, id) {
         api.queue.push(function () {
-          api.fetch(name, id).
-          then(api.nextQueue, api.nextQueue);
+          api.fetch(name, id)
+          .then(api.nextQueue, api.nextQueue);
 
         });
       };
@@ -305,14 +320,15 @@
           );
         } else { // queue is empty, wait and populate it
           api.queueLen = 0;
-          $rootScope._pollTimer = $timeout(api.getActive, $rootScope._pollRate * 1000);
+          $rootScope._pollTimer = $timeout(
+            api.getActive, $rootScope._pollRate * 1000);
         }
       };
 
       api.pollRate = function(rate, override) {
         if (override && !$rootScope._pollRateOverride)
           $rootScope._pollRateOverride = true;
-        if ($rootScope._pollRate != rate) {
+        if ($rootScope._pollRate !== rate) {
           $timeout.cancel($rootScope._pollTimer);
           $rootScope._pollRate = rate;
           console.debug('Polling Rate set to ' + $rootScope._pollRate +
@@ -322,7 +338,8 @@
 
       api.getActive = function () {
         // time since last update in seconds
-        var deltaTime = Math.ceil((new Date().getTime() - api.lastUpdate) / 1000);
+        let deltaTime = Math.ceil(
+          (new Date().getTime() - api.lastUpdate) / 1000);
 
         api('/api/status/active', {
           method: 'PUT',
@@ -334,21 +351,21 @@
             deployments: Object.keys($rootScope._deployments).map(Number)
           }
         }).then(function (resp) {
-          var data = resp.data;
+          let data = resp.data;
           api.lastUpdate = new Date().getTime();
-          for (var type in data.changed) {
+          for (let type in data.changed) {
             // using forEach for asynchronous api calls
             data.changed[type].forEach(function (id) {
               // remove the plural from the type (nodes -> node)
-              var name = /^.*(?=s)/.exec(type)[0];
+              let name = /^.*(?=s)/.exec(type)[0];
               api.addQueue(name, id);
             });
           }
 
-          for (var type in data.deleted) {
-            for (var i in data.deleted[type]) {
-              var id = data.deleted[type][i];
-              var name = /^.*(?=s)/.exec(type)[0];
+          for (let type in data.deleted) {
+            for (let i in data.deleted[type]) {
+              let id = data.deleted[type][i];
+              let name = /^.*(?=s)/.exec(type)[0];
               try {
                 api.remove(name, id);
               } catch (e) {
@@ -368,11 +385,13 @@
 
       api.getHealth = function () {
         api('/health').then(function (resp) {
-          var map = resp.data.Map;
+          let map = resp.data.Map;
           $rootScope.showDNS = typeof map['dns-mgmt-service'] !== 'undefined';
           $rootScope.showDHCP = typeof map['dhcp-mgmt-service'] !== 'undefined';
-          $rootScope.showProvisioner = typeof map['provisioner-mgmt-service'] !== 'undefined';
-          $rootScope.showEngine = typeof map['rule-engine-service'] !== 'undefined';
+          $rootScope.showProvisioner = typeof map['provisioner-mgmt-service']
+            !== 'undefined';
+          $rootScope.showEngine = typeof map['rule-engine-service']
+            !== 'undefined';
 
           if ($rootScope.showEngine) {
             api('/rule-engine/api/v0/rulesets/').then(function (resp) {
@@ -411,76 +430,79 @@
         });
       };
 
-      var inOrderMap = function (map, arr, depth) {
+      function inOrderMap(map, arr, depth) {
         if (typeof depth === 'undefined')
           depth = 0;
-        for (var i in map) {
+        for (let i in map) {
           arr.push(map[i]);
           map[i].depth = depth;
           inOrderMap(map[i].children, arr, depth + 1);
         }
-      };
+      }
 
       api.getUsers = function () {
-        api('/api/v2/users').
-        then(function (resp) {
-          var users = resp.data;
+        api('/api/v2/users')
+        .then(function (resp) {
+          let users = resp.data;
           $rootScope._users = {};
-          for (var i in users) {
+          for (let i in users) {
             users[i].caps = {};
             $rootScope._users[users[i].id] = users[i];
           }
 
           // get capabilities for all users after getting users
-          api('/api/v2/user_tenant_capabilities').
-          then(function (resp) {
-            var caps = resp.data;
-            for (var i in caps) {
-              var cap = caps[i];
+          api('/api/v2/user_tenant_capabilities')
+          .then(function (resp) {
+            let caps = resp.data;
+            for (let i in caps) {
+              let cap = caps[i];
               if (!$rootScope._users[cap.user_id].caps[cap.tenant_id]) {
                 $rootScope._users[cap.user_id].caps[cap.tenant_id] = {
                   id: cap.tenant_id,
                   caps: []
                 };
               }
-              $rootScope._users[cap.user_id].caps[cap.tenant_id].caps.push(cap.capability_id);
+              $rootScope._users[cap.user_id]
+                .caps[cap.tenant_id]
+                .caps.push(cap.capability_id);
             }
 
           });
 
           // get a list of tenants
-          api('/api/v2/tenants').
-          then(function (resp) {
-            var arr = resp.data;
+          api('/api/v2/tenants')
+          .then(function (resp) {
+            let arr = resp.data;
             $rootScope._tenants = {};
-            for (var i in arr) {
+            for (let i in arr) {
               arr[i].children = [];
-              arr[i].users = [];          
+              arr[i].users = [];
               $rootScope._tenants[arr[i].id] = arr[i];
 
               // initialize empty caps where necessary
-              for (var j in users) {
+              for (let j in users) {
                 if(typeof users[j].caps[arr[i].id] === 'undefined')
                   users[j].caps[arr[i].id] = {
-                  id: arr[i].id,
-                  caps: []
-                };
+                    id: arr[i].id,
+                    caps: []
+                  };
               }
             }
 
             // move applicable users into their respected tenants
-            for (var i in users) {
+            for (let i in users) {
               $rootScope._tenants[users[i].tenant_id].users.push(users[i]);
             }
 
             // get the parents of each tenant and put tenants into map form
-            var parents = [];
-            for (var i in $rootScope._tenants) {
-              var tenant = $rootScope._tenants[i];
-              if (typeof tenant.parent_id === 'undefined' || !$rootScope._tenants[tenant.parent_id])
-                parents.push(tenant)
+            let parents = [];
+            for (let i in $rootScope._tenants) {
+              let tenant = $rootScope._tenants[i];
+              if (typeof tenant.parent_id === 'undefined' ||
+                  !$rootScope._tenants[tenant.parent_id])
+                parents.push(tenant);
               else {
-                $rootScope._tenants[tenant.parent_id].children.push(tenant)
+                $rootScope._tenants[tenant.parent_id].children.push(tenant);
               }
             }
 
@@ -493,11 +515,11 @@
 
 
         // get a list of capabilities
-        api('/api/v2/capabilities').
-        then(function (resp) {
-          var arr = resp.data;
+        api('/api/v2/capabilities')
+        .then(function (resp) {
+          let arr = resp.data;
           $rootScope._capabilities = {};
-          for (var i in arr)
+          for (let i in arr)
             $rootScope._capabilities[arr[i].id] = arr[i];
         });
       };
@@ -510,16 +532,16 @@
           return;
 
         console.log('removing ' + type + ' ' + parentId);
-        
+
         delete $rootScope['_' + type + 's'][parentId];
         $rootScope.$broadcast(type + parentId + 'Done');
 
-        if (type == 'deployment') {
+        if (type === 'deployment') {
           ['nodes', 'node_roles'].forEach(function (item) {
-            var name = /^.*(?=s)/.exec(item)[0];
-            for (var id in $rootScope['_' + item]) {
-              var child = $rootScope['_' + item][id];
-              if (child.deployment_id == parentId)
+            let name = /^.*(?=s)/.exec(item)[0];
+            for (let id in $rootScope['_' + item]) {
+              let child = $rootScope['_' + item][id];
+              if (child.deployment_id === parentId)
                 api.addQueue(name, id);
             }
           });
@@ -529,25 +551,25 @@
 
 
       api.addDeployment = function (deployment) {
-        var id = deployment.id;
+        let id = deployment.id;
         $rootScope._deployments[id] = deployment;
         $rootScope.$broadcast('deployment' + id + 'Done');
       };
 
       api.getDeployments = function () {
-        return api('/api/v2/deployments').
-        then(function (resp) {
+        return api('/api/v2/deployments')
+        .then(function (resp) {
           $rootScope._deployments = {};
           resp.data.map(api.addDeployment);
         });
       };
 
       api.addNode = function (node) {
-        var id = node.id;
+        let id = node.id;
 
         node.address = node['node-control-address'];
 
-        var state = $rootScope.states[node.state];
+        let state = $rootScope.states[node.state];
         if (!node.alive) {
           state = 'off';
           if (node.reserved)
@@ -560,7 +582,7 @@
           node.simpleState = 3; //off
         else {
           node.simpleState = 2; // todo
-          if (node.state == -1)
+          if (node.state === -1)
             node.simpleState = 1; // error
           if (node.state === 0)
             node.simpleState = 0; // ready
@@ -579,38 +601,38 @@
 
       // api call for getting all the nodes
       api.getNodes = function () {
-        return api('/api/v2/nodes').
-        then(function (resp) {
+        return api('/api/v2/nodes')
+        .then(function (resp) {
           $rootScope._nodes = {};
           resp.data.map(api.addNode);
         });
       };
 
       api.addProfile = function (profile) {
-        var id = profile.id;
+        let id = profile.id;
         $rootScope._profiles[id] = profile;
         $rootScope.$broadcast('profile' + id + 'Done');
       };
 
       // api call for getting all the nodes
       api.getProfiles = function () {
-        return api('/api/v2/profiles').
-        then(function (resp) {
+        return api('/api/v2/profiles')
+        .then(function (resp) {
           $rootScope._profiles = {};
           resp.data.map(api.addProfile);
         });
       };
 
       api.addRole = function (role) {
-        var id = role.id;
+        let id = role.id;
         $rootScope._roles[id] = role;
         $rootScope.$broadcast('role' + id + 'Done');
       };
 
       // api call for getting all the roles
       api.getRoles = function () {
-        return api('/api/v2/roles').
-        then(function (resp) {
+        return api('/api/v2/roles')
+        .then(function (resp) {
           $rootScope._roles = {};
           resp.data.map(api.addRole);
         });
@@ -621,51 +643,51 @@
         role.cohort = function () {
           return $rootScope._roles[role.role_id].cohort;
         };
-        var id = role.id;
+        let id = role.id;
         $rootScope._deployment_roles[id] = role;
         $rootScope.$broadcast('deployment_role' + id + 'Done');
       };
 
       // api call for getting all the deployment roles
       api.getDeploymentRoles = function () {
-        return api('/api/v2/deployment_roles').
-        then(function (resp) {
+        return api('/api/v2/deployment_roles')
+        .then(function (resp) {
           $rootScope._deployment_roles = {};
           resp.data.map(api.addDeploymentRole);
         });
       };
 
       api.addProvider = function (provider) {
-        var id = provider.id;
+        let id = provider.id;
         $rootScope._providers[id] = provider;
         $rootScope.$broadcast('provider' + id + 'Done');
       };
 
       // api call for getting all the providers
       api.getProviders = function () {
-        return api('/api/v2/providers').
-        then(function (resp) {
+        return api('/api/v2/providers')
+        .then(function (resp) {
           $rootScope._providers = {};
           resp.data.map(api.addProvider);
         });
       };
 
       api.addNetwork = function (network) {
-        var id = network.id;
+        let id = network.id;
         $rootScope._networks[id] = network;
         $rootScope.$broadcast('network' + id + 'Done');
       };
 
       api.addRange = function (range) {
-        var id = range.id;
+        let id = range.id;
         $rootScope._network_ranges[id] = range;
         $rootScope.$broadcast('network_range' + id + 'Done');
       };
 
       // api call for getting all the network ranges
       api.getNetworkRanges = function () {
-        return api('/api/v2/network_ranges').
-        then(function (resp) {
+        return api('/api/v2/network_ranges')
+        .then(function (resp) {
           $rootScope._network_ranges = {};
           resp.data.map(api.addRange);
         });
@@ -673,17 +695,18 @@
 
       // api call for getting all the networks
       api.getNetworks = function () {
-        return api('/api/v2/networks').
-        then(function (resp) {
+        return api('/api/v2/networks')
+        .then(function (resp) {
           $rootScope._networks = {};
           resp.data.map(api.addNetwork);
         });
       };
 
       api.addNodeRole = function (role) {
-        var id = role.id;
+        let id = role.id;
         role.status = $rootScope.states[role.state];
-        // should be missing, but just in case we keep from storing the bulky part of the object
+        // should be missing, but just in case we
+        //  keep from storing the bulky part of the object
         delete role['runlog'];
         delete $rootScope._node_roles[id];
         $rootScope._node_roles[id] = role;
@@ -693,29 +716,36 @@
       // api call for getting all the node roles
       api.getNodeRoles = function () {
         // headers does NOT include runlog to improve performance
-        return api('/api/v2/node_roles',
-          { 'headers': {'x-return-attributes':'["id","name","deployment_id","role_id","node_id","state","cohort","run_count","status","available","order","created_at","updated_at","uuid","tenant_id","node_error"]'}}).
-        then(function (resp) {
+        return api('/api/v2/node_roles', {
+          'headers': {
+            'x-return-attributes': '["id","name","deployment_id","role_id",' +
+              '"node_id","state","cohort","run_count","status","available",' +
+              '"order","created_at","updated_at","uuid","tenant_id",' +
+              '"node_error"]'
+          }
+        })
+        .then(function (resp) {
           $rootScope._node_roles = {};
           resp.data.map(api.addNodeRole);
         });
       };
 
       api.addBarclamp = function (barclamp) {
-        var id = barclamp.id;
+        let id = barclamp.id;
         $rootScope._barclamps[id] = barclamp;
         $rootScope.$broadcast('barclamp' + id + 'Done');
 
-        if (barclamp.cfg_data && typeof barclamp.cfg_data.wizard !== 'undefined') {
+        if (barclamp.cfg_data &&
+            typeof barclamp.cfg_data.wizard !== 'undefined') {
 
           if (!barclamp.cfg_data.wizard) return;
           if (!barclamp.cfg_data.wizard.version) return;
-          if (barclamp.cfg_data.wizard.version != 2) return;
+          if (barclamp.cfg_data.wizard.version !== 2) return;
 
-          var exists = false;
-          for (var i in $rootScope.wizardBarclamps) {
-            var b = $rootScope.wizardBarclamps[i];
-            if (b.id == id) {
+          let exists = false;
+          for (let i in $rootScope.wizardBarclamps) {
+            let b = $rootScope.wizardBarclamps[i];
+            if (b.id === id) {
               exists = true;
               break;
             }
@@ -733,8 +763,8 @@
 
       // api call for getting all the barclamps
       api.getBarclamps = function () {
-        return api('/api/v2/barclamps').
-        then(function (resp) {
+        return api('/api/v2/barclamps')
+        .then(function (resp) {
           $rootScope._barclamps = {};
           resp.data.map(api.addBarclamp);
         });
@@ -742,13 +772,13 @@
 
       api.saveBarclamp = function (config) {
         config.barclamp['source_path'] = 'API_uploaded';
-        var payload = { 'value': config };
+        let payload = { 'value': config };
         api('/api/v2/barclamps', {
           method: 'POST',
           data: payload
         }).then(function () {
-          api('/api/v2/barclamps/' + config.barclamp.name).
-          then(function(resp) {
+          api('/api/v2/barclamps/' + config.barclamp.name)
+          .then(function(resp) {
             api.addBarclamp(resp.data);
           });
           api.toast('Updated barclamp');
@@ -768,24 +798,21 @@
         } else {
           return 'off';
         }
-      }
+      };
 
       api.getNodeIcon = function(node) {
-        var ns = api.getNodeStatus(node);
+        let ns = api.getNodeStatus(node);
         if (ns === 'ready')
           return node.icon;
         else
           return $rootScope.icons[ns];
-      }
+      };
 
       api.truncName = function(name) {
         return name.substring(0,name.indexOf('.'));
       };
 
-
-
       return api;
-
     }
   ]);
 })();

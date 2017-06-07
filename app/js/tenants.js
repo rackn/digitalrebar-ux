@@ -23,15 +23,16 @@
               method: 'DELETE'
             }).then(api.getUsers, function (err) {
               api.getUsers();
-              api.toast('Error deleting tenants - ' + err.data.message, 'tenants', err.data);
+              api.toast('Error deleting tenants - ' + err.data.message,
+                'tenants', err.data);
             });
           }
         });
       };
 
       $scope.createTenantPrompt = function (ev, temp) {
-        var tenant = angular.copy(temp);
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let tenant = angular.copy(temp);
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -46,7 +47,7 @@
           clickOutsideToClose: true,
           fullscreen: useFullScreen
         }).then(api.getUsers, api.getUsers);
-      }
+      };
     }
   ]);
 })();

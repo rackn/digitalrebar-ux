@@ -160,7 +160,7 @@
         '221': 'Virtual Subnet Selection',
         '254': 'Private use',
         '255': 'End.',
-      }
+      };
     }
   ]);
 })();

@@ -1,5 +1,5 @@
 /*
-  Copyright 2017, RackN 
+  Copyright 2017, RackN
   Users Controller
 */
 (function () {
@@ -15,12 +15,12 @@
         $scope.expand[$routeParams.id] = true;
 
       $scope.getUserList = function () {
-        var list = [];
-        for (var i in $scope._users) {
+        let list = [];
+        for (let i in $scope._users) {
           list.push($scope._users[i]);
         }
         return list;
-      }
+      };
 
       $scope.deleteUser = function (uuid) {
         $scope.confirm(event, {
@@ -35,8 +35,8 @@
       };
 
       $scope.createUserPrompt = function (ev, temp) {
-        var user = angular.copy(temp);
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let user = angular.copy(temp);
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -54,22 +54,22 @@
       };
 
       $scope.editCapsPrompt = function (ev, temp) {
-        var user = angular.copy(temp);
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        var caps = [];
-        for (var id in $scope._capabilities) {
+        let user = angular.copy(temp);
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let caps = [];
+        for (let id in $scope._capabilities) {
           caps.push($scope._capabilities[id]);
         }
 
-        for(var tenant_id in $scope._tenants) {
+        for(let tenant_id in $scope._tenants) {
           if(typeof user.caps[tenant_id] === 'undefined')
             user.caps[tenant_id] = {
               id: tenant_id,
               caps: []
             };
         }
-        var original = angular.copy(user);
-        
+        let original = angular.copy(user);
+
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',

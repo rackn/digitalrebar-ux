@@ -23,7 +23,7 @@
         if($scope.acceptedEula) {
           localStorageService.add('accept_eula', false);
           $scope.acceptedEula = false;
-        } else {        
+        } else {
           $mdDialog.show({
             controller: 'LoginCtrl',
             templateUrl: 'views/dialogs/accepteuladialog.tmpl.html',
@@ -46,13 +46,13 @@
       this.hosts = localStorageService.get('hosts') || [];
 
       this.host = $scope.host;
-      var params = $location.search();
+      let params = $location.search();
 
       if (params.host)
         this.host = params.host;
 
       // to be referenced in the signIn function
-      var login = this;
+      let login = this;
 
 
       // attempt to get the eula from the host
@@ -63,37 +63,33 @@
         }
         $scope.$emit('host', host);
         api('/api/license').then(function (resp) {
-          var data = resp.data;
+          let data = resp.data;
           login.state = 1; // valid state
           $scope.eula = data.eula;
           $cookies.put('host', login.host);
           $scope.$emit('host', host);
-          var hosts = localStorageService.get('hosts') || [];
+          let hosts = localStorageService.get('hosts') || [];
           if (hosts.indexOf(host) < 0) {
             login.hosts = hosts.concat(host);
             localStorageService.add('hosts', login.hosts);
           }
 
-          var token = $cookies.get('DrAuthToken');
+          let token = $cookies.get('DrAuthToken');
           if (typeof token !== 'undefined') {
-            var success = false;
             api('/api/v2/users/').then(function () {
-              var username = $cookies.get('DrAuthUser');
+              let username = $cookies.get('DrAuthUser');
               localStorageService.add('username', username);
-              $scope.$emit('login', { username: username }); //store the user in rootScope so the isAuth function can use it!
+              //store the user in rootScope so the isAuth function can use it!
+              $scope.$emit('login', { username: username });
               $scope.$emit('startUpdating'); // start auto-updating the api data
               $location.path($scope.lastPath);
-              success = true;
             }, function () {
               $cookies.remove('DrAuthUser');
               $cookies.remove('DrAuthToken');
               $cookies.remove('_rebar_session');
             });
-            if (success)
-              return;
-          }
-
-          else if(localStorageService.get('username') && localStorageService.get('password'))
+          } else if(localStorageService.get('username') &&
+              localStorageService.get('password'))
             login.signIn();
         }, function () {
           login.state = -1; // error state
@@ -102,7 +98,7 @@
 
       this.showEulaDialog = function (ev, node) {
         $scope.node = node;
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -124,9 +120,9 @@
         $scope.eula = undefined;
         login.testHost(login.host);
       };
-      
+
       // make the loading icon appear immediately
-      var deregister = $scope.$watchCollection('login.host', $scope.delayTest);
+      let deregister = $scope.$watchCollection('login.host', $scope.delayTest);
       $scope.$on('$destroy', deregister);
 
       // function for the login button
@@ -135,7 +131,7 @@
           api.toast('Please Accept the Eula');
           return;
         }
-        
+
         console.log('attempting to sign in');
         localStorageService.add('username', login.credentials.username);
         localStorageService.add('password', login.credentials.password);
@@ -146,7 +142,7 @@
             'Content-Type': 'application/json'
           },
           params: {
-            'rackn': 'ux v' + version // let the logs know it's the ux
+            'rackn': 'ux v' + window.version // let the logs know it's the ux
           }
         }).then(function () {
           login.getUser();
@@ -161,13 +157,16 @@
         });
       };
 
-      this.getUser = function () { // once we get a 200 success from signIn, we can get the user
+      // once we get a 200 success from signIn, we can get the user
+      this.getUser = function () {
         api('/api/v2/digest', { method: 'GET' }).then(function (resp) {
-          $scope.$emit('login', resp.data); //store the user in rootScope so the isAuth function can use it!
-          $scope.$emit('startUpdating'); // start auto-updating the api data
+          //store the user in rootScope so the isAuth function can use it!
+          $scope.$emit('login', resp.data);
+
+          // start auto-updating the api data
+          $scope.$emit('startUpdating');
 
           $location.path($scope.lastPath);
-        }, function (err) {
         });
       };
     }

@@ -5,21 +5,21 @@
 (function () {
   angular.module('app')
   .controller('NetworksCtrl', [
-    '$scope', 'api', '$mdDialog', '$mdMedia', '$routeParams', '$location', '$timeout',
-    function ($scope, api, $mdDialog, $mdMedia, $routeParams, $location, $timeout) {
+    '$scope', 'api', '$mdDialog', '$mdMedia', '$routeParams', '$location',
+    function ($scope, api, $mdDialog, $mdMedia, $routeParams, $location) {
       $scope.$emit('title', 'Networks'); // shows up on the top toolbar
 
-      var networks = this;
+      let networks = this;
       this.selected = [];
       this.order = 'name';
 
       this.getNetworks = function () {
-        var networks = [];
-        for (var id in $scope._networks) {
+        let networks = [];
+        for (let id in $scope._networks) {
           networks.push($scope._networks[id]);
         }
         return networks;
-      }
+      };
 
       this.deleteSelected = function (event) {
         $scope.confirm(event, {
@@ -28,9 +28,9 @@
           yesCallback: function () {
             networks.selected.forEach(function (network) {
 
-              // the api call uses REST DELETE on /nodes/id to remove a node 
-              api('/api/v2/networks/' + network.id, { method: 'DELETE' }).
-              then(function () {
+              // the api call uses REST DELETE on /nodes/id to remove a node
+              api('/api/v2/networks/' + network.id, { method: 'DELETE' })
+              .then(function () {
                 console.log('network deleted');
               }).then(function () {
                 api.remove('network', network.id);
@@ -44,7 +44,7 @@
       };
 
       this.showAddNetworkDialog = function (ev) {
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -82,7 +82,7 @@
             data: {
               deployment_id: deployment_id,
             }
-          }).then(function(resp){api.addNetwork(resp.data)});
+          }).then(function(resp){api.addNetwork(resp.data);});
         });
       };
 
@@ -93,7 +93,7 @@
             data: {
               tenant_id: tenant_id,
             }
-          }).then(function(resp){api.addNetwork(resp.data)});
+          }).then(function(resp){api.addNetwork(resp.data);});
         });
       };
 
@@ -102,8 +102,8 @@
           title: 'Remove Network',
           message: 'Are you sure you want to remove this network?',
           yesCallback: function () {
-            api('/api/v2/networks/' + $scope.id, { method: 'DELETE' }).
-            then(function () {
+            api('/api/v2/networks/' + $scope.id, { method: 'DELETE' })
+            .then(function () {
               console.log('network deleted');
             }).then(function () {
               api.remove('network', $scope.id);
@@ -117,7 +117,7 @@
         if (!$scope.editing)
           return;
 
-        var data = angular.copy($scope.network);
+        let data = angular.copy($scope.network);
         // do not send values that are not needed
         if (!data.use_vlan) delete data['vlan'];
         if (!data.use_bridge) delete data['bridge'];
@@ -125,8 +125,8 @@
         api('/api/v2/networks/' + $scope.id, {
           method: 'PUT',
           data: data
-        }).
-        then(function(resp){api.addNetwork(resp.data)}, function (err) {
+        })
+        .then(function(resp){api.addNetwork(resp.data);}, function (err) {
           api.toast('Couldn\'t Save Network', 'networks', err.data);
         });
 
@@ -153,22 +153,23 @@
         if (!$scope.editingRanges)
           return;
 
-        var data = angular.copy($scope.ranges);
+        let data = angular.copy($scope.ranges);
         Object.keys(data).forEach(function (id) {
-          var range = data[id];
-          var original = $scope._ranges[id];
+          let range = data[id];
+          let original = $scope._ranges[id];
           if (JSON.stringify(range) === JSON.stringify(original))
             return;
           api('/api/v2/network_ranges/' + range.id, {
             method: 'PUT',
             data: range
-          }).
-          then(function (resp) {
-            var obj = resp.data;
+          })
+          .then(function (resp) {
+            let obj = resp.data;
             $scope._ranges[obj.id] = obj;
             $scope.ranges[obj.id] = angular.copy(obj);
           }, function (err) {
-            api.toast('Couldn\'t Save Network Range', 'network_ranges', err.data);
+            api.toast('Couldn\'t Save Network Range',
+              'network_ranges', err.data);
           });
 
         });
@@ -178,10 +179,12 @@
       $scope.deleteRange = function (id) {
         $scope.confirm(event, {
           title: 'Remove Network Range',
-          message: 'Are you sure you want to remove network range ' + $scope._ranges[id].name + '?',
+          message: 'Are you sure you want to remove network range ' +
+            $scope._ranges[id].name + '?',
           yesCallback: function () {
-            api('/api/v2/networks/' + $scope.id + '/network_ranges/' + id, { method: 'DELETE' }).
-            then(function () {
+            api('/api/v2/networks/' + $scope.id +
+              '/network_ranges/' + id, { method: 'DELETE' })
+            .then(function () {
               delete $scope._ranges[id];
               delete $scope.ranges[id];
             });
@@ -198,9 +201,9 @@
             first: '10.10.10.1/24',
             last: '10.10.10.254/24'
           }
-        }).
-        then(function (resp) {
-          var obj = resp.data;
+        })
+        .then(function (resp) {
+          let obj = resp.data;
           $scope._ranges[obj.id] = obj;
           $scope.ranges[obj.id] = angular.copy(obj);
         }, function (err) {
@@ -222,16 +225,16 @@
 
         $scope.editingRanges = true;
         $scope.ranges = angular.copy($scope._ranges);
-      }
+      };
 
       $scope.saveNetworkRouter = function () {
         if (!$scope.editingRouter)
           return;
 
-        var data = angular.copy($scope.router);
-        var path = '/api/v2/network_routers/' + $scope.id;
-        var method = 'PUT';
-        // if the router is new, POST it. the add_router attribute is 
+        let data = angular.copy($scope.router);
+        let path = '/api/v2/network_routers/' + $scope.id;
+        let method = 'PUT';
+        // if the router is new, POST it. the add_router attribute is
         // added to a default router entry when the api
         // doesn't have a network_router for this network
         if (data.add_router) {
@@ -242,13 +245,14 @@
         api(path, {
           method: method,
           data: data
-        }).
-        then(function (resp) {
-          var obj = resp.data;
+        })
+        .then(function (resp) {
+          let obj = resp.data;
           $scope._router = obj;
           $scope.router = angular.copy(obj);
         }, function (err) {
-          api.toast('Couldn\'t Save Network Router', 'network_routers', err.data);
+          api.toast('Couldn\'t Save Network Router',
+            'network_routers', err.data);
         });
 
         $scope.stopEditingRouter();
@@ -284,9 +288,9 @@
       $scope._router = {};
       $scope.editingRouter = false;
 
-      var hasCallback = false;
+      let hasCallback = false;
 
-      var updateNetwork = function () {
+      function updateNetwork() {
         if ($scope.editing) return;
 
         $scope.network = $scope._networks[$scope.id];
@@ -295,10 +299,10 @@
           $location.path('/networks');
         else {
 
-          if ($scope.hasRanges == -1) {
-            api('/api/v2/networks/' + $scope.network.id + '/network_ranges').
-            then(function (resp) {
-              var obj = resp.data;
+          if ($scope.hasRanges === -1) {
+            api('/api/v2/networks/' + $scope.network.id + '/network_ranges')
+            .then(function (resp) {
+              let obj = resp.data;
               obj.forEach(function (range) {
                 $scope._ranges[range.id] = range;
               });
@@ -309,10 +313,10 @@
             });
           }
 
-          if ($scope.hasRouter == -1) {
-            api('/api/v2/network_routers/' + $scope.network.id).
-            then(function (resp) {
-              var obj = resp.data;
+          if ($scope.hasRouter === -1) {
+            api('/api/v2/network_routers/' + $scope.network.id)
+            .then(function (resp) {
+              let obj = resp.data;
               $scope._router = obj;
               $scope.router = angular.copy($scope._router);
               $scope.hasRouter = 1;
@@ -338,7 +342,7 @@
           }
         }
 
-      };
+      }
 
       if (Object.keys($scope._networks).length) {
         updateNetwork();

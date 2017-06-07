@@ -11,7 +11,7 @@
 
       $scope.$emit('title', 'Nodes'); // shows up on the top toolbar
 
-      var nodes = this;
+      let nodes = this;
       this.selected = [];
       $scope.move_tenant = true;
 
@@ -27,8 +27,8 @@
 
       // converts the _nodes object that rootScope has into an array
       this.getNodes = function () {
-        var nodes = [];
-        for (var id in $scope._nodes) {
+        let nodes = [];
+        for (let id in $scope._nodes) {
           if (!$scope._nodes[id].system)
             nodes.push($scope._nodes[id]);
         }
@@ -49,9 +49,9 @@
 
               console.log('Deleting node ' + node.id);
 
-              // the api call uses REST DELETE on /nodes/id to remove a node 
-              api('/api/v2/nodes/' + node.id, { method: 'DELETE' }).
-              then(function () {
+              // the api call uses REST DELETE on /nodes/id to remove a node
+              api('/api/v2/nodes/' + node.id, { method: 'DELETE' })
+              .then(function () {
                 console.log('Node deleted');
               }).then(function () {
                 api.remove('node', node.id);
@@ -78,9 +78,9 @@
 
             console.log('Deleting node ' + $scope.node.id);
 
-            // the api call uses REST DELETE on /nodes/id to remove a node 
-            api('/api/v2/nodes/' + $scope.node.id, { method: 'DELETE' }).
-            then(function () {
+            // the api call uses REST DELETE on /nodes/id to remove a node
+            api('/api/v2/nodes/' + $scope.node.id, { method: 'DELETE' })
+            .then(function () {
               console.log('Node deleted');
               api.remove('node', $scope.node.id);
               $location.path('/nodes');
@@ -91,8 +91,8 @@
       };
 
       $scope.rawProfiles = function(current) {
-        var raw = [];
-        for (var i in $scope._profiles) {
+        let raw = [];
+        for (let i in $scope._profiles) {
           if (!current.includes($scope._profiles[i].name))
             raw.push($scope._profiles[i].name);
         }
@@ -100,7 +100,7 @@
       };
 
       this.showAddNodeDialog = function (ev) {
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -122,7 +122,7 @@
       };
 
       this.showEditNodeDialog = function (ev, node) {
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -144,19 +144,19 @@
 
       $scope.assignNodes = function (arr, deployment_id, move_tenant) {
         arr.forEach(function (node) {
-          var d = {
-              node_deployment: {
-                deployment_id: deployment_id,
-                old_deployment: node.deployment_id
-              }
-            };
+          let d = {
+            node_deployment: {
+              deployment_id: deployment_id,
+              old_deployment: node.deployment_id
+            }
+          };
           if (move_tenant) {
             d.tenant_id = $scope._deployments[deployment_id].tenant_id;
           }
           api('/api/v2/nodes/' + node.id, {
             method: 'PUT',
             data: d
-          }).then(function(resp){api.addNode(resp.data)});
+          }).then(function(resp){api.addNode(resp.data);});
         });
       };
 
@@ -167,17 +167,17 @@
             data: {
               tenant_id: tenant_id
             }
-          }).then(function(resp){api.addNode(resp.data)});
+          }).then(function(resp){api.addNode(resp.data);});
         });
       };
 
       // creates an array of unused roles for a specified deployment
       $scope.getRoles = function () {
-        var roles = [];
-        var deployment_id = $scope.node.deployment_id;
-        for (var id in $scope._deployment_roles) {
-          var deployment_role = $scope._deployment_roles[id];
-          if (deployment_role.deployment_id == deployment_id) {
+        let roles = [];
+        let deployment_id = $scope.node.deployment_id;
+        for (let id in $scope._deployment_roles) {
+          let deployment_role = $scope._deployment_roles[id];
+          if (deployment_role.deployment_id === deployment_id) {
             roles.push(deployment_role);
           }
         }
@@ -186,8 +186,8 @@
 
       // binds a node role to the deployment, role, and node
       $scope.bindNodeRole = function (role_id) {
-        var node_id = $scope.node.id;
-        var deployment_id = $scope.deployment_id;
+        let node_id = $scope.node.id;
+        let deployment_id = $scope.deployment_id;
         api('/api/v2/node_roles/', {
           method: 'POST',
           data: {
@@ -195,7 +195,7 @@
             deployment_id: deployment_id,
             role_id: role_id
           }
-        }).then(function(resp){api.addNodeRole(resp.data)}, function (err) {
+        }).then(function(resp){api.addNodeRole(resp.data);}, function (err) {
           api.toast('Error Adding Node Role', 'node_role', err.data);
         });
       };
@@ -210,7 +210,7 @@
               api('/api/v2/nodes/' + $scope.node.id + '/power', {
                 data: { poweraction: action},
                 method: 'PUT'
-              }).then(function(resp){api.addNode(resp.data)}, function (err) {
+              }).then(function(resp){api.addNode(resp.data);}, function (err) {
                 api.toast('Error Powering Node', 'node', err.data);
               });
             }
@@ -236,10 +236,10 @@
             api('/api/v2/nodes/' + node_id + '/attribs/provisioner-target_os', {
               method: 'GET'})
             .then(function (resp) {
-              var a = resp.data;
+              let a = resp.data;
               api('/api/v2/attribs/' + a.id, {
-                  method: 'PUT',
-                  data: {node_id: a.node_id, role_id: a.role_id, value: target}
+                method: 'PUT',
+                data: {node_id: a.node_id, role_id: a.role_id, value: target}
               }).then(function () {
                 api('/api/v2/nodes/' + node_id + '/redeploy', {
                   method: 'PUT'
@@ -286,7 +286,8 @@
                 api('/api/v2/nodes/' + node.id + '/redeploy', {
                   method: 'PUT'
                 }).then(function () {
-                  api.toast('Redeployed ' + nodes.selected.length + ' node' + (nodes.selected.length == 1 ? '' : 's'));
+                  api.toast('Redeployed ' + nodes.selected.length + ' node' +
+                    (nodes.selected.length === 1 ? '' : 's'));
                 }, function (err) {
                   api.toast('Error Redeploying Node', 'node', err.data);
                 });
@@ -300,7 +301,7 @@
         if (!$scope.editing)
           return;
 
-        var data = angular.copy($scope.attribs);
+        let data = angular.copy($scope.attribs);
         data.forEach(function (attrib) {
           if (!attrib.writable)
             return;
@@ -325,7 +326,7 @@
       };
 
       $scope.startEditing = function () {
-        if ($scope.editing && $scope.hasAttrib == 1)
+        if ($scope.editing && $scope.hasAttrib === 1)
           return;
 
         $scope.editing = true;
@@ -352,9 +353,9 @@
         'halt': 'gavel'
       };
       $scope.editing = false;
-      var hasCallback = false;
+      let hasCallback = false;
 
-      var updateNode = function () {
+      function updateNode() {
         if ($scope.editing) return;
 
         $scope.node = $scope._nodes[$scope.id];
@@ -363,45 +364,47 @@
           $location.path('/nodes');
         else {
 
-          api('/api/v2/nodes/' + $scope.node.id + '/power').
-          then(function (resp) {
-            var obj = resp.data;
+          api('/api/v2/nodes/' + $scope.node.id + '/power')
+          .then(function (resp) {
+            let obj = resp.data;
             // remove non-action power options
-            for (var i in obj) {
+            for (let i in obj) {
               if (['status', 'on?'].includes(obj[i]))
                 obj.splice(i, 1);
             }
             $scope.power = obj;
           });
 
-          api('/api/v2/nodes/' + $scope.node.id + '/network_allocations').
-          then(function (resp) {
-            var obj = resp.data;
+          api('/api/v2/nodes/' + $scope.node.id + '/network_allocations')
+          .then(function (resp) {
+            let obj = resp.data;
             $scope.nics = {};
             //$scope.nics = obj;
-            for (var i in obj) {
+            for (let i in obj) {
               if (!$scope.nics[obj[i].network_id])
                 $scope.nics[obj[i].network_id] = [];
               $scope.nics[obj[i].network_id].push(obj[i]);
             }
           });
 
-          if ($scope.hasAttrib == -1) {
-            api('/api/v2/nodes/' + $scope.node.id + '/attribs').
-            then(function (resp) {
-              var obj = resp.data;
+          if ($scope.hasAttrib === -1) {
+            api('/api/v2/nodes/' + $scope.node.id + '/attribs')
+            .then(function (resp) {
+              let obj = resp.data;
               $scope.attribs = obj;
               obj.forEach(function (attrib) {
-                var blob = JSON.stringify(attrib.value);
+                let blob = JSON.stringify(attrib.value);
                 attrib.len = blob.length;
-                attrib.preview = JSON.stringify(attrib.value, null, '  ').trim().replace(/[\s\n]/g, '');
+                attrib.preview = JSON.stringify(attrib.value, null, '  ')
+                .trim()
+                .replace(/[\s\n]/g, '');
                 if (typeof attrib.value === 'undefined')
                   attrib.value = 'Not Set';
                 if (attrib.preview.length > 73)
                   attrib.preview = attrib.preview.substr(0, 67) + '...';
-                if (attrib.name == 'ipmi-address')
+                if (attrib.name === 'ipmi-address')
                   $scope.bmc = attrib.value;
-                if (attrib.name == 'chassis_serial_number')
+                if (attrib.name === 'chassis_serial_number')
                   $scope.serial = attrib.value;
               });
               $scope.hasAttrib = 1;
@@ -416,7 +419,7 @@
           }
         }
 
-      };
+      }
 
       if (Object.keys($scope._nodes).length) {
         updateNode();

@@ -57,13 +57,17 @@
         };
 
         $scope.testApi = function () {
-          api($scope.route, {method: $scope.method, data: JSON.parse($scope.payload)}).
-          then(function (resp) {
+          api($scope.route, {
+            method: $scope.method,
+            data: JSON.parse($scope.payload)
+          })
+          .then(function (resp) {
             $scope.class = {success: true};
             $scope.output = JSON.stringify(resp.data, null, '  ');
           }, function (err) {
             $scope.class = {error: true};
-            $scope.output = JSON.stringify(err && err.data || err, null, '  ') || err.data;
+            $scope.output = JSON.stringify(
+              err && err.data || err, null, '  ') || err.data;
           });
         };
 

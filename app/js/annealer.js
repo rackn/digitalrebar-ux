@@ -11,15 +11,16 @@
       $scope.selected = -1;
 
       $scope.setNode = function (id) {
-        $scope.$emit('title', 'Annealer ' + (id != -1 ? '(' + $scope._nodes[id].name + ')' : ''));
+        $scope.$emit('title', 'Annealer ' + (id !== -1 ?
+          '(' + $scope._nodes[id].name + ')' : ''));
         $scope.selected = id;
       };
 
       $scope.getNodeRoles = function (status) {
-        var roles = [];
-        for (var id in $scope._node_roles) {
-          var role = $scope._node_roles[id];
-          if (status == role.status)
+        let roles = [];
+        for (let id in $scope._node_roles) {
+          let role = $scope._node_roles[id];
+          if (status === role.status)
             roles.push(role);
         }
         return roles;
@@ -29,7 +30,9 @@
         $scope.getNodeRoles('error').forEach(function (role) {
           api('/api/v2/node_roles/' + role.id + '/retry', {
             method: 'PUT'
-          }).then(function(resp){api.addNodeRole(resp.data)});
+          }).then(function(resp) {
+            api.addNodeRole(resp.data);
+          });
         });
       };
 

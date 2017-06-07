@@ -5,7 +5,7 @@
 window.version = '0.2.0';
 
 (function () {
-  var app = angular.module('app', [
+  let app = angular.module('app', [
     'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
     'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table',
     'debounce', 'jsontext', 'ng-slide-down', 'swapMdPaint',
@@ -15,6 +15,9 @@ window.version = '0.2.0';
   app.config([
     '$httpProvider', '$routeProvider', '$mdThemingProvider', 'apiProvider',
     function ($httpProvider, $routeProvider, $mdThemingProvider, apiProvider) {
+      // apiProvider needs to be here for rebar.js to work, although
+      //  it does nothing in the config
+      apiProvider;
 
       $httpProvider.interceptors.push('digestAuthInterceptor');
 
@@ -29,279 +32,279 @@ window.version = '0.2.0';
         .primaryPalette('grey');
 
       // theme to stop warnings/bugs
-      $mdThemingProvider.theme('status_').
-      primaryPalette('green', {
+      $mdThemingProvider.theme('status_')
+      .primaryPalette('green', {
         'default': '600'
       }).accentPalette('grey', { 'default': '900' });
 
       // themes for different status colors
-      $mdThemingProvider.theme('status_ready').
-      primaryPalette('green', {
+      $mdThemingProvider.theme('status_ready')
+      .primaryPalette('green', {
         'default': '600'
       }).accentPalette('grey', { 'default': '900' });
 
-      $mdThemingProvider.theme('status_error').
-      primaryPalette('red', {
+      $mdThemingProvider.theme('status_error')
+      .primaryPalette('red', {
         'default': '700'
       }).accentPalette('grey', { 'default': '900' });
 
-      $mdThemingProvider.theme('status_process').
-      primaryPalette('yellow', {
+      $mdThemingProvider.theme('status_process')
+      .primaryPalette('yellow', {
         'default': '600'
       }).accentPalette('grey', { 'default': '900' });
 
-      $mdThemingProvider.theme('status_todo').
-      primaryPalette('yellow', {
+      $mdThemingProvider.theme('status_todo')
+      .primaryPalette('yellow', {
         'default': '300'
       }).accentPalette('grey', { 'default': '900' });
 
-      $mdThemingProvider.theme('status_off').
-      primaryPalette('grey', {
+      $mdThemingProvider.theme('status_off')
+      .primaryPalette('grey', {
         'default': '900'
       }).accentPalette('red', { 'default': '900' });
 
-      $mdThemingProvider.theme('status_queue').
-      primaryPalette('yellow', {
+      $mdThemingProvider.theme('status_queue')
+      .primaryPalette('yellow', {
         'default': '100'
       }).accentPalette('grey', { 'default': '900' });
 
-      $mdThemingProvider.theme('status_reserved').
-      primaryPalette('blue', {
+      $mdThemingProvider.theme('status_reserved')
+      .primaryPalette('blue', {
         'default': '500'
       }).accentPalette('grey', { 'default': '900' });
 
-      $mdThemingProvider.theme('status_proposed').
-      primaryPalette('blue', {
+      $mdThemingProvider.theme('status_proposed')
+      .primaryPalette('blue', {
         'default': '400'
       }).accentPalette('grey', { 'default': '900' });
 
       $mdThemingProvider.alwaysWatchTheme(true);
 
-      $routeProvider.
-      when('/', {
+      $routeProvider
+      .when('/', {
         redirectTo: '/welcome'
-      }).
-      when('/welcome', {
+      })
+      .when('/welcome', {
         controller: 'WelcomeCtrl',
         controllerAs: 'welcome',
         templateUrl: 'views/welcome.html'
-      }).
-      when('/deployments', {
+      })
+      .when('/deployments', {
         controller: 'DeploymentsCtrl',
         controllerAs: 'deployments',
         templateUrl: 'views/deployments.html'
-      }).
-      when('/deployments/:id', {
+      })
+      .when('/deployments/:id', {
         controller: 'DeploymentsCtrl',
         controllerAs: 'deployments',
         templateUrl: 'views/deployments.html'
-      }).
-      when('/login', {
+      })
+      .when('/login', {
         controller: 'LoginCtrl',
         controllerAs: 'login',
         templateUrl: 'views/login.html'
-      }).
-      when('/nodes', {
+      })
+      .when('/nodes', {
         controller: 'NodesCtrl',
         controllerAs: 'nodes',
         templateUrl: 'views/nodes.html'
-      }).
-      when('/nodes/:id', {
+      })
+      .when('/nodes/:id', {
         controller: 'NodesCtrl',
         controllerAs: 'nodes',
         templateUrl: 'views/nodes_singular.html'
-      }).
-      when('/node_roles', {
+      })
+      .when('/node_roles', {
         controller: 'NodeRolesCtrl',
         controllerAs: 'node_roles',
         templateUrl: 'views/node_roles.html'
-      }).
-      when('/node_roles/:id', {
+      })
+      .when('/node_roles/:id', {
         controller: 'NodeRolesCtrl',
         controllerAs: 'node_roles',
         templateUrl: 'views/node_roles_singular.html'
-      }).
-      when('/roles', {
+      })
+      .when('/roles', {
         controller: 'RolesCtrl',
         controllerAs: 'roles',
         templateUrl: 'views/roles.html'
-      }).
-      when('/roles/:id', {
+      })
+      .when('/roles/:id', {
         controller: 'RolesCtrl',
         controllerAs: 'roles',
         templateUrl: 'views/roles_singular.html'
-      }).
-      when('/deployment_roles', {
+      })
+      .when('/deployment_roles', {
         controller: 'DeploymentRolesCtrl',
         controllerAs: 'deployment_roles',
         templateUrl: 'views/deployment_roles.html'
-      }).
-      when('/deployment_roles/:id', {
+      })
+      .when('/deployment_roles/:id', {
         controller: 'DeploymentRolesCtrl',
         controllerAs: 'deployment_roles',
         templateUrl: 'views/deployment_roles_singular.html'
-      }).
-      when('/barclamps', {
+      })
+      .when('/barclamps', {
         controller: 'BarclampsCtrl',
         controllerAs: 'barclamps',
         templateUrl: 'views/barclamps.html'
-      }).
-      when('/barclamps/:id', {
+      })
+      .when('/barclamps/:id', {
         controller: 'BarclampsCtrl',
         controllerAs: 'barclamps',
         templateUrl: 'views/barclamps_singular.html'
-      }).
-      when('/networks', {
+      })
+      .when('/networks', {
         controller: 'NetworksCtrl',
         controllerAs: 'networks',
         templateUrl: 'views/networks.html'
-      }).
-      when('/networks/:id', {
+      })
+      .when('/networks/:id', {
         controller: 'NetworksCtrl',
         controllerAs: 'networks',
         templateUrl: 'views/networks_singular.html'
-      }).
-      when('/switches', {
+      })
+      .when('/switches', {
         controller: 'SwitchesCtrl',
         controllerAs: 'switches',
         templateUrl: 'views/switches.html'
-      }).
-      when('/providers', {
+      })
+      .when('/providers', {
         controller: 'ProviderCtrl',
         controllerAs: 'providers',
         templateUrl: 'views/provider.html'
-      }).
-      when('/providers/:id', {
+      })
+      .when('/providers/:id', {
         controller: 'ProviderCtrl',
         controllerAs: 'providers',
         templateUrl: 'views/provider.html'
-      }).
-      when('/annealer', {
+      })
+      .when('/annealer', {
         controller: 'AnnealerCtrl',
         controllerAs: 'annealer',
         templateUrl: 'views/annealer.html'
-      }).
-      when('/users', {
+      })
+      .when('/users', {
         controller: 'UsersCtrl',
         controllerAs: 'users',
         templateUrl: 'views/users.html'
-      }).
-      when('/users/:id', {
+      })
+      .when('/users/:id', {
         controller: 'UsersCtrl',
         controllerAs: 'users',
         templateUrl: 'views/users.html'
-      }).
-      when('/tenants', {
+      })
+      .when('/tenants', {
         controller: 'TenantsCtrl',
         controllerAs: 'tenants',
         templateUrl: 'views/tenants.html'
-      }).
-      when('/tenants/:id', {
+      })
+      .when('/tenants/:id', {
         controller: 'TenantsCtrl',
         controllerAs: 'tenants',
         templateUrl: 'views/tenants.html'
-      }).
-      when('/capabilities', {
+      })
+      .when('/capabilities', {
         controller: 'CapabilitiesCtrl',
         controllerAs: 'capabilities',
         templateUrl: 'views/capabilities.html'
-      }).
-      when('/bios/settings', {
+      })
+      .when('/bios/settings', {
         controller: 'BiosSettingsCtrl',
         controllerAs: 'biossettings',
         templateUrl: 'views/bios_settings.html'
-      }).
-      when('/bios/updates', {
+      })
+      .when('/bios/updates', {
         controller: 'BiosUpdatesCtrl',
         controllerAs: 'biosupdates',
         templateUrl: 'views/bios_updates.html'
-      }).
-      when('/dns', {
+      })
+      .when('/dns', {
         controller: 'DNSCtrl',
         controllerAs: 'dns',
         templateUrl: 'views/dns.html'
-      }).
-      when('/dhcp', {
+      })
+      .when('/dhcp', {
         controller: 'DHCPCtrl',
         controllerAs: 'dhcp',
         templateUrl: 'views/dhcp.html'
-      }).
-      when('/engine', {
+      })
+      .when('/engine', {
         controller: 'EngineCtrl',
         controllerAs: 'engine',
         templateUrl: 'views/engine.html'
-      }).
-      when('/provisioner/templates', {
+      })
+      .when('/provisioner/templates', {
         controller: 'ProvisionerCtrl',
         controllerAs: 'provisioner',
         templateUrl: 'views/provisioner_templates.html'
-      }).
-      when('/provisioner/templates/:id', {
+      })
+      .when('/provisioner/templates/:id', {
         controller: 'ProvisionerCtrl',
         controllerAs: 'provisioner',
         templateUrl: 'views/provisioner_templates.html'
-      }).
-      when('/provisioner/bootenvs', {
+      })
+      .when('/provisioner/bootenvs', {
         controller: 'ProvisionerCtrl',
         controllerAs: 'provisioner',
         templateUrl: 'views/provisioner_bootenvs.html'
-      }).
-      when('/provisioner/bootenvs/:id', {
+      })
+      .when('/provisioner/bootenvs/:id', {
         controller: 'ProvisionerCtrl',
         controllerAs: 'provisioner',
         templateUrl: 'views/provisioner_bootenvs.html'
-      }).
-      when('/provisioner/machines', {
+      })
+      .when('/provisioner/machines', {
         controller: 'ProvisionerCtrl',
         controllerAs: 'provisioner',
         templateUrl: 'views/provisioner_machines.html'
-      }).
-      when('/provisioner/machines/:id', {
+      })
+      .when('/provisioner/machines/:id', {
         controller: 'ProvisionerCtrl',
         controllerAs: 'provisioner',
         templateUrl: 'views/provisioner_machines.html'
-      }).
+      })
 
-      when('/profiles', {
+      .when('/profiles', {
         controller: 'ProfileCtrl',
         controllerAs: 'profiles',
         templateUrl: 'views/profiles.html'
-      }).
-      when('/profiles/:id', {
+      })
+      .when('/profiles/:id', {
         controller: 'ProfileCtrl',
         controllerAs: 'profiles',
         templateUrl: 'views/profiles.html'
-      }).
+      })
 
-      when('/workloads/:id', {
+      .when('/workloads/:id', {
         controller: 'WorkloadsCtrl',
         controllerAs: 'workloads',
         templateUrl: 'views/workloads.html'
-      }).
+      })
 
 
-      when('/alerts', {
+      .when('/alerts', {
         controller: 'LoggingCtrl',
         controllerAs: 'logging',
         templateUrl: 'views/logging.html'
-      }).
-      when('/api_helper', {
+      })
+      .when('/api_helper', {
         controller: 'ApiHelperCtrl',
         controllerAs: 'apiHelper',
         templateUrl: 'views/api_helper.html'
-      }).
-      when('/attribs', {
+      })
+      .when('/attribs', {
         controller: 'AttribsCtrl',
         controllerAs: 'attribs',
         templateUrl: 'views/attribs.html'
-      }).
-      when('/graphs', {
+      })
+      .when('/graphs', {
         controller: 'GraphsCtrl',
         controllerAs: 'graphs',
         templateUrl: 'views/graphs.html'
-      }).
+      })
 
-      otherwise({
+      .otherwise({
         redirectTo: '/welcome'
       });
     }
@@ -312,7 +315,7 @@ window.version = '0.2.0';
   // ng-repeat will show anything with that attribute as a false value
   app.filter('not', function () {
     return function (items, field) {
-      var result = {};
+      let result = {};
       angular.forEach(items, function (value, key) {
         if (!value[field])
           result[key] = value;
@@ -326,7 +329,7 @@ window.version = '0.2.0';
   // ng-repeat will show anything with that attribute as a true value
   app.filter('has', function () {
     return function (items, field) {
-      var result = {};
+      let result = {};
       angular.forEach(items, function (value, key) {
         if (value[field])
           result[key] = value;
@@ -339,7 +342,7 @@ window.version = '0.2.0';
   app.filter('json', function () {
     return function (text) {
       return JSON.stringify(text, null, '  ');
-    }
+    };
   });
 
   // stretch a div to match its content's height
@@ -349,8 +352,9 @@ window.version = '0.2.0';
       return {
         restrict: 'A',
         link: function ($scope, element) {
-          $scope.initialHeight = $scope.initialHeight || element[0].style.height;
-          var resize = function () {
+          $scope.initialHeight = $scope.initialHeight ||
+              element[0].style.height;
+          let resize = function () {
             element[0].style.height = $scope.initialHeight;
             element[0].style.height = '' + element[0].scrollHeight + 'px';
           };
@@ -362,17 +366,15 @@ window.version = '0.2.0';
   ]);
 
   app.directive('scrollPosition', [
-    '$window',
-    function($window) {
+    function() {
       return {
         scope: {
           scroll: '=scrollPosition'
         },
-        link: function(scope, element, attrs) {
-          //var windowEl = angular.element($window);
-          var handler = function() {
+        link: function(scope, element) {
+          let handler = function() {
             scope.scroll = $(element).scrollTop();
-          }
+          };
           element.on('scroll', scope.$apply.bind(scope, handler));
           handler();
         }
@@ -389,16 +391,18 @@ window.version = '0.2.0';
       path: '@',
     },
     controller: [
-      '$scope', '$attrs', '$parse', 'debounce',
-      function($scope, $attrs, $parse, debounce) {
-        var ctrl = this;
-        var mapping = $scope.$parent[$attrs.mapping];
-        
+      '$scope', '$attrs', '$parse',
+      function($scope, $attrs, $parse) {
+        let ctrl = this;
+        let mapping = $scope.$parent[$attrs.mapping];
+
         function updateItems(val) {
           if(val) ctrl.items = val.map(mapping);
         }
 
-        var deregister = $scope.$parent.$watchCollection($parse($attrs.items), updateItems);
+        let deregister = $scope.$parent.$watchCollection(
+          $parse($attrs.items), updateItems
+        );
         $scope.$on('$destroy', deregister);
 
         $scope.list = true;
@@ -407,7 +411,7 @@ window.version = '0.2.0';
         $scope.toggleList = function() {
           $scope.list = !$scope.list;
           $scope.myOrder = 'order';
-        }
+        };
       }
     ]
   });
@@ -465,19 +469,19 @@ window.version = '0.2.0';
           path: '/engine',
           hide: function () {
             return !$scope.showEngine; }
-          }, {
-            title: 'DHCP Subnets',
-            icon: 'device_hub',
-            path: '/dhcp',
-            hide: function () {
-              return !$scope.showDHCP; }
-          }, {
-            title: 'DNS Zones',
-            icon: 'public',
-            path: '/dns',
-            hide: function () {
-              return !$scope.showDNS; }
-          }]
+        }, {
+          title: 'DHCP Subnets',
+          icon: 'device_hub',
+          path: '/dhcp',
+          hide: function () {
+            return !$scope.showDHCP; }
+        }, {
+          title: 'DNS Zones',
+          icon: 'public',
+          path: '/dns',
+          hide: function () {
+            return !$scope.showDNS; }
+        }]
       }, {
         title: 'Firmware',
         icon: 'computer',
@@ -486,41 +490,41 @@ window.version = '0.2.0';
           return $scope.expandHardware; },
         toggleExpand: $scope.toggleExpandHardware,
         items: [{
-            title: 'BIOS Settings',
-            icon: 'map',
-            path: '/bios/settings',
-            hide: function () {
-              return !$scope.showBiosSettings; }
-          }, {
-            title: 'Firmware Updates',
-            icon: 'healing',
-            path: '/bios/updates',
-            hide: function () {
-              return !$scope.showBiosUpdates; }
-          }]
-        }, {
-          title: 'Provisioner',
-          icon: 'local_shipping',
+          title: 'BIOS Settings',
+          icon: 'map',
+          path: '/bios/settings',
           hide: function () {
-            return !$scope.showProvisioner; },
-          expand: true,
-          expanded: function () {
-            return $scope.expandProvisioner; },
-          toggleExpand: $scope.toggleExpandProvisioner,
-          items: [{
-            title: 'Machines',
-            icon: 'dns',
-            path: '/provisioner/machines'
-          }, {
-            title: 'Boot Environments',
-            icon: 'album',
-            path: '/provisioner/bootenvs'
-          }, {
-            title: 'Templates',
-            icon: 'insert_drive_file',
-            path: '/provisioner/templates'
-          }]
+            return !$scope.showBiosSettings; }
         }, {
+          title: 'Firmware Updates',
+          icon: 'healing',
+          path: '/bios/updates',
+          hide: function () {
+            return !$scope.showBiosUpdates; }
+        }]
+      }, {
+        title: 'Provisioner',
+        icon: 'local_shipping',
+        hide: function () {
+          return !$scope.showProvisioner; },
+        expand: true,
+        expanded: function () {
+          return $scope.expandProvisioner; },
+        toggleExpand: $scope.toggleExpandProvisioner,
+        items: [{
+          title: 'Machines',
+          icon: 'dns',
+          path: '/provisioner/machines'
+        }, {
+          title: 'Boot Environments',
+          icon: 'album',
+          path: '/provisioner/bootenvs'
+        }, {
+          title: 'Templates',
+          icon: 'insert_drive_file',
+          path: '/provisioner/templates'
+        }]
+      }, {
         title: 'Access',
         icon: 'lock',
         expand: true,
@@ -585,7 +589,8 @@ window.version = '0.2.0';
         localStorageService.add('password', '');
         $scope.confirm(event, {
           title: 'Cannot Loggout',
-          message: 'At this time, you must close the browser to change user sessions'
+          message: 'At this time, you must close the ' +
+            'browser to change user sessions'
         });
       };
     }
@@ -641,26 +646,29 @@ window.version = '0.2.0';
         });
       };
 
-      $rootScope.$on('$locationChangeStart', function (event, next, current) {
-        var path = next.split('/#!/')[1];
+      $rootScope.$on('$locationChangeStart', function (event, next) {
+        let path = next.split('/#!/')[1];
         if (path) // if it's a valid path
           path = path.toLowerCase();
         else // default to Deployments
           path = 'deployments';
 
         if(!$rootScope.isAuth()) {
-          var token = $cookies.get('DrAuthToken');
-          var username = $cookies.get('DrAuthUser');
+          let token = $cookies.get('DrAuthToken');
+          let username = $cookies.get('DrAuthUser');
 
           if(typeof token !== 'undefined') {
-            $rootScope.$emit('login', { username: username }); //store the user in rootScope so the isAuth function can use it!
-            $rootScope.$emit('startUpdating'); // start auto-updating the api data
+            //store the user in rootScope so the isAuth function can use it!
+            $rootScope.$emit('login', { username: username });
+
+            // start auto-updating the api data
+            $rootScope.$emit('startUpdating');
           } else {
             if (path !== 'login') {
               $rootScope.lastPath = '/' + path;
               $location.path('/login');
-              return
-            }          
+              return;
+            }
           }
         }
 
@@ -676,8 +684,8 @@ window.version = '0.2.0';
           $rootScope.user = resp.data;
         });
 
-        api('/api/v2/providers/templates').
-        then(function (resp) {
+        api('/api/v2/providers/templates')
+        .then(function (resp) {
           $rootScope.providerTemplates = resp.data;
         });
       });
@@ -691,7 +699,7 @@ window.version = '0.2.0';
       });
 
       $rootScope.showEditAttribDialog = function (ev, attrib, target) {
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -708,7 +716,7 @@ window.version = '0.2.0';
           clickOutsideToClose: true,
           fullscreen: useFullScreen
         });
-      }
+      };
 
       // a confirm dialog
       /*
@@ -718,10 +726,10 @@ window.version = '0.2.0';
           no: 'No', // no button text
           yesCallback: function(){}, // function called when yes is pressed
           noCallback: function(){} // function called when no is pressed
-        } 
+        }
       */
       $rootScope.confirm = function (ev, data) {
-        var confirm = $mdDialog.confirm()
+        let confirm = $mdDialog.confirm()
           .title(data.title || 'Confirm')
           .textContent(data.message)
           .targetEvent(ev)
@@ -738,10 +746,10 @@ window.version = '0.2.0';
 
       // key handling emitted to every view
       window.onkeydown = function (e) {
-        var key = e.keyCode ? e.keyCode : e.which;
-        var ctrl = e.ctrlKey;
-        var alt = e.altKey;
-        var shift = e.shiftKey;
+        let key = e.keyCode ? e.keyCode : e.which;
+        let ctrl = e.ctrlKey;
+        let alt = e.altKey;
+        let shift = e.shiftKey;
         $rootScope.$evalAsync(function () {
           $rootScope.$broadcast('keyDown', {
             key: key,
