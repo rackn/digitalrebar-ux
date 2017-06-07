@@ -1,17 +1,19 @@
 /*
-provisioner controller
+  Copyright 2017, RackN
+  Provisioner Controller
 */
 (function () {
   angular.module('app')
-    .controller('ProvisionerCtrl', function ($scope, api, $location, $mdDialog, $mdMedia, $routeParams) {
-
+  .controller('ProvisionerCtrl', [
+    '$scope', 'api', '$location', '$mdDialog', '$mdMedia', '$routeParams',
+    function ($scope, api, $location, $mdDialog, $mdMedia, $routeParams) {
       // use the same controller for 3 pages, so handle the title for each location
-      var route = $location.path().split("/")[2];
+      var route = $location.path().split('/')[2];
       var title = 'Provisioner ';
       switch (route) {
       case 'bootenvs':
         title += 'Boot Environments';
-        api("/api/v2/attribs").then(function (resp) {
+        api('/api/v2/attribs').then(function (resp) {
           $scope.attribs = resp.data.map(function (a) {
             return a.name;
           })
@@ -47,8 +49,8 @@ provisioner controller
 
       $scope.deleteTemplate = function (uuid) {
         $scope.confirm(event, {
-          title: "Remove Template",
-          message: "Are you sure you want to remove this template?",
+          title: 'Remove Template',
+          message: 'Are you sure you want to remove this template?',
           yesCallback: function () {
             api('/provisioner/templates/' + uuid, {
               method: 'DELETE'
@@ -68,7 +70,7 @@ provisioner controller
           targetEvent: ev,
           locals: {
             editing: (typeof template !== 'undefined'),
-            template: template || { UUID: "", Content: "" }
+            template: template || {UUID: '', Content: ''}
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen
@@ -77,8 +79,8 @@ provisioner controller
 
       $scope.deleteBootEnv = function (name) {
         $scope.confirm(event, {
-          title: "Remove Boot Environment",
-          message: "Are you sure you want to remove this boot environment?",
+          title: 'Remove Boot Environment',
+          message: 'Are you sure you want to remove this boot environment?',
           yesCallback: function () {
             api('/provisioner/bootenvs/' + name, {
               method: 'DELETE'
@@ -103,7 +105,7 @@ provisioner controller
           var data = e.target.result;
           api('/provisioner/templates/' + uuid, {
             method: 'PATCH',
-            data: [{ "op": "replace", "path": "/Contents", "value": data }]
+            data: [{op: 'replace', path: '/Contents', value: data}]
           }).then(function () {
             api.getHealth();
             api.toast('Updated template');
@@ -131,19 +133,19 @@ provisioner controller
             attribs: $scope.attribs,
             _provisioner: $scope._provisioner,
             env: bootenv || {
-              Name: "",
+              Name: '',
               OS: {
-                Name: "",
-                Family: "",
-                Codename: "",
-                Version: "",
-                IsoFile: "",
-                IsoSha256: "",
-                IsoUrl: ""
+                Name: '',
+                Family: '',
+                Codename: '',
+                Version: '',
+                IsoFile: '',
+                IsoSha256: '',
+                IsoUrl: ''
               },
-              Kernel: "",
+              Kernel: '',
               Initrds: [],
-              BootParams: "",
+              BootParams: '',
               RequiredParams: [],
               Templates: []
             },
@@ -154,5 +156,6 @@ provisioner controller
         });
       };
 
-    });
+    }
+  ]);
 })();
