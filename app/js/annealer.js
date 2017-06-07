@@ -1,6 +1,6 @@
 /*
-Copyright 2015, RackN
-annealer controller
+  Copyright 2017, RackN
+  Annealer Controller
 */
 (function () {
   angular.module('app').controller('AnnealerCtrl', [

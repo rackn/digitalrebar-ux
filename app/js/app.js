@@ -1,11 +1,15 @@
+/*
+  Copyright 2017, RackN
+  Core App Controller
+*/
 window.version = '0.1.5';
 
 (function () {
   var app = angular.module('app', [
     'ngRoute', 'ngMaterial', 'ngCookies', 'ngAnimate', 'sparkline',
     'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table',
-    'debounce', 'jsontext', 'ng-slide-down', 'swapMdPaint', 'angular-clipboard',
-    'ngMessages', 'ngVis', 'ngOrderObjectBy'
+    'debounce', 'jsontext', 'ng-slide-down', 'swapMdPaint',
+    'angular-clipboard', 'ngMessages', 'ngVis', 'ngOrderObjectBy',
   ]);
 
   app.config([
