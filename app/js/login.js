@@ -1,9 +1,14 @@
 /*
-login controller
+  Copyright 2017, RackN
+  Login Controller
 */
 (function () {
   angular.module('app')
-    .controller('LoginCtrl', function ($scope, api, $location, localStorageService, $http, $cookies, debounce, $mdMedia, $mdDialog, $mdToast) {
+  .controller('LoginCtrl', [
+    '$scope', 'api', '$location', 'localStorageService', '$http', '$cookies',
+    'debounce', '$mdMedia', '$mdDialog', '$mdToast',
+    function ($scope, api, $location, localStorageService, $http, $cookies,
+      debounce, $mdMedia, $mdDialog, $mdToast) {
       $scope.$emit('title', 'Login'); // shows up on the top toolbar
 
       // model for the sign in form
@@ -127,7 +132,7 @@ login controller
       // function for the login button
       this.signIn = function () {
         if(!$scope.acceptedEula) {
-          api.toast("Please Accept the Eula")
+          api.toast('Please Accept the Eula');
           return;
         }
         
@@ -149,7 +154,7 @@ login controller
           console.log('error', response);
           $mdToast.show(
             $mdToast.simple()
-            .textContent(response.status + " - " + response.statusText)
+            .textContent(response.status + ' - ' + response.statusText)
             .position('top left')
             .hideDelay(3000)
           );
@@ -165,6 +170,6 @@ login controller
         }, function (err) {
         });
       };
-
-    });
+    }
+  ]);
 })();
