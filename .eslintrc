@@ -5,7 +5,8 @@
   },
   "globals": {
     "angular": true,
-    "$": true
+    "$": true,
+    "vis": true
   },
   "ecmaVersion": 6,
   "parser": "esprima",
@@ -15,13 +16,15 @@
     "no-var": "warn",
     "semi": ["error", "always"],
     "indent": ["error", 2],
-    "eqeqeq": "warn",
+    "eqeqeq": ["warn", "always"],
     "no-unused-vars": "warn",
     "no-console": "off",
+    "no-case-declarations": "off",
     "no-eq-null": "error",
     "no-eval": "error",
     "no-trailing-spaces": "warn",
     "no-useless-return": "warn",
-    "max-len": ["error", 80]
+    "max-len": ["error", 80],
+    "dot-location": ["error", "property"]
   }
 }
