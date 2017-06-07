@@ -3,7 +3,7 @@
   Deployment Roles Controller
 */
 (function () {
-  angular.module('app').controller('DeploymentRolesCtrl',
+  angular.module('app').controller('DeploymentRolesCtrl', [
     '$scope', '$location', 'debounce', '$routeParams', '$mdMedia', '$mdDialog',
     '$timeout', 'api',
     function ($scope, $location, debounce, $routeParams, $mdMedia, $mdDialog,
