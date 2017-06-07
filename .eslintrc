@@ -4,7 +4,8 @@
     "browser": true
   },
   "globals": {
-    "angular": true
+    "angular": true,
+    "$": true
   },
   "ecmaVersion": 6,
   "parser": "esprima",
@@ -16,6 +17,9 @@
     "indent": ["error", 2],
     "eqeqeq": "warn",
     "no-unused-vars": "warn",
-    "no-console": "off"
+    "no-console": "off",
+    "no-eq-null": "error",
+    "no-eval": "error",
+    "no-useless-return": "warn"
   }
 }
