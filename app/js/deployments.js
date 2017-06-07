@@ -275,7 +275,7 @@ deployments controller
       $scope.$evalAsync(function () {
         for (var id in $scope._deployments) {
           if (!$scope.binding[id])
-            $scope.binding = false;
+            $scope.binding[id] = false;
           deployments.deploymentStatus[id] = { error: 0, total: 0 }
           for (var roleId in $scope._node_roles) {
             var node_role = $scope._node_roles[roleId];
