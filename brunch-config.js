@@ -66,7 +66,7 @@ module.exports = {
           'vendor/ng-slide-down.min.js',
           'vendor/swap-md-paint.js',
           'app/js/app.js',
-          /^app/,
+          /^app\//,
         ]
       }
     },
