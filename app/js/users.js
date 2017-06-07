@@ -1,9 +1,12 @@
 /*
-users controller
+  Copyright 2017, RackN 
+  Users Controller
 */
 (function () {
   angular.module('app')
-    .controller('UsersCtrl', function ($scope, api, $mdMedia, $mdDialog, $routeParams) {
+  .controller('UsersCtrl', [
+    '$scope', 'api', '$mdMedia', '$mdDialog', '$routeParams',
+    function ($scope, api, $mdMedia, $mdDialog, $routeParams) {
       $scope.$emit('title', 'Users'); // shows up on the top toolbar
 
       $scope.expand = {};
@@ -21,8 +24,8 @@ users controller
 
       $scope.deleteUser = function (uuid) {
         $scope.confirm(event, {
-          title: "Remove User",
-          message: "Are you sure you want to remove this user?",
+          title: 'Remove User',
+          message: 'Are you sure you want to remove this user?',
           yesCallback: function () {
             api('/api/v2/users/' + uuid, {
               method: 'DELETE'
@@ -42,7 +45,7 @@ users controller
           targetEvent: ev,
           locals: {
             editing: (typeof user !== 'undefined'),
-            user: user || { UUID: "", Content: "" },
+            user: user || { UUID: '', Content: '' },
             tenants: $scope._tenants
           },
           clickOutsideToClose: true,
@@ -86,5 +89,6 @@ users controller
         }).then(api.getUsers);
       };
 
-    });
+    }
+  ]);
 })();
