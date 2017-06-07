@@ -1,5 +1,6 @@
 /*
-api helper controller
+  Copyright 2017, RackN
+  Api Helper Controller
 */
 (function () {
   angular.module('app')
