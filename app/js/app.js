@@ -207,12 +207,12 @@ window.version = '0.1.5';
         templateUrl: 'views/capabilities.html'
       }).
       when('/bios/settings', {
-        controller: 'BiosSettingsCntrl',
+        controller: 'BiosSettingsCtrl',
         controllerAs: 'biossettings',
         templateUrl: 'views/bios_settings.html'
       }).
       when('/bios/updates', {
-        controller: 'BiosUpdatesCntrl',
+        controller: 'BiosUpdatesCtrl',
         controllerAs: 'biosupdates',
         templateUrl: 'views/bios_updates.html'
       }).

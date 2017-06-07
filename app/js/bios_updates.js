@@ -2,7 +2,7 @@
 bios settings controller
 */
 (function () {
-  angular.module('app').controller('BiosUpdatesCntrl', function ($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, api, $filter) {
+  angular.module('app').controller('BiosUpdatesCtrl', function ($mdMedia, $mdDialog, $scope, $http, debounce, $timeout, api, $filter) {
     $scope.$emit('title', 'Firmware Updates'); // shows up on the top toolbar
 
     var biosupdates = this;
