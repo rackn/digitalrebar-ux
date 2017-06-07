@@ -3,7 +3,11 @@ workloads controller
 */
 (function () {
   angular.module('app')
-    .controller('WorkloadsCtrl', function ($scope, api, $location, $mdDialog, $routeParams, localStorageService) {
+  .controller('WorkloadsCtrl', [
+    '$scope', 'api', '$location', '$mdDialog', '$routeParams',
+    'localStorageService',
+    function ($scope, api, $location, $mdDialog, $routeParams,
+      localStorageService) {
       $scope.$emit('title', 'Wizard'); // shows up on the top toolbar
 
       var workloads = this;
@@ -15,16 +19,16 @@ workloads controller
       this.use_system = false;
       this.selected = [];
       this.attribs = {};
-      this.keys = [ ["", ""]];
+      this.keys = [ ['', '']];
 
       $scope.submitStatus = 0;
 
       $scope.done = 0;
       $scope.status = 0;
       $scope.steps = [{
-        name: "Deployment",
-        path: "views/wizard/deployment.html",
-        icon: "directions_run",
+        name: 'Deployment',
+        path: 'views/wizard/deployment.html',
+        icon: 'directions_run',
         complete: function () {
           // deployment logic
           if (workloads.createDeployment) {
@@ -43,28 +47,28 @@ workloads controller
           return true;
         }
       }, {
-        name: "OS",
-        path: "views/wizard/os.html",
-        icon: "directions_bike",
+        name: 'OS',
+        path: 'views/wizard/os.html',
+        icon: 'directions_bike',
         complete: function () {
           // no metal os selected
-          var metal = (wizard.system_nodes && workloads.attribs["provisioner-target_os"] && workloads.use_system);
+          var metal = (wizard.system_nodes && workloads.attribs['provisioner-target_os'] && workloads.use_system);
           // no providers selected
           var cloud = (wizard.create_nodes && workloads.provider);
           return metal || cloud;
         }
       }, {
-        name: "Attributes",
-        path: "views/wizard/attributes.html",
-        icon: "directions_car",
+        name: 'Attributes',
+        path: 'views/wizard/attributes.html',
+        icon: 'directions_car',
         complete: function () {
           $scope.collectNodes();
           return true;
         }
       }, {
-        name: "Nodes",
-        path: "views/wizard/nodes.html",
-        icon: "directions_train",
+        name: 'Nodes',
+        path: 'views/wizard/nodes.html',
+        icon: 'directions_train',
         complete: function (output) {
           if (workloads.selected.length == 0)
             return output ? [false, 'You must select at least one node'] : false;
@@ -103,42 +107,42 @@ workloads controller
           for (var j in wizard.services) {
             var name = wizard.services[j].name;
             if (control[name] % 2 != 1 && hasControl[name])
-              return output ? [false, "An Odd Number of " + wizard.services[j].description + " Control Services is Required"] : false;
+              return output ? [false, 'An Odd Number of ' + wizard.services[j].description + ' Control Services is Required'] : false;
           }
 
           return output ? [true, ''] : true;
         }
       }, {
-        name: "Overview",
-        path: "views/wizard/overview.html",
-        icon: "airplanemode_active",
+        name: 'Overview',
+        path: 'views/wizard/overview.html',
+        icon: 'airplanemode_active',
         complete: function () {
           return true;
         },
         onStep: function () {
           $scope.submitStatus = 0;
-          api("/api/v2/deployments" + (workloads.createDeployment ? "" : "/" + workloads.deployment_id + "/batch"), {
-            method: workloads.createDeployment ? "POST" : "PUT",
+          api('/api/v2/deployments' + (workloads.createDeployment ? '' : '/' + workloads.deployment_id + '/batch'), {
+            method: workloads.createDeployment ? 'POST' : 'PUT',
             data: $scope.generateBlob()
           }).then(function () {
             $scope.submitStatus = 1;
           }, function (err) {
-            api.toast("Error Running Wizard", "deployments", err.data)
+            api.toast('Error Running Wizard', 'deployments', err.data)
             $scope.submitStatus = -1;
           })
         },
       }, {
-        path: "views/wizard/done.html",
+        path: 'views/wizard/done.html',
         complete: function () {
           return false; },
         finalStep: true,
       }];
 
       $scope.editInHelper = function () {
-        localStorageService.add('api_helper_payload', JSON.stringify($scope.generateBlob(), null, "  "));
+        localStorageService.add('api_helper_payload', JSON.stringify($scope.generateBlob(), null, '  '));
         localStorageService.add('api_helper_method', workloads.createDeployment ? 'post' : 'put');
         localStorageService.add('api_helper_route', workloads.createDeployment ? '/api/v2/deployments' : '/api/v2/deployments/' + workloads.deployment_id + '/batch');
-        $location.path("/api_helper");
+        $location.path('/api_helper');
       };
 
       $scope.setProgress = function (status) {
@@ -231,7 +235,7 @@ workloads controller
               $scope.osList.splice(i, 1);
           }
           if ($scope.osList.length) {
-            workloads.attribs["provisioner-target_os"] = $scope.osList[0];
+            workloads.attribs['provisioner-target_os'] = $scope.osList[0];
           }
         }
       });
@@ -275,7 +279,7 @@ workloads controller
       // find the first required service, if any
       for (var i = 0; i < wizard.services.length; i++) {
         var type = wizard.services[i].type;
-        if (type === "required") {
+        if (type === 'required') {
           workloads.required_service = wizard.services[i].name;
           break;
         }
@@ -296,13 +300,13 @@ workloads controller
             var name = wizard.services[i].name;
             var type = wizard.services[i].type;
             var count = wizard.services[i].count;
-            if (count > 0 && (type === "control" || type === "worker")) {
+            if (count > 0 && (type === 'control' || type === 'worker')) {
               for (var j = 0; j < count; j++) {
                 // negative ids so we know to create a new node
                 var nid = $scope.newId--;
                 var node = {
                   id: nid,
-                  name: -nid + "-create-" + name + "-" + (j+1),
+                  name: -nid + '-create-' + name + '-' + (j+1),
                   order: nid
                 };
                 // service map nodes
@@ -325,7 +329,7 @@ workloads controller
         var nid = $scope.newId--;
         var node = {
           id: nid,
-          name: -nid + "-added-node",
+          name: -nid + '-added-node',
           order: nid
         };
         // service map nodes
@@ -370,7 +374,7 @@ workloads controller
               for (var i = 0; i < wizard.services.length; i++) {
                 var type = wizard.services[i].type;
                 var count = wizard.services[i].count;
-                if (count > 0 && (type === "control" || type === "worker")) {
+                if (count > 0 && (type === 'control' || type === 'worker')) {
                   serviceMap[id][type] = true;
                   wizard.services[i].count--;
                   break;
@@ -379,7 +383,7 @@ workloads controller
               if (workloads.required_service != '')
                 serviceMap[id][workloads.required_service] = true
               // collect nodes
-              console.log("adding node " + node.name + " from deployment id " + source_id);
+              console.log('adding node ' + node.name + ' from deployment id ' + source_id);
               $scope.systemNodes.push(node);
               workloads.selected = $scope.systemNodes;
             }
@@ -461,7 +465,7 @@ workloads controller
       };
 
       $scope.generateBlob = function () {
-        console.log("JSON generate starting");
+        console.log('JSON generate starting');
         var data = {
           commit: workloads.commit,
           attribs: workloads.attribs
@@ -470,17 +474,17 @@ workloads controller
           data.name = workloads.name;
 
         if (!workloads.use_system) {
-          var hints = $scope.providerMap[workloads.provider].auth_details["provider-create-hint"];
+          var hints = $scope.providerMap[workloads.provider].auth_details['provider-create-hint'];
           if (!hints) {
-            var ptype = $scope.providerMap[workloads.provider]["type"];
-            hints = $scope.providerTemplates[ptype]["provider-create-hint"].default;
+            var ptype = $scope.providerMap[workloads.provider]['type'];
+            hints = $scope.providerTemplates[ptype]['provider-create-hint'].default;
           }
           data.provider = {
             name: workloads.provider,
             hints: hints,
           };
         }
-        console.log("JSON generating nodes in " + data);
+        console.log('JSON generating nodes in ' + data);
 
         var virtualNodes = 0;
         var gcount = 0;
@@ -490,7 +494,7 @@ workloads controller
           var id = node.id;
           var roles = [];
 
-          console.log("JSON generate adding roles to node " + node);
+          console.log('JSON generate adding roles to node ' + node);
           for (var j in wizard.services) {
             var service = wizard.services[j];
             var hasService = serviceMap[node.id][service.name];
@@ -519,7 +523,7 @@ workloads controller
             // check to see if we already have a cloud node with the same roles
             for (var j in data.nodes) {
               var n = data.nodes[j];
-              if (typeof n.id == "string" || n.id > 0)
+              if (typeof n.id == 'string' || n.id > 0)
                 continue;
               // unfortunately the only way to compare arrays
               if (JSON.stringify(n.roles) == JSON.stringify(roles)) {
@@ -533,7 +537,7 @@ workloads controller
               gcount += 1;
               data.nodes.push({
                 id: -(++virtualNodes),
-                prefix: workloads.name + "-group-" + gcount,
+                prefix: workloads.name + '-group-' + gcount,
                 roles: roles,
                 count: 1,
               });
@@ -542,7 +546,7 @@ workloads controller
         });
 
         // If we have keys, add them here
-        console.log("JSON generate adding keys");
+        console.log('JSON generate adding keys');
         for (var k in workloads.keys) {
           if (workloads.keys[k]) {
             var kvp = workloads.keys[k];
@@ -556,7 +560,7 @@ workloads controller
         }
 
         // If we have a role apply order, then pass it along
-        console.log("JSON generate apply order");
+        console.log('JSON generate apply order');
         if (wizard.role_apply_order && wizard.role_apply_order.length > 1) {
           data.role_apply_order = wizard.role_apply_order;
         }
@@ -564,5 +568,6 @@ workloads controller
         return data;
       }
 
-    });
+    }
+  ]);
 })();
