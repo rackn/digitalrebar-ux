@@ -20,6 +20,8 @@
     "no-console": "off",
     "no-eq-null": "error",
     "no-eval": "error",
-    "no-useless-return": "warn"
+    "no-trailing-spaces": "warn",
+    "no-useless-return": "warn",
+    "max-len": ["error", 80]
   }
 }
