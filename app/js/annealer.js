@@ -1,4 +1,3 @@
-require("js/app.js");
 /*
 Copyright 2015, RackN
 annealer controller

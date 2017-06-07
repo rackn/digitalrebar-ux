@@ -1,4 +1,3 @@
-require("js/app.js");
 /*
 attribs controller
 */
