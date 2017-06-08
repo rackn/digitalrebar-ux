@@ -47,16 +47,16 @@ module.exports = {
           'node_modules/angular-route/angular-route.min.js',
           'node_modules/angular-cookies/angular-cookies.min.js',
           'node_modules/ng-debounce/dist/ng-debounce.js',
-          
+
           'node_modules/angular-material/angular-material.min.js',
           'node_modules/angular-animate/angular-animate.min.js',
           'node_modules/angular-messages/angular-messages.min.js',
           'node_modules/angular-aria/angular-aria.min.js',
           'node_modules/angular-material-data-table/dist/md-data-table.min.js',
-          
+
           'node_modules/vis/dist/vis.min.js',
           'node_modules/angular-visjs/angular-vis.js',
-          
+
           'node_modules/angular-md5/angular-md5.min.js',
           'node_modules/angular-local-storage/dist/angular-local-storage.min.js',
           'vendor/digest.js',
@@ -84,9 +84,20 @@ module.exports = {
   },
   plugins: {
     postcss: {processors: [require('autoprefixer')]},
+    babel: {
+      pattern: /^app\/.*\.js/
+    },
     eslint: {
       pattern: /^app\/.*\.js/,
       warnOnly: true,
-    }
+    },
+    uglify: {
+      mangle: true,
+      compress: {
+        global_defs: {
+          DEBUG: false
+        }
+      }
+    },
   }
 };
