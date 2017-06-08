@@ -1,9 +1,12 @@
 /*
-tenants controller
+  Copyright 2017, RackN
+  Tenants Controller
 */
 (function () {
   angular.module('app')
-    .controller('TenantsCtrl', function ($scope, api, $mdDialog, $mdMedia, $routeParams) {
+  .controller('TenantsCtrl', [
+    '$scope', 'api', '$mdDialog', '$mdMedia', '$routeParams',
+    function ($scope, api, $mdDialog, $mdMedia, $routeParams) {
       $scope.$emit('title', 'Tenants'); // shows up on the top toolbar
 
       $scope.expand = {};
@@ -13,22 +16,23 @@ tenants controller
 
       $scope.deleteTenant = function (uuid) {
         $scope.confirm(event, {
-          title: "Remove Tenant",
-          message: "Are you sure you want to remove this tenant?",
+          title: 'Remove Tenant',
+          message: 'Are you sure you want to remove this tenant?',
           yesCallback: function () {
             api('/tenants/' + uuid, {
               method: 'DELETE'
             }).then(api.getUsers, function (err) {
               api.getUsers();
-              api.toast("Error deleting tenants - "+err.data.message, "tenants", err.data);
+              api.toast('Error deleting tenants - ' + err.data.message,
+                'tenants', err.data);
             });
           }
         });
       };
 
       $scope.createTenantPrompt = function (ev, temp) {
-        var tenant = angular.copy(temp);
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let tenant = angular.copy(temp);
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -38,11 +42,12 @@ tenants controller
           locals: {
             editing: (typeof tenant !== 'undefined'),
             tenants: $scope._tenants,
-            tenant: tenant || { UUID: "", Content: "" }
+            tenant: tenant || { UUID: '', Content: '' }
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen
         }).then(api.getUsers, api.getUsers);
-      }
-    });
+      };
+    }
+  ]);
 })();

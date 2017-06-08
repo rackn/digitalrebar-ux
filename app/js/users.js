@@ -1,9 +1,12 @@
 /*
-users controller
+  Copyright 2017, RackN
+  Users Controller
 */
 (function () {
   angular.module('app')
-    .controller('UsersCtrl', function ($scope, api, $mdMedia, $mdDialog, $routeParams) {
+  .controller('UsersCtrl', [
+    '$scope', 'api', '$mdMedia', '$mdDialog', '$routeParams',
+    function ($scope, api, $mdMedia, $mdDialog, $routeParams) {
       $scope.$emit('title', 'Users'); // shows up on the top toolbar
 
       $scope.expand = {};
@@ -12,17 +15,17 @@ users controller
         $scope.expand[$routeParams.id] = true;
 
       $scope.getUserList = function () {
-        var list = [];
-        for (var i in $scope._users) {
+        let list = [];
+        for (let i in $scope._users) {
           list.push($scope._users[i]);
         }
         return list;
-      }
+      };
 
       $scope.deleteUser = function (uuid) {
         $scope.confirm(event, {
-          title: "Remove User",
-          message: "Are you sure you want to remove this user?",
+          title: 'Remove User',
+          message: 'Are you sure you want to remove this user?',
           yesCallback: function () {
             api('/api/v2/users/' + uuid, {
               method: 'DELETE'
@@ -32,8 +35,8 @@ users controller
       };
 
       $scope.createUserPrompt = function (ev, temp) {
-        var user = angular.copy(temp);
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let user = angular.copy(temp);
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -42,7 +45,7 @@ users controller
           targetEvent: ev,
           locals: {
             editing: (typeof user !== 'undefined'),
-            user: user || { UUID: "", Content: "" },
+            user: user || { UUID: '', Content: '' },
             tenants: $scope._tenants
           },
           clickOutsideToClose: true,
@@ -51,22 +54,22 @@ users controller
       };
 
       $scope.editCapsPrompt = function (ev, temp) {
-        var user = angular.copy(temp);
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        var caps = [];
-        for (var id in $scope._capabilities) {
+        let user = angular.copy(temp);
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let caps = [];
+        for (let id in $scope._capabilities) {
           caps.push($scope._capabilities[id]);
         }
 
-        for(var tenant_id in $scope._tenants) {
+        for(let tenant_id in $scope._tenants) {
           if(typeof user.caps[tenant_id] === 'undefined')
             user.caps[tenant_id] = {
               id: tenant_id,
               caps: []
             };
         }
-        var original = angular.copy(user);
-        
+        let original = angular.copy(user);
+
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -86,5 +89,6 @@ users controller
         }).then(api.getUsers);
       };
 
-    });
+    }
+  ]);
 })();

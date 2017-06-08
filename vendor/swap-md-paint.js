@@ -69,7 +69,7 @@
     reportError( '%s=\'%s\' bad or missing attributes', directiveName, input );
   }
 
-  function reportError(errString,name,input) {
+  function reportError(errString, name, input) {
     console.error(errString,name,input);
     console.log('usage %s="[theme] intention [hue]"',name);
     console.log('acceptable intentions : primary,accent,warn,background,foreground');
@@ -78,35 +78,35 @@
 
   angular.module('swapMdPaint', ['ngMaterial'])
 
-  .directive('swapMdPaintFg',function(SwapMd) {
+  .directive('swapMdPaintFg',['SwapMd', function(SwapMd) {
     return {
       restrict : 'A',
       link     : function(scope, element, attributes) {
         setRGB(element,'color',SwapMd.themeColors,attributes.swapMdPaintFg,'swap-md-paint-fg');
       }
     };
-  })
+  }])
 
-  .directive('swapMdPaintBg',function(SwapMd) {
+  .directive('swapMdPaintBg',['SwapMd', function(SwapMd) {
     return {
       restrict : 'A',
       link     : function(scope, element, attributes) {
         setRGB(element,'background-color',SwapMd.themeColors,attributes.swapMdPaintBg,'swap-md-paint-bg');
       }
     };
-  })
+  }])
 
-  .directive('swapMdPaintSvg',function(SwapMd) {
+  .directive('swapMdPaintSvg',['SwapMd', function(SwapMd) {
     return {
       restrict : 'A',
       link     : function(scope, element, attributes) {
         setRGB(element,'fill',SwapMd.themeColors,attributes.swapMdPaintSvg,'swap-md-paint-svg');
       }
     };
-  })
+  }])
 
   // Couldn't get access to _PALETTES any other way?
-  .provider('SwapMd',function($mdThemingProvider){
+  .provider('SwapMd',['$mdThemingProvider', function($mdThemingProvider){
     return {
       $get : function() {
         return {
@@ -114,6 +114,6 @@
         };
       }
     };
-  });
+  }]);
 
 })();

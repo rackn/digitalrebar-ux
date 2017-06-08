@@ -1,20 +1,24 @@
 /*
-provisioner controller
+  Copyright 2017, RackN
+  Provisioner Controller
 */
 (function () {
   angular.module('app')
-    .controller('ProvisionerCtrl', function ($scope, api, $location, $mdDialog, $mdMedia, $routeParams) {
-
-      // use the same controller for 3 pages, so handle the title for each location
-      var route = $location.path().split("/")[2];
-      var title = 'Provisioner ';
+  .controller('ProvisionerCtrl', [
+    '$scope', 'api', '$location', '$mdDialog', '$mdMedia', '$routeParams',
+    function ($scope, api, $location, $mdDialog, $mdMedia, $routeParams) {
+      // we are using the same controller for 3 pages
+      // (machines ,templates, bootenvs)
+      // so handle the title for each location
+      let route = $location.path().split('/')[2];
+      let title = 'Provisioner ';
       switch (route) {
       case 'bootenvs':
         title += 'Boot Environments';
-        api("/api/v2/attribs").then(function (resp) {
+        api('/api/v2/attribs').then(function (resp) {
           $scope.attribs = resp.data.map(function (a) {
             return a.name;
-          })
+          });
         });
         break;
       case 'templates':
@@ -29,11 +33,11 @@ provisioner controller
       $scope.expand = {};
       $scope.attribs = [];
 
-      var mapNodes = function () {
+      let mapNodes = function () {
         $scope.nodeMap = {};
 
-        for (var id in $scope._nodes) {
-          var node = $scope._nodes[id];
+        for (let id in $scope._nodes) {
+          let node = $scope._nodes[id];
           $scope.nodeMap[node.uuid] = node;
         }
 
@@ -47,8 +51,8 @@ provisioner controller
 
       $scope.deleteTemplate = function (uuid) {
         $scope.confirm(event, {
-          title: "Remove Template",
-          message: "Are you sure you want to remove this template?",
+          title: 'Remove Template',
+          message: 'Are you sure you want to remove this template?',
           yesCallback: function () {
             api('/provisioner/templates/' + uuid, {
               method: 'DELETE'
@@ -58,8 +62,8 @@ provisioner controller
       };
 
       $scope.createTemplatePrompt = function (ev, temp) {
-        var template = angular.copy(temp);
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let template = angular.copy(temp);
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -68,17 +72,17 @@ provisioner controller
           targetEvent: ev,
           locals: {
             editing: (typeof template !== 'undefined'),
-            template: template || { UUID: "", Content: "" }
+            template: template || {UUID: '', Content: ''}
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen
-        })
-      }
+        });
+      };
 
       $scope.deleteBootEnv = function (name) {
         $scope.confirm(event, {
-          title: "Remove Boot Environment",
-          message: "Are you sure you want to remove this boot environment?",
+          title: 'Remove Boot Environment',
+          message: 'Are you sure you want to remove this boot environment?',
           yesCallback: function () {
             api('/provisioner/bootenvs/' + name, {
               method: 'DELETE'
@@ -95,31 +99,32 @@ provisioner controller
       // this is only used for updating templates
       // look at Dialog.js:228 for creating new templates
       $scope.upload = function(uuid){
-        var fileElem = document.getElementById('file');
-        $scope.selectedFile = ''
-        var f = fileElem.files[0],
-            r = new FileReader();
+        let fileElem = document.getElementById('file');
+        $scope.selectedFile = '';
+        let f = fileElem.files[0],
+          r = new FileReader();
         r.onloadend = function(e){
-          var data = e.target.result;
+          let data = e.target.result;
           api('/provisioner/templates/' + uuid, {
             method: 'PATCH',
-            data: [{ "op": "replace", "path": "/Contents", "value": data }]
+            data: [{op: 'replace', path: '/Contents', value: data}]
           }).then(function () {
             api.getHealth();
             api.toast('Updated template');
           }, function (err) {
             api.getHealth();
             api.toast('Error Updating template', 'template', err.data);
-          })
-          //send your binary data via $http or $resource or do anything else with it
-        }
+          });
+          // send your binary data via $http or
+          //  $resource or do anything else with it
+        };
         r.readAsBinaryString(f);
         fileElem.value = '';
-      }
+      };
 
 
       $scope.createBootEnvPrompt = function (ev, env) {
-        var bootenv = angular.copy(env);
+        let bootenv = angular.copy(env);
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -131,19 +136,19 @@ provisioner controller
             attribs: $scope.attribs,
             _provisioner: $scope._provisioner,
             env: bootenv || {
-              Name: "",
+              Name: '',
               OS: {
-                Name: "",
-                Family: "",
-                Codename: "",
-                Version: "",
-                IsoFile: "",
-                IsoSha256: "",
-                IsoUrl: ""
+                Name: '',
+                Family: '',
+                Codename: '',
+                Version: '',
+                IsoFile: '',
+                IsoSha256: '',
+                IsoUrl: ''
               },
-              Kernel: "",
+              Kernel: '',
               Initrds: [],
-              BootParams: "",
+              BootParams: '',
               RequiredParams: [],
               Templates: []
             },
@@ -154,5 +159,6 @@ provisioner controller
         });
       };
 
-    });
+    }
+  ]);
 })();

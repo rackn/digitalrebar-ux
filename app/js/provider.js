@@ -1,14 +1,17 @@
 /*
-provider controller
+  Copyright 2017, RackN
+  Provider controller
 */
 (function () {
   angular.module('app')
-    .controller('ProviderCtrl', function ($scope, $location, $routeParams, api, $mdMedia, $mdDialog) {
+  .controller('ProviderCtrl',[
+    '$scope', '$location', '$routeParams', 'api', '$mdMedia', '$mdDialog',
+    function ($scope, $location, $routeParams, api, $mdMedia, $mdDialog) {
       $scope.$emit('title', 'Provider'); // shows up on the top toolbar
 
       this.getProviders = function () {
-        var providers = [];
-        for (var id in $scope._providers) {
+        let providers = [];
+        for (let id in $scope._providers) {
           providers.push($scope._providers[id]);
         }
         return providers;
@@ -24,24 +27,26 @@ provider controller
         };
       };
 
-      $scope.$on("keyDown", function (action, e) {
-        if (e.key == 13) { // enter
+      $scope.$on('keyDown', function (action, e) {
+        if (e.key === 13) { // enter
           $scope.startEditing();
         }
-        if (e.key == 27) { // escape
+        if (e.key === 27) { // escape
           $scope.stopEditing();
         }
       });
 
       $scope.deleteProvider = function(provider) {
         $scope.confirm(event, {
-          title: "Delete Provider",
-          message: "Are you sure you want to delete " + provider.name + " Provider?",
+          title: 'Delete Provider',
+          message: 'Are you sure you want to delete ' +
+            provider.name + ' Provider?',
           yesCallback: function () {
             api('/api/v2/providers/' + provider.id, {
               method: 'DELETE'
             }).then(function () {
-              $scope._providers[provider.id].name = "DELETED-" + $scope._providers[provider.id].name
+              $scope._providers[provider.id].name = 'DELETED-' +
+                $scope._providers[provider.id].name;
               api.toast('Deleted ' + provider.name + ' capability');
               api.getHealth();
               $location.path('/providers');
@@ -56,14 +61,14 @@ provider controller
         if (!$scope.editing)
           return;
 
-        var data = angular.copy($scope.provider);
-        api("/api/v2/providers/" + $scope.id, {
-          method: "PUT",
+        let data = angular.copy($scope.provider);
+        api('/api/v2/providers/' + $scope.id, {
+          method: 'PUT',
           data: data
-        }).
-        then(function(resp){api.addProvider(resp.data)}, function (err) {
-          api.toast("Couldn't Save Provider", 'provider', err.data);
-        });
+        })
+      .then(function(resp){api.addProvider(resp.data);}, function (err) {
+        api.toast('Couldn\'t Save Provider', 'provider', err.data);
+      });
         $scope.stopEditing();
       };
 
@@ -84,15 +89,15 @@ provider controller
       };
 
       $scope.showAddProviderDialog = function (ev, type) {
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        var data = {
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let data = {
           name: type.toLowerCase(),
-          description: "Not Set",
+          description: 'Not Set',
           type: type,
           auth_details: {}
         };
-        for (var key in $scope.providerTemplates[type]) {
-          var val = $scope.providerTemplates[type][key];
+        for (let key in $scope.providerTemplates[type]) {
+          let val = $scope.providerTemplates[type][key];
           data.auth_details[key] = val.default;
         }
 
@@ -112,7 +117,7 @@ provider controller
       };
 
       $scope.showAddNodeDialog = function (ev) {
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -135,9 +140,9 @@ provider controller
       $scope.id = $routeParams.id;
       $scope.provider = {};
       $scope.editing = false;
-      var hasCallback = false;
+      let hasCallback = false;
 
-      var updateProvider = function () {
+      function updateProvider() {
         if ($scope.editing) return;
 
         $scope.provider = $scope._providers[$scope.id];
@@ -145,14 +150,15 @@ provider controller
           $location.path('/providers');
         else if (!hasCallback) {
           hasCallback = true;
-          $scope.$on('provider' + $scope.provider.id + "Done", updateProvider);
+          $scope.$on('provider' + $scope.provider.id + 'Done', updateProvider);
         }
-      };
+      }
 
       if (Object.keys($scope._providers).length) {
         updateProvider();
       } else {
         $scope.$on('providersDone', updateProvider);
       }
-    });
+    }
+  ]);
 })();
