@@ -1,3 +1,5 @@
+# Digital Rebar UX [![Build Status](https://travis-ci.org/rackn/digitalrebar-ux.svg?branch=master)](https://travis-ci.org/rackn/digitalrebar-ux)
+
 ### Get the modules
 
 1. `sudo apt-get install npm`
