@@ -5,6 +5,6 @@ cache:
   directories:
     - "node_modules"
 before_install:
-  - npm i brunch@^-1 -g
+  - npm i brunch -g
 script:
   - brunch build --production
