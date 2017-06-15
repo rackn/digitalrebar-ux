@@ -118,6 +118,17 @@
 
       $scope.showAddNodeDialog = function (ev) {
         let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        let providers = [];
+        let provider;
+        for(const id in $scope._providers) {
+          providers.push($scope._providers[id]);
+          if($scope._providers[id].name !== 'metal' &&
+              $scope._providers[id].name !== 'phantom') {
+            if(typeof provider === 'undefined') {
+              provider = id;
+            }
+          }
+        }
         $mdDialog.show({
           controller: 'DialogController',
           controllerAs: 'dialog',
@@ -126,8 +137,9 @@
           targetEvent: ev,
           locals: {
             base_name: 'digital-rebar-node',
-            _providers: $scope._providers,
-            provider: $scope.provider.name,
+            _providers: providers,
+            hasProvider: providers.length > 0,
+            provider: $scope.provider.id,
             add_os: 'default_os',
             number: 1,
             _deployments: $scope._deployments
