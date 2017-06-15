@@ -140,6 +140,8 @@
             _providers: providers,
             hasProvider: providers.length > 0,
             provider: $scope.provider.id,
+            _profiles: $scope.rawProfiles([]),
+            profiles: [],
             add_os: 'default_os',
             number: 1,
             _deployments: $scope._deployments
