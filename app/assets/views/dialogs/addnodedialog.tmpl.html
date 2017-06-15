@@ -61,7 +61,7 @@
             <md-chip-template style="font-family: monospace;">
               {{ $chip }}
             </md-chip-template>
-            <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in locals._profiles | filter:searchText" md-item-text="item" placeholder="Add Profiles">
+            <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in locals._profiles | filter:searchText" md-item-text="item" placeholder="Add Profiles (Optional)">
               <span md-highlight-text="searchText">
                 {{item}}
               </span>
