@@ -789,14 +789,23 @@
       };
 
       api.getNodeStatus = function(node) {
+        let now = Date.now();
+        if(typeof node === 'undefined')
+          return 'error';
+
+        // throttle the node status
+        if(node._statusTime && node._statusTime + 500 > now)
+          return node._status;
+
+        node._statusTime = now;
         if (node.alive) {
           if (node.available) {
-            return node.status;
+            return node._status = $rootScope.states[node.state];
           } else {
-            return 'reserved';
+            return node._status = 'reserved';
           }
         } else {
-          return 'off';
+          return node._status = 'off';
         }
       };
 
@@ -809,7 +818,9 @@
       };
 
       api.truncName = function(name) {
-        return name.substring(0,name.indexOf('.'));
+        if(typeof name === 'undefined')
+          return '';
+        return name.substring(0, name.indexOf('.'));
       };
 
       return api;

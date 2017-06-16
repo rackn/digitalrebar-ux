@@ -75,8 +75,6 @@
       };
 
       $scope.expand = {};
-      $scope.graphData = {};
-      $scope.graphOptions = {};
 
       if ($routeParams.id)
         $scope.expand[$routeParams.id] = true;
@@ -84,6 +82,30 @@
       // called when a deployment is clicked
       this.toggleExpand = function (deployment) {
         $scope.expand[deployment.id] = !$scope.expand[deployment.id];
+      };
+
+      $scope.matrix = {};
+
+      // get matrix data from the api
+      this.getMatrixData = () => {
+        Object.keys($scope._deployments).forEach(id => {
+          let matrix = $scope.matrix[id] = $scope.matrix[id] || {
+            loading: true,
+            services: [],
+            deployment_roles: [],
+            nodes: {},
+          };
+
+          api('/api/status/matrix/' + id)
+          .then(resp => {
+            matrix.loading = false;
+            matrix.error = false;
+            angular.extend($scope.matrix[id], resp.data);
+          }, () => {
+            matrix.loading = false;
+            matrix.error = true;
+          });
+        });
       };
 
       // used to prevent lots of watchers from being
@@ -429,71 +451,6 @@
         });
       };
 
-      $scope.matrix = {};
-      $scope.matrix_order = {};
-      $scope.phantoms = {};
-      $scope.updateMatrix = function (deployment) {
-        for (let i in $scope._nodes) {
-          let node = $scope._nodes[i];
-          if(node.variant === 'phantom' &&
-              node.deployment_id === deployment.id) {
-            $scope.phantoms[deployment.id] = node;
-            break;
-          }
-        }
-        let roles = {};
-        let node_roles = $filter('from')(
-          $scope._node_roles, 'deployment', deployment
-        );
-        let d_roles = $filter('from')(
-          $scope._deployment_roles, 'deployment', deployment
-        );
-        let roleToDeploymentRole = {};
-        for (let i in d_roles)
-          roleToDeploymentRole[d_roles[i].role_id] = d_roles[i].id;
-        for (let i = 0; i < node_roles.length; i++) {
-          let role = node_roles[i];
-          let node = $scope._nodes[role.node_id];
-          if (node && node.system) {
-            node_roles.splice(i--, 1);
-          }
-          else {
-            let id = roleToDeploymentRole[role.role_id];
-            roles[id] = roles[id] || {};
-            roles[id][role.node_id] = role.id;
-          }
-        }
-        let keys = Object.keys(roles);
-        keys.sort(function(a, b) {
-          let rac = 0;
-          let rbc = 0;
-
-          if (typeof a !== 'undefined') {
-            let dra = $scope._deployment_roles[a];
-            if (typeof dra !== 'undefined') {
-              let ra = $scope._roles[dra.role_id];
-              if (typeof ra !== 'undefined') {
-                rac = ra.cohort;
-              }
-            }
-          }
-
-          if (typeof b !== 'undefined') {
-            let drb = $scope._deployment_roles[b];
-            if (typeof drb !== 'undefined') {
-              let rb = $scope._roles[drb.role_id];
-              if (typeof rb !== 'undefined') {
-                rbc = rb.cohort;
-              }
-            }
-          }
-
-          return rac - rbc;
-        });
-        $scope.matrix_order[deployment.id] = keys;
-        $scope.matrix[deployment.id] = roles;
-      };
-
       // create an object that links node roles
       //  to nodes with the deployment and parent role
       $scope.setBindRole = function (deployment_id, role_id) {
@@ -514,18 +471,15 @@
       };
 
       $scope.matrixUpdateLoop = function () {
-        for (let id in $scope._deployments) {
-          $scope.updateMatrix($scope._deployments[id]);
-        }
+        deployments.getMatrixData();
 
         $timeout.cancel($scope.updateInterval);
-        $scope.updateInterval = $timeout($scope.matrixUpdateLoop, 2000);
-
+        $scope.updateInterval = $timeout($scope.matrixUpdateLoop, 5000);
       };
 
       $scope.matrixUpdateLoop();
 
-      $scope.$on('$routeChangeStart', function () {
+      $scope.$on('$destroy', function () {
         $timeout.cancel($scope.updateInterval);
       });
 
@@ -570,11 +524,12 @@
 
       // callbacks for when nodes and noderoles finish
       // the pie charts require the nodes to exist
-      $scope.$on('node_rolesDone', deployments.createStatusBarData);
+      $scope.$on('$destroy',
+        $scope.$on('node_rolesDone', deployments.createStatusBarData)
+      );
 
       if (Object.keys($scope._node_roles).length)
         this.createStatusBarData();
-
     }
   ]);
 })();
