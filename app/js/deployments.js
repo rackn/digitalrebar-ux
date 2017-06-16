@@ -5,9 +5,9 @@
 (function () {
   angular.module('app').controller('DeploymentsCtrl', [
     '$mdMedia', '$mdDialog', '$scope', '$http', 'debounce', '$timeout',
-    '$routeParams', 'api', '$filter',
+    '$routeParams', 'api',
     function ($mdMedia, $mdDialog, $scope, $http, debounce, $timeout,
-      $routeParams, api, $filter) {
+      $routeParams, api) {
       $scope.$emit('title', 'Deployments'); // shows up on the top toolbar
 
       let deployments = this;
