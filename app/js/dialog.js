@@ -100,9 +100,9 @@
         api('/api/v2/nodes/' + locals.id, {
           method: 'PUT',
           data: payload
-        }).then(function () {
+        }).then(function (resp) {
           api.toast('Updated Node ' + locals.node.name);
-          api.addNode;
+          api.addNode(resp.data);
           $mdDialog.hide();
         }, function (err) {
           api.toast('Error Updating Node', 'node', err.data);
@@ -152,7 +152,13 @@
           length: locals.number
         }).map(Number.call, Number);
 
-        let provider = locals._providers[locals.provider].name;
+        let provider;
+        locals.provider = parseInt(locals.provider);
+        locals._providers.forEach(obj => {
+          if(obj.id === locals.provider) {
+            provider = obj.name;
+          }
+        });
         let hints = $scope
           .providerMap[provider].auth_details['provider-create-hint'];
         if (hints === null) {
