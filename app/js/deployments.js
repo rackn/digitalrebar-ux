@@ -62,6 +62,7 @@
             base_name: 'digital-rebar-node',
             _providers: providers,
             provider: provider,
+            hasProvider: providers.length > 0,
             _profiles: $scope.rawProfiles([]),
             profiles: [],
             add_os: 'default_os',

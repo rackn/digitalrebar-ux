@@ -33,6 +33,9 @@
           <div ng-messages="nodeForm.provider.$error">
             <div ng-message="required">Select a provider</div>
           </div>
+          <div ng-hide="locals.hasProvider" style="color: #444; font-size: smaller">
+            You will need to create a provider before provisioning nodes.
+          </div>
         </md-input-container>
 
         <md-input-container class="md-block">
@@ -50,23 +53,21 @@
           </div>
         </md-input-container>
 
-        <md-input-container class="md-block" style="padding-bottom: 16px;">
-          <section layout-padding ng-hide="locals._profiles.length > 0">
-            No Profiles Available
-          </section>
-          <section layout-padding style="overflow-x: auto;" ng-if="locals._profiles.length > 0">
-            <md-chips ng-model="locals.profiles" placeholder="Profiles (optional)" md-require-match="true">
-              <md-chip-template style="font-family: monospace;">
-                {{ $chip }}
-              </md-chip-template>
-              <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in locals._profiles | filter:searchText" md-item-text="item" placeholder="Add Profiles">
-                <span md-highlight-text="searchText">
-                  {{item}}
-                </span>
-              </md-autocomplete>
-            </md-chips>          
-          </section>
-        </md-input-container>
+        <section layout-padding ng-if="locals._profiles.length <= 0">
+          No Profiles Available
+        </section>
+        <section layout-padding style="overflow-x: auto;" ng-if="locals._profiles.length > 0">
+          <md-chips ng-model="locals.profiles" md-require-match="true">
+            <md-chip-template style="font-family: monospace;">
+              {{ $chip }}
+            </md-chip-template>
+            <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in locals._profiles | filter:searchText" md-item-text="item" placeholder="Add Profiles (Optional)">
+              <span md-highlight-text="searchText">
+                {{item}}
+              </span>
+            </md-autocomplete>
+          </md-chips>          
+        </section>
 
         <md-input-container class="md-block">
           <label>Number</label>
