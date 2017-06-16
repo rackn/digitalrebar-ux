@@ -220,19 +220,6 @@
         height: '2em'
       };
 
-      this.deploymentPie = {};
-
-      // creates the pie chart data for all the deployments
-      this.createPieChartData = function () {
-        $timeout(function () {
-          for (let id in $scope._deployments) {
-            $scope.updateMatrix($scope._deployments[id]);
-            deployments.deploymentPie[id] = deployments
-              .getNodeCounts($scope._deployments[id]);
-          }
-        }, 500);
-      };
-
       this.deploymentStatus = {};
       $scope.deploymentStates = {
         '-1': 'error', // error
@@ -583,12 +570,7 @@
 
       // callbacks for when nodes and noderoles finish
       // the pie charts require the nodes to exist
-      $scope.$on('nodesDone', deployments.createPieChartData);
       $scope.$on('node_rolesDone', deployments.createStatusBarData);
-
-      // if we have nodes, we don't have to wait for the callback
-      if (Object.keys($scope._nodes).length)
-        this.createPieChartData();
 
       if (Object.keys($scope._node_roles).length)
         this.createStatusBarData();
