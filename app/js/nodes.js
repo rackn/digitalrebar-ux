@@ -11,6 +11,11 @@
 
       $scope.$emit('title', 'Nodes'); // shows up on the top toolbar
 
+      $scope.query = {
+        page: 1,
+        limit: 10,
+      };
+
       let nodes = this;
       this.selected = [];
       $scope.move_tenant = true;
