@@ -47,7 +47,7 @@
           <th md-column>Node Role</th>
         </tr>
       </thead>
-      <tbody md-body swap-md-paint-bg="status_{{role.status}} primary" swap-md-paint-fg="status_{{role.status}} foreground" ng-repeat="role in getNodeRoles() | orderBy: myOrder">
+      <tbody md-body swap-md-paint-bg="status_{{role.status}} primary" swap-md-paint-fg="status_{{role.status}} foreground" ng-repeat="role in getNodeRoles() | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
         <tr md-row md-select="role" md-select-id="{{role.id}}" md-auto-select>
           <td md-cell>
             <md-icon ng-href="#!/node_roles/{{role.id}}">
@@ -86,4 +86,5 @@
       </tbody>
     </table>
   </md-table-container>
+  <md-table-pagination ng-if="getNodeRoles().length" md-limit="query.limit" md-limit-options="[10, 25, 50]" md-page="query.page" md-total="{{getNodeRoles().length}}" md-page-select></md-table-pagination> 
 </md-card>

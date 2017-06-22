@@ -9,6 +9,11 @@
 
       $scope.$emit('title', 'Roles'); // shows up on the top toolbar
 
+      $scope.query = {
+        page: 1,
+        limit: 10,
+      };
+
       $scope.myOrder = 'name';
       $scope.flags = ['library', 'implicit', 'bootstrap',
         'discovery', 'cluster', 'destructive', 'abstract', 'powersave'
