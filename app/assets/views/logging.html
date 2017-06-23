@@ -1,10 +1,14 @@
 <md-card layout="column" flex>
   <md-toolbar class="md-table-toolbar">
     <div class="md-toolbar-tools">
-      <md-icon style="color: #fff;">
-        search
-      </md-icon>
-      <input type="text" class="table-input" style="background: rgba(0,0,0,0); color: #fff;" ng-model="search" placeholder="Search Errors">
+      <span>Alerts ({{api.errors.length}})</span>
+      <span flex layout="row">
+        <md-icon style="color: #fff;">
+          search
+        </md-icon>
+        <input type="text" class="table-input" style="background: rgba(0,0,0,0); color: #fff;" ng-model="search" placeholder="Search Errors">
+      </span>
+      <span flex="5"></span>
     </div>
   </md-toolbar>
 

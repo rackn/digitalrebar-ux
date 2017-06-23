@@ -2,13 +2,24 @@
   <md-toolbar class="md-table-toolbar md-default" ng-hide="nodes.selected.length">
     <div class="md-toolbar-tools">
       <span>Nodes ({{nodes.getNodes().length}})</span>
-      <span flex></span>
+      <span flex layout="row">
+        <md-icon>
+          search
+        </md-icon>
+        <input type="text" class="table-input" style="background: rgba(0,0,0,0);" ng-model="search" placeholder="Search Nodes">
+      </span>
+      <span flex="5"></span>
     </div>
   </md-toolbar>
   <md-toolbar class="md-table-toolbar alternate" ng-show="nodes.selected.length">
     <div class="md-toolbar-tools">
       <span>{{nodes.selected.length}} node{{nodes.selected.length != 1 && 's' || ''}} selected</span>
-      <span flex></span>
+      <span flex layout="row">
+        <md-icon>
+          search
+        </md-icon>
+        <input type="text" class="table-input" style="background: rgba(0,0,0,0);" ng-model="search" placeholder="Search Nodes">
+      </span>
       <md-button class="md-icon-button" ng-click="redeploySelected()">
         <md-icon>low_priority</md-icon>
         <md-tooltip>Redeploy Nodes</md-tooltip>
@@ -69,7 +80,7 @@
           <th md-column md-order-by="tenant_id">Tenant</th>
         </tr>
       </thead>
-      <tbody md-body swap-md-paint-bg="status_{{ api.getNodeStatus(node) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(node) }} foreground" ng-repeat="node in nodes.getNodes() | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
+      <tbody md-body swap-md-paint-bg="status_{{ api.getNodeStatus(node) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(node) }} foreground" ng-repeat="node in nodes.getNodes() | filter:search | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
         <tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select>
           <td md-cell>
             <md-icon>
