@@ -506,3 +506,7 @@ table.no-border, table.no-border tr, table.no-border tr td{
   width: 100%;
   background: rgba(0, 0, 0, 0.1);
 }
+
+.md-table-pagination {
+  justify-content: flex-start;
+}

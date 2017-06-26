@@ -11,6 +11,11 @@
 
       $scope.$emit('title', 'Node Roles'); // shows up on the top toolbar
 
+      $scope.query = {
+        page: 1,
+        limit: 10,
+      };
+
       let node_roles = this;
 
       $scope.pollLog = 5;
