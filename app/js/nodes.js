@@ -16,7 +16,8 @@
         limit: 10,
       };
 
-      let nodes = this;
+      let NodesCtrl = this;
+      this.nodes = [];
       this.selected = [];
       $scope.move_tenant = true;
 
@@ -30,22 +31,49 @@
         };
       };
 
+
       // converts the _nodes object that rootScope has into an array
       this.getNodes = function () {
         let nodes = [];
         for (let id in $scope._nodes) {
-          if (!$scope._nodes[id].system)
-            nodes.push($scope._nodes[id]);
+          let node = angular.copy($scope._nodes[id]);
+          let provider_id = node.provider_id;
+          let deployment_id = node.deployment_id;
+          if (!$scope._nodes[id].system) {
+            if(typeof $scope._providers[provider_id] !== 'undefined')
+              node.provider_name = $scope._providers[provider_id].name;
+
+            if(typeof $scope._deployments[deployment_id] !== 'undefined')
+              node.deployment_name = $scope._deployments[deployment_id].name;
+
+            let tenant = $scope._tenants[node.tenant_id];
+            if(typeof tenant !== 'undefined') {
+              node.tenant_name = tenant.name;
+              node.tenant_uuid = tenant.uuid;
+            }
+
+            nodes.push(node);
+          }
         }
-        return nodes;
+        NodesCtrl.nodes = nodes;
       };
+
+      let watchers = [
+        $scope.$parent.$watchCollection('_deployments', NodesCtrl.getNodes),
+        $scope.$parent.$watchCollection('_providers', NodesCtrl.getNodes),
+        $scope.$parent.$watchCollection('_nodes', NodesCtrl.getNodes),
+        $scope.$parent.$watchCollection('_tenants', NodesCtrl.getNodes),
+      ];
+
+      // deregister watchers once scope is destroyed
+      $scope.$on('$destroy', () => watchers.map(w => w()));
 
       this.deleteSelected = function (event) {
         $scope.confirm(event, {
           title: 'Delete Nodes',
           message: 'Are you sure you want to delete selected nodes?',
           yesCallback: function () {
-            nodes.selected.forEach(function (node) {
+            NodesCtrl.selected.forEach(function (node) {
 
               if (node.admin) {
                 console.log('Can\'t delete admin node !' + node.id);
@@ -64,7 +92,7 @@
             });
 
             // remove the selected items
-            nodes.selected = [];
+            NodesCtrl.selected = [];
           }
         });
       };
@@ -299,13 +327,13 @@
           title: 'Redeploy Nodes',
           message: 'Are you sure you want to redeploy selected nodes?',
           yesCallback: function () {
-            nodes.selected.forEach(function (node) {
+            NodesCtrl.selected.forEach(function (node) {
               if (node.id) {
                 api('/api/v2/nodes/' + node.id + '/redeploy', {
                   method: 'PUT'
                 }).then(function () {
-                  api.toast('Redeployed ' + nodes.selected.length + ' node' +
-                    (nodes.selected.length === 1 ? '' : 's'));
+                  api.toast('Redeployed ' + NodesCtrl.selected.length + ' node' +
+                    (NodesCtrl.selected.length === 1 ? '' : 's'));
                 }, function (err) {
                   api.toast('Error Redeploying Node', 'node', err.data);
                 });
