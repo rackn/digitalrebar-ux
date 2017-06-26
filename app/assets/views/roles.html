@@ -1,9 +1,15 @@
 <md-card>
   <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
-      <span flex>
+      <span>
         <md-icon>label_outline</md-icon>
         Roles ({{getRoles().length}})
+      </span>
+      <span flex layout="row">
+        <md-icon>
+          search
+        </md-icon>
+        <input type="text" class="table-input" style="background: rgba(0,0,0,0);" ng-model="search" placeholder="Search Roles">
       </span>
       <md-button class="md-icon-button" ng-href="#!/node_roles">
         <md-icon>dns</md-icon>
@@ -36,7 +42,7 @@
         </tr>
       </thead>
       <tbody md-body>
-        <tr md-row ng-repeat="role in getRoles() | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
+        <tr md-row ng-repeat="role in getRoles() | filter:search | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
           <td md-cell>
             <md-button ng-href="#!/roles/{{role.id}}" class="md-primary md-fab md-mini">
               <md-icon>

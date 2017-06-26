@@ -1,7 +1,13 @@
 <md-card>
   <md-toolbar class="md-table-toolbar md-default" ng-hide="node_roles.selected.length">
     <div class="md-toolbar-tools">
-      <span flex>Node Roles ({{getNodeRoles().length}})</span>
+      <span>Node Roles ({{getNodeRoles().length}})</span>
+      <span flex layout="row">
+        <md-icon>
+          search
+        </md-icon>
+        <input type="text" class="table-input" style="background: rgba(0,0,0,0);" ng-model="search" placeholder="Search Node Roles">
+      </span>
       <md-button class="md-icon-button" ng-click="retrySelected(getNodeRoles())">
         <md-icon>redo</md-icon>
         <md-tooltip>Retry All</md-tooltip>
@@ -24,7 +30,12 @@
   <md-toolbar class="md-table-toolbar alternate" ng-show="node_roles.selected.length">
     <div class="md-toolbar-tools">
       <span>{{node_roles.selected.length}} node role{{node_roles.selected.length != 1 && 's' || ''}} selected</span>
-      <span flex></span>
+      <span flex layout="row">
+        <md-icon>
+          search
+        </md-icon>
+        <input type="text" class="table-input" style="background: rgba(0,0,0,0);" ng-model="search" placeholder="Search Node Roles">
+      </span>
       <md-button class="md-icon-button" ng-click="retrySelected()">
         <md-icon>redo</md-icon>
         <md-tooltip>Retry Selected</md-tooltip>
@@ -47,7 +58,7 @@
           <th md-column>Node Role</th>
         </tr>
       </thead>
-      <tbody md-body swap-md-paint-bg="status_{{role.status}} primary" swap-md-paint-fg="status_{{role.status}} foreground" ng-repeat="role in getNodeRoles() | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
+      <tbody md-body swap-md-paint-bg="status_{{role.status}} primary" swap-md-paint-fg="status_{{role.status}} foreground" ng-repeat="role in getNodeRoles() | filter:search | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
         <tr md-row md-select="role" md-select-id="{{role.id}}" md-auto-select>
           <td md-cell>
             <md-icon ng-href="#!/node_roles/{{role.id}}">
