@@ -43,6 +43,22 @@
         return providers;
       })();
 
+      $scope.loadProvider = function(name) {
+        return function(editor) {
+          editor.setValue(
+            JSON.stringify(locals.provider.auth_details[name], 0, '  '),
+            -1
+          );
+          editor.getSession().on('change', function() {
+            try {
+              locals.provider.auth_details[name] = JSON.parse(
+                editor.getValue()
+              );
+            } catch (e) { /* eslint no-empty: off*/ }
+          });
+        };
+      };
+
       $scope.providerMap = (function () {
         let pm = {};
         for (let i in locals._providers) {
