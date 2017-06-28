@@ -477,7 +477,7 @@ workloads controller
         if (workloads.use_system) {
           return $scope.systemNodes;
         } else {
-          return workloads.selected=$scope.createdNodes;
+          return $scope.createdNodes;
         }
       };
 
