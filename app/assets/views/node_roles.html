@@ -59,7 +59,7 @@
         </tr>
       </thead>
       <tbody md-body swap-md-paint-bg="status_{{role.status}} primary" swap-md-paint-fg="status_{{role.status}} foreground" ng-repeat="role in getNodeRoles() | filter:search | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
-        <tr md-row md-select="role" md-select-id="{{role.id}}" md-auto-select>
+        <tr md-row md-select="role" md-auto-select>
           <td md-cell>
             <md-icon ng-href="#!/node_roles/{{role.id}}">
               {{icons[role.status]}}
