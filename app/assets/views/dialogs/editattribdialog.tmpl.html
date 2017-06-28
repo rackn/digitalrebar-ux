@@ -12,8 +12,13 @@
 
     <!-- Network data -->
     <md-dialog-content layout="row" style="overflow-x: hidden;">
-      <div flex style="min-height: 400px;">
-        <textarea ng-model="locals.value" style="width: 100%; font-family: monospace; min-height: 400px;" ng-class="{'error': !parse(locals.value, 1) || !locals.api.testSchema(parse(locals.value), locals.attrib.schema)}"></textarea>
+      <div flex layout="column">
+        <div ui-ace="{
+          useWrapMode: true,
+          showGutter: true,
+          theme: 'molokai',
+          mode: 'json'
+        }" ng-model="locals.value" ng-readonly="false" style="height: 400px;" flex></div>
       </div>
       <div flex style="padding-left: 1em; overflow-x: auto;">
        <span style="font-size: 1em;">&quot;*&quot; = Required, &quot;=&quot; = Wildcard</span>
