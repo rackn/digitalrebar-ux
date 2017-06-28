@@ -9,7 +9,12 @@
     </div>
   </md-toolbar>
 
-  <textarea json-text style="font-family: monospace;" rows="20" ng-model="locals.barclamp.cfg_data"></textarea>
+  <div ui-ace="{
+    useWrapMode: true,
+    showGutter: true,
+    mode: 'json',
+    onLoad: loadBarclamp
+  }" style="height: 400px;"></div>
 
   <md-dialog-actions>
     <span flex></span>

@@ -43,6 +43,7 @@
         return providers;
       })();
 
+      // Used with ace text editor to convert objects to JSON automatically
       $scope.loadProvider = function(name) {
         return function(editor) {
           editor.setValue(
@@ -57,6 +58,21 @@
             } catch (e) { /* eslint no-empty: off*/ }
           });
         };
+      };
+
+      // Used with ace text editor to convert objects to JSON automatically
+      $scope.loadBarclamp = function(editor) {
+        editor.setValue(
+          JSON.stringify(locals.barclamp.cfg_data, 0, '  '),
+          -1
+        );
+        editor.getSession().on('change', function() {
+          try {
+            locals.barclamp.cfg_data = JSON.parse(
+              editor.getValue()
+            );
+          } catch (e) { /* eslint no-empty: off*/ }
+        });
       };
 
       $scope.providerMap = (function () {
