@@ -1,54 +1,56 @@
 <md-card flex>
-  <section>
-    <table>
-      <tr>
-        <td style="font-weight: bold; text-align: right; width: 100px;">Route</td>
-        <td layout="row">
-          <select ng-model="method" class="table-input">
-            <option value="get">GET</option>
-            <option value="head">HEAD</option>
-            <option value="post">POST</option>
-            <option value="put">PUT</option>
-            <option value="delete">DELETE</option>
-            <option value="trace">TRACE</option>
-            <option value="options">OPTIONS</option>
-            <option value="connect">CONNECT</option>
-            <option value="path">PATH</option>
-            <option value="patch">PATCH</option>
-          </select>
-          <input type="text" class="table-input" ng-model="route" placeholder="/api/v2/" />
-        </td>
-      </tr>
-      <tr>
-        <td valign="top" style="font-weight: bold; text-align: right;">Payload</td>
-        <td>
-          <textarea ng-model="payload" style="width: 600px; height: 100px; font-family: monospace" ng-class="{'error': !parse(payload)}"></textarea>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td layout="column">
-          <md-button class="md-raised md-primary" ng-click="testApi()"> 
+  <section layout="column">
+    <div layout="row">
+      <md-select ng-model="method" style="width: 100px; margin: 0px; padding-left: 16px; text-align: center;">
+        <md-option value="get">GET</md-option>
+        <md-option value="head">HEAD</md-option>
+        <md-option value="post">POST</md-option>
+        <md-option value="put">PUT</md-option>
+        <md-option value="delete">DELETE</md-option>
+        <md-option value="trace">TRACE</md-option>
+        <md-option value="options">OPTIONS</md-option>
+        <md-option value="connect">CONNECT</md-option>
+        <md-option value="path">PATH</md-option>
+        <md-option value="patch">PATCH</md-option>
+      </md-select>
+      <input type="text" class="table-input" ng-model="route" placeholder="/api/v2/" />
+      <div layout-padding>
+        <md-button class="md-primary md-icon-button" style="width: auto; margin: auto;" ng-click="testApi()">
+          <md-icon>
+            send
+          </md-icon>
+          <md-tooltip>
             Run API
-          </md-button>
-        </td>
-      </tr>
-    </table>
+          </md-tooltip>
+        </md-button>
+      </div>
+    </div>
+    <div ui-ace="{
+      useWrapMode: true,
+      showGutter: true,
+      theme: 'molokai',
+      mode: 'json'
+    }" ng-model="payload" style="height: 200px;"></div>
   </section>
-  <section>
-    <table>
-      <tr>
-        <td valign="top" style="font-weight: bold; text-align: right; width: 100px;">Output</td>
-        <td>
-          <textarea ng-model="output" ng-class="class" readonly style="width: 600px; height: 300px; font-family: monospace"></textarea>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td layout="column">
-          <md-button ng-click="clearOutput()" class="md-raised md-primary">Clear</md-button>
-        </td>
-      </tr>
-    </table>
+</md-card>
+<md-card>
+  <section layout="column">
+    <div layout="row" class="md-toolbar-tools">
+      <h2 flex style="margin: 0; padding: 0;">Output</h2>
+      <md-button class="md-primary md-icon-button" style="width: auto; margin: auto;" ng-click="clearOutput()">
+        <md-icon>
+          delete
+        </md-icon>
+        <md-tooltip>
+          Clear Output
+        </md-tooltip>
+      </md-button>
+    </div>
+    <div ui-ace="{
+      useWrapMode: true,
+      showGutter: true,
+      theme: 'molokai',
+      mode: 'json'
+    }" ng-model="output" ng-readonly="true" style="height: 200px;"></div>
   </section>
 </md-card>
