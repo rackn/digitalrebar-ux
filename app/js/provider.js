@@ -17,6 +17,22 @@
         return providers;
       };
 
+      $scope.loadProvider = function(name) {
+        return function(editor) {
+          editor.setValue(
+            JSON.stringify($scope.provider.auth_details[name], 0, '  '),
+            -1
+          );
+          editor.getSession().on('change', function() {
+            try {
+              $scope.provider.auth_details[name] = JSON.parse(
+                editor.getValue()
+              );
+            } catch (e) { /* eslint no-empty: off*/ }
+          });
+        };
+      };
+
       $scope.restructureNodes = function(node) {
         return {
           order: node.name,
@@ -152,7 +168,7 @@
       };
 
       $scope.id = $routeParams.id;
-      $scope.provider = {};
+      $scope.provider = undefined;
       $scope.editing = false;
       let hasCallback = false;
 
@@ -160,9 +176,9 @@
         if ($scope.editing) return;
 
         $scope.provider = $scope._providers[$scope.id];
-        if (!$scope.provider)
+        if (!$scope.provider) {
           $location.path('/providers');
-        else if (!hasCallback) {
+        } else if (!hasCallback) {
           hasCallback = true;
           $scope.$on('provider' + $scope.provider.id + 'Done', updateProvider);
         }

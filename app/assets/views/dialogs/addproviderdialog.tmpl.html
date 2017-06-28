@@ -50,10 +50,9 @@
             </tr>
 
             <tr ng-switch-when="img">
-              <td></td>
-              <td>
+              <td colspan="2">
                 <a ng-href="{{options.href}}" target="_blank">
-                  <img ng-src="{{options.src}}" style="height: 100px; width: auto;">
+                  <img ng-src="{{options.src}}" style="max-height: 100px; max-width: 400px; margin: auto;">
                 </a>
               </td>
             </tr>
@@ -63,8 +62,12 @@
                 {{options.name}}
               </td>
               <td>
-                <textarea json-text class="table-input" style="font-family: monospace;" ng-model="locals.provider.auth_details[name]">
-                </textarea>
+                <div ui-ace="{
+                  useWrapMode: true,
+                  showGutter: true,
+                  mode: 'json',
+                  onLoad: loadProvider(name)
+                }" style="height: 100px;"></div>
               </td>
             </tr>
           </tbody>

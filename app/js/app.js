@@ -10,6 +10,7 @@ window.version = '0.2.0';
     'LocalStorageModule', 'DigestAuthInterceptor', 'md.data.table',
     'debounce', 'jsontext', 'ng-slide-down', 'swapMdPaint',
     'angular-clipboard', 'ngMessages', 'ngVis', 'ngOrderObjectBy',
+    'ui.ace'
   ]);
 
   app.config([

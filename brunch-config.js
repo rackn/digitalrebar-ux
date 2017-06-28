@@ -42,6 +42,7 @@ module.exports = {
         before: [
           'node_modules/jquery/dist/jquery.min.js',
           'vendor/jquery.sparkline.min.js',
+          'vendor/ace.js',
           'node_modules/angular/angular.min.js',
           'node_modules/angular/angular.js',
           'node_modules/angular-route/angular-route.min.js',
@@ -65,6 +66,7 @@ module.exports = {
           'vendor/jsontext.js',
           'vendor/ng-slide-down.min.js',
           'vendor/swap-md-paint.js',
+          'vendor/ui-ace.js',
           'app/js/app.js',
           /^app\//,
         ]

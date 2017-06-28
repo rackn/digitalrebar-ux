@@ -103,9 +103,13 @@ provider view
               {{options.name}}
             </td>
             <td>
-              <textarea json-text class="table-input" ng-readonly="!editing" style="font-family: monospace;" ng-model="provider.auth_details[name]">
-              </textarea>
-            </td>
+                <div ui-ace="{
+                  useWrapMode: true,
+                  showGutter: true,
+                  mode: 'json',
+                  onLoad: loadProvider(name)
+                }" style="height: 100px;"></div>
+              </td>
           </tr>
         </tbody>
       </table>
