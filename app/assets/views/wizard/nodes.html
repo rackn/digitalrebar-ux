@@ -39,7 +39,7 @@
             </tr>
           </thead>
           <tbody md-body>
-            <tr md-row md-select="node" md-select-id="{{node.id}}" ng-repeat="node in getNodes() | orderBy: order">
+            <tr md-row md-select="node" ng-repeat="node in getNodes() | orderBy: order">
               <td md-cell>{{node.name}}</td>
               <td md-cell ng-repeat="type in ['required','control','worker','optional']">
                 <span flex></span>
