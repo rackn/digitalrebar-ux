@@ -16,6 +16,8 @@
         limit: 10,
       };
 
+      $scope.myOrder = 'name';
+
       let NodesCtrl = this;
       this.nodes = [];
       this.selected = [];
