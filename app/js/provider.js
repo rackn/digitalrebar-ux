@@ -9,6 +9,8 @@
     function ($scope, $location, $routeParams, api, $mdMedia, $mdDialog) {
       $scope.$emit('title', 'Provider'); // shows up on the top toolbar
 
+      $scope.myOrder = 'name';
+
       this.getProviders = function () {
         let providers = [];
         for (let id in $scope._providers) {
