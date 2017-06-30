@@ -9,6 +9,8 @@
     function ($scope, api, $mdDialog, $mdMedia, $routeParams, $location) {
       $scope.$emit('title', 'Networks'); // shows up on the top toolbar
 
+      $scope.myOrder = 'name';
+
       let networks = this;
       this.selected = [];
       this.order = 'name';

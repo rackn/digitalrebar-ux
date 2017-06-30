@@ -17,7 +17,7 @@
   </div>
   <md-table-container ng-if="api.errors.length">
     <table md-table>
-      <thead md-head md-order="order">
+      <thead md-head md-order="myOrder">
         <tr md-row>
           <th md-column md-order-by="type">Type</th>
           <th md-column md-order-by="message">Message</th>
@@ -25,7 +25,7 @@
         </tr>
       </thead>
       <tbody md-body>
-        <tr md-row ng-repeat="error in api.errors | filter:search | orderBy: order | limitTo:query.limit:(query.page-1)*query.limit">
+        <tr md-row ng-repeat="error in api.errors | filter:search | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
           <td md-cell>{{error.type}}</td>
           <td md-cell>
             <md-button class="md-icon-button" ng-click="showInfo($event, error)">

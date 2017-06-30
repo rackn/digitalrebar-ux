@@ -11,7 +11,7 @@
   <md-card-content ng-switch-when="1">
     <md-table-container>
       <table md-table>
-        <thead md-head md-order="order">
+        <thead md-head md-order="myOrder">
           <tr md-row>
             <th md-column md-order-by="name">Name</th>
             <th md-column>Description</th>
@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody md-body>
-          <tr md-row ng-repeat="attrib in attribs | orderBy: order">
+          <tr md-row ng-repeat="attrib in attribs | orderBy: myOrder">
             <td md-cell>{{attrib.name}}</td>
             <td md-cell>{{attrib.description}}</td>
             <td md-cell>{{attrib.map}}</td>

@@ -81,7 +81,7 @@
         </tr>
       </thead>
       <tbody md-body swap-md-paint-bg="status_{{ api.getNodeStatus(node) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(node) }} foreground" ng-repeat="node in nodes.nodes | filter:search | orderBy: myOrder | limitTo:query.limit:(query.page-1)*query.limit">
-        <tr md-row md-select="node" md-select-id="{{node.id}}" md-auto-select>
+        <tr md-row md-select="node" md-auto-select>
           <td md-cell>
             <md-icon>
               {{ api.getNodeIcon(node) }}

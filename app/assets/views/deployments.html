@@ -79,7 +79,7 @@ deployments view
             </th>
           </thead>
           <tbody>
-            <tr ng-repeat="(node_id, node) in matrix[id].nodes">
+            <tr ng-repeat="node in matrix[id].nodes | orderObjectBy: 'name'" ng-init="node_id=node.id">
               <td>
                 <span>
                   <md-icon class="status" swap-md-paint-bg="status_{{ api.getNodeStatus(node) }} primary" swap-md-paint-fg="status_{{ api.getNodeStatus(node) }} foreground">
@@ -95,9 +95,9 @@ deployments view
               </td>
               <td ng-repeat="(index, deployment_role) in matrix[id].deployment_roles">
                 <span
-                  ng-if="matrix[id].nodes[node_id].roles[index]"
-                  ng-init="status=states[matrix[id].nodes[node_id].roles[index].state]">
-                  <md-icon class="status" swap-md-paint-bg="status_{{status}} primary" swap-md-paint-fg="status_{{status}} foreground" ng-click="setPath('/node_roles/' + matrix[id].nodes[node_id].roles[index].id)">
+                  ng-if="node.roles[index]"
+                  ng-init="status=states[node.roles[index].state]">
+                  <md-icon class="status" swap-md-paint-bg="status_{{status}} primary" swap-md-paint-fg="status_{{status}} foreground" ng-click="setPath('/node_roles/' + node.roles[index].id)">
                     {{icons[status]}}
                   </md-icon>
                   <md-tooltip>
@@ -134,11 +134,11 @@ deployments view
         </md-toolbar>
         <section layout="row" style="max-height: 400px;">
           <md-list flex="33" style="overflow-y: auto;">
-            <md-list-item class="md-table-toolbar alternate" ng-repeat="role in _deployment_roles | from:'deployment':deployment | orderBy: _roles[role.role_id].cohort" ng-click="setBindRole(id, role.role_id)" aria-label="Role" md-ink-ripple>
-              <span flex>{{_roles[role.role_id].name}}</span>
+            <md-list-item class="md-table-toolbar alternate" ng-repeat="role in matrix[id].deployment_roles | orderObjectBy: 'name'" ng-click="setBindRole(id, role.role_id)" aria-label="Role" md-ink-ripple>
+              <span flex>{{role.name}}</span>
               <span>
                   <md-icon>
-                    {{_roles[role.role_id].icon}}
+                    {{role.icon}}
                   </md-icon>                  
                 </span>
               <md-divider></md-divider>

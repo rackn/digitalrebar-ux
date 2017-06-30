@@ -14,6 +14,8 @@
           limit: 10,
         };
 
+        $scope.myOrder = '-date';
+
         $scope.showInfo = function (ev, err) {
           $mdDialog.show({
             template: '' +
