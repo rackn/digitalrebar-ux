@@ -10,6 +10,8 @@
       $timeout, api) {
       $scope.$emit('title', 'Attributes'); // shows up on the top toolbar
 
+      $scope.myOrder = 'name';
+
       $scope.hasAttrib = -1;
       $scope.attribs = [];
       $scope.editing = false;
