@@ -10,6 +10,7 @@ before_install:
 - npm i brunch -g
 script:
 - brunch build --production
+- ./package.sh
 - node_modules/.bin/gh-pages-travis
 env:
   global:
