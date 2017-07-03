@@ -1,1 +1,69 @@
-<md-dialog aria-label="User"flex-gt-sm="50"flex="100"ng-cloak><md-toolbar><div class="md-toolbar-tools"><h2>User</h2><span flex></span><md-button class="md-icon-button"ng-click="cancel()"><md-icon>close</md-icon></md-button></div></md-toolbar><md-content style="overflow-y:auto"><table style="width:90%;overflow-x:hidden"><tr><td class="label">Username</td><td><input type="text"class="table-input"ng-model="locals.user.username"></td></tr><tr><td class="label"valign="top">E-Mail</td><td><input type="text"class="table-input"ng-model="locals.user.email"></td></tr><tr><td class="label"valign="top">Tenant</td><td><md-input-container class="md-block"><md-select ng-model="locals.user.tenant_id"aria-label="tenant select"><md-option ng-repeat="(tennant_id, t) in locals.tenants"value="{{tennant_id}}">{{t.name}}</md-option></md-select></md-input-container></td></tr><tr><td class="label"valign="top">Current Tenant</td><td><md-input-container class="md-block"><md-select ng-model="locals.user.current_tenant_id"aria-label="tenant select"><md-option ng-repeat="(tennant_id, t) in locals.tenants"value="{{tennant_id}}">{{t.name}}</md-option></md-select></md-input-container></td></tr><tr><td class="label"valign="top">Password</td><td><input type="text"class="table-input"ng-model="locals.user.password1"></td></tr><tr><td class="label"valign="top">Re-enter Password</td><td><input type="text"class="table-input"ng-model="locals.user.password2"></td></tr></table></md-content><md-dialog-actions style="margin:0"><span flex></span><md-button ng-click="dialog.createUser()"class="md-primary md-raised"target="_blank"md-autofocus>{{locals.editing ? 'Update' : 'Create'}}</md-button></md-dialog-actions></md-dialog>
+<md-dialog aria-label="User" flex-gt-sm="50" flex="100" ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2><md-icon>person_add</md-icon> User</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content style="overflow-y: auto;">
+    <table style="width: 90%; overflow-x: hidden;">
+      <tr>
+        <td class="label">Username</td>
+        <td>
+          <input type="text" required class="table-input" ng-model="locals.user.username"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label" required valign="top">E-Mail</td>
+        <td>
+          <input type="text" class="table-input" ng-model="locals.user.email"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label" valign="top">Tenant</td>
+        <td>
+          <md-input-container class="md-block">
+            <md-select ng-model="locals.user.tenant_id" aria-label="tenant select">
+              <md-option ng-repeat="(tennant_id, t) in locals.tenants" value="{{tennant_id}}">
+                {{t.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </td>
+      </tr>
+      <tr>
+        <td class="label" ng-if="local.user.username" valign="top">Current Tenant</td>
+        <td ng-if="local.user.username">
+          <md-input-container class="md-block">
+            <md-select ng-model="locals.user.current_tenant_id" aria-label="tenant select">
+              <md-option ng-repeat="(tennant_id, t) in locals.tenants" value="{{tennant_id}}">
+                {{t.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </td>
+      </tr>
+      <tr>
+        <td class="label" valign="top">Password</td>
+        <td>
+          <input required ng-minlength=6 type="password" class="table-input" ng-model="locals.user.password1"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="label" valign="top">Re-enter Password</td>
+        <td>
+          <input type="password" required ng-minlength=6  class="table-input" ng-model="locals.user.password2"/>
+        </td>
+      </tr>
+    </table>
+  </md-content>
+  <md-dialog-actions style="margin: 0;">
+    <span flex></span>
+    <md-button ng-click="dialog.createUser()" class="md-primary md-raised" target="_blank" md-autofocus>
+      {{locals.editing ? 'Update' : 'Create'}}
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>

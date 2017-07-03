@@ -1,0 +1,71 @@
+<md-card ng-if='profile_count<0' style="padding: 2em">
+  Retrieving...
+</md-card>
+<md-card ng-if='profile_count==0' style="padding: 2em">
+  No Profiles
+</md-card>
+<md-card ng-repeat="profile in _profiles">
+  <md-toolbar class="md-default" ng-click="expand[profile.name]=!expand[profile.name]">
+    <div class="md-toolbar-tools">
+      <span flex>
+        {{profile.name}}
+      </span>
+      <span>
+        <md-button class="md-icon-button">
+          <md-icon ng-hide="expand[profile.name]">expand_more</md-icon>
+          <md-icon ng-show="expand[profile.name]">expand_less</md-icon>
+        </md-button>
+      </span>
+    </div>
+  </md-toolbar>
+
+  <div ng-slide-down="expand[profile.name]" lazy-render duration="0.5">
+    <md-card-content>
+      <md-table-container>
+        <table md-table>
+          <thead md-head md-order="valueOrder">
+            <tr md-row>
+              <th md-column md-order-by="key">Name</th>
+              <th md-column md-order-by="value">Value</th>
+            </tr>
+          </thead>
+
+          <tbody md-body>
+            <tr md-row ng-repeat="obj in values[profile.id] | orderBy: valueOrder">
+              <td md-cell>
+                {{obj.key}}
+              </td>
+              <td md-cell>
+                {{obj.value}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+    </md-card-content>
+
+    <md-card-actions layout="row" layout-align="start center">
+      <md-button class="md-icon-button" ng-click="createProfilePrompt($event, profile)">
+        <md-icon>mode_edit</md-icon>
+        <md-tooltip>Edit</md-tooltip>
+      </md-button>
+
+      <!-- Right side of toolbar -->
+      <md-card-icon-actions layout-align="end center">
+        <md-button class="md-icon-button" ng-click="deleteProfile(profile.name)">
+          <md-icon>delete</md-icon>
+          <md-tooltip>Destroy</md-tooltip>
+        </md-button>
+      </md-card-icon-actions>
+    </md-card-actions>
+  </div>
+
+</md-card>
+
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="createProfilePrompt($event)">
+    <md-icon>add</md-icon>
+    <md-tooltip>Create Profile</md-tooltip>
+  </md-button>
+</div>

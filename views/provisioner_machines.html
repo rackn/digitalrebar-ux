@@ -1,1 +1,79 @@
-<div><md-card ng-repeat="machine in _provisioner.machines"flex="100"><md-toolbar md-theme="status_{{states[nodeMap[machine.Uuid].state]}}"ng-click="expand[machine.Uuid]=!expand[machine.Uuid]"md-ink-ripple><div class="md-toolbar-tools"display="row"><span><md-icon ng-show="nodeMap[machine.Uuid]">{{icons[states[nodeMap[machine.Uuid].state]]}}<md-tooltip>{{states[nodeMap[machine.Uuid].state]}}</md-tooltip></md-icon></span><h2 flex>&nbsp; <span>{{machine.Name}}<md-tooltip>{{machine.Uuid}}</md-tooltip></span></h2><span><span>{{machine.BootEnv}}<md-tooltip>Boot Environment</md-tooltip></span><md-button class="md-icon-button"><md-icon ng-hide="expand[machine.Uuid]">expand_more</md-icon><md-icon ng-show="expand[machine.Uuid]">expand_less</md-icon><md-tooltip>{{expand[machine.Uuid] ? 'Show Less' : 'Show More'}}</md-tooltip></md-button></span></div></md-toolbar><div ng-slide-down="expand[machine.Uuid]"lazy-render duration="0.25"><md-card-content><table layout-padding><tr ng-if="nodeMap[machine.Uuid]"><td class="label">Node</td><td><a href="#/deployments/{{nodeMap[machine.Uuid].deployment_id}}">{{_deployments[nodeMap[machine.Uuid].deployment_id].name}} </a><a href="#/nodes/{{nodeMap[machine.Uuid].id}}">{{nodeMap[machine.Uuid].name}}</a></td></tr><tr><td class="label">Address</td><td>{{machine.Address}}</td></tr><tr><td class="label">Boot Environment</td><td><a ng-href="#/provisioner/bootenvs/{{machine.BootEnv}}">{{machine.BootEnv}}</a></td></tr></table><h3>Params</h3><section layout-padding style="overflow-x:auto"><pre>{{machine.Params | json}}</pre></section></md-card-content></div></md-card></div>
+<!--
+provisioner machines view
+-->
+<div>
+  <md-card ng-repeat="machine in _provisioner.machines | orderBy:Name " flex="100">
+
+    <md-toolbar md-theme="status_{{states[nodeMap[machine.Uuid].state]}}" ng-click="expand[machine.Uuid]=!expand[machine.Uuid]" md-ink-ripple>
+      <div class="md-toolbar-tools" display="row">
+        <span>
+          <md-icon ng-show="nodeMap[machine.Uuid]">
+            {{icons[states[nodeMap[machine.Uuid].state]]}}
+            <md-tooltip>
+              {{states[nodeMap[machine.Uuid].state]}}
+            </md-tooltip>
+          </md-icon>
+        </span>
+        <h2 flex>
+          &nbsp;
+          <span>
+            {{machine.Name}} [{{_deployments[nodeMap[machine.Uuid].deployment_id].name}}]
+            <md-tooltip>
+              {{machine.Uuid}}
+            </md-tooltip>
+          </span>
+        </h2>
+        <span>
+          <span>
+            {{machine.BootEnv}}
+            <md-tooltip>
+              Boot Environment
+            </md-tooltip>
+          </span>
+        <md-button class="md-icon-button">
+          <md-icon ng-hide="expand[machine.Uuid]">expand_more</md-icon>
+          <md-icon ng-show="expand[machine.Uuid]">expand_less</md-icon>
+          <md-tooltip>
+            {{expand[machine.Uuid] ? 'Show Less' : 'Show More'}}
+          </md-tooltip>
+        </md-button>
+        </span>
+      </div>
+    </md-toolbar>
+    <div ng-slide-down="expand[machine.Uuid]" lazy-render duration="0.25">
+      <md-card-content>
+        <table layout-padding>
+          <tr ng-if="nodeMap[machine.Uuid]">
+            <td class="label">Node</td>
+            <td>
+              <a href="#!/deployments/{{nodeMap[machine.Uuid].deployment_id}}">
+                {{_deployments[nodeMap[machine.Uuid].deployment_id].name}}
+              </a>
+              <a href="#!/nodes/{{nodeMap[machine.Uuid].id}}">
+                {{nodeMap[machine.Uuid].name}}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Address</td>
+            <td>
+              {{machine.Address}}
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Boot Environment</td>
+            <td>
+              <a ng-href="#!/provisioner/bootenvs/{{machine.BootEnv}}">
+                {{machine.BootEnv}}
+              </a>
+            </td>
+          </tr>
+        </table>
+        <h3>Params</h3>
+        <section layout-padding style="overflow-x: auto;">
+          <pre>{{machine.Params | json}}</pre>
+        </section>
+      </md-card-content>
+    </div>
+  </md-card>
+</div>

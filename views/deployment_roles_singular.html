@@ -1,1 +1,72 @@
-<md-card><md-toolbar><div class="md-toolbar-tools"><span><a ng-href="#/deployments/{{deployment_role.deployment_id}}"swap-md-paint-fg="default foreground">{{_deployments[deployment_role.deployment_id].name}}</a><md-icon class="md-primary">{{_roles[deployment_role.role_id].icon}}</md-icon><a ng-href="#/roles/{{deployment_role.role_id}}"swap-md-paint-fg="default foreground">{{_roles[deployment_role.role_id].name}} </a></span><span flex></span><md-button class="md-icon-button"ng-click="propose()"><md-icon>mode_edit</md-icon><md-tooltip>Propose</md-tooltip></md-button><md-button class="md-icon-button"ng-click="commit()"><md-icon>save</md-icon><md-tooltip>Commit</md-tooltip></md-button><md-button class="md-icon-button"ng-click="destroy()"><md-icon>delete</md-icon><md-tooltip>Destroy</md-tooltip></md-button></div></md-toolbar><md-toolbar class="md-table-toolbar md-default"><div class="md-toolbar-tools"><span>Attributes</span> <span flex></span></div></md-toolbar><div data-ng-include="'views/attrib_render.tmpl.html'"></div></md-card><md-card><md-toolbar class="md-table-toolbar md-default"><div class="md-toolbar-tools"><span>Node Roles</span></div></md-toolbar><md-card-content><span ng-repeat="role in _node_roles | from:'deployment':_deployments[deployment_role.deployment_id] | filter:{role_id: deployment_role.role_id} | orderBy: role.cohort()"><md-button class="md-fab md-primary"md-theme="status_{{role.status}}"ng-href="#/node_roles/{{role.id}}"><md-icon>{{icons[role.status]}}</md-icon><md-tooltip md-direction="bottom">{{_nodes[role.node_id].name}}</md-tooltip></md-button></span></md-card-content></md-card>
+<md-card>
+  <md-toolbar class="md-default" md-theme="{{ deployment_role.proposed ? 'status_proposed' : 'status_ready' }}" ng-style="style">
+    <div class="md-toolbar-tools">
+      <span>
+        <md-icon class="md-primary">
+          {{ icons[ deployment_role.proposed ? "proposed" : "ready"] }}
+        </md-icon>
+        <a ng-href="#!/deployments/{{deployment_role.deployment_id}}" swap-md-paint-fg="default foreground">
+          {{_deployments[deployment_role.deployment_id].name}}
+        </a>
+        <md-icon class="md-primary">
+          {{_roles[deployment_role.role_id].icon}}
+        </md-icon>
+        <a ng-href="#!/roles/{{deployment_role.role_id}}" swap-md-paint-fg="default foreground">
+          {{_roles[deployment_role.role_id].name}}
+        </a>
+      </span>
+      <span flex></span>
+
+      <md-button class="md-icon-button" ng-if="!deployment_role.proposed" ng-click="propose()">
+        <md-icon>mode_edit</md-icon>
+        <md-tooltip>Propose</md-tooltip>
+      </md-button>
+
+      <md-button class="md-icon-button" ng-if="deployment_role.proposed" ng-click="commit()">
+        <md-icon>save</md-icon>
+        <md-tooltip>Commit</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button" ng-click="destroy()">
+        <md-icon>delete</md-icon>
+        <md-tooltip>Destroy</md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span>
+        <md-icon class="md-icon-button">dashboard
+          <md-tooltip>Deployment Role</md-tooltip>
+        </md-icon>
+        Deployment Scope Attributes</span>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+
+  <div data-ng-include="'views/attrib_render.tmpl.html'">
+  </div>
+</md-card>
+
+<!-- Show node roles -->
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span>
+        <md-icon class="md-primary">dns
+          <md-tooltip>Node Role</md-tooltip>
+        </md-icon>
+        Node Roles</span>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <span ng-repeat="role in _node_roles | from:'deployment':_deployments[deployment_role.deployment_id] | filter:{role_id: deployment_role.role_id} | orderBy: role.cohort()">
+
+      <md-button class="md-fab md-primary" md-theme="status_{{role.status}}" ng-href="#!/node_roles/{{role.id}}">
+        <md-icon>{{icons[role.status]}}</md-icon>
+        <md-tooltip md-direction="bottom">
+          {{_nodes[role.node_id].name}}
+        </md-tooltip>
+      </md-button>
+    </span>
+  </md-card-content>
+</md-card>

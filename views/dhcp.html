@@ -1,1 +1,129 @@
-<md-card ng-repeat="subnet in _DHCP.subnets"><md-toolbar class="md-default"><div class="md-toolbar-tools"><span flex>{{subnet.name}}</span></div></md-toolbar><md-card-content><table layout-padding style="min-width:50%"><tr><td class="label">Name</td><td>{{subnet.name}}</td></tr><tr><td class="label">Subnet</td><td>{{subnet.subnet}}</td></tr><tr><td class="label">Next Server</td><td>{{subnet.next_server}}</td></tr><tr><td class="label">Active Start</td><td>{{subnet.active_start}}</td></tr><tr><td class="label">Active End</td><td>{{subnet.active_end}}</td></tr><tr><td class="label">Active Lease Time</td><td>{{subnet.active_lease_time}}</td></tr><tr><td class="label">Reserved Lease Time</td><td>{{subnet.reserved_lease_time}}</td></tr></table><h3>Leases</h3><md-table-container><table md-table><thead md-head md-order="leaseOrder"><tr md-row><th md-column md-order-by="valid">Valid</th><th md-column md-order-by="ip">IP</th><th md-column md-order-by="mac">MAC</th><th md-column md-order-by="expire_time">Expire Time</th></tr></thead><tbody md-body><tr md-row ng-repeat="lease in subnet.leases | orderBy: leaseOrder"><td md-cell><md-icon>{{lease.valid ? 'done' : 'close'}}<md-tooltip>{{lease.valid ? 'Valid' : 'Invalid'}}</md-tooltip></md-icon></td><td md-cell>{{lease.ip}}</td><td md-cell>{{lease.mac}}</td><td md-cell>{{lease.expire_time}}</td></tr></tbody></table></md-table-container><h3>Bindings</h3><md-table-container><table md-table><thead md-head md-order="bindingOrder"><tr md-row><th md-column md-order-by="ip">IP</th><th md-column md-order-by="mac">MAC</th></tr></thead><tbody md-body><tr md-row ng-repeat="binding in subnet.bindings | orderBy: bindingOrder"><td md-cell>{{binding.ip}}</td><td md-cell>{{binding.mac}}</td></tr></tbody></table></md-table-container><h3>Options</h3><md-table-container><table md-table><thead md-head md-order="optionOrder"><tr md-row><th md-column md-order-by="id">ID</th><th md-column md-order-by="value">Value</th></tr></thead><tbody md-body><tr md-row ng-repeat="option in subnet.options | orderBy: optionOrder"><td md-cell>{{optionMap[option.id] || option.id}}</td><td md-cell>{{option.value}}</td></tr></tbody></table></md-table-container></md-card-content></md-card>
+<md-card ng-repeat="subnet in _DHCP.subnets">
+  <md-toolbar class="md-default" ng-click="expand[subnet.name]=!expand[subnet.name]">
+    <div class="md-toolbar-tools">
+      <span flex>
+        {{subnet.name}}
+      </span>
+      <span>
+        <md-button class="md-icon-button">
+          <md-icon ng-hide="expand[subnet.name]">expand_more</md-icon>
+          <md-icon ng-show="expand[subnet.name]">expand_less</md-icon>
+        </md-button>
+      </span>
+    </div>
+  </md-toolbar>
+
+<div ng-slide-down="expand[subnet.name]" lazy-render duration="0.5">
+  <md-card-content>
+    <table layout-padding style="min-width: 50%;">
+      <tr>
+        <td class="label">Name</td>
+        <td>
+          {{subnet.name}}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Subnet</td>
+        <td>
+          {{subnet.subnet}}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Next Server</td>
+        <td>
+          {{subnet.next_server}}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Active Start</td>
+        <td>
+          {{subnet.active_start}}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Active End</td>
+        <td>
+          {{subnet.active_end}}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Active Lease Time</td>
+        <td>
+          {{subnet.active_lease_time}}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Reserved Lease Time</td>
+        <td>
+          {{subnet.reserved_lease_time}}
+        </td>
+      </tr>
+    </table>
+    <h3>Leases</h3>
+    <md-table-container>
+      <table md-table>
+        <thead md-head md-order="leaseOrder">
+          <tr md-row>
+            <th md-column md-order-by="valid">Valid</th>
+            <th md-column md-order-by="ip">IP</th>
+            <th md-column md-order-by="mac">MAC</th>
+            <th md-column md-order-by="expire_time">Expire Time</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat="lease in subnet.leases | orderBy: leaseOrder">
+            <td md-cell>
+              <md-icon>
+                {{lease.valid ? 'done' : 'close'}}
+                <md-tooltip>
+                  {{lease.valid ? 'Valid' : 'Invalid'}}
+                </md-tooltip>
+              </md-icon>
+            </td>
+            <td md-cell>{{lease.ip}}</td>
+            <td md-cell>{{lease.mac}}</td>
+            <td md-cell>{{lease.expire_time}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+
+    <h3>Bindings</h3>
+    <md-table-container>
+      <table md-table>
+        <thead md-head md-order="bindingOrder">
+          <tr md-row>
+            <th md-column md-order-by="ip">IP</th>
+            <th md-column md-order-by="mac">MAC</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat="binding in subnet.bindings | orderBy: bindingOrder">
+            <td md-cell>{{binding.ip}}</td>
+            <td md-cell>{{binding.mac}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+
+    <h3>Options</h3>
+    <md-table-container>
+      <table md-table>
+        <thead md-head md-order="optionOrder">
+          <tr md-row>
+            <th md-column md-order-by="id">ID</th>
+            <th md-column md-order-by="value">Value</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat="option in subnet.options | orderBy: optionOrder">
+            <td md-cell>{{optionMap[option.id] || option.id}}</td>
+            <td md-cell>{{option.value}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+  </md-card-content>
+</div>
+
+</md-card>

@@ -1,0 +1,35 @@
+<md-dialog aria-label="Capability" flex-gt-sm="50" flex="100" ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2><md-icon>traffic</md-icon> Capability</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content style="overflow-y: auto;">
+    <table style="width: 90%; overflow-x: hidden;">
+      <tr>
+        <td class="label">Name</td>
+        <td>
+          <input ng-if="!locals.editing" type="text" class="table-input" ng-model="locals.capability.name" />
+          <span flex ng-if="locals.editing">{{locals.capability.name}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="label" valign="top">Description</td>
+        <td>
+          <input type="text" class="table-input" ng-model="locals.capability.description" />
+        </td>
+      </tr>
+    </table>
+  </md-content>
+
+  <md-dialog-actions style="margin: 0;">
+    <span flex></span>
+    <md-button ng-click="dialog.createCapability()" class="md-primary md-raised" target="_blank" md-autofocus>
+      {{locals.editing ? 'Update' : 'Create'}}
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>

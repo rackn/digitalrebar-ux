@@ -1,1 +1,95 @@
-<md-card><md-toolbar class="md-default"md-theme="status_{{node_role.status}}"ng-style="style"><div class="md-toolbar-tools"><span><md-icon class="md-primary">{{icons[node_role.status]}}<md-tooltip>{{node_role.status}}</md-tooltip></md-icon><a ng-href="#/deployments/{{node_role.deployment_id}}"swap-md-paint-fg="status_{{node_role.status}} foreground">{{_deployments[node_role.deployment_id].name}} </a><a ng-href="#/nodes/{{node_role.node_id}}"swap-md-paint-fg="status_{{node_role.status}} foreground">{{_nodes[node_role.node_id].name}}</a><md-icon class="md-primary">{{_roles[node_role.role_id].icon}}</md-icon><a ng-href="#/roles/{{node_role.role_id}}"swap-md-paint-fg="status_{{node_role.status}} foreground">{{_roles[node_role.role_id].name}} </a></span><span flex></span><md-button class="md-icon-button"ng-click="retry()"><md-icon>redo</md-icon><md-tooltip>Retry</md-tooltip></md-button><md-button class="md-icon-button"ng-click="destroy()"><md-icon>delete</md-icon><md-tooltip>Destroy</md-tooltip></md-button></div></md-toolbar><md-toolbar ng-if="top < 0"><div class="md-toolbar-tools"><h2>Node Role</h2></div></md-toolbar><div class="md-toolbar-tools"><span>Attributes</span></div><div data-ng-include="'views/attrib_render.tmpl.html'"></div></md-card><md-card ng-if="node_role.runlog"><md-toolbar class="md-table-toolbar md-default"id="runlog"><div class="md-toolbar-tools"><h2 flex>Run Log</h2><md-button clipboard class="md-icon-button"supported="supported"text="node_role.runlog"on-copied="onCopy(true)"on-error="onCopy(false, err)"><md-icon>content_paste</md-icon><md-tooltip>Copy Log to Clipboard</md-tooltip></md-button></div></md-toolbar><md-card-content><pre class="runlog">{{node_role.runlog}}</pre></md-card-content></md-card>
+<md-card>
+  <md-toolbar class="md-default" md-theme="status_{{node_role.status}}" ng-style="style">
+    <div class="md-toolbar-tools">
+      <span>
+        <md-icon class="md-primary">
+          {{icons[node_role.status]}}
+          <md-tooltip>
+            {{node_role.status}}
+          </md-tooltip>
+        </md-icon>
+        <a ng-href="#!/deployments/{{node_role.deployment_id}}" swap-md-paint-fg="status_{{node_role.status}} foreground">
+          {{_deployments[node_role.deployment_id].name}}
+        </a>
+        <a ng-hide="service" ng-href="#!/nodes/{{node_role.node_id}}" swap-md-paint-fg="status_{{node_role.status}} foreground">
+          {{_nodes[node_role.node_id].name}}
+        </a>
+        <em ng-show="service">Service Role</em>
+        <md-icon class="md-primary">
+          {{_roles[node_role.role_id].icon}}
+        </md-icon>
+        <a ng-href="#!/roles/{{node_role.role_id}}" swap-md-paint-fg="status_{{node_role.status}} foreground">
+          {{_roles[node_role.role_id].name}}
+        </a>
+      </span>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="commit()" ng-show="node_role.state == 4" >
+        <md-icon>save</md-icon>
+        <md-tooltip>Commit</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button" ng-click="retry()" ng-show="node_role.state != 4" >
+        <md-icon>redo</md-icon>
+        <md-tooltip>Retry</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button" ng-click="destroy()">
+        <md-icon>delete</md-icon>
+        <md-tooltip>Destroy</md-tooltip>
+      </md-button>
+    </div>
+
+  </md-toolbar>
+
+  <md-toolbar ng-if="top < 0">
+    <div class="md-toolbar-tools">
+      <h2>Node Role</h2>
+    </div>
+  </md-toolbar>
+  <div class="md-toolbar-tools" ng-show="node_role.state<0">
+    <span>
+      <a target="_new" href="{{helplink + '/' + _roles[node_role.role_id].name + '.html'}}">
+        <md-icon>help</md-icon>
+        Role Troubleshooting Help
+      </a>
+    </span>
+  </div>
+  <div class="md-toolbar-tools">
+    <span flex>
+        <md-icon class="md-icon-button">dns
+          <md-tooltip>Node Role</md-tooltip>
+        </md-icon>
+        Node Local Attributes
+    </span>
+    <span>
+      <a ng-if="deployment_role_id>0" ng-href="#!/deployment_roles/{{deployment_role_id}}">Deployment Scope Attributes
+        <md-icon class="md-icon-button">dashboard
+          <md-tooltip>Deployment Role</md-tooltip>
+        </md-icon>
+      </a>
+    </span>
+  </div>
+  <div data-ng-include="'views/attrib_render.tmpl.html'">
+  </div>
+</md-card>
+
+<!-- Run Log -->
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default" id="runlog">
+    <div class="md-toolbar-tools">
+      <h2 flex>Run Log</h2>
+      <span class="pull-right" ng-if="node_role.state!=0">
+        Refresh <input ng-model="pollLog" min=1 max=30 type="number" ng-change="changeRate(pollLog)"/> seconds
+      </span>
+      <md-button clipboard class="md-icon-button" supported="supported" text="runlog" on-copied="onCopy(true)" on-error="onCopy(false, err)">
+        <md-icon>
+          content_paste
+        </md-icon>
+        <md-tooltip>
+          Copy Log to Clipboard
+        </md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <pre class="runlog">{{runlog}}</pre>
+  </md-card-content>
+</md-card>

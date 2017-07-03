@@ -1,1 +1,30 @@
-<div layout="column"layout-gt-xs="row"class="wizard-pane"><div class="wizard-icon"><md-icon>directions_bike</md-icon></div><div class="wizard-content"flex><h1>Select or Create a Deployment</h1><div layout="row"><md-input-container class="md-block"flex="33"style="margin:0"><label>Deployment</label><md-select ng-model="workloads.deployment_id"><md-option ng-repeat="deployment in getDeployments()"value="{{deployment.id}}">{{deployment.name}}</md-option></md-select></md-input-container><div class="inset">or</div><md-button class="md-fab md-accent md-mini"ng-click="createDeploymentPrompt($event)"style="margin:0"><md-icon>add</md-icon><md-tooltip>Create Deployment</md-tooltip></md-button></div></div></div>
+<div layout="column" layout-gt-xs="row" class="wizard-pane">
+  <div class="wizard-icon">
+    <md-icon>directions_run</md-icon>
+  </div>
+  <div class="wizard-content" flex  layout="column">
+    <h1>Select or Create a Deployment</h1>
+    <md-switch ng-model="workloads.createDeployment">
+      Create Deployment
+    </md-switch>
+    <div ng-show="workloads.createDeployment">
+      <md-input-container class="md-block">
+        <label>Deployment Name</label>
+        <input type="text" ng-model="workloads.name"/>
+      </md-input-container>
+    </div>
+    <div layout="row" ng-hide="workloads.createDeployment">
+      <md-input-container class="md-block" style="margin-bottom: 24px;" flex>
+        <label>Deployment</label>
+        <md-select ng-model="workloads.deployment_id">
+          <md-option ng-repeat="deployment in getDeployments()" value="{{deployment.id}}">
+            {{deployment.name}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <md-switch ng-model="workloads.commit" aria-label="commit" style="margin: 0;">
+      Auto-Commit
+    </md-switch>
+  </div>
+</div>

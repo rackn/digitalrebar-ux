@@ -1,1 +1,33 @@
-<md-card><md-toolbar class="md-table-toolbar md-default"><div class="md-toolbar-tools"layout="row"><md-icon>{{wizard.icon || 'create_new_folder'}}</md-icon><h2>&nbsp;{{wizard.name}} - {{wizard.description}}</h2><span flex></span></div></md-toolbar><md-content layout-padding layout="column"><div layout="row"><div ng-repeat="step in steps"class="step"ng-class="{completed:$index < done, progress: $index==done}"ng-if="!step.finalStep"ng-click="setProgress($index)"><md-icon>{{done > $index ? 'done' : step.icon}}</md-icon><md-tooltip>{{step.name}}</md-tooltip></div></div><ng-include src="steps[done].path"class="wizard-include"onload="setCanNext()"></ng-include><md-card-actions layout="row"layout-align="end center"ng-hide="steps[done].finalStep"><md-button class="md-primary"ng-disabled="done == 0"ng-click="prevStep()">Back</md-button><md-button class="md-primary md-raised"ng-disabled="!steps[done].complete() || !canNext"ng-click="nextStep()">Next</md-button></md-card-actions></md-content></md-card>
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools" layout="row">
+      <md-icon>
+        {{wizard.icon || 'create_new_folder'}}
+      </md-icon>
+      <h2>
+        &nbsp;{{wizard.name}} - {{wizard.description}}
+      </h2>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+
+  <md-content layout-padding layout="column">
+    <div layout="row">
+      <div ng-repeat="step in steps" class="step" ng-class="{completed:$index < done, progress: $index==done}" ng-if="!step.finalStep" ng-click="setProgress($index)">
+        <md-icon>{{done > $index ? 'done' : step.icon}}</md-icon>
+        <md-tooltip>
+          {{step.name}}
+        </md-tooltip>
+      </div>
+    </div>
+    <ng-include src="steps[done].path" class="wizard-include" onload="setCanNext()"> </ng-include>
+    <md-card-actions layout="row" layout-align="end center" ng-hide="steps[done].finalStep">
+      <md-button class="md-primary" ng-disabled="done == 0" ng-click="prevStep()">
+        Back
+      </md-button>
+      <md-button class="md-primary md-raised" ng-disabled="!steps[done].complete() || !canNext" ng-click="nextStep()">
+        Next
+      </md-button>
+    </md-card-actions>
+  </md-content>
+</md-card>

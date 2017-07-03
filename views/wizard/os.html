@@ -1,1 +1,58 @@
-<div layout="column"layout-gt-xs="row"class="wizard-pane"><div class="wizard-icon"><md-icon>directions_car</md-icon></div><div class="wizard-content"flex><h1>Select Your OS</h1><div layout="row"><div flex layout="column"ng-if="wizard.system_nodes"><div class="icon-container"><md-icon>computer</md-icon><md-tooltip>Metal</md-tooltip></div><md-input-container ng-if="wizard.system_nodes"flex><label>Metal Operating System</label><md-select ng-model="workloads.attribs['provisioner-target_os']"><md-option ng-repeat="os in osList"value="{{os}}">{{os}}</md-option></md-select></md-input-container></div><div flex layout="column"ng-if="wizard.create_nodes"><div class="icon-container"><md-icon>cloud</md-icon><md-tooltip>Cloud</md-tooltip></div><md-input-container ng-if="wizard.create_nodes"flex><label>Provider</label><md-select ng-model="workloads.provider"><md-option ng-repeat="provider in _providers"value="{{provider.name}}"ng-if='provider.type != "MetalProvider" && provider.type != ""'>{{provider.name}}</md-option></md-select></md-input-container></div></div></div></div>
+<div layout="column" layout-gt-xs="row" class="wizard-pane">
+  <div class="wizard-icon">
+    <md-icon>directions_bike</md-icon>
+  </div>
+  <div class="wizard-content" flex layout="column">
+    <h1>Select Metal OS or Provider</h1>
+    <div>
+      <md-switch ng-model="workloads.use_system" ng-if="wizard.system_nodes" ng-disabled="(workloads.use_system ? onTrue : onFalse) || !showProvisioner">
+        Use Existing Nodes?
+      </md-switch>
+      <div ng-if="wizard.system_nodes && workloads.use_system">
+        <md-icon title="Deployment">dashboard</md-icon>
+        <md-input-container flex>
+          <label>Pool</label>
+          <md-select aria-label="deployments select" ng-model="workloads.source">
+            <md-option ng-repeat="d in _deployments" value="{{d.name}}">
+              {{d.name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-icon title="Metal">computer</md-icon>
+        <md-input-container flex>
+          <label>Operating System</label>
+          <md-select aria-label="os select" ng-model="workloads.attribs['provisioner-target_os']">
+            <md-option ng-repeat="os in osList" value="{{os}}">
+              {{os}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div ng-if="wizard.create_nodes && !workloads.use_system">
+        <md-icon>cloud</md-icon>
+        <md-input-container flex>
+          <label>Cloud Provider</label>
+          <md-select aria-label="provider select" ng-model="workloads.provider" ng-change="createNodes()" >
+            <md-option ng-repeat="provider in _providers" value="{{provider.name}}" ng-if="provider.type != 'MetalProvider' && provider.type != ''">
+              {{provider.name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+    </div>
+
+    <h1>Add Public SSH Key (optional)</h1>
+      <span id="$index" ng-repeat="key in workloads.keys">
+        <md-input-container class="md-block">
+          <input type="text" aria-label="keys name" placeholder="Key Name" width="10" ng-model="workloads.keys[$index][0]">
+        </md-input-container>
+        <md-input-container class="md-block">
+          <input type="textarea" placeholder="Key Value" aria-label="key value" ng-model="workloads.keys[$index][1]">
+        </md-input-container>
+      </span>
+    <div>
+
+    </div>
+
+  </div>
+</div>

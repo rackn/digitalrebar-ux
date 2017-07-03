@@ -1,1 +1,134 @@
-<md-card><md-toolbar class="md-table-toolbar md-default"><div class="md-toolbar-tools"><span><md-icon>{{role.icon}}</md-icon>{{role.name}}</span></div></md-toolbar><md-card-content><table layout-padding><tr><td class="label">Description</td><td>{{role.description}}</td></tr><tr><td class="label">Jig</td><td>{{role.jig_name}}</td></tr><tr><td class="label">Barclamp</td><td><a ng-href="#/barclamps/{{role.barclamp_id}}">{{_barclamps[role.barclamp_id].name}}</a></td></tr><tr><td class="label">Source</td><td><a ng-href="https://github.com/digitalrebar/core/tree/master/script/roles/{{role.name}}">https://github.com/digitalrebar/core/tree/master/script/roles/{{role.name}}</a></td></tr><tr><td class="label">Flags</td><td><span ng-repeat="flag in flags"ng-if="role[flag]">{{flag}}</span></td></tr><tr><td class="label"valign="top">Metadata</td><td><pre>{{metadata}}</pre></td></tr></table></md-card-content></md-card><md-card><md-toolbar class="md-table-toolbar md-default"><div class="md-toolbar-tools"><span>Node Roles</span></div></md-toolbar><md-card-content><span ng-repeat="node_role in _node_roles | from:'role':role | orderBy: node_role.cohort()"><md-button class="md-fab md-primary"md-theme="status_{{node_role.status}}"ng-href="#/node_roles/{{node_role.id}}"><md-icon>{{icons[node_role.status]}}</md-icon><md-tooltip md-direction="bottom">{{_nodes[node_role.node_id].name}}</md-tooltip></md-button></span><md-card-content></md-card-content></md-card-content></md-card>
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span flex>
+        <md-icon title="icon name: {{role.icon}}">
+          {{role.icon}}
+        </md-icon>
+        {{role.name}}
+      </span>
+      <md-menu md-position-mode="target-right target">
+        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+          <md-icon>dashboard</md-icon>
+          <md-tooltip>Add to Deployment</md-tooltip>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item ng-repeat="deployment in _deployments">
+            <md-button ng-click="assignDeployment(role.id, deployment.id)">
+              <div layout="row" flex>
+                <p flex>{{deployment.name}}</p>
+                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">arrow_forward</md-icon>
+              </div>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      <md-button class="md-icon-button" ng-click="retry()">
+        <md-icon>redo</md-icon>
+        <md-tooltip>Retry All Node Roles</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button" ng-href="#!/roles">
+        <md-icon>label_outline</md-icon>
+        <md-tooltip md-direction="bottom">
+          Roles
+        </md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-card-content>
+    <table layout-padding>
+      <tr>
+        <td class="label">Description</td>
+        <td>
+          {{role.description}}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Jig</td>
+        <td>{{role.jig_name}}</td>
+      </tr>
+      <tr>
+        <td class="label">Barclamp</td>
+        <td>
+          <a ng-href="#!/barclamps/{{role.barclamp_id}}">
+            {{_barclamps[role.barclamp_id].name}}
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Flags</td>
+        <td>
+          <span ng-repeat="flag in flags" ng-if="role[flag]">
+            {{flag}}
+          </span>
+        </td>
+      </tr>
+    </table>
+  </md-card-content>
+
+</md-card>
+
+<!-- Show Meta Data -->
+<md-card>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <span flex>Related Roles</span>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <table layout-padding flex width="100%">
+      <thead>
+        <tr>
+          <th align="left" ng-repeat="(name, group) in relations" ng-show="group.length>0">{{name}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td ng-repeat="(name, group) in relations" ng-show="group.length>0">
+            <span ng-repeat="(i, r) in group | orderBy: r.cohort">
+              <md-button class="md-fab md-primary" ng-href="#!/roles/{{r.id}}">
+                <md-icon>{{r.icon}}</md-icon>
+                <md-tooltip md-direction="bottom">
+                  {{r.name}}: {{r.description}}
+                </md-tooltip>
+              </md-button>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-card-content>
+</md-card>
+
+<!-- Show node roles -->
+<fancylist
+  title="Node Roles"
+  items="_node_roles | from:'role':role"
+  mapping="restructureRoles"
+  path="node_roles"
+  />
+
+<!-- Show Meta Data -->
+<md-card ng-switch="role.jig_name">
+  <div ng-switch-when="script">
+    <div data-ng-include="'views/roles_script.tmpl.html'">
+    </div>
+  </div>
+  <div ng-switch-when="ansible-playbook">
+    <div data-ng-include="'views/roles_ansible_play.tmpl.html'">
+    </div>
+  </div>
+  <div ng-switch-default>
+    <md-toolbar class="md-table-toolbar md-default">
+      <div class="md-toolbar-tools">
+        <span flex>Metadata</span>
+      </div>
+    </md-toolbar>
+    <md-card-content>
+      <pre>
+        {{ metadata | json }}
+      </pre>
+    </md-card-content>
+  </div>
+</md-card>

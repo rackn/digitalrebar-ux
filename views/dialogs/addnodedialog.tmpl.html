@@ -1,1 +1,100 @@
-<md-dialog aria-label="Add Node"ng-cloak flex-gt-sm="50"><form name="nodeForm"><md-toolbar><div class="md-toolbar-tools"><h2>Add Node</h2><span flex></span><md-button class="md-icon-button"ng-click="cancel()"><md-icon>close</md-icon></md-button></div></md-toolbar><md-dialog-content layout-padding><md-content><md-input-container class="md-block"><label>Name</label><input required type="text"name="name"md-minlength="1"md-maxlength="25"ng-pattern="/^[a-zA-Z0-9-]{1,25}$/"ng-model="locals.base_name"><div ng-messages="nodeForm.name.$error"><div ng-message="required">Enter a node name</div><div ng-message="md-maxlength">Entered name is too long (25 char max)</div><div ng-message="md-minlength">Entered name is too short (1 char min)</div><div ng-message="pattern">Entered name contains invalid characters (a-zA-Z0-9-)</div></div></md-input-container><md-input-container class="md-block"><label>Provider</label><md-select required name="provider"ng-model="locals.provider"><md-option ng-repeat="provider in providers"value="{{provider.id}}">{{provider.name}}</md-option></md-select><div ng-messages="nodeForm.provider.$error"><div ng-message="required">Select a provider</div></div></md-input-container><md-input-container class="md-block"style="padding-bottom:16px"><label>Deployment</label><md-select required name="deployment_id"ng-model="locals.deployment_id"><md-option ng-repeat="(id, deployment) in locals._deployments"value="{{id}}">{{deployment.name}}</md-option></md-select><div ng-hide="locals._deployments[locals.deployment_id].system || !locals.deployment_id"style="color:#444;font-size:smaller">REMINDER: Nodes in proposed non-system deployments will NOT automatically deploy</div><div ng-messages="nodeForm.deployment_id.$error"><div ng-message="required">Select a deployment</div></div></md-input-container><md-input-container class="md-block"><label>Number</label><input required type="number"name="count"step="1"ng-model="locals.number"min="1"><div ng-messages="nodeForm.count.$error"><div ng-message="required">Enter a number</div><div ng-message="min">Enter a number greater than 0</div></div></md-input-container></md-content></md-dialog-content><md-dialog-actions><a ng-href="#/providers">Providers</a><br><span flex></span><md-button ng-click="dialog.editNodesInHelper()"ng-disabled="nodeForm.$error.required"class="md-icon-button md-primary"target="_blank"md-autofocus><md-icon>edit</md-icon><md-tooltip>Edit in API Call Helper</md-tooltip></md-button><md-button ng-click="dialog.addNodes()"ng-disabled="nodeForm.$error.required"class="md-primary md-raised"target="_blank"md-autofocus>Add</md-button></md-dialog-actions></form></md-dialog>
+<md-dialog aria-label="Add Node" ng-cloak flex-gt-sm="50">
+  <form name="nodeForm">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add Node</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+      <md-content>
+        <md-input-container class="md-block">
+          <label>Name</label>
+          <input required type="text" name="name" md-minlength="1" md-maxlength="25" ng-pattern="/^[a-zA-Z0-9-]{1,25}$/" ng-model="locals.base_name" />
+          <div ng-messages="nodeForm.name.$error">
+            <div ng-message="required">Enter a node name</div>
+            <div ng-message="md-maxlength">Entered name is too long (25 char max)</div>
+            <div ng-message="md-minlength">Entered name is too short (1 char min)</div>
+            <div ng-message="pattern">Entered name contains invalid characters (a-zA-Z0-9-)</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Provider</label>
+          <md-select required name="provider" ng-model="locals.provider">
+            <md-option ng-repeat="provider in locals._providers" value="{{provider.id}}" ng-if="!['metal','phantom'].includes(provider.name)">
+              {{provider.name}}
+            </md-option>
+          </md-select>
+          <div ng-messages="nodeForm.provider.$error">
+            <div ng-message="required">Select a provider</div>
+          </div>
+          <div ng-hide="locals.hasProvider" style="color: #444; font-size: smaller">
+            You will need to create a provider before provisioning nodes.
+          </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Deployment</label>
+          <md-select required name="deployment_id" ng-model="locals.deployment_id">
+            <md-option ng-repeat="(id, deployment) in locals._deployments" value="{{id}}">
+              {{deployment.name}}
+            </md-option>
+          </md-select>
+          <div ng-hide="locals._deployments[locals.deployment_id].system || !locals.deployment_id" style="color: #444; font-size: smaller ">
+            REMINDER: Nodes in proposed non-system deployments will NOT automatically deploy
+          </div>
+          <div ng-messages="nodeForm.deployment_id.$error">
+            <div ng-message="required">Select a deployment</div>
+          </div>
+        </md-input-container>
+
+        <section layout-padding ng-if="locals._profiles.length <= 0">
+          No Profiles Available
+        </section>
+        <section layout-padding style="overflow-x: auto;" ng-if="locals._profiles.length > 0">
+          <md-chips ng-model="locals.profiles" md-require-match="true">
+            <md-chip-template style="font-family: monospace;">
+              {{ $chip }}
+            </md-chip-template>
+            <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in locals._profiles | filter:searchText" md-item-text="item" placeholder="Add Profiles (Optional)">
+              <span md-highlight-text="searchText">
+                {{item}}
+              </span>
+            </md-autocomplete>
+          </md-chips>          
+        </section>
+
+        <md-input-container class="md-block">
+          <label>Number</label>
+          <input required type="number" name="count" step="1" ng-model="locals.number" min="1" />
+          <div ng-messages="nodeForm.count.$error">
+            <div ng-message="required">Enter a number</div>
+            <div ng-message="min">Enter a number greater than 0</div>
+          </div>
+        </md-input-container>
+
+      </md-content>
+    </md-dialog-content>
+    <md-dialog-actions>
+      <a ng-href="#!/providers">Providers</a>
+      <br/>
+      <span flex></span>
+      <md-button ng-click="dialog.editNodesInHelper()" ng-disabled="nodeForm.$error.required" class="md-icon-button md-primary" target="_blank" md-autofocus>
+        <md-icon>
+          edit
+        </md-icon>
+        <md-tooltip>
+          Edit in API Call Helper
+        </md-tooltip>
+      </md-button>
+      <md-button ng-click="dialog.addNodes()" ng-disabled="nodeForm.$error.required" class="md-primary md-raised" target="_blank" md-autofocus>
+        Add
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

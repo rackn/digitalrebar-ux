@@ -1,0 +1,61 @@
+<!--
+  Fancy List Component
+  <fancylist title="Title" items="items" initial="list/table" table="">
+  items: [{
+    order: 0,
+    name: "Hello",
+    status: "off",
+    path: "node_roles",
+    id: 1
+    icon: "ready",
+    {other attributes the table might need}
+  }]
+-->
+<md-card ng-init="view=$ctrl.initial">
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <h2 flex>{{$ctrl.title}}</h2>
+      <span>
+        <md-button class="md-icon-button" ng-click="toggleList()">
+          <md-icon>{{list ? "menu" : "view_comfy"}}</md-icon>
+        </md-button>
+      </span>
+    </div>
+  </md-toolbar>
+  <md-card-content ng-show="list">
+    <span ng-repeat="item in $ctrl.items | orderBy: item.order" aria-label="{{item.name}}">
+      <md-button class="md-fab md-primary" aria-label="{{item.name}}" md-theme="status_{{item.status}}" ng-href="#!/{{$ctrl.path}}/{{item.id}}">
+        <md-tooltip md-direction="top">{{item.name}}</md-tooltip>
+        <md-icon>{{item.icon}}</md-icon>
+      </md-button>
+    </span>
+  </md-card-content>
+  <div ng-hide="list">
+    <table md-table>
+      <thead md-head md-order="myOrder">
+        <tr md-row>
+          <th md-column md-order-by="status">Status</th>
+          <th md-column md-order-by="name">Name</th>
+        </tr>
+      </thead>
+      <tbody md-body ng-repeat="item in $ctrl.items | orderBy: myOrder"
+        swap-md-paint-bg="status_{{ item.status }} primary"
+        swap-md-paint-fg="status_{{ item.status }} foreground">
+        <tr md-row>
+          <td md-cell>
+            <md-icon>
+              {{item.icon}}
+              <md-tooltip md-direction="top">
+                {{item.status}}
+              </md-tooltip>
+            </md-icon>
+          </td>
+          <td md-cell>
+            <a ng-href="#!/{{$ctrl.path}}/{{item.id}}">
+              {{item.name}}
+            </a>
+          </td>
+        </tr>
+      </tbody>
+  </div>
+</md-card>

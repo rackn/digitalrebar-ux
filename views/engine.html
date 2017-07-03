@@ -1,0 +1,57 @@
+<md-card ng-repeat="ruleset in _engine">
+  <md-toolbar class="md-default">
+    <div class="md-toolbar-tools">
+      <span flex>
+        <md-button class="md-icon-button" ng-click="">
+          <md-icon>{{ ruleset.Active ? "visibility" : "visibility_off"}}</md-icon>
+          <md-tooltip>{{ ruleset.Active ? "Active" : "Inactive"}}</md-tooltip>
+        </md-button>
+        {{ruleset.Name}}: {{ ruleset.Description }}
+      </span>
+    </div>
+  </md-toolbar>
+
+  <md-card-content>
+    <md-table-container>
+      <table md-table ng-model="ruleset.Rules">
+        <thead md-head>
+          <tr md-row>
+            <th md-column>Name</th>
+            <th md-column>Event Selectors</th>
+            <th md-column>Wants Attribs</th>
+            <th md-column>Matchers</th>
+            <th md-column>Actions</th>
+          </tr>
+        </thead>
+        <tbody md-body ng-repeat="rule in ruleset.Rules">
+          <td md-cell>{{rule.Name || "not set"}}</td>
+          <td md-cell>
+            <span flex ng-repeat="event in rule.EventSelectors">
+              When <strong>{{ event.event }}</strong> on <strong>{{ event.obj_class || "any"}}</strong> with <strong>{{ event.obj_id || "any" }}</strong>
+            </span>
+          </td>
+          <td md-cell>
+            <div flex ng-if="!rule.WantsAttribs">not set</div>
+            <span flex ng-repeat="attrib in rule.WantsAttribs">
+              {{attrib}}
+            </span>
+          </td>
+          <td md-cell>
+            <span flex ng-repeat="match in rule.Matchers">
+              <div flex ng-if="match.JSON"><strong>JSON:</strong> {{match.JSON}}</div>
+              <div flex ng-if="match.Eq"><strong>Equals:</strong> {{match.Eq}}</div>
+              <div flex ng-if="!match.Eq || !match.JSON">{{match.Eq}}</div>
+            </span>
+          </td>
+          <td md-cell>
+            <span flex ng-repeat="action in rule.Actions">
+              <div flex ng-if="action.Bind"><strong>Bind:</strong>{{action.Bind}}</div>
+              <div flex ng-if="action.Node"><strong>Node:</strong>{{action.Node}}</div>
+              <div flex ng-if="!action.Node || !action.Bind">{{action}}</div>
+            </span>
+          </td>
+        </tbody>
+      </table>
+    </md-table-container>
+  </md-card-content>
+</md-card>
