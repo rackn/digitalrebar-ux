@@ -46,7 +46,12 @@
         </div>
         <div layout="row">
           <div flex style="align-self: stretch;">
-            <textarea ng-model="value.value" style="width: 100%; height: 100%; font-family: monospace; flex-grow: 1;" ng-class="{'error': !parse(value.value, 1)||!locals.api.testSchema(parse(value.value, 0),locals.attribs[value.name].schema)}"></textarea>
+            <div ui-ace="{
+                    useWrapMode: true,
+                    showGutter: true,
+                    mode: 'json',
+                    onLoad: loadProfile(key)
+                  }" style="height: 100%;"></div>
           </div>
           <div flex style="overflow-x: auto; padding-left: 16px;">
             <pre>{{locals.attribs[value.name].schema | json}}</pre>
