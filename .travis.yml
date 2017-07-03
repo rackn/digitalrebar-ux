@@ -32,3 +32,4 @@ deploy:
   - dr-ux.sha256
   on:
     repo: rackn/digitalrebar-ux
+    tags: true
