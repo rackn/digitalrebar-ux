@@ -10,6 +10,7 @@ before_install:
 - npm i brunch -g
 script:
 - brunch build --production
+- ./package.sh
 - node_modules/.bin/gh-pages-travis
 env:
   global:
@@ -19,3 +20,15 @@ env:
   - SSH_KEY="travis_rsa"
   - GIT_NAME="travis"
   - GIT_EMAIL="deploy@travis-ci.org"
+notifications:
+  slack:
+    secure: PoP4bCStJd7gvIxbOiTNf8RhQvNnVdXfPoHqFy7U9HCCw2GGSUSe9ZlXyepic0op7w3yZyCzAnwkrTBQb2JzI1C8LuPPndLc3XOjkCX9HnMUpk42CkUAtsNjTkVoA67K8oM/6d8GkFEWdc5GFtMXv5OAiorPQtUotSa9bcRs9Bb0WtA773l/tkwRaNUloYGwe8vAb0WbKhmaPNwqkfOjOEM5NEU3xXOjrjZ1rSkRNOFGKmKBRn9oE+92RwkRj5KzlcXJacU0GJ2OVI7b+yqgNhDq5/kC2vuOidAQSBsEzfPv9Rkx1GkiPY4YIPXh/bafKcx29yTrh2r9vHgTCaQjTMqQfyetRTr84u3fBwQFYPRyB5rhm7aXt3H/tMNXanLLpusKFMLR5NNHHlJK14sg1rTpTgiyRI2ZoZsbazz3F0+YY1ZovxUNWaXlueyYsJjgn05iSlUCG3kohYgqX5VsjEbU7C38tA+6izgxVH/uSCtpERBjHWk4cq80ueqoxyo2nH3ISjQ4qLWpH3oKCg/n3n9LthLpGAoOjm6PD7IUP5RXYJzJA1gRcbT+9MkSkVSTQa+DPVcSBYWx3SADzexH7RV6YHI+zApGUar+lsyo4hdn+AOaXy8CwXYEjfvQjbQA0LMasB/lH3VD+XQ6qNAJ9sEw9WOJH1bizw30hf4AnLY=
+deploy:
+  provider: releases
+  api_key:
+    secure: Br1BMZAGQ3VQRm9uKXX8GaX7n7MG2x7w0Gk2VrDUvIdaQ1HW1JokQumTceD/eT3gHH0gKyZH3V87L6IkOjiGqEyzyZkmnpgFdp3AyryitLbvGY0AzLsmvygob+RadT8YocrDrOdZLVpJmcYAAhB11UAdTt5QbnwNd6TMOirUXMPcjyfCKV5b1Ju98k/q0Mee9K5EY5Q15ky3gknIXl+DAIskhqLFiJ+YK/PfzjYlxSb3viHGEo2P5zeA4MHT3xP76fmU1f7RsmfyKrLaKSL7jNP+sk2gugSqNv5HmvxcFy1KySM3LSWmTgflEKfgDBtG/zgws/AQvr4etuWjwqINyiBILYOP4XNWwxt0jsbNUd1c/s5GMH04i9fMZMAEYzBg3Ib8ehGWDSw1kKCN4WovERUcgcrpC8lBaiiIYpnL56d5RdflYs27mpd9X3nMEqj10RP7euLxq3g5GcVAUBgHVouSCNqOOrO2SGMsULrCw2bqiybEHf4ZpM70lLx2XRvLGiKZuiTCzR/zEahqLb3yOusgYhvqEiZQGHkldFBrs0jUwlD5q3nVH+LmraOdMTVJoHJ9SMUc+7/l26qn7TsZPyH3DD7O35xVVoI70x2qULlQUCBNyEjIzJWJtk7NomL0o3w2GEIyNfloPaTzyTA8A9wvRGcVkO8DKwqtAJQQ9wc=
+  file:
+  - dr-ux.zip
+  - dr-ux.sha256
+  on:
+    repo: rackn/digitalrebar-ux

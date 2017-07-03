@@ -9,3 +9,4 @@ server.pem
 web*.log
 public
 package-lock.json
+dr-ux.*
