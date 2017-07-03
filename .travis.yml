@@ -6,7 +6,7 @@ cache:
   - node_modules
 before_install:
 - openssl aes-256-cbc -K $encrypted_cb074d786c2f_key -iv $encrypted_cb074d786c2f_iv
-  -in travis_rsa.enc -out ~\/Documents/DigitalrebarTravis/travis_rsa -d
+  -in travis_rsa.enc -out travis_rsa -d
 - npm i brunch -g
 script:
 - brunch build --production
