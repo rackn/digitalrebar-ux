@@ -75,6 +75,18 @@
         });
       };
 
+      // Used with ace text editor to convert objects to JSON automatically
+      $scope.loadProfile = name => function(editor) {
+        editor.setValue(locals.profile.values[name].value,
+          -1
+        );
+        editor.getSession().on('change', function() {
+          try {
+            locals.profile.values[name].value = editor.getValue();
+          } catch (e) { /* eslint no-empty: off*/ }
+        });
+      };
+
       $scope.providerMap = (function () {
         let pm = {};
         for (let i in locals._providers) {
