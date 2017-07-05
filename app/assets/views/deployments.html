@@ -56,7 +56,7 @@ deployments view
           <md-icon>close</md-icon>
         </span>
         <span ng-hide="matrix[id].loading" ng-repeat="service in matrix[id].services">
-          <md-button class="md-primary md-raised square-button" md-theme="status_{{states[service.state]}}" ng-href="#!/roles/{{service.role_id}}" style="margin: 6px 3px 3px 0;">
+          <md-button class="md-primary md-raised square-button" md-theme="status_{{states[service.state]}}" ng-href="#!/deployment_roles/{{service.id}}" style="margin: 6px 3px 3px 0;">
             <md-tooltip md-direction="bottom">
               {{service.name}}
             </md-tooltip>
@@ -71,7 +71,7 @@ deployments view
             <th valign="bottom">Nodes</th>
             <th ng-repeat="(index, role) in matrix[id].deployment_roles" class="angled">
               <div>
-                <a ng-href="#!/deployment_roles/{{index}}">
+                <a ng-href="#!/deployment_roles/{{role.id}}">
                   <md-icon style="transform: rotateZ(45deg)">{{role.icon}}</md-icon>
                   {{role.name}}
                 </a>
