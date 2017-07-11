@@ -484,26 +484,6 @@ window.version = '0.2.0';
             return !$scope.showDNS; }
         }]
       }, {
-        title: 'Firmware',
-        icon: 'computer',
-        expand: true,
-        expanded: function () {
-          return $scope.expandHardware; },
-        toggleExpand: $scope.toggleExpandHardware,
-        items: [{
-          title: 'BIOS Settings',
-          icon: 'map',
-          path: '/bios/settings',
-          hide: function () {
-            return !$scope.showBiosSettings; }
-        }, {
-          title: 'Firmware Updates',
-          icon: 'healing',
-          path: '/bios/updates',
-          hide: function () {
-            return !$scope.showBiosUpdates; }
-        }]
-      }, {
         title: 'Provisioner',
         icon: 'local_shipping',
         hide: function () {
