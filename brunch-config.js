@@ -94,7 +94,7 @@ module.exports = {
       warnOnly: true,
     },
     uglify: {
-      mangle: true,
+      mangle: false,
       compress: {
         global_defs: {
           DEBUG: false
