@@ -103,7 +103,7 @@ provider view
               {{options.name}}
             </td>
             <td>
-                <div ui-ace="{
+                <div ng-readonly="!editing" ui-ace="{
                   useWrapMode: true,
                   showGutter: true,
                   mode: 'json',
