@@ -22,7 +22,7 @@
       $scope.loadProvider = function(name) {
         return function(editor) {
           editor.setValue(
-            JSON.stringify($scope.provider.auth_details[name], 0, '  '),
+            JSON.stringify($scope.provider.auth_details[name] || '', 0, '  '),
             -1
           );
           editor.getSession().on('change', function() {
@@ -133,6 +133,16 @@
           fullscreen: useFullScreen
         });
       };
+
+      $scope.rawProfiles = function(current) {
+        let raw = [];
+        for (let i in $scope._profiles) {
+          if (!current.includes($scope._profiles[i].name))
+            raw.push($scope._profiles[i].name);
+        }
+        return raw;
+      };
+
 
       $scope.showAddNodeDialog = function (ev) {
         let useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
