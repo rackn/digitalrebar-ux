@@ -209,6 +209,17 @@
         });
       };
 
+      $scope.assignGroup = function(arr, group_id) {
+        arr.forEach(function (node) {
+          api('/api/v2/groups/' + group_id + '/nodes', {
+            method: 'POST',
+            data: {
+              node_id: node.id
+            }
+          }).then(function(resp){api.addNode(resp.data);});
+        });
+      }
+
       $scope.assignNodesToTenant = function (arr, tenant_id) {
         arr.forEach(function (node) {
           api('/api/v2/nodes/' + node.id, {
