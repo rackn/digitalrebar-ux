@@ -86,6 +86,7 @@
       $rootScope._deployment_roles = {};
       $rootScope._roles = {};
       $rootScope._nodes = {};
+      $rootScope._groups = {};
       $rootScope._profiles = {};
       $rootScope._networks = {};
       $rootScope._network_ranges = {};
@@ -130,7 +131,7 @@
       };
       api.reloading = false;
 
-      app.types = ['deployments', 'roles', 'nodes', 'profiles', 'node_roles',
+      app.types = ['deployments', 'roles', 'nodes', 'groups', 'profiles', 'node_roles',
         'deployment_roles', 'networks', 'network_ranges', 'providers',
         'barclamps'
       ];
@@ -608,6 +609,15 @@
         });
       };
 
+      // api call for getting all the groups
+      api.getGroups = function () {
+        return api('/api/v2/groups')
+        .then(function (resp) {
+          $rootScope._groups = {};
+          resp.data.map(api.addGroup);
+        });
+      };
+
       api.addProfile = function (profile) {
         let id = profile.id;
         $rootScope._profiles[id] = profile;
@@ -711,6 +721,12 @@
         delete $rootScope._node_roles[id];
         $rootScope._node_roles[id] = role;
         $rootScope.$broadcast('node_role' + id + 'Done');
+      };
+
+      api.addGroup = function (group) {
+        let id = group.id;
+        $rootScope._groups[id] = group;
+        $rootScope.$broadcast('group' + id + 'Done');
       };
 
       // api call for getting all the node roles

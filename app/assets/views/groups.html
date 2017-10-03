@@ -1,7 +1,12 @@
 <div class="md-toolbar-tools">
-	<span flex> </span>
+	<span flex>Groups ({{getGroups().length}}) </span>
 	<md-button class="md-icon-button" ng-click="api.getActive()">
 	  <md-icon>autorenew</md-icon>
 	  <md-tooltip>Refresh Groups</md-tooltip>
 	</md-button>
 </div>
+<md-card ng-repeat="group in groups">
+  <md-card-content>
+  	{{group.inspect}}
+  </md-card-content>
+</md-card>

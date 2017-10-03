@@ -26,6 +26,22 @@
       </md-button>
       <md-menu md-position-mode="target-right target">
         <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+          <md-icon>layers</md-icon>
+          <md-tooltip>Add to Group</md-tooltip>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item ng-repeat="group in _groups">
+            <md-button ng-click="assignGroup(nodes.selected, group.id)">
+              <div layout="row" flex>
+                <p flex>{{group.name}}</p>
+                <md-icon md-menu-align-target style="margin: auto 3px auto 0;">arrow_forward</md-icon>
+              </div>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      <md-menu md-position-mode="target-right target">
+        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
           <md-icon>swap_horiz</md-icon>
           <md-tooltip>Move Nodes</md-tooltip>
         </md-button>

@@ -115,6 +115,11 @@ window.version = '0.2.0';
         controllerAs: 'nodes',
         templateUrl: 'views/nodes_singular.html'
       })
+      .when('/groups', {
+        controller: 'GroupsCtrl',
+        controllerAs: 'groups',
+        templateUrl: 'views/groups.html'
+      })
       .when('/node_roles', {
         controller: 'NodeRolesCtrl',
         controllerAs: 'node_roles',
@@ -455,6 +460,10 @@ window.version = '0.2.0';
         title: 'Networks',
         icon: 'swap_horiz',
         path: '/networks'
+      }, {
+        title: 'Groups',
+        icon: 'layers',
+        path: '/groups'
       }];
 
       $scope.managementMenu = [{

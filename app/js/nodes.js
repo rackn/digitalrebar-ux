@@ -162,7 +162,8 @@
             profiles: [],
             add_os: 'default_os',
             number: 1,
-            _deployments: $scope._deployments
+            _deployments: $scope._deployments,
+            _groups: $scope._groups
           },
           clickOutsideToClose: true,
           fullscreen: useFullScreen

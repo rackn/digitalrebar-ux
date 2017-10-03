@@ -22,7 +22,7 @@
       this.groups = [];
 
       // converts the _nodes object that rootScope has into an array
-      this.getGroups = function () {
+      $scope.getGroups = function () {
         let groups = [];
         for (let id in $scope._groups) {
           let group = angular.copy($scope._groups[id]);
