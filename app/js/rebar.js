@@ -80,7 +80,7 @@
       };
 
       $rootScope._pollTimer;
-      $rootScope._pollRate = 15;
+      $rootScope._pollRate = 1500;
       $rootScope._pollRateOverride = false;
       $rootScope._deployments = {};
       $rootScope._deployment_roles = {};

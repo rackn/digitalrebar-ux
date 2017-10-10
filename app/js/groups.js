@@ -6,6 +6,7 @@
   angular.module('app').controller('GroupsCtrl', [
     '$scope', '$location', 'debounce', '$routeParams', '$mdMedia', '$mdDialog',
     'api',
+    
     function ($scope, $location, debounce, $routeParams, $mdMedia, $mdDialog,
       api) {
 
@@ -14,23 +15,34 @@
       $scope.expand = {};
 
       $scope.myOrder = 'name';
+      $scope.nodes = {};
+      $scope.cols = ['error', 'active', 'ready', 'off'];
 
-      if ($routeParams.id)
-        $scope.expand[$routeParams.id] = true;
+      $scope.group_count = Object.keys($scope._groups).length;
+      $scope.valueOrder = 'name';
 
-      let GroupsCtrl = this;
-      this.groups = [];
+      let deregister = $scope.$watchCollection('_groups', function(groups){
+        $scope.group_count = Object.keys(groups).length;
+        $scope.groups = {};
+        Object.keys(groups).forEach(function(id) {
+          let group = groups[id];
+          $scope.groups[id] = Object.keys(groups.values).map(function(key) {
+            return {key: key, value: groups[key]};
+          });
+        });
+      });
 
-      // converts the _nodes object that rootScope has into an array
-      $scope.getGroups = function () {
-        let groups = [];
-        for (let id in $scope._groups) {
-          let group = angular.copy($scope._groups[id]);
-          groups.push(group);
-        }
-        GroupsCtrl.groups = groups;
+      $scope.$on('$destroy', deregister);
+
+      $scope.getNodes = function (group) {
+        $scope.nodes[group] = { 'error': [], 'active': [], 'ready': [], 'off': []  }
+        api('/api/v2/groups/'+group+'/nodes').then(function (resp) {
+          resp.forEach((n) => {
+            console.log('ZEHICLE', n);
+            $scope.nodes[group]['error'][n.id] = { 'name': n.name, 'status': n.status };
+          });
+        });
       };
-      
     }
   ]);
 })();

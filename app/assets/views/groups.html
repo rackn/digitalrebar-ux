@@ -1,12 +1,51 @@
-<div class="md-toolbar-tools">
-	<span flex>Groups ({{getGroups().length}}) </span>
-	<md-button class="md-icon-button" ng-click="api.getActive()">
-	  <md-icon>autorenew</md-icon>
-	  <md-tooltip>Refresh Groups</md-tooltip>
-	</md-button>
-</div>
-<md-card ng-repeat="group in groups">
-  <md-card-content>
-  	{{group.inspect}}
-  </md-card-content>
+<md-card ng-if='group_count<0' style="padding: 2em">
+  Retrieving...
 </md-card>
+<md-card ng-if='group_count==0' style="padding: 2em">
+  No Groups
+</md-card>
+<md-card ng-repeat="group in _groups">
+  <md-toolbar class="md-default" ng-click="expand[group.name]=!expand[group.name]">
+    <div class="md-toolbar-tools">
+      <span flex>
+        Group: {{group.name}}
+      </span>
+      <span>
+        <md-button class="md-icon-button">
+          <md-icon ng-hide="expand[group.name]">expand_more</md-icon>
+          <md-icon ng-show="expand[group.name]">expand_less</md-icon>
+        </md-button>
+      </span>
+    </div>
+  </md-toolbar>
+
+  <div ng-slide-down="expand[group.name]" lazy-render duration="0.5">
+    <md-card-content>
+      <md-button ng-click='getNodes(group.name)' align='float:right' class="md-icon-button">
+        <md-icon>refresh</md-icon>
+      </md-button>
+      <span ng-if=nodes[group.name]>
+        <table width='100%'>
+          <thead>
+            <tr><th>Errors</th><th>In Process</th><th>Off</th><th>Ready</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td ng-repeat="col in cols">
+                {{nodes[group.name][col]}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </span>
+      <span ng-else>No Nodes</span>
+    </md-card-content>
+</md-card>
+
+<!-- Floating action button at the bottom right of the screen -->
+<div>
+  <md-button class="md-fab md-accent md-fab-bottom-right" ng-click="createGroupPrompt($event)">
+    <md-icon>add</md-icon>
+    <md-tooltip>Create Group</md-tooltip>
+  </md-button>
+</div>
